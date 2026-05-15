@@ -1,107 +1,61 @@
-type PageIds = Brand<string[], "pageIds">;
+import type { BlockId, PageId } from "./notion";
+import * as notion from "./notion";
 
-export async function parseAggregate({
-    aggregateId,
-}: {
-    aggregateId: string;
-}): Promise<Result<PageIds>> {
-    const blocks = await notion.getBlockChildren({ blockId: aggregateId });
+type PagePath = Brand<string, "PagePath">;
+
+export async function parseAggregates({ ids }: { ids: PageId[] }): Promise<Result<Record<PageId, PagePath>>> {
+    try {
+        const results = await Promise.all(
+            ids.map(async (id) => {
+                const root_name = await notion.getPageName({ page_id: id });
+                if (root_name instanceof Error) throw root_name;
+
+                const child_ids = await parseAggregate({ aggregate_id: id });
+                if (child_ids instanceof Error) throw child_ids;
+
+                const child_record = await Promise.all(
+                    child_ids.map(async (child_id) => {
+                        const child_name = await notion.getPageName({ page_id: child_id });
+                        if (child_name instanceof Error) throw child_name;
+
+                        return [child_id, `${root_name}/${child_name}` as PagePath];
+                    }),
+                );
+                return Object.fromEntries(child_record) as Record<PageId, PagePath>;
+            }),
+        );
+
+        const final_record = Object.assign({}, ...results) as Record<PageId, PagePath>;
+        return final_record;
+    } catch (error) {
+        return error as Error;
+    }
+}
+
+async function parseAggregate({ aggregate_id }: { aggregate_id: PageId }): Promise<Result<PageId[]>> {
+    const blocks = await notion.getBlockChildren({ blockId: aggregate_id as string as BlockId });
     if (blocks instanceof Error) {
         return blocks;
     }
 
+    const pageIds = [];
+
     for (const block of blocks) {
-        let pageId = "";
-
-        if (
-            block.type === "paragraph" &&
-            block.paragraph.rich_text.length > 0
-        ) {
-            const richText = block.paragraph.rich_text[0];
-            let text = "";
-            if (richText && richText.href) {
-                text = richText.href;
+        if (block.type !== "link_to_page") {
+            if (block.type === "paragraph" && block.paragraph.rich_text.length === 0) {
+                // Empty whitespace
+                continue;
+            } else {
+                return new Error(`Aggregate ${aggregate_id} contains unrecognized block type "${block.type}"`);
             }
-
-            if (text.includes("www.notion.so")) {
-                if (richText.type === "mention") {
-                    // Mention
-                    pageId = text.substring(text.lastIndexOf("/") + 1);
-                } else {
-                    // URL
-                    const databasePageId = text.match(/p=([a-f0-9]{32})/);
-
-                    if (databasePageId) {
-                        // Database page link
-                        pageId = databasePageId[1];
-                    } else {
-                        // Direct page link
-                        pageId = text.substring(text.lastIndexOf("-") + 1);
-                    }
-                }
-            }
-        } else if (
-            block.type === "link_to_page" &&
-            block.link_to_page.type === "page_id"
-        ) {
-            // Linked database view
-            pageId = block.link_to_page.page_id;
         }
 
-        if (!pageId) {
-            continue;
+        if (block.link_to_page.type !== "page_id") {
+            return new Error(`Aggregate ${aggregate_id} contains unrecognized link type "${block.link_to_page.type}"`);
+        } else {
+            pageIds.push(block.link_to_page.page_id as PageId);
         }
-
-        const aggregateTitle = await getPageTitle(aggregateId);
-        const pageTitle = await getPageTitle(pageId);
-        const lastEditedTime = await getPageLastEditedTime(pageId);
-
-        if (
-            !syncLog.modified({
-                databaseId: aggregateId,
-                databaseTitle: aggregateTitle,
-                pageId,
-                pageTitle,
-                lastEditedTime,
-                fileExtension: "mdx",
-            })
-        ) {
-            return;
-        }
-
-        const codeFence = "---";
-
-        const metadata = `<!--\n${codeFence}\n${await getPageMetadata(pageId)}\n${codeFence}\n-->\n`;
-        const pageContent = await parsePage({
-            blockId: pageId,
-            content: { value: metadata },
-            databaseTitle: aggregateTitle,
-            pageTitle,
-        });
-
-        const codeFenceStart =
-            pageContent.indexOf(codeFence) + codeFence.length;
-        const codeFenceEnd =
-            pageContent.indexOf(codeFence, codeFenceStart) + codeFence.length;
-
-        const content =
-            pageContent.slice(0, codeFenceEnd) +
-            component.imports() +
-            pageContent.slice(codeFenceEnd);
-
-        fileSystem.write({
-            folderName: aggregateTitle,
-            fileName: pageTitle,
-            fileContent: content,
-            fileExtension: "mdx",
-        });
-        syncLog.update({
-            databaseId: aggregateId,
-            databaseTitle: aggregateTitle,
-            pageId,
-            pageTitle,
-            lastEditedTime,
-        });
-        syncLog.save();
     }
+
+    return pageIds;
 }

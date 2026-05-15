@@ -1,14 +1,12 @@
-import { BlockObjectResponse as _BOR } from "@notionhq/client";
-import * as _log from "./log";
-import * as _notion from "./notion";
+import { BlockObjectResponse as _BlockObjectResponse } from "@notionhq/client";
 
 declare global {
     // Helper types
     type Result<T> = T | Error;
-    type Brand<K, T> = K & { __phantom: T };
+    type Brand<K, T> = K & { __brand: T };
 
     // Global imports
-    type BlockObjectResponse = _BOR;
+    type BlockObjectResponse = _BlockObjectResponse;
 
     // Module auto-imports
     const log: typeof _log;
