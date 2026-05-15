@@ -1,0 +1,19 @@
+{
+  "name": "notion-exporter-rewrite",
+  "module": "index.ts",
+  "scripts": {
+    "export": "cd src && npx ts-node main.ts"
+  },
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@notionhq/client": "^5.21.0",
+    "dotenv": "^17.4.2"
+  }
+}
