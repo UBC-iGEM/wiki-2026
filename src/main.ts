@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import * as parse from "./parse";
-import type { PageId } from "./notion";
+import { PageId } from "./notion";
 
 dotenv.config({ path: "../.env" });
 
@@ -20,7 +20,9 @@ async function main(): Promise<void> {
     //     .map((key) => process.env[key])
     //     .filter(Boolean) as string[];
 
-    const parse_map = await parse.parseAggregates({ ids: aggregate_ids as PageId[] });
+    const parse_map = await parse.parseAggregates({
+        agg_ids: aggregate_ids.map((id) => new PageId(id)),
+    });
     console.log(parse_map);
 }
 

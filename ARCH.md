@@ -1,16 +1,14 @@
 # Identify all paths
-
-## From aggregate pages
 ```mermaid
 graph TD
     ERROR
-    AGG_START
-    AGG_RESULT
+    START
+    RESULT
 
-    AGG_START -> ID[Aggregate IDs]
+    START -> AID[Aggregate IDs]
     
-    ID ->|each| PE[Parse aggregate ID]
-    ID ->|each| PAN[Parse aggregate name]
+    AID ->|each| PE[Parse aggregate ID]
+    AID ->|each| PAN[Parse aggregate name]
     
     PE ->|ok?| GAB[Get all blocks]
     PE ->|err?| ERROR
@@ -21,15 +19,19 @@ graph TD
     PT ->|empty?| skip
     PT ->|other| ERROR
 
-    L ->|standard page link?| PL[Page link]
+    L ->|page?| PL[Page link]
+    L ->|db?| DL[Database link]
     L -> |other| ERROR
 
     PL -> PID[Page ID]
-    PL -> PN[Page name]
+    PID -> PN[Page name]
+
+    DL -> GAP[Get all page IDs]
+    GAP ->|each| PID
 
     PAN -> PP[Page path]
     PN -> PP
 
-    PID -> AGG_RESULT
-    PP -> AGG_RESULT
+    PID -> RESULT
+    PP -> RESULT
 ```
