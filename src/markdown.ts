@@ -10,6 +10,7 @@ import remarkStringify from "remark-stringify";
 import remarkDirective from "remark-directive";
 import parse from "node-html-parser";
 import remarkMath from "remark-math";
+import { BlockId } from "./notion";
 
 export async function processMarkdown({ md, path, routes }: { md: string; path: PagePath; routes: RouteMap }) {
     const preprocessor_regexes: [RegExp, string][] = [
@@ -52,12 +53,15 @@ export async function processMarkdown({ md, path, routes }: { md: string; path: 
         .use(remarkDirective)
         .use(remarkMath)
         .use(processMAst)
-        .use(remarkStringify)
+        .use(remarkStringify, {
+            bullet: "-",
+        })
         .process(preprocessed_markdown);
-    const result = await save({ content: String(processed_markdown), path: path.withExt("md") });
+    const result = await save({ content: String(processed_markdown), path: path.withExt("mdx") });
 
     if (isErr(result)) log.warn_error(result);
 
+    // PROCESSING FUNCTIONS ----------
     function processMAst() {
         return (tree: Root) => {
             // console.dir(tree, { depth: null });
@@ -96,6 +100,30 @@ export async function processMarkdown({ md, path, routes }: { md: string; path: 
                         parent.children[index] = new_link;
                         return SKIP;
                     }
+                    case "image": {
+                        const image_url = node.url;
+                        if (image_url.includes("file://")) {
+                            const decoded_url = decodeURIComponent(image_url.replace("file://", ""));
+
+                            try {
+                                interface UrlData {
+                                    permissionRecord: {
+                                        id: string;
+                                    };
+                                }
+                                const url_data: UrlData = JSON.parse(decoded_url);
+
+                                const block_id = new BlockId(url_data.permissionRecord.id);
+                                // TODO! Image upload and transform
+                                // console.log(block_id);
+
+                                node.url = `<TOOLS_API_BASE>/${block_id.id}`;
+                            } catch (err) {
+                                log.warn_error(`Failed to parse image URL ${decoded_url}: ${err}`);
+                            }
+                        }
+                        break;
+                    }
                     case "list": {
                         const new_paragraph = splitList({ children: node.children });
                         if (new_paragraph) {
@@ -125,6 +153,9 @@ export async function processMarkdown({ md, path, routes }: { md: string; path: 
             return normalizeUrl({ url: node.url, err_base });
         }
 
+        /**
+         * If a link points to a `www.notion.so` domain, replace it with a link to that page's location in the wiki
+         */
         function normalizeUrl({ url, err_base }: { url: string; err_base: string }): Link | Error | void {
             if (!url.includes("www.notion.so")) {
                 // External link
@@ -132,14 +163,10 @@ export async function processMarkdown({ md, path, routes }: { md: string; path: 
             }
 
             const page_id = url.match(/(?<=\/|-)[a-f0-9]{32}(?:\?|$)/)?.[0];
-            if (!page_id) {
-                return new Error(`${err_base} has no valid id`);
-            }
+            if (!page_id) return new Error(`${err_base} has no valid id`);
 
             const page_path = routes[page_id];
-            if (!page_path) {
-                return new Error(`${err_base} links to page ${page_id}, which is not a known wiki path`);
-            }
+            if (!page_path) return new Error(`${err_base} links to page ${page_id}, which is not a known wiki path`);
 
             return {
                 type: "link",
@@ -149,9 +176,9 @@ export async function processMarkdown({ md, path, routes }: { md: string; path: 
         }
 
         /**
-            Walk a Markdown list. If text has been accidentally joined to its end,
-            splice it out and return it as a new Paragraph.
-        */
+         * Walk a Markdown list. If text has been accidentally joined to its end,
+         * splice it out and return it as a new Paragraph.
+         */
         function splitList({ children }: { children: ListItem[] }): Paragraph | void {
             const last_list_item = children.at(-1);
             if (!last_list_item) return;

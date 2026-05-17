@@ -29,11 +29,16 @@ interface Queryable {
     getPaths(): Promise<Result<[PageId, PagePath][]>>;
 }
 
-export class PageId implements Queryable {
-    constructor(public id: string) {}
+abstract class IdHolder {
+    constructor(public id: string) {
+        // Sanitize ID
+        this.id = id.replaceAll("-", "");
+    }
+}
 
-    sanitize() {
-        this.id = this.id.replaceAll("-", "");
+export class PageId extends IdHolder implements Queryable {
+    constructor(id: string) {
+        super(id);
     }
 
     async getName(): Promise<Result<string>> {
@@ -72,8 +77,10 @@ export class PageId implements Queryable {
     }
 }
 
-export class DatabaseId implements Queryable {
-    constructor(public id: string) {}
+export class DatabaseId extends IdHolder implements Queryable {
+    constructor(id: string) {
+        super(id);
+    }
 
     async getName(): Promise<Result<string>> {
         const error_base = `Unable to retrieve title of page ${this.id}`;
@@ -144,8 +151,10 @@ export class DatabaseId implements Queryable {
     }
 }
 
-export class BlockId {
-    constructor(public id: string) {}
+export class BlockId extends IdHolder {
+    constructor(id: string) {
+        super(id);
+    }
 
     async getChildren(): Promise<Result<BlockObjectResponse[]>> {
         try {

@@ -37,10 +37,7 @@ export async function parseAggregates({ agg_ids }: { agg_ids: PageId[] }): Promi
                         const paths = await item.getPaths();
                         if (isErr(paths)) throw paths;
 
-                        for (const [id, path] of paths) {
-                            id.sanitize();
-                            route_map[id.id] = new PagePath(agg_name).with(path);
-                        }
+                        for (const [id, path] of paths) route_map[id.id] = new PagePath(agg_name).with(path);
                     }),
                 );
             }),
