@@ -32,6 +32,10 @@ interface Queryable {
 export class PageId implements Queryable {
     constructor(public id: string) {}
 
+    sanitize() {
+        this.id = this.id.replaceAll("-", "");
+    }
+
     async getName(): Promise<Result<string>> {
         const error_base = `Unable to retrieve title of page ${this.id}`;
 
@@ -60,7 +64,7 @@ export class PageId implements Queryable {
 
     async getMarkdown(): Promise<Result<string>> {
         try {
-            const page = await notion().pages.retrieveMarkdown({ page_id: this.id });
+            const page = await notion().pages.retrieveMarkdown({ page_id: this.id, include_transcript: true });
             return page.markdown;
         } catch (error) {
             return new Error(`Unable to fetch page ${this.id} as markdown: ${error}`);

@@ -1,0 +1,82 @@
+flowchart TD
+    subgraph "Errors"
+        ERRNAPI[Notion API error]
+        ERRIAPI[iGEM API error]
+        ERRM[Malformed content]
+    end
+    START
+
+    START --> LENV[Load env. vars]
+
+    subgraph "Load aggregates"
+        LENV --> AID[Aggregate IDs]
+
+        AID -->|each| PAID[Parse aggregate ID]
+        PAID -->|each| GAN[Get aggregate name]
+    end
+        AID -.->|missing?| ERRM
+        PAID -.->|GET err?| ERRNAPI
+        GAN -.->|GET err?| ERRNAPI
+
+
+    subgraph "Discover pages"
+        PAID --> GAB[Get all blocks]
+        GAB -->|each| PT[Parse block type]
+
+        PT -->|link_to_page?| L[Link]
+        PT -->|empty?| SL[skip link]
+
+        L -->|page?| PL[Page link]
+        L -->|db?| DL[Database link]
+
+        PL --> PID[Page ID]
+        PID --> GPN[Get page name]
+        GPN --> CP[Child path]
+
+        DL --> GAP[Get all page IDs]
+        GAP -->|each| PID
+    end
+        GAB -.->|GET err?| ERRNAPI
+        PT -.->|other?| ERRM
+        L -.-> |other| ERRM
+        GPN -.->|GET err?| ERRNAPI
+        GAP -.->|GET err?| ERRNAPI
+
+
+    subgraph "Build routing map"
+        GAN --> PP[Page path]
+        CP --> PP
+
+        MAP[Id:Path Map]
+        PID --> MAP
+        PP --> MAP
+    end
+
+    subgraph "Process Markdown"
+        MAP -->|each| FM[Fetch as Markdown]
+
+        subgraph "Normalize inter-links"
+            FM --> IM[Identify mentions]
+            IM -->|each| NML[Normalize]
+
+            FM --> IL[Identify links]
+            IL -->|each, notion link?| NML
+
+            NML <-->|exists?| MAP
+        end
+            NML -.->|invalid path?| ERRM
+
+        NML --> II[Identify images]
+        subgraph "Handle images"
+            II -->|each| CE[Check already uploaded]
+            CE -->|yes?| SI[skip]
+            CE -->|no?| UI[Upload image]
+
+            UIL[Update image link]
+            SI --> UIL
+            UI --> UIL
+        end
+    end
+        FM -.->|GET err?| ERRNAPI
+        CE -.->|GET err?| ERRIAPI
+        UI -.->|POST err?| ERRIAPI

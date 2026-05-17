@@ -1,0 +1,58 @@
+# Purpose
+
+To create a growth curve and determine the growth rate of WT UTEX in a bioreactor.
+
+# Materials & Methods
+
+# Materials
+
+* PYE
+* Sterile pipette tips
+* x2 cuvettes
+* Kimwipes
+* Spectrophotometer
+* Waste beaker with 10% bleach
+* UTEX bioreactor
+
+# Procedure
+
+1. Take the mother culture out of the shaker in 30ºC room
+2. Remove 1 mL of the culture into a clean cuvette under the flame
+   1. Swirl to resuspend the cells
+   2. Use P1000 to pipette up and down 2-3 times before taking the sample
+3. Measure OD750 on the spectrophotometer
+   1. Wipe cuvette body with Kimwipe.
+   2. The program should be set to a growth curve program, and blanked with water. Press “measure sample”.
+   3. Record the number in the “C” column of the program in the “Measured OD” column of the spreadsheet (also include the time the measurement was taken, the culture time since the first measurement, and your initials).
+4. Create the sample culture in the bioreactor
+   1. add 125 mL BG-11 media + *x* amount of overnight culture for a final OD750 of 0.05 to start the growth curve
+   2. 28.41 mL of mother culture was added to 125 mL of PYE media in the sterile bioreactor under the flame
+
+$$
+
+OD_{inoc}V_{add}=OD_{start}(125 \text{ mL}+ V_{add})
+
+$$
+
+$$
+
+V_{add}=\frac{125\text{ mL}\cdot OD_{start}}{OD_{inoc}-OD_{start}}
+$$
+
+V\_add = x
+OD\_inoc = 0.270
+OD\_start = 0.05
+x = (125 \* 0.05) / ( 0.27 - 0.05) =  28.41 mL
+
+1. Check the OD750 of the sample culture
+2. Place the bioreactor onto the magnetic stirrer on the bench at room temperature.
+3. Take OD750 measurements every 2 hours
+4. Dump out the cuvette contents into the waste beaker and rinse the cuvette with distilled water, then place it upside down on an ethanol-soaked paper towel
+
+# Results
+
+<unknown url="https://www.notion.so/362d65dd82be805a916fe5de72e143ff#362d65dd82be808ab968ef1286271a66" alt="external_object_instance"/>
+# Summary
+UTEX Culture reached exponential phase much quicker than wet lab would in their growth curves.
+# Hand off
+Having consistent agitation combined with complete aeration significantly contributes to speeding up cyanobacteria growth.

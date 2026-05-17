@@ -1,7 +1,19 @@
 const BOLD_RED = "\e[1;31m";
+const BOLD_YELLOW = "\e[1;33m";
 const RESET = "\e[0m";
 
-export function error_and_quit(error: string): never {
-    console.log(`${BOLD_RED}${error}${RESET}`);
+export function error_and_quit(error: Error | string): never {
+    log_error({ error, ansi_color: BOLD_RED });
     process.exit(1);
+}
+
+export function warn_error(error: Error | string) {
+    log_error({ error, ansi_color: BOLD_YELLOW });
+}
+
+function log_error({ error, ansi_color }: { error: Error | string; ansi_color: string }) {
+    if (typeof error === "string") error = new Error(error);
+
+    console.error(`${ansi_color}${error.message}${RESET}`);
+    console.error(error.stack);
 }

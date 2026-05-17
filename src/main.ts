@@ -1,29 +1,31 @@
 import dotenv from "dotenv";
 import * as parse from "./parse";
+import * as log from "./log";
 import { PageId } from "./notion";
+import { clear, isErr, save } from "./utils";
+import { PagePath } from "./parse";
 
 dotenv.config({ path: "../.env" });
 
 async function main(): Promise<void> {
     const aggregate_ids = Object.keys(process.env)
-        .filter((key) => key.startsWith("AGGREGATE"))
+        .filter((key) => key.startsWith("AGG"))
         .map((key) => process.env[key])
         .filter(Boolean) as string[];
-
-    // const databaseIds = Object.keys(process.env)
-    //     .filter((key) => key.startsWith("DATABASE_ID"))
-    //     .map((key) => process.env[key])
-    //     .filter(Boolean) as string[];
-
-    // const pageIds = Object.keys(process.env)
-    //     .filter((key) => key.startsWith("PAGE_ID"))
-    //     .map((key) => process.env[key])
-    //     .filter(Boolean) as string[];
 
     const parse_map = await parse.parseAggregates({
         agg_ids: aggregate_ids.map((id) => new PageId(id)),
     });
-    console.log(parse_map);
+    if (isErr(parse_map)) log.error_and_quit(parse_map);
+
+    const clear_res = await clear();
+    if (isErr(clear_res)) log.error_and_quit(clear_res);
+
+    const content_map_json = JSON.stringify(parse_map, null, 4);
+    const content_map_res = await save({ content: content_map_json, path: new PagePath("content_map.json") });
+    if (isErr(content_map_res)) log.warn_error("Failed to save content map!");
+
+    await parse.exportAllPages({ pages: parse_map });
 }
 
 main();

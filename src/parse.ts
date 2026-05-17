@@ -1,6 +1,7 @@
 import { PageId, DatabaseId, BlockId } from "./notion";
-import type { Result } from "./utils";
-import { isErr } from "./utils";
+import { isErr, type Result } from "./utils";
+import * as log from "./log";
+import { processMarkdown } from "./markdown";
 
 export class PagePath {
     constructor(public path: string) {}
@@ -8,11 +9,20 @@ export class PagePath {
     with(other: PagePath): PagePath {
         return new PagePath(`${this.path}/${other.path}`);
     }
-}
 
-export async function parseAggregates({ agg_ids }: { agg_ids: PageId[] }): Promise<Result<Map<PageId, PagePath>>> {
+    withExt(ext: string): PagePath {
+        return new PagePath(`${this.path}.${ext}`);
+    }
+
+    components(): string[] {
+        return this.path.split("/");
+    }
+}
+export type RouteMap = Record<string, PagePath>;
+
+export async function parseAggregates({ agg_ids }: { agg_ids: PageId[] }): Promise<Result<RouteMap>> {
     try {
-        const id_path_map = new Map();
+        const route_map: RouteMap = {};
 
         await Promise.all(
             agg_ids.map(async (id) => {
@@ -27,13 +37,16 @@ export async function parseAggregates({ agg_ids }: { agg_ids: PageId[] }): Promi
                         const paths = await item.getPaths();
                         if (isErr(paths)) throw paths;
 
-                        for (const [id, path] of paths) id_path_map.set(id, new PagePath(agg_name).with(path));
+                        for (const [id, path] of paths) {
+                            id.sanitize();
+                            route_map[id.id] = new PagePath(agg_name).with(path);
+                        }
                     }),
                 );
             }),
         );
 
-        return id_path_map;
+        return route_map;
     } catch (error) {
         return error as Error;
     }
@@ -68,4 +81,20 @@ async function getAggregateEntries({ agg_id }: { agg_id: PageId }): Promise<Resu
     }
 
     return pageIds;
+}
+
+export async function exportAllPages({ pages }: { pages: RouteMap }) {
+    await Promise.all(
+        Object.entries(pages).map(([id, path]) => exportPage({ page: [new PageId(id), path], routes: pages })),
+    );
+}
+
+async function exportPage({ page: [id, path], routes }: { page: [PageId, PagePath]; routes: RouteMap }) {
+    const markdown = await id.getMarkdown();
+    if (isErr(markdown)) {
+        log.warn_error(markdown);
+        return;
+    }
+
+    await processMarkdown({ md: markdown, path, routes });
 }
