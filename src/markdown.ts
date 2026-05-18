@@ -1,7 +1,7 @@
 import * as log from "./log";
 import { isErr, save } from "./utils";
 import { PagePath, type RouteMap } from "./parse";
-import { SKIP, visit, type Action, type ActionTuple } from "unist-util-visit";
+import { CONTINUE, SKIP, visit, type Action, type ActionTuple, type VisitorResult } from "unist-util-visit";
 import type { Html, Image, Link, List, ListItem, Node, Paragraph, Parent, Root } from "mdast";
 import { v5 as uuidv5 } from "uuid";
 import { unified } from "unified";
@@ -73,72 +73,63 @@ Supported elements:
 // AST PREPROCESSING
 // ====================
 
-// Primary driver
-function processMAst({ routes, path }: { routes: RouteMap; path: PagePath }) {
-    return async function (tree: Root): Promise<void> {
-        interface BacklogItem {
-            node: Node;
-            index: number;
-            parent: Parent;
-        }
-        const backlog: BacklogItem[] = [];
-
-        visit(tree, (node, index, parent) => {
-            if (index === undefined || !parent) return;
-            if (["html", "link", "list", "image"].includes(node.type)) backlog.push({ node, index, parent });
-
-            // Avoids mixing sublists into the backlog
-            if (node.type === "list") return SKIP;
-        });
-
-        // Process backward so splicing changes don't mess up indices later
-        for (let i = backlog.length - 1; i >= 0; i--) {
-            const { node, index, parent } = backlog[i]!;
-            const ctx: ProcessorContext = {
-                index,
-                parent,
-                routes,
-                path,
-            };
-
-            switch (node.type) {
-                case "html": {
-                    const html_node = node as Html;
-                    const parsed_node = parse(html_node.value);
-                    await process_all([normalizeMention], { node: html_node, parsed_node, ctx });
-                    break;
-                }
-                case "link": {
-                    await process_all([normalizeLink], { node: node as Link, ctx });
-                    break;
-                }
-                case "list": {
-                    await process_all([splitList], { node: node as List, ctx });
-                    break;
-                }
-                case "image": {
-                    await process_all([updateImageUrl], { node: node as Image, ctx });
-                    break;
-                }
-            }
-        }
-    };
-}
-
-/**
- * Processor functions can either return:
- * @returns `false`: no processing to be done
- * @returns `true`: processing succeeded and should finish with this action
- * @returns `Error`: processing failed
- */
-type ProcessorOutput = Promise<boolean | Error>;
+type ProcessorCallback = () => Promise<void | Error>;
 
 interface ProcessorContext {
     index: number;
     parent: Parent;
     routes: RouteMap;
     path: PagePath;
+    callbacks: ProcessorCallback[];
 }
+
+// Primary driver
+function processMAst({ routes, path }: { routes: RouteMap; path: PagePath }) {
+    return async function (tree: Root): Promise<void> {
+        const callbacks: ProcessorCallback[] = [];
+
+        visit(tree, (node, index, parent) => {
+            if (index === undefined || !parent) return;
+
+            const ctx: ProcessorContext = {
+                index,
+                parent,
+                routes,
+                path,
+                callbacks,
+            };
+
+            switch (node.type) {
+                case "html": {
+                    const parsed_node = parse(node.value);
+                    return process_all([normalizeMention], { node, parsed_node, ctx });
+                }
+                case "link": {
+                    return process_all([normalizeLink], { node: node as Link, ctx });
+                }
+                case "list": {
+                    return process_all([splitList], { node: node as List, ctx });
+                }
+                case "image": {
+                    return process_all([updateImageUrl], { node: node as Image, ctx });
+                }
+            }
+        });
+
+        for (const callback of callbacks) {
+            const res = await callback();
+            if (res) log.warn_error(res);
+        }
+    };
+}
+
+/**
+ * Processor functions can either return:
+ * @returns `undefined`: no processing to be done
+ * @returns `Action`: processing succeeded and should finish with this action
+ * @returns `Error`: processing failed
+ */
+type ProcessorOutput = undefined | Action | ActionTuple | Error;
 
 interface ProcessorInput<T> {
     node: T;
@@ -146,9 +137,9 @@ interface ProcessorInput<T> {
 }
 
 type Processor<T> = (input: T) => ProcessorOutput;
-async function process_all<T>(processors: Processor<T>[], input: T): Promise<void> {
+function process_all<T>(processors: Processor<T>[], input: T): VisitorResult {
     for (const processor of processors) {
-        const res = await processor(input);
+        const res = processor(input);
         switch (true) {
             case res instanceof Error:
                 log.warn_error(res);
@@ -164,14 +155,14 @@ async function process_all<T>(processors: Processor<T>[], input: T): Promise<voi
     }
 }
 
-async function normalizeMention({
+function normalizeMention({
     node,
     ctx,
     parsed_node,
 }: ProcessorInput<Html> & { parsed_node: HTMLElement }): ProcessorOutput {
     const mention_element = parsed_node.querySelector("mention-page");
     if (!mention_element) {
-        return false;
+        return;
     }
 
     const err_base = `'mention-page' element on page ${ctx.path.path} (${node})`;
@@ -184,7 +175,7 @@ async function normalizeMention({
     return normalizeUrl({ url, err_base, ctx });
 }
 
-async function normalizeLink({ node, ctx }: ProcessorInput<Link>): ProcessorOutput {
+function normalizeLink({ node, ctx }: ProcessorInput<Link>): ProcessorOutput {
     const err_base = `'link' element on page ${ctx.path.path} (${node})`;
     return normalizeUrl({ url: node.url, err_base, ctx });
 }
@@ -192,7 +183,7 @@ async function normalizeLink({ node, ctx }: ProcessorInput<Link>): ProcessorOutp
 /**
  * If a link points to a `www.notion.so` domain, replace it with a link to that page's location in the wiki
  */
-async function normalizeUrl({
+function normalizeUrl({
     url,
     err_base,
     ctx,
@@ -203,7 +194,7 @@ async function normalizeUrl({
 }): ProcessorOutput {
     if (!url.includes("www.notion.so")) {
         // External link
-        return true;
+        return;
     }
 
     const page_id = url.match(/(?<=\/|-)[a-f0-9]{32}(?:\?|$)/)?.[0];
@@ -222,32 +213,32 @@ async function normalizeUrl({
         children: [new_link],
     };
 
-    return true;
+    return SKIP;
 }
 
 /**
  * Walk a Markdown list. If text has been accidentally joined to its end,
  * splice it out and return it as a new Paragraph.
  */
-async function splitList({ node, ctx }: ProcessorInput<List>): ProcessorOutput {
+function splitList({ node, ctx }: ProcessorInput<List>): ProcessorOutput {
     const last_list_item = node.children.at(-1);
-    if (!last_list_item) return false;
+    if (!last_list_item) return;
 
-    return await splitListItem({ node: last_list_item, ctx });
+    return splitListItem({ node: last_list_item, ctx });
 }
 
-async function splitListItem({ node: item, ctx }: ProcessorInput<ListItem>): ProcessorOutput {
+function splitListItem({ node: item, ctx }: ProcessorInput<ListItem>): ProcessorOutput {
     const last_child = item.children.at(-1);
-    if (!last_child) return false;
+    if (!last_child) return;
 
     switch (last_child.type) {
         case "paragraph":
             break;
         case "list":
             // Time to go deeper
-            return await splitList({ node: last_child, ctx });
+            return splitList({ node: last_child, ctx });
         default:
-            return false;
+            return;
     }
 
     const last_text_element = last_child.children.at(-1);
@@ -271,13 +262,11 @@ async function splitListItem({ node: item, ctx }: ProcessorInput<ListItem>): Pro
         ],
     };
     ctx.parent.children.splice(ctx.index + 1, 0, new_paragraph);
-    return true;
+    return [SKIP, ctx.index + 2];
 }
 
-async function updateImageUrl({ node }: ProcessorInput<Image>): ProcessorOutput {
+function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
     const image_node_url = node.url;
-
-    let image_data_url: string | undefined;
     let image_id: Id | undefined;
 
     if (image_node_url.includes("file://")) {
@@ -292,24 +281,36 @@ async function updateImageUrl({ node }: ProcessorInput<Image>): ProcessorOutput 
             }
 
             const url_data: UrlData = JSON.parse(decoded_url);
-            image_id = new Id(url_data.permissionRecord.id);
+            const id = url_data.permissionRecord.id;
+            image_id = new Id(id);
 
-            const block_id = new BlockId(image_id.id);
-            const block_data = await block_id.get();
-            if (isErr(block_data)) return block_data;
+            const callback = async () => {
+                const block_id = new BlockId(id);
 
-            if (block_data.type !== "image" || block_data.image.type !== "file")
-                return new Error(`Image block ${block_id.id} does not point to expected image data`);
-            image_data_url = block_data.image.file.url;
+                const block_data = await block_id.get();
+                if (isErr(block_data)) return block_data;
+
+                if (block_data.type !== "image" || block_data.image.type !== "file")
+                    return new Error(`Image block ${block_id.id} does not point to expected image data`);
+
+                const image_data_url = block_data.image.file.url;
+                // TODO: GET AND UPLOAD
+            };
+            ctx.callbacks.push(callback);
         } catch (err) {
-            return new Error(`Failed to parse image URL ${decoded_url}: ${err}`);
+            return new Error(`Failed to parse image URL ${decoded_url} on page ${ctx.path.path}: ${err}`);
         }
     } else {
         // Linked URL
-        image_data_url = image_node_url;
-        image_id = new Id(uuidv5(image_node_url, uuidv5.DNS));
+        const id = uuidv5(image_node_url, uuidv5.DNS);
+        image_id = new Id(id);
+
+        const callback = async () => {
+            // TODO: GET AND UPLOAD
+        };
+        ctx.callbacks.push(callback);
     }
 
     node.url = `TOOLS_API_BASE/${image_id.id}`;
-    return true;
+    return CONTINUE;
 }
