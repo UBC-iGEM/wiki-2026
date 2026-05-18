@@ -29,14 +29,14 @@ interface Queryable {
     getPaths(): Promise<Result<[PageId, PagePath][]>>;
 }
 
-abstract class IdHolder {
+export class Id {
     constructor(public id: string) {
         // Sanitize ID
         this.id = id.replaceAll("-", "");
     }
 }
 
-export class PageId extends IdHolder implements Queryable {
+export class PageId extends Id implements Queryable {
     constructor(id: string) {
         super(id);
     }
@@ -77,7 +77,7 @@ export class PageId extends IdHolder implements Queryable {
     }
 }
 
-export class DatabaseId extends IdHolder implements Queryable {
+export class DatabaseId extends Id implements Queryable {
     constructor(id: string) {
         super(id);
     }
@@ -151,9 +151,17 @@ export class DatabaseId extends IdHolder implements Queryable {
     }
 }
 
-export class BlockId extends IdHolder {
+export class BlockId extends Id {
     constructor(id: string) {
         super(id);
+    }
+
+    async get(): Promise<Result<BlockObjectResponse>> {
+        try {
+            return (await notion().blocks.retrieve({ block_id: this.id })) as BlockObjectResponse;
+        } catch (error) {
+            return new Error(`Failed to retrieve content of block ${this.id}: ${error}`);
+        }
     }
 
     async getChildren(): Promise<Result<BlockObjectResponse[]>> {

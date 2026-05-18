@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import type { PagePath } from "./parse";
 import { rm } from "node:fs/promises";
 
@@ -20,7 +21,9 @@ export async function save({ content, path }: { content: string; path: PagePath 
 
 export async function clear(): Promise<Result<void>> {
     try {
-        await rm(CONTENT_DIR, { recursive: true });
+        if (existsSync(CONTENT_DIR)) {
+            await rm(CONTENT_DIR, { recursive: true });
+        }
     } catch (err) {
         return new Error(`Failed to clean content directory at ${CONTENT_DIR}`);
     }
