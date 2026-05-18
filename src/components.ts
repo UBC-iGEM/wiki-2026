@@ -1,28 +1,126 @@
 import type { ProcessorInput, ProcessorOutput } from "./markdown";
-import type { Html, Image, Parent } from "mdast";
+import type { BlockContent, DefinitionContent, Html, Image, Paragraph, Parent, ThematicBreak } from "mdast";
 import type { ContainerDirective } from "mdast-util-directive";
-import type { MdxJsxFlowElement } from "mdast-util-mdx";
-import { SKIP } from "unist-util-visit";
+import { CONTINUE, SKIP } from "unist-util-visit";
 
 type ComponentInput = ProcessorInput<ContainerDirective>;
 // A component cannot "skip" processing itself
 type ComponentOutput = Exclude<ProcessorOutput, undefined>;
 
+/**
+ * Possible types of {@link ContainerDirective} children.
+ */
+type BlockElement = BlockContent | DefinitionContent;
+
 export const ComponentMap: Record<string, (input: ProcessorInput<ContainerDirective>) => ComponentOutput> = {
     figure,
+    dbtl,
+    skip,
 };
+
+function figure({ node, ctx }: ComponentInput): ComponentOutput {
+    const images: { url: string; alt: string }[] = [];
+
+    // A figure block should start with one or more paragraphs containing images
+    const paragraphs: Paragraph[] = [];
+    child_loop: for (const child of node.children) {
+        switch (child.type) {
+            case "paragraph":
+                paragraphs.push(child);
+                break;
+            default:
+                break child_loop;
+        }
+    }
+
+    const children = paragraphs.flatMap((p) => p.children);
+    // Consume child nodes while they are images or empty whitespace
+    while (children.length > 0) {
+        const next_child = children[0]!;
+
+        if (next_child.type === "text" && next_child.value.trim() === "") {
+            // Consume the empty element and continue
+            children.shift();
+            continue;
+        }
+
+        if (next_child.type !== "image") {
+            // No more images!
+            break;
+        }
+
+        // Consume the image
+        const image = children.shift() as Image;
+        images.push({ url: image.url, alt: image.alt || "" });
+    }
+
+    // The paragraph should start with 1 or more images
+    if (images.length === 0)
+        return new Error(`Figure component at ${ctx.path.path} does not start with images: ${node.children}`);
+
+    return generateComponent({ node, ctx, tag: "figure", attrs: { imgs: images }, slots: { content: node.children } });
+}
+
+function dbtl({ node, ctx }: ComponentInput): ComponentOutput {
+    /**
+     * Possible types of DBTL block sections.
+     *
+     * {@link ThematicBreak} is excluded, since it divides sections.
+     */
+    type SectionContent = Exclude<BlockElement, ThematicBreak>;
+
+    const sections: SectionContent[][] = [];
+    let cur_section: SectionContent[] = [];
+
+    for (const child of node.children) {
+        switch (child.type) {
+            case "thematicBreak":
+                // Start a new section on divider
+                sections.push(cur_section);
+                cur_section = [];
+                break;
+            default:
+                // Add to current section
+                cur_section.push(child);
+        }
+    }
+    // Push last section
+    sections.push(cur_section);
+
+    if (sections.length !== 4)
+        return new Error(
+            `DBTL component at ${ctx.path.path} does not have 4 components: ${JSON.stringify(node.children, null, 2)}`,
+        );
+
+    const [design, build, test, learn] = sections as [BlockElement[], BlockElement[], BlockElement[], BlockElement[]];
+    return generateComponent({ node, ctx, tag: "dbtl", attrs: {}, slots: { design, build, test, learn } });
+}
+
+function skip({ ctx }: ComponentInput): ComponentOutput {
+    // Remove this element entirely
+    ctx.parent.children.splice(ctx.index, 1);
+    // Skip children, continue at the next element (which is now at `ctx.index`)
+    return [SKIP, ctx.index];
+}
 
 function generateComponent({
     node,
     ctx,
     tag,
     attrs,
-}: ComponentInput & { tag: string; attrs: Record<string, any> }): ComponentOutput {
-    const attr_string = Object.entries(attrs)
+    slots,
+}: ComponentInput & {
+    tag: string;
+    attrs: Record<string, any>;
+    slots: Record<string, BlockElement[]>;
+}): ComponentOutput {
+    let attr_string = Object.entries(attrs)
         .map(([name, value]) => `${name}="${JSON.stringify(value).replaceAll('"', "&quot;")}"`)
         .join(" ");
+    // If there are attributes, they must be prepended with a space
+    if (attr_string !== "") attr_string = " " + attr_string;
 
-    const opening_tag = `<${tag} ${attr_string}>`;
+    const opening_tag = `<${tag}${attr_string}>`;
     const closing_tag = `</${tag}>`;
 
     const opening_element: Html = {
@@ -34,43 +132,23 @@ function generateComponent({
         value: closing_tag,
     };
 
-    ctx.parent.children.splice(ctx.index, 1, opening_element, ...node.children, closing_element);
+    const component_elements = Object.entries(slots).flatMap(([name, elements]) => {
+        const slot_open: Html = {
+            type: "html",
+            value: `<Fragment slot="${name}">`,
+        };
+        const slot_close: Html = {
+            type: "html",
+            value: "</Fragment>",
+        };
+
+        return [slot_open, ...elements, slot_close];
+    });
+
+    ctx.parent.children.splice(ctx.index, 1, opening_element, ...component_elements, closing_element);
+
+    // Total number of elements within the component + open block + close block
+    const num_elements = component_elements.length + 2;
     // Skip all newly inserted elements
-    return [SKIP, ctx.index + 2 + node.children.length];
-}
-
-function figure({ node, ctx }: ComponentInput): ComponentOutput {
-    const images: { url: string; alt: string }[] = [];
-    const imgs_err = new Error(`Figure component at ${ctx.path} does not start with images`);
-
-    // A figure block should start with a paragraph
-    const child_paragraph = node.children[0];
-    if (!child_paragraph || child_paragraph.type !== "paragraph") return imgs_err;
-
-    const children = child_paragraph.children;
-
-    // Consume children while they are images or empty whitespace
-    while (children.length > 0) {
-        const first_child = children[0]!;
-
-        if (first_child.type === "text" && first_child.value.trim() === "") {
-            // Consume the empty element and continue
-            children.shift();
-            continue;
-        }
-
-        if (first_child.type !== "image") {
-            // No more images!
-            break;
-        }
-
-        // Consume the image
-        const image = children.shift() as Image;
-        images.push({ url: image.url, alt: image.alt || "" });
-    }
-
-    // The paragraph should start with 1 or more images
-    if (images.length === 0) return imgs_err;
-
-    return generateComponent({ node, ctx, tag: "figure", attrs: { imgs: images } });
+    return [SKIP, ctx.index + num_elements];
 }

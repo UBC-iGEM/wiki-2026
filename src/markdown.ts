@@ -7,7 +7,6 @@ import type { Html, Image, Link, List, ListItem, Node, Paragraph, Parent, Root }
 import parse, { HTMLElement } from "node-html-parser";
 import remarkDirective from "remark-directive";
 import remarkMath from "remark-math";
-import remarkMdx from "remark-mdx";
 import remarkParse from "remark-parse";
 import remarkStringify from "remark-stringify";
 import { unified } from "unified";
@@ -44,31 +43,36 @@ export async function processMarkdown({ md, path, routes }: { md: string; path: 
 // ====================
 
 const preprocessor_regexes: [RegExp, string][] = [
-    /*
-Convert component syntax into Markdown directive with newline terminator
-FROM:
-  %% START COMPONENT
-      ...
-  %% END
-TO:
-  ::: COMPONENT
-      ...
-  :::
-*/
+    /**
+     * Convert component syntax into Markdown directive with newline terminator
+     * FROM:
+        %% START COMPONENT
+          ...
+        %% END
+     * TO:
+        ::: COMPONENT
+          ...
+        :::
+     */
     [/^%%[ ]?START ([a-zA-Z]+)[ ]*$/, ":::$1"],
     [/^%%[ ]?END[ ]*$/, ":::\n"],
 
     // Convert <empty-block/> elements to simple blank line (\n)
     [/^<empty-block\/>$/, "\n"],
 
-    /*
-Add newline after various elements to ensure parser recognizes them as distinct nodes
-Supported elements:
-  - Any closing HTML tag (e.g., </details>) on its own line
-  - A closing code block fence (i.e., ```) on its own line
-  - An opening or closing LaTeX fence (i.e., $$) on its own line
-*/
+    /**
+     * Add newline after various elements to ensure parser recognizes them as distinct nodes
+     * Supported elements:
+        - Any closing HTML tag (e.g., </details>) on its own line
+        - A closing code block fence (i.e., ```) on its own line
+        - An opening or closing LaTeX fence (i.e., $$) on its own line
+     */
     [/^((<\/[a-zA-Z_-]+>)$|(```)$|(\$\$)$)/, "$1\n"],
+
+    /**
+     * Add newline before and after dividers to avoid parsing issues
+     */
+    [/^---$/, "\n---\n"],
 ];
 
 // ====================
