@@ -1,7 +1,7 @@
-import { PageId, DatabaseId, BlockId } from "./notion";
-import { isErr, type Result } from "./utils";
 import * as log from "./log";
 import { processMarkdown } from "./markdown";
+import { PageId, DatabaseId, BlockId } from "./notion";
+import { isErr, type Result } from "./utils";
 
 export class PagePath {
     constructor(public path: string) {}

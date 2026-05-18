@@ -1,16 +1,18 @@
+import { ComponentMap } from "./components";
 import * as log from "./log";
-import { isErr, save } from "./utils";
+import { BlockId, Id } from "./notion";
 import { PagePath, type RouteMap } from "./parse";
-import { CONTINUE, SKIP, visit, type Action, type ActionTuple, type VisitorResult } from "unist-util-visit";
+import { isErr, save } from "./utils";
 import type { Html, Image, Link, List, ListItem, Node, Paragraph, Parent, Root } from "mdast";
-import { v5 as uuidv5 } from "uuid";
-import { unified } from "unified";
+import parse, { HTMLElement } from "node-html-parser";
+import remarkDirective from "remark-directive";
+import remarkMath from "remark-math";
+import remarkMdx from "remark-mdx";
 import remarkParse from "remark-parse";
 import remarkStringify from "remark-stringify";
-import remarkDirective from "remark-directive";
-import parse, { HTMLElement } from "node-html-parser";
-import remarkMath from "remark-math";
-import { BlockId, Id } from "./notion";
+import { unified } from "unified";
+import { CONTINUE, SKIP, visit, type Action, type ActionTuple, type VisitorResult } from "unist-util-visit";
+import { v5 as uuidv5 } from "uuid";
 
 export async function processMarkdown({ md, path, routes }: { md: string; path: PagePath; routes: RouteMap }) {
     let preprocessed_markdown = md;
@@ -86,11 +88,11 @@ interface ProcessorContext {
 // Primary driver
 function processMAst({ routes, path }: { routes: RouteMap; path: PagePath }) {
     return async function (tree: Root): Promise<void> {
-        const callbacks: ProcessorCallback[] = [];
+        let callbacks: ProcessorCallback[] = [];
 
+        // Initial pass: handle all content cleanup and modifications
         visit(tree, (node, index, parent) => {
             if (index === undefined || !parent) return;
-
             const ctx: ProcessorContext = {
                 index,
                 parent,
@@ -100,26 +102,47 @@ function processMAst({ routes, path }: { routes: RouteMap; path: PagePath }) {
             };
 
             switch (node.type) {
-                case "html": {
-                    const parsed_node = parse(node.value);
-                    return process_all([normalizeMention], { node, parsed_node, ctx });
-                }
-                case "link": {
-                    return process_all([normalizeLink], { node: node as Link, ctx });
-                }
-                case "list": {
-                    return process_all([splitList], { node: node as List, ctx });
-                }
-                case "image": {
-                    return process_all([updateImageUrl], { node: node as Image, ctx });
-                }
+                case "html":
+                    return process_all([normalizeMention], { node, parsed_node: parse(node.value), ctx });
+                case "link":
+                    return process_all([normalizeLink], { node, ctx });
+                case "list":
+                    return process_all([splitList], { node, ctx });
+                case "image":
+                    return process_all([updateImageUrl], { node, ctx });
             }
         });
 
-        for (const callback of callbacks) {
-            const res = await callback();
-            if (res) log.warn_error(res);
+        const results = await Promise.all(callbacks.map(async (callback) => await callback()));
+        for (const result of results) {
+            if (result) log.warn_error(result);
         }
+        callbacks = [];
+
+        visit(tree, "containerDirective", (node, index, parent) => {
+            if (index === undefined || !parent) return;
+            const ctx: ProcessorContext = {
+                index,
+                parent,
+                routes,
+                path,
+                callbacks,
+            };
+
+            const component_type = node.name.toLowerCase();
+            const component_transform = ComponentMap[component_type];
+            if (!component_transform) {
+                log.warn_error(`Component type ${component_type} at ${path.path} not understood`);
+                return;
+            }
+
+            const res = component_transform({ node, ctx });
+            if (isErr(res)) {
+                log.warn_error(res);
+                return;
+            }
+            return res;
+        });
     };
 }
 
@@ -129,9 +152,9 @@ function processMAst({ routes, path }: { routes: RouteMap; path: PagePath }) {
  * @returns `Action`: processing succeeded and should finish with this action
  * @returns `Error`: processing failed
  */
-type ProcessorOutput = undefined | Action | ActionTuple | Error;
+export type ProcessorOutput = undefined | Action | ActionTuple | Error;
 
-interface ProcessorInput<T> {
+export interface ProcessorInput<T> {
     node: T;
     ctx: ProcessorContext;
 }

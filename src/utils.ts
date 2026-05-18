@@ -1,5 +1,5 @@
-import { existsSync } from "node:fs";
 import type { PagePath } from "./parse";
+import { existsSync } from "node:fs";
 import { rm } from "node:fs/promises";
 
 export type Result<T> = T | Error;

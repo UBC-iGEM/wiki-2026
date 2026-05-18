@@ -1,9 +1,9 @@
-import dotenv from "dotenv";
-import * as parse from "./parse";
 import * as log from "./log";
 import { PageId } from "./notion";
-import { clear, isErr, save } from "./utils";
+import * as parse from "./parse";
 import { PagePath } from "./parse";
+import { clear, isErr, save } from "./utils";
+import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
 

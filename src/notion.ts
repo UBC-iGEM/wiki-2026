@@ -1,7 +1,7 @@
-import { Client, type BlockObjectResponse } from "@notionhq/client";
 import * as log from "./log";
-import { isErr, type Result } from "./utils";
 import { PagePath } from "./parse";
+import { isErr, type Result } from "./utils";
+import { Client, type BlockObjectResponse } from "@notionhq/client";
 
 let notionClient: Client | null = null;
 
