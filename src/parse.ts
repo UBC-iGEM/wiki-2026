@@ -67,7 +67,7 @@ abstract class PathMap {
      * fuck your DS&A course, my algorithm can be as inefficient as I want
      */
     get(id: PageId): PagePath | undefined {
-        return this.pages().find((item) => item.item.equals(id))?.path;
+        return this.pages().find(({ item }) => item.equals(id))?.path;
     }
 
     abstract toJSON(): [string, any][];
