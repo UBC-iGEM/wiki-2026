@@ -1,7 +1,7 @@
 import { ComponentMap } from "./components";
 import * as log from "./log";
-import { BlockId, Id } from "./notion";
-import { PagePath, type RouteMap } from "./parse";
+import { BlockId, Id, PageId } from "./notion";
+import { PagePath, type ContentMap } from "./parse";
 import { isErr, save } from "./utils";
 import type { Html, Image, Link, List, ListItem, Node, Paragraph, Parent, Root } from "mdast";
 import parse, { HTMLElement } from "node-html-parser";
@@ -13,7 +13,7 @@ import { unified } from "unified";
 import { CONTINUE, SKIP, visit, type Action, type ActionTuple, type VisitorResult } from "unist-util-visit";
 import { v5 as uuidv5 } from "uuid";
 
-export async function processMarkdown({ md, path, routes }: { md: string; path: PagePath; routes: RouteMap }) {
+export async function processMarkdown({ md, path, routes }: { md: string; path: PagePath; routes: ContentMap }) {
     let preprocessed_markdown = md;
     for (const [search, replace] of preprocessor_regexes) {
         // Add flags `Global`, `case Insensitive`, `Multiline`
@@ -84,13 +84,13 @@ type ProcessorCallback = () => Promise<void | Error>;
 interface ProcessorContext {
     index: number;
     parent: Parent;
-    routes: RouteMap;
+    routes: ContentMap;
     path: PagePath;
     callbacks: ProcessorCallback[];
 }
 
 // Primary driver
-function processMAst({ routes, path }: { routes: RouteMap; path: PagePath }) {
+function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
     return async function (tree: Root): Promise<void> {
         let callbacks: ProcessorCallback[] = [];
 
@@ -136,7 +136,7 @@ function processMAst({ routes, path }: { routes: RouteMap; path: PagePath }) {
             const component_type = node.name.toLowerCase();
             const component_transform = ComponentMap[component_type];
             if (!component_transform) {
-                log.warn_error(`Component type ${component_type} at ${path.path} not understood`);
+                log.warn_error(`Component type ${component_type} at ${path} not understood`);
                 return;
             }
 
@@ -192,7 +192,7 @@ function normalizeMention({
         return;
     }
 
-    const err_base = `'mention-page' element on page ${ctx.path.path} (${node})`;
+    const err_base = `'mention-page' element on page ${ctx.path} (${node})`;
 
     const url = mention_element.attributes["url"];
     if (!url) {
@@ -203,7 +203,7 @@ function normalizeMention({
 }
 
 function normalizeLink({ node, ctx }: ProcessorInput<Link>): ProcessorOutput {
-    const err_base = `'link' element on page ${ctx.path.path} (${node})`;
+    const err_base = `'link' element on page ${ctx.path} (${node})`;
     return normalizeUrl({ url: node.url, err_base, ctx });
 }
 
@@ -227,13 +227,13 @@ function normalizeUrl({
     const page_id = url.match(/(?<=\/|-)[a-f0-9]{32}(?:\?|$)/)?.[0];
     if (!page_id) return new Error(`${err_base} has no valid id`);
 
-    const page_path = ctx.routes[page_id];
+    const page_path = ctx.routes.get(new PageId(page_id));
     if (!page_path) return new Error(`${err_base} links to page ${page_id}, which is not a known wiki path`);
 
     const new_link: Link = {
         type: "link",
-        url: page_path.path,
-        children: [{ type: "text", value: page_path.components().at(-1)! }],
+        url: page_path.toString(),
+        children: [{ type: "text", value: page_path.components().at(-1)!.toString() }],
     };
     ctx.parent.children[ctx.index] = {
         type: "paragraph",
@@ -297,7 +297,7 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
     let image_id: Id | undefined;
 
     if (image_node_url.includes("file://")) {
-        // Notion file upload
+        // File uploaded to Notion
         const decoded_url = decodeURIComponent(image_node_url.replace("file://", ""));
 
         try {
@@ -318,17 +318,19 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
                 if (isErr(block_data)) return block_data;
 
                 if (block_data.type !== "image" || block_data.image.type !== "file")
-                    return new Error(`Image block ${block_id.id} does not point to expected image data`);
+                    return new Error(`Image block ${block_id} does not point to expected image data`);
 
                 const image_data_url = block_data.image.file.url;
                 // TODO: GET AND UPLOAD
             };
             ctx.callbacks.push(callback);
         } catch (err) {
-            return new Error(`Failed to parse image URL ${decoded_url} on page ${ctx.path.path}: ${err}`);
+            return new Error(`Failed to parse image URL ${decoded_url} on page ${ctx.path}: ${err}`);
         }
     } else {
-        // Linked URL
+        // Linked image that exists somewhere online
+
+        // Stable hash of the image URL
         const id = uuidv5(image_node_url, uuidv5.DNS);
         image_id = new Id(id);
 
@@ -338,6 +340,9 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
         ctx.callbacks.push(callback);
     }
 
-    node.url = `TOOLS_API_BASE/${image_id.id}`;
+    // TODO: replace with static.igem.org/...
+    const TOOLS_API_BASE = "TOOLS_API_BASE";
+
+    node.url = `${TOOLS_API_BASE}/${image_id}`;
     return CONTINUE;
 }

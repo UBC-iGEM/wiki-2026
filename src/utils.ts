@@ -10,8 +10,8 @@ export function isErr<T>(result: Result<T>): result is Error {
 
 const CONTENT_DIR = "content";
 
-export async function save({ content, path }: { content: string; path: PagePath }): Promise<Result<void>> {
-    const dest = `${CONTENT_DIR}/${path.path}`;
+export async function save({ content, path }: { content: string; path: string }): Promise<Result<void>> {
+    const dest = `${CONTENT_DIR}/${path}`;
     try {
         await Bun.write(dest, content);
     } catch (err) {

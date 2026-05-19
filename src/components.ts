@@ -56,7 +56,7 @@ function figure({ node, ctx }: ComponentInput): ComponentOutput {
 
     // The paragraph should start with 1 or more images
     if (images.length === 0)
-        return new Error(`Figure component at ${ctx.path.path} does not start with images: ${node.children}`);
+        return new Error(`Figure component at ${ctx.path} does not start with images: ${node.children}`);
 
     return generateComponent({ node, ctx, tag: "figure", attrs: { imgs: images }, slots: { content: node.children } });
 }
@@ -89,7 +89,7 @@ function dbtl({ node, ctx }: ComponentInput): ComponentOutput {
 
     if (sections.length !== 4)
         return new Error(
-            `DBTL component at ${ctx.path.path} does not have 4 components: ${JSON.stringify(node.children, null, 2)}`,
+            `DBTL component at ${ctx.path} does not have 4 components: ${JSON.stringify(node.children, null, 2)}`,
         );
 
     const [design, build, test, learn] = sections as [BlockElement[], BlockElement[], BlockElement[], BlockElement[]];

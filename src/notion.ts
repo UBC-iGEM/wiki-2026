@@ -1,5 +1,5 @@
 import * as log from "./log";
-import { PagePath } from "./parse";
+import { DatabaseMap, PagePathComponent, type MapItem } from "./parse";
 import { isErr, type Result } from "./utils";
 import { Client, type BlockObjectResponse } from "@notionhq/client";
 
@@ -24,28 +24,36 @@ function notion(): Client {
     }
 }
 
-interface Queryable {
-    getName(): Promise<Result<string>>;
-    getPaths(): Promise<Result<[PageId, PagePath][]>>;
-}
-
 export class Id {
-    constructor(public id: string) {
+    constructor(private id: string) {
         // Sanitize ID
         this.id = id.replaceAll("-", "");
     }
+
+    equals(other: Id): boolean {
+        return this.id === other.id;
+    }
+
+    toString(): string {
+        return this.id;
+    }
 }
 
-export class PageId extends Id implements Queryable {
+interface Named {
+    getName(): Promise<Result<string>>;
+    paths(): Promise<Result<MapItem<PageId | DatabaseMap>>>;
+}
+
+export class PageId extends Id implements Named {
     constructor(id: string) {
         super(id);
     }
 
     async getName(): Promise<Result<string>> {
-        const error_base = `Unable to retrieve title of page ${this.id}`;
+        const error_base = `Unable to retrieve title of page ${this}`;
 
         try {
-            const page = await notion().pages.retrieve({ page_id: this.id });
+            const page = await notion().pages.retrieve({ page_id: this.toString() });
 
             if (!("properties" in page)) {
                 return new Error(`${error_base}: no properties found.`);
@@ -62,31 +70,33 @@ export class PageId extends Id implements Queryable {
         }
     }
 
-    async getPaths(): Promise<Result<[PageId, PagePath][]>> {
-        const child_path = await this.getName();
-        return isErr(child_path) ? child_path : [[this, new PagePath(child_path)]];
+    async paths(): Promise<Result<MapItem<PageId | DatabaseMap>>> {
+        const path = await this.getName();
+        if (isErr(path)) return path;
+
+        return { item: this, path: new PagePathComponent(path) };
     }
 
     async getMarkdown(): Promise<Result<string>> {
         try {
-            const page = await notion().pages.retrieveMarkdown({ page_id: this.id, include_transcript: true });
+            const page = await notion().pages.retrieveMarkdown({ page_id: this.toString(), include_transcript: true });
             return page.markdown;
         } catch (error) {
-            return new Error(`Unable to fetch page ${this.id} as markdown: ${error}`);
+            return new Error(`Unable to fetch page ${this} as markdown: ${error}`);
         }
     }
 }
 
-export class DatabaseId extends Id implements Queryable {
+export class DatabaseId extends Id implements Named {
     constructor(id: string) {
         super(id);
     }
 
     async getName(): Promise<Result<string>> {
-        const error_base = `Unable to retrieve title of page ${this.id}`;
+        const error_base = `Unable to retrieve title of page ${this}`;
 
         try {
-            const db = await notion().databases.retrieve({ database_id: this.id });
+            const db = await notion().databases.retrieve({ database_id: this.toString() });
 
             if (!("title" in db)) {
                 return new Error(`${error_base}: 'title' property missing.`);
@@ -99,34 +109,34 @@ export class DatabaseId extends Id implements Queryable {
         }
     }
 
-    async getPaths(): Promise<Result<[PageId, PagePath][]>> {
+    async paths(): Promise<Result<MapItem<PageId | DatabaseMap>>> {
         const db_name = await this.getName();
         if (isErr(db_name)) return db_name;
 
         try {
-            const children = await this.getEntries();
-            if (isErr(children)) return children;
+            const db_entries = await this.getEntries();
+            if (isErr(db_entries)) return db_entries;
 
-            return await Promise.all(
-                children.map(async (db_page) => {
-                    // Should only be a single entry, since we are calling on a page
-                    const db_page_paths = await db_page.getPaths();
-                    if (isErr(db_page_paths)) throw db_page_paths;
+            const pages = await Promise.all(
+                db_entries.map(async (entry) => {
+                    const res = await entry.paths();
+                    if (isErr(res)) throw res;
 
-                    const [db_page_id, db_page_path] = db_page_paths[0]!;
-                    return [db_page_id, new PagePath(db_name).with(db_page_path)] as [PageId, PagePath];
+                    // Should be a page, since `entry` is a `PageId`
+                    return res as MapItem<PageId>;
                 }),
             );
+            return { item: new DatabaseMap(pages), path: new PagePathComponent(db_name) };
         } catch (err) {
             return err as Error;
         }
     }
 
     async getEntries(): Promise<Result<PageId[]>> {
-        const error_base = `Error while retrieving entries of database ${this.id}`;
+        const error_base = `Error while retrieving entries of database ${this}`;
 
         try {
-            const db = await notion().databases.retrieve({ database_id: this.id });
+            const db = await notion().databases.retrieve({ database_id: this.toString() });
             if (!("data_sources" in db)) {
                 return new Error(`${error_base}: db has no data sources!`);
             }
@@ -138,6 +148,7 @@ export class DatabaseId extends Id implements Queryable {
                     const res = await notion().dataSources.query({
                         data_source_id: ds.id,
                         start_cursor: cursor,
+                        sorts: [{ property: "ID", direction: "ascending" }],
                     });
                     pageIds.push(...res.results.map((r) => r.id));
                     cursor = res.has_more ? (res.next_cursor ?? undefined) : undefined;
@@ -158,9 +169,9 @@ export class BlockId extends Id {
 
     async get(): Promise<Result<BlockObjectResponse>> {
         try {
-            return (await notion().blocks.retrieve({ block_id: this.id })) as BlockObjectResponse;
+            return (await notion().blocks.retrieve({ block_id: this.toString() })) as BlockObjectResponse;
         } catch (error) {
-            return new Error(`Failed to retrieve content of block ${this.id}: ${error}`);
+            return new Error(`Failed to retrieve content of block ${this.toString()}: ${error}`);
         }
     }
 
@@ -171,7 +182,7 @@ export class BlockId extends Id {
 
             do {
                 const res = await notion().blocks.children.list({
-                    block_id: this.id,
+                    block_id: this.toString(),
                     start_cursor: cursor,
                 });
                 blocks.push(...(res.results as BlockObjectResponse[]));
@@ -180,7 +191,7 @@ export class BlockId extends Id {
 
             return blocks;
         } catch (error) {
-            return new Error(`Failed to retrieve blocks of ${this.id}: ${error}`);
+            return new Error(`Failed to retrieve blocks of ${this.toString()}: ${error}`);
         }
     }
 }
