@@ -2,7 +2,7 @@ import { BlockId, Id } from "../notion";
 import { isErr } from "../utils";
 import type { ProcessorInput, ProcessorOutput } from "./markdown";
 import type { Image } from "mdast";
-import { SKIP } from "unist-util-visit";
+import { CONTINUE, SKIP } from "unist-util-visit";
 import { v5 as uuidv5 } from "uuid";
 
 export const ImageProcessors = [updateImageUrl];
@@ -62,5 +62,5 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
     const TOOLS_API_BASE = "TOOLS_API_BASE";
 
     node.url = `${TOOLS_API_BASE}/${image_id}`;
-    return SKIP;
+    return CONTINUE;
 }

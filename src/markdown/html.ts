@@ -2,7 +2,7 @@ import { normalizeUrl } from "./link";
 import type { ProcessorInput, ProcessorOutput } from "./markdown";
 import type { Html } from "mdast";
 import type { HTMLElement } from "node-html-parser";
-import { SKIP } from "unist-util-visit";
+import { CONTINUE, SKIP } from "unist-util-visit";
 
 export const HtmlProcessors = [normalizePageMention, replaceEmptyBlocks];
 
@@ -42,5 +42,5 @@ function replaceEmptyBlocks({ ctx, parsed_node }: HtmlProcessorInput): Processor
     };
 
     ctx.parent.children[ctx.index] = new_node;
-    return SKIP;
+    return CONTINUE;
 }

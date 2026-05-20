@@ -1,7 +1,7 @@
 import { PageId } from "../notion";
 import type { ProcessorInput, ProcessorOutput, ProcessorContext } from "./markdown";
 import type { Link } from "mdast";
-import { SKIP } from "unist-util-visit";
+import { CONTINUE, SKIP } from "unist-util-visit";
 
 export const LinkProcessors = [normalizePageLink];
 
@@ -45,6 +45,5 @@ export function normalizeUrl({
         type: "paragraph",
         children: [new_link],
     };
-
-    return SKIP;
+    return CONTINUE;
 }

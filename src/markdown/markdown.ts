@@ -5,7 +5,6 @@ import { ComponentMap } from "./components";
 import { HtmlProcessors } from "./html";
 import { ImageProcessors } from "./image";
 import { LinkProcessors } from "./link";
-import { ListProcessors } from "./list";
 import { processRegex } from "./regex";
 import type { Parent, Root } from "mdast";
 import parse from "node-html-parser";
@@ -70,8 +69,6 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
                     });
                 case "link":
                     return process_all(LinkProcessors, { node, ctx });
-                case "list":
-                    return process_all(ListProcessors, { node, ctx });
                 case "image":
                     return process_all(ImageProcessors, { node, ctx });
             }
@@ -127,17 +124,15 @@ type Processor<T> = (input: T) => ProcessorOutput;
 function process_all<T>(processors: Processor<T>[], input: T): VisitorResult {
     for (const processor of processors) {
         const res = processor(input);
-        switch (true) {
-            case res instanceof Error:
-                log.warn_error(res);
-                // Stop all processing
-                return;
-            case res === false:
-                // Continue processing, no action taken
-                break;
-            case res === true:
-                // Successful processing
-                return;
+
+        if (isErr(res)) {
+            log.warn_error(res);
+            // Stop all processing on this node
+            return;
+        }
+
+        if (res !== undefined) {
+            return res;
         }
     }
 }

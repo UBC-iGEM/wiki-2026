@@ -23,6 +23,11 @@ const regexes: [RegExp, string][] = [
     [/^((<\/[a-zA-Z_-]+>)|(```)|(\$\$))$/, "$1\n"],
 
     /**
+     * Add newline after last list item
+     */
+    [/^([\s]*(?:[-]|\d+\.) .*$)(?!\n[\s]*(?:[-]|\d+\.) )/, "$1\n"],
+
+    /**
      * Add newline before and after dividers to avoid parsing issues
      */
     [/^---$/, "\n---\n"],
