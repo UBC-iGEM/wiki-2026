@@ -1,7 +1,7 @@
 import type { ProcessorInput, ProcessorOutput } from "./markdown";
 import type { BlockContent, DefinitionContent, Html, Image, Paragraph, Parent, ThematicBreak } from "mdast";
 import type { ContainerDirective } from "mdast-util-directive";
-import { CONTINUE, SKIP } from "unist-util-visit";
+import { SKIP } from "unist-util-visit";
 
 type ComponentInput = ProcessorInput<ContainerDirective>;
 // A component cannot "skip" processing itself

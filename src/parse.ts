@@ -1,5 +1,5 @@
 import * as log from "./log";
-import { processMarkdown } from "./markdown";
+import { processMarkdown } from "./markdown/markdown";
 import { PageId, DatabaseId, BlockId } from "./notion";
 import { isErr, type Result } from "./utils";
 
