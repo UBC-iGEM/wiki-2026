@@ -1,8 +1,9 @@
-import { normalizeUrl } from "./link";
+import { isErr } from "../utils";
+import { normalizeNotionUrl } from "./link";
 import type { ProcessorInput, ProcessorOutput } from "./markdown";
 import type { Html } from "mdast";
 import type { HTMLElement } from "node-html-parser";
-import { CONTINUE, SKIP } from "unist-util-visit";
+import { CONTINUE } from "unist-util-visit";
 
 export const HtmlProcessors = [normalizePageMention, replaceEmptyBlocks];
 
@@ -24,7 +25,22 @@ function normalizePageMention({ node, ctx, parsed_node }: HtmlProcessorInput): P
         return new Error(`${err_base} has no valid attribute 'url'`);
     }
 
-    return normalizeUrl({ url, err_base, ctx });
+    const res = normalizeNotionUrl({ url, err_base, ctx });
+    if (isErr(res)) return res;
+
+    const first_child = ctx.parent.children[ctx.index + 1];
+    const second_child = ctx.parent.children[ctx.index + 2];
+
+    if (first_child && second_child && first_child.type === "text" && second_child.type === "html") {
+        // The form of this block is `<mention-page url="...">...</mention-page>`
+        // Splice out the text and closing HTML block
+        ctx.parent.children.splice(ctx.index + 1, 2);
+        // Continue at the element that is now at `ctx.index + 1`
+        return [CONTINUE, ctx.index + 1];
+    } else {
+        // The form of this block is `<mention-page url="..."/>`
+        return res;
+    }
 }
 
 /**

@@ -3,16 +3,30 @@ import type { BlockContent, DefinitionContent, Html, Image, Paragraph, Parent, T
 import type { ContainerDirective } from "mdast-util-directive";
 import { SKIP } from "unist-util-visit";
 
+/**
+ * Support for block components.
+ *
+ * Example:
+ * %% START COMPONENT
+ *     ...content
+ * %% END
+ *
+ * This is passed as a {@link ContainerDirective} node for processing.
+ */
+
 type ComponentInput = ProcessorInput<ContainerDirective>;
 // A component cannot "skip" processing itself
-type ComponentOutput = Exclude<ProcessorOutput, undefined>;
+export type ComponentOutput = Exclude<ProcessorOutput, undefined>;
 
 /**
  * Possible types of {@link ContainerDirective} children.
  */
 type BlockElement = BlockContent | DefinitionContent;
 
-export const ComponentMap: Record<string, (input: ProcessorInput<ContainerDirective>) => ComponentOutput> = {
+/**
+ * A [name -> handler function] map for all possible component types.
+ */
+export const ComponentMap: Record<string, (input: ComponentInput) => ComponentOutput> = {
     figure,
     dbtl,
     skip,
@@ -23,42 +37,64 @@ function figure({ node, ctx }: ComponentInput): ComponentOutput {
 
     // A figure block should start with one or more paragraphs containing images
     const paragraphs: Paragraph[] = [];
-    child_loop: for (const child of node.children) {
-        switch (child.type) {
-            case "paragraph":
-                paragraphs.push(child);
-                break;
-            default:
-                break child_loop;
-        }
-    }
-
-    const children = paragraphs.flatMap((p) => p.children);
-    // Consume child nodes while they are images or empty whitespace
-    while (children.length > 0) {
-        const next_child = children[0]!;
-
-        if (next_child.type === "text" && next_child.value.trim() === "") {
-            // Consume the empty element and continue
-            children.shift();
-            continue;
-        }
-
-        if (next_child.type !== "image") {
-            // No more images!
+    for (const child of node.children) {
+        if (child.type === "paragraph") {
+            paragraphs.push(child);
+        } else {
+            // Hit a non-paragraph block
             break;
         }
-
-        // Consume the image
-        const image = children.shift() as Image;
-        images.push({ url: image.url, alt: image.alt || "" });
     }
 
-    // The paragraph should start with 1 or more images
+    image_consumption_loop: for (const p of paragraphs) {
+        const children = p.children;
+
+        // Consume elements inside the child
+        // This removes images from the node body and adds them to the `images` accumulator
+        while (children.length > 0) {
+            const next_child = children[0]!;
+
+            if (next_child.type === "text") {
+                if (next_child.value.trim() === "") {
+                    // Empty space, consume it
+                    children.shift();
+                    continue;
+                } else {
+                    // We've hit the figure description
+                    break image_consumption_loop;
+                }
+            }
+
+            if (next_child.type === "image") {
+                // An image, consume it
+                const image = children.shift() as Image;
+                images.push({ url: image.url, alt: image.alt || "" });
+
+                continue;
+            }
+
+            // Not an image!
+            break image_consumption_loop;
+        }
+    }
+
     if (images.length === 0)
         return new Error(`Figure component at ${ctx.path} does not start with images: ${node.children}`);
 
-    return generateComponent({ node, ctx, tag: "figure", attrs: { imgs: images }, slots: { content: node.children } });
+    const filtered_children = node.children.filter(
+        // Remove empty paragraphs
+        (child) => !(child.type === "paragraph" && child.children.length === 0),
+    );
+
+    // Images have been removed from the node body and
+    // will be added as a JSON attribute of the component
+    return generateComponent({
+        node,
+        ctx,
+        tag: "figure",
+        attrs: { imgs: images },
+        slots: { content: filtered_children },
+    });
 }
 
 function dbtl({ node, ctx }: ComponentInput): ComponentOutput {
@@ -104,7 +140,6 @@ function skip({ ctx }: ComponentInput): ComponentOutput {
 }
 
 function generateComponent({
-    node,
     ctx,
     tag,
     attrs,
@@ -115,7 +150,7 @@ function generateComponent({
     slots: Record<string, BlockElement[]>;
 }): ComponentOutput {
     let attr_string = Object.entries(attrs)
-        .map(([name, value]) => `${name}="${JSON.stringify(value).replaceAll('"', "&quot;")}"`)
+        .map(([name, value]) => `${name}=${JSON.stringify(value)}`)
         .join(" ");
     // If there are attributes, they must be prepended with a space
     if (attr_string !== "") attr_string = " " + attr_string;

@@ -1,13 +1,14 @@
 import * as log from "../log";
 import { PagePath, type ContentMap } from "../parse";
-import { isErr, save } from "../utils";
-import { ComponentMap } from "./components";
+import { isErr, saveFile } from "../utils";
+import { ComponentMap, type ComponentOutput } from "./components";
+import { InlineComponentMap } from "./components-inline";
 import { HtmlProcessors } from "./html";
 import { ImageProcessors } from "./image";
 import { LinkProcessors } from "./link";
 import { processRegex } from "./regex";
 import type { Parent, Root } from "mdast";
-import parse from "node-html-parser";
+import HTMLParse from "node-html-parser";
 import remarkDirective from "remark-directive";
 import remarkMath from "remark-math";
 import remarkParse from "remark-parse";
@@ -18,18 +19,20 @@ import { visit, type Action, type ActionTuple, type VisitorResult } from "unist-
 export async function processMarkdown({ md, path, routes }: { md: string; path: PagePath; routes: ContentMap }) {
     let preprocessed_markdown = processRegex(md);
 
-    const processed_markdown = await unified()
-        .use(remarkParse)
-        .use(remarkDirective)
-        .use(remarkMath)
-        .use(processMAst, {
-            routes,
-            path,
-        })
-        .use(remarkStringify, {
-            bullet: "-",
-        })
-        .process(preprocessed_markdown);
+    const processed_markdown = (
+        await unified()
+            .use(remarkParse)
+            .use(remarkDirective)
+            .use(remarkMath)
+            .use(processMAst, {
+                routes,
+                path,
+            })
+            .use(remarkStringify, {
+                bullet: "-",
+            })
+            .process(preprocessed_markdown)
+    ).toString();
 
     const type = path.components().length === 3 ? "database" : "page";
     const name = path.components().at(-1)!.toString();
@@ -43,11 +46,14 @@ export async function processMarkdown({ md, path, routes }: { md: string; path: 
 ${page_header}
 ---
 
-${String(processed_markdown)}
+${processed_markdown}
 `.trim();
+    const save_path = path.withExt("mdx");
 
-    const result = await save({ content: page, path: path.withExt("mdx") });
+    const raw_result = await saveFile({ content: md, path: save_path, raw: true });
+    if (isErr(raw_result)) log.warn_error(raw_result);
 
+    const result = await saveFile({ content: page, path: save_path });
     if (isErr(result)) log.warn_error(result);
 }
 
@@ -80,7 +86,7 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
                 case "html":
                     return process_all(HtmlProcessors, {
                         node,
-                        parsed_node: parse(node.value),
+                        parsed_node: HTMLParse.parse(node.value),
                         ctx,
                     });
                 case "link":
@@ -96,8 +102,12 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
         }
         callbacks = [];
 
-        visit(tree, "containerDirective", (node, index, parent) => {
+        visit(tree, (node, index, parent) => {
             if (index === undefined || !parent) return;
+
+            const node_type = node.type;
+            if (node_type !== "containerDirective" && node_type !== "textDirective") return;
+
             const ctx: ProcessorContext = {
                 index,
                 parent,
@@ -107,17 +117,31 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
             };
 
             const component_type = node.name.toLowerCase();
-            const component_transform = ComponentMap[component_type];
-            if (!component_transform) {
+
+            let transform = undefined;
+
+            switch (node_type) {
+                case "containerDirective": {
+                    transform = ComponentMap[component_type];
+                    break;
+                }
+                case "textDirective": {
+                    transform = InlineComponentMap[component_type];
+                    break;
+                }
+            }
+
+            if (!transform) {
                 log.warn_error(`Component type ${component_type} at ${path} not understood`);
                 return;
             }
 
-            const res = component_transform({ node, ctx });
+            const res = (transform as (arg: any) => ComponentOutput)({ node, ctx });
             if (isErr(res)) {
                 log.warn_error(res);
                 return;
             }
+
             return res;
         });
     };

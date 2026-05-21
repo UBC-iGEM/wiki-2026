@@ -1,7 +1,7 @@
 import { PageId } from "../notion";
 import type { ProcessorInput, ProcessorOutput, ProcessorContext } from "./markdown";
 import type { Link } from "mdast";
-import { CONTINUE, SKIP } from "unist-util-visit";
+import { CONTINUE } from "unist-util-visit";
 
 export const LinkProcessors = [normalizePageLink];
 
@@ -10,13 +10,13 @@ export const LinkProcessors = [normalizePageLink];
  */
 function normalizePageLink({ node, ctx }: ProcessorInput<Link>): ProcessorOutput {
     const err_base = `'link' element on page ${ctx.path} (${node})`;
-    return normalizeUrl({ url: node.url, err_base, ctx });
+    if (node.url.includes("notion.so")) return normalizeNotionUrl({ url: node.url, err_base, ctx });
 }
 
 /**
  * If a link points to a `www.notion.so` domain, replace it with a link to that page's location in the wiki
  */
-export function normalizeUrl({
+export function normalizeNotionUrl({
     url,
     err_base,
     ctx,
@@ -25,12 +25,8 @@ export function normalizeUrl({
     err_base: string;
     ctx: ProcessorContext;
 }): ProcessorOutput {
-    if (!url.includes("www.notion.so")) {
-        // External link
-        return;
-    }
-
-    const page_id = url.match(/(?<=\/|-)[a-f0-9]{32}(?:\?|$)/)?.[0];
+    // Extract Notion page ID from URL
+    const page_id = url.match(/(?<=notion.so\/)[a-f0-9]{32}/)?.[0];
     if (!page_id) return new Error(`${err_base} has no valid id`);
 
     const page_path = ctx.routes.get(new PageId(page_id));
@@ -41,9 +37,7 @@ export function normalizeUrl({
         url: page_path.toString(),
         children: [{ type: "text", value: page_path.components().at(-1)!.toString() }],
     };
-    ctx.parent.children[ctx.index] = {
-        type: "paragraph",
-        children: [new_link],
-    };
+    ctx.parent.children[ctx.index] = new_link;
+
     return CONTINUE;
 }

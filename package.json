@@ -1,8 +1,8 @@
 {
-    "name": "notion-exporter-rewrite",
+    "name": "notion-exporter-2",
     "module": "index.ts",
     "scripts": {
-        "export": "bun src/main.ts"
+        "export": "node -e \"const exec = process.env.npm_execpath.includes('bun') ? 'bun run' : 'npx tsx'; require('child_process').execSync(exec + ' src/main.ts', {stdio: 'inherit'})\""
     },
     "type": "module",
     "private": true,
@@ -12,7 +12,8 @@
         "@types/mdast": "^4.0.4",
         "@types/unist": "^3.0.3",
         "@types/uuid": "^11.0.0",
-        "prettier": "^3.8.3"
+        "prettier": "^3.8.3",
+        "tsx": "^4.22.3"
     },
     "peerDependencies": {
         "typescript": "^5"

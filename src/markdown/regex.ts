@@ -1,17 +1,26 @@
 const regexes: [RegExp, string][] = [
     /**
-     * Convert component syntax into Markdown directive with newline terminator
+     * Convert block component syntax into container directive with newline terminator
      * FROM:
-        %% START COMPONENT
-          ...
-        %% END
+         %% START COMPONENT
+             ...
+         %% END
      * TO:
-        ::: COMPONENT
-          ...
-        :::
+         ::: COMPONENT
+             ...
+         :::
      */
-    [/%{2,}[ ]*START[ ]+([a-zA-Z]+)/, "\n:::$1"],
-    [/%{2,}[ ]*END/, "\n:::\n"],
+    [/%{2,}\s*START\s+([a-zA-Z]+)/, "\n:::$1"],
+    [/%{2,}\s*END/, "\n:::\n"],
+
+    /**
+     * Convert inline component syntax into text directive
+     * FROM:
+         %\{ COMPONENT ... \}%
+     * TO:
+         :COMPONENT[...]
+     */
+    [/%\\\{\s*([a-zA-Z]+)\s+([\s\S]*?)\s*\\\}%/, ":$1[$2]"],
 
     /**
      * Add newline after various elements to ensure parser recognizes them as distinct nodes
