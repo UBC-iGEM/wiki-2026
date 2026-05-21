@@ -30,7 +30,23 @@ export async function processMarkdown({ md, path, routes }: { md: string; path: 
             bullet: "-",
         })
         .process(preprocessed_markdown);
-    const result = await save({ content: String(processed_markdown), path: path.withExt("mdx") });
+
+    const type = path.components().length === 3 ? "database" : "page";
+    const name = path.components().at(-1)!.toString();
+    const header_items: Record<string, string> = { type, name };
+    const page_header = Object.entries(header_items)
+        .map(([k, v]) => `${k} = ${v}`)
+        .join("\n");
+
+    const page = `
+---
+${page_header}
+---
+
+${String(processed_markdown)}
+`.trim();
+
+    const result = await save({ content: page, path: path.withExt("mdx") });
 
     if (isErr(result)) log.warn_error(result);
 }
