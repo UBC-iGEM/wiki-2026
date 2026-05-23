@@ -20,7 +20,7 @@ const regexes: [RegExp, string][] = [
      * TO:
          :COMPONENT[...]
      */
-    [/%\\\{\s*([a-zA-Z]+)\s+([\s\S]*?)\s*\\\}%/, ":$1[$2]"],
+    [/%\\\{([a-zA-Z]+)\s+([\s\S]*?)\\\}%/, ":$1[$2]"],
 
     /**
      * Add newline after various elements to ensure parser recognizes them as distinct nodes.
@@ -30,6 +30,13 @@ const regexes: [RegExp, string][] = [
         - An opening or closing LaTeX fence (i.e., $$) on its own line
      */
     [/^((<\/(?!colgroup|tr)[a-zA-Z_-]+>)|(```)|(\$\$))$/, "$1\n"],
+
+    /**
+     * Replace Notion HTML tags with standard Markdown blocks.
+     * The Markdown blocks may later be parsed and transformed.
+     */
+    [/<(mention\-page|mention\-database) url="([^"]*)"(?:\/>)|(?:>[^<]*<\/mention\-(?:page|database)>)/, "[$1]($2)"],
+    [/<empty-block\/>/, "\n"],
 
     /**
      * Add newline after last list item

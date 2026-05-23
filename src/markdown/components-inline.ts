@@ -44,7 +44,7 @@ function anchor({ node, ctx }: ComponentInput): ComponentOutput {
 function link({ node, ctx }: ComponentInput): ComponentOutput {
     const children = node.children;
     if (children.length !== 2 || children[0]!.type !== "link" || children[1]!.type !== "text")
-        return new Error(`Link component content is malformed: ${children}`);
+        return new Error(`Link component content is malformed: ${JSON.stringify(children, null, 2)}`);
 
     const [link, anchor_node] = children;
     const anchor_name = cleanWebString(anchor_node.value.trim());
