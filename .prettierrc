@@ -1,6 +1,0 @@
-{
-    "$schema": "https://www.schemastore.org/prettierrc.json",
-    "plugins": ["@trivago/prettier-plugin-sort-imports"],
-    "tabWidth": 4,
-    "printWidth": 120
-}

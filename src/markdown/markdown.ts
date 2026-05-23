@@ -1,11 +1,11 @@
 import * as log from "../log";
 import { PagePath, type ContentMap } from "../parse";
 import { isErr, saveFile } from "../utils";
-import { ComponentMap, type ComponentOutput } from "./components";
-import { InlineComponentMap } from "./components-inline";
-import { HtmlProcessors } from "./html";
-import { ImageProcessors } from "./image";
-import { LinkProcessors } from "./link";
+import { COMPONENT_MAP, type ComponentOutput } from "./components";
+import { INLINE_COMPONENT_MAP } from "./components-inline";
+import { HTML_PROCESSORS } from "./html";
+import { IMAGE_PROCESSORS } from "./image";
+import { LINK_PROCESSORS } from "./link";
 import { processRegex } from "./regex";
 import type { Parent, Root } from "mdast";
 import HTMLParse from "node-html-parser";
@@ -21,7 +21,7 @@ export async function processMarkdown({ md, path, routes }: { md: string; path: 
     const preprocessed_markdown = processRegex(md);
 
     const processed_markdown = (
-        await RemarkProcessingPipeline()
+        await REMARK_PROCESSING_PIPELINE()
             .use(processMAst, {
                 routes,
                 path,
@@ -48,10 +48,10 @@ ${processed_markdown}
 `.trim();
     const save_path = path.withExt("mdx");
 
-    const raw_result = await saveFile({ content: md, path: save_path, stage: "raw" });
+    const raw_result = await saveFile({ content: md, path: save_path, debug_path: "raw" });
     if (isErr(raw_result)) log.warn_error(raw_result);
 
-    const regex_result = await saveFile({ content: md, path: save_path, stage: "regex" });
+    const regex_result = await saveFile({ content: md, path: save_path, debug_path: "regex" });
     if (isErr(regex_result)) log.warn_error(regex_result);
 
     const result = await saveFile({ content: page, path: save_path });
@@ -68,7 +68,11 @@ export interface ProcessorContext {
     callbacks: ProcessorCallback[];
 }
 
-export const RemarkProcessingPipeline = unified().use(remarkParse).use(remarkDirective).use(remarkMath).use(remarkGfm);
+export const REMARK_PROCESSING_PIPELINE = unified()
+    .use(remarkParse)
+    .use(remarkDirective)
+    .use(remarkMath)
+    .use(remarkGfm);
 
 /**
  * A remark plugin that walks the Markdown AST and dispatches various processors on different node types
@@ -90,15 +94,15 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
 
             switch (node.type) {
                 case "html":
-                    return process_all(HtmlProcessors, {
+                    return processAll(HTML_PROCESSORS, {
                         node: undefined,
                         parsed_node: HTMLParse.parse(node.value),
                         ctx,
                     });
                 case "link":
-                    return process_all(LinkProcessors, { node, ctx });
+                    return processAll(LINK_PROCESSORS, { node, ctx });
                 case "image":
-                    return process_all(ImageProcessors, { node, ctx });
+                    return processAll(IMAGE_PROCESSORS, { node, ctx });
             }
         });
 
@@ -128,11 +132,11 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
 
             switch (node_type) {
                 case "containerDirective": {
-                    transform = ComponentMap[component_type];
+                    transform = COMPONENT_MAP[component_type];
                     break;
                 }
                 case "textDirective": {
-                    transform = InlineComponentMap[component_type];
+                    transform = INLINE_COMPONENT_MAP[component_type];
                     break;
                 }
             }
@@ -167,7 +171,7 @@ export interface ProcessorInput<T> {
 }
 
 type Processor<T> = (input: T) => ProcessorOutput;
-function process_all<T>(processors: Processor<T>[], input: T): VisitorResult {
+function processAll<T>(processors: Processor<T>[], input: T): VisitorResult {
     for (const processor of processors) {
         const res = processor(input);
 

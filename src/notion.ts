@@ -3,19 +3,19 @@ import { DatabaseMap, PagePathComponent, type MapItem } from "./parse";
 import { isErr, type Result } from "./utils";
 import { Client, type BlockObjectResponse } from "@notionhq/client";
 
-let notionClient: Client | null = null;
+let NOTION_CLIENT: Client | null = null;
 
 function notion(): Client {
-    if (notionClient) {
-        return notionClient;
+    if (NOTION_CLIENT) {
+        return NOTION_CLIENT;
     }
 
     const key = process.env.NOTION_API_KEY;
 
     if (key) {
         try {
-            notionClient = new Client({ auth: key });
-            return notionClient;
+            NOTION_CLIENT = new Client({ auth: key });
+            return NOTION_CLIENT;
         } catch (e) {
             log.error_and_quit(`Failed to connect new Notion client. Error: ${e}`);
         }

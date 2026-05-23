@@ -3,7 +3,7 @@ import type { ProcessorInput, ProcessorOutput } from "./markdown";
 import type { Link } from "mdast";
 import { CONTINUE } from "unist-util-visit";
 
-export const LinkProcessors = [normalizePageLink];
+export const LINK_PROCESSORS = [normalizePageLink];
 
 /**
  * If a link points to a `www.notion.so` domain, replace it with a link to that page's location in the wiki

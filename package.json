@@ -1,25 +1,14 @@
 {
     "name": "notion-exporter-2",
     "module": "index.ts",
-    "scripts": {
-        "export": "node -e \"const exec = process.env.npm_execpath.includes('bun') ? 'bun run' : 'npx tsx'; require('child_process').execSync(exec + ' src/main.ts', {stdio: 'inherit'})\""
-    },
+    "scripts": {},
     "type": "module",
     "private": true,
     "devDependencies": {
-        "@eslint/js": "^10.0.1",
-        "@trivago/prettier-plugin-sort-imports": "^6.0.2",
-        "@types/bun": "latest",
         "@types/mdast": "^4.0.4",
         "@types/unist": "^3.0.3",
         "@types/uuid": "^11.0.0",
-        "jiti": "^2.7.0",
-        "prettier": "^3.8.3",
-        "tsx": "^4.22.3",
-        "typescript-eslint": "^8.59.4"
-    },
-    "peerDependencies": {
-        "typescript": "^5"
+        "jiti": "^2.7.0"
     },
     "dependencies": {
         "@notionhq/client": "^5.21.0",

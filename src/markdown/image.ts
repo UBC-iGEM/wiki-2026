@@ -5,7 +5,7 @@ import type { Image } from "mdast";
 import { CONTINUE } from "unist-util-visit";
 import { v5 as uuidv5 } from "uuid";
 
-export const ImageProcessors = [updateImageUrl];
+export const IMAGE_PROCESSORS = [updateImageUrl];
 
 /**
  * Replace URL of image block with static URL of image uploaded to `tools.igem.org`

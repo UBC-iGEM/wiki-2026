@@ -1,4 +1,4 @@
-const regexes: [RegExp, string][] = [
+const REGEXES: [RegExp, string][] = [
     /**
      * Convert block component syntax into a container directive with newline terminator.
      * FROM:
@@ -52,7 +52,7 @@ const regexes: [RegExp, string][] = [
 export function processRegex(s: string): string {
     let processed = s;
 
-    for (const [search, replace] of regexes) {
+    for (const [search, replace] of REGEXES) {
         // Add flags `Global`, `case Insensitive`, `Multiline`
         const search_regex = new RegExp(search, "gim");
         processed = processed.replaceAll(search_regex, replace);

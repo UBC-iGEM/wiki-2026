@@ -1,9 +1,9 @@
-import { RemarkProcessingPipeline, type ProcessorInput, type ProcessorOutput } from "./markdown";
+import { REMARK_PROCESSING_PIPELINE, type ProcessorInput, type ProcessorOutput } from "./markdown";
 import type { PhrasingContent, Table, TableCell, TableRow } from "mdast";
 import type { HTMLElement } from "node-html-parser";
 import { SKIP } from "unist-util-visit";
 
-export const HtmlProcessors = [parseTables];
+export const HTML_PROCESSORS = [parseTables];
 
 type HtmlProcessorInput = ProcessorInput<void> & { parsed_node: HTMLElement };
 
@@ -23,7 +23,7 @@ function parseTables({ ctx, parsed_node }: HtmlProcessorInput): ProcessorOutput 
 
         const cells = html_cells.map((html_cell) => {
             const cell_content = html_cell.innerHTML.trim();
-            const parsed_cell = RemarkProcessingPipeline().parse(cell_content);
+            const parsed_cell = REMARK_PROCESSING_PIPELINE().parse(cell_content);
 
             const children: PhrasingContent[] = parsed_cell.children.flatMap((child) =>
                 "children" in child ? (child.children as PhrasingContent[]) : [],

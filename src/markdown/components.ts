@@ -26,7 +26,7 @@ type BlockElement = BlockContent | DefinitionContent;
 /**
  * A [name -> handler function] map for all possible component types.
  */
-export const ComponentMap: Record<string, (input: ComponentInput) => ComponentOutput> = {
+export const COMPONENT_MAP: Record<string, (input: ComponentInput) => ComponentOutput> = {
     figure,
     dbtl,
     skip,

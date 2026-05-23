@@ -1,4 +1,5 @@
-import { readdir } from "node:fs/promises";
+import pkg from "../../package.json";
+import { existsSync } from "node:fs";
 import { rm } from "node:fs/promises";
 
 // ERROR HANDLING
@@ -11,18 +12,23 @@ export function isErr<T>(result: Result<T>): result is Error {
 
 // FILE I/O HELPERS
 
-const CONTENT_DIR_BASE = "content";
+const CONTENT_DIR_PATH = pkg.notion_export_config.content_dir_path;
+const DEBUG_DIR_PATH = pkg.notion_export_config.debug_dir_path;
 
 export async function saveFile({
     content,
     path,
-    stage,
+    debug_path,
 }: {
     content: string;
     path: string;
-    stage?: string;
+    debug_path?: string;
 }): Promise<Result<void>> {
-    const dest = stage ? `${CONTENT_DIR_BASE}_${stage}/${path}` : `${CONTENT_DIR_BASE}/${path}`;
+    /**
+     * If `debug_path` is set, save to the local `debug` directory
+     * If unset, save to {@link CONTENT_DIR_PATH}
+     */
+    const dest = debug_path ? `${DEBUG_DIR_PATH}/${debug_path}/${path}` : `${CONTENT_DIR_PATH}/${path}`;
 
     try {
         if (typeof Bun !== "undefined") {
@@ -41,15 +47,12 @@ export async function saveFile({
     }
 }
 
-export async function clearContentDirectory(): Promise<Result<void>> {
-    const current_dir = process.cwd();
-    const content_dirs = (await readdir(current_dir, { withFileTypes: true }))
-        .filter((entry) => entry.isDirectory() && entry.name.startsWith("content"))
-        .map((entry) => entry.name);
-
+export async function clearPreviousOutputs(): Promise<Result<void>> {
     try {
-        for (const dir of content_dirs) {
-            await rm(dir, { recursive: true });
+        for (const dir of [CONTENT_DIR_PATH, DEBUG_DIR_PATH]) {
+            if (existsSync(dir)) {
+                await rm(dir, { recursive: true });
+            }
         }
     } catch (err) {
         return new Error(`Failed to clean content directory: ${err}`);

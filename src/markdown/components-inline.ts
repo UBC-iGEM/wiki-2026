@@ -19,7 +19,7 @@ type ComponentInput = ProcessorInput<TextDirective>;
 /**
  * A [name -> handler function] map for all possible component types.
  */
-export const InlineComponentMap: Record<string, (input: ComponentInput) => ComponentOutput> = {
+export const INLINE_COMPONENT_MAP: Record<string, (input: ComponentInput) => ComponentOutput> = {
     anchor,
     link,
 };

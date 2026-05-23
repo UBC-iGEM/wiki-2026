@@ -1,4 +1,4 @@
 node_modules
-content*
+debug*
 .env
 .DS_Store
