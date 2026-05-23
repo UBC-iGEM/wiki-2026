@@ -1,5 +1,5 @@
 import type { ProcessorInput, ProcessorOutput } from "./markdown";
-import type { BlockContent, DefinitionContent, Html, Image, Paragraph, Parent, ThematicBreak } from "mdast";
+import type { BlockContent, DefinitionContent, Html, Image, Paragraph, ThematicBreak } from "mdast";
 import type { ContainerDirective } from "mdast-util-directive";
 import { SKIP } from "unist-util-visit";
 

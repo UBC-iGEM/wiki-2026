@@ -18,7 +18,7 @@ import { unified } from "unified";
 import { visit, type Action, type ActionTuple, type VisitorResult } from "unist-util-visit";
 
 export async function processMarkdown({ md, path, routes }: { md: string; path: PagePath; routes: ContentMap }) {
-    let preprocessed_markdown = processRegex(md);
+    const preprocessed_markdown = processRegex(md);
 
     const processed_markdown = (
         await RemarkProcessingPipeline()

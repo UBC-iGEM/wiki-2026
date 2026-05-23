@@ -2,7 +2,7 @@ import { BlockId, Id } from "../notion";
 import { isErr } from "../utils";
 import type { ProcessorInput, ProcessorOutput } from "./markdown";
 import type { Image } from "mdast";
-import { CONTINUE, SKIP } from "unist-util-visit";
+import { CONTINUE } from "unist-util-visit";
 import { v5 as uuidv5 } from "uuid";
 
 export const ImageProcessors = [updateImageUrl];

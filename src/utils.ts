@@ -1,4 +1,3 @@
-import { existsSync } from "node:fs";
 import { readdir } from "node:fs/promises";
 import { rm } from "node:fs/promises";
 
@@ -53,7 +52,7 @@ export async function clearContentDirectory(): Promise<Result<void>> {
             await rm(dir, { recursive: true });
         }
     } catch (err) {
-        return new Error(`Failed to clean content directory`);
+        return new Error(`Failed to clean content directory: ${err}`);
     }
 }
 

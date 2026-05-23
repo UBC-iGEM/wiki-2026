@@ -1,7 +1,7 @@
 import { cleanWebString } from "../utils";
 import type { ComponentOutput } from "./components";
 import type { ProcessorInput } from "./markdown";
-import type { Html, Link, Text } from "mdast";
+import type { Html, Link } from "mdast";
 import type { TextDirective } from "mdast-util-directive";
 import { SKIP } from "unist-util-visit";
 

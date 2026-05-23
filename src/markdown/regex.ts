@@ -35,7 +35,7 @@ const regexes: [RegExp, string][] = [
      * Replace Notion HTML tags with standard Markdown blocks.
      * The Markdown blocks may later be parsed and transformed.
      */
-    [/<(mention\-page|mention\-database) url="([^"]*)"(?:\/>)|(?:>[^<]*<\/mention\-(?:page|database)>)/, "[$1]($2)"],
+    [/<(mention-page|mention-database) url="([^"]*)"(?:\/>)|(?:>[^<]*<\/mention-(?:page|database)>)/, "[$1]($2)"],
     [/<empty-block\/>/, "\n"],
 
     /**

@@ -1,5 +1,5 @@
 import { PageId } from "../notion";
-import type { ProcessorInput, ProcessorOutput, ProcessorContext } from "./markdown";
+import type { ProcessorInput, ProcessorOutput } from "./markdown";
 import type { Link } from "mdast";
 import { CONTINUE } from "unist-util-visit";
 
