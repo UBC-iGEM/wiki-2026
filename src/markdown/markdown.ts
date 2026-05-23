@@ -48,8 +48,11 @@ ${processed_markdown}
 `.trim();
     const save_path = path.withExt("mdx");
 
-    const raw_result = await saveFile({ content: preprocessed_markdown, path: save_path, raw: true });
+    const raw_result = await saveFile({ content: md, path: save_path, stage: "raw" });
     if (isErr(raw_result)) log.warn_error(raw_result);
+
+    const regex_result = await saveFile({ content: md, path: save_path, stage: "regex" });
+    if (isErr(regex_result)) log.warn_error(regex_result);
 
     const result = await saveFile({ content: page, path: save_path });
     if (isErr(result)) log.warn_error(result);
@@ -67,6 +70,9 @@ export interface ProcessorContext {
 
 export const RemarkProcessingPipeline = unified().use(remarkParse).use(remarkDirective).use(remarkMath).use(remarkGfm);
 
+/**
+ * A remark plugin that walks the Markdown AST and dispatches various processors on different node types
+ */
 function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
     return async function (tree: Root): Promise<void> {
         let callbacks: ProcessorCallback[] = [];

@@ -1,4 +1,5 @@
 import { existsSync } from "node:fs";
+import { readdir } from "node:fs/promises";
 import { rm } from "node:fs/promises";
 
 // ERROR HANDLING
@@ -11,20 +12,18 @@ export function isErr<T>(result: Result<T>): result is Error {
 
 // FILE I/O HELPERS
 
-const CONTENT_DIR = "content";
-const RAW_CONTENT_DIR = "content_raw";
+const CONTENT_DIR_BASE = "content";
 
 export async function saveFile({
     content,
     path,
-    raw = false,
+    stage,
 }: {
     content: string;
     path: string;
-    raw?: boolean;
+    stage?: string;
 }): Promise<Result<void>> {
-    const dest_base = raw ? RAW_CONTENT_DIR : CONTENT_DIR;
-    const dest = `${dest_base}/${path}`;
+    const dest = stage ? `${CONTENT_DIR_BASE}_${stage}/${path}` : `${CONTENT_DIR_BASE}/${path}`;
 
     try {
         if (typeof Bun !== "undefined") {
@@ -44,12 +43,14 @@ export async function saveFile({
 }
 
 export async function clearContentDirectory(): Promise<Result<void>> {
+    const current_dir = process.cwd();
+    const content_dirs = (await readdir(current_dir, { withFileTypes: true }))
+        .filter((entry) => entry.isDirectory() && entry.name.startsWith("content"))
+        .map((entry) => entry.name);
+
     try {
-        if (existsSync(CONTENT_DIR)) {
-            await rm(CONTENT_DIR, { recursive: true });
-        }
-        if (existsSync(RAW_CONTENT_DIR)) {
-            await rm(RAW_CONTENT_DIR, { recursive: true });
+        for (const dir of content_dirs) {
+            await rm(dir, { recursive: true });
         }
     } catch (err) {
         return new Error(`Failed to clean content directory`);
