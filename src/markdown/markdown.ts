@@ -10,6 +10,7 @@ import { processRegex } from "./regex";
 import type { Parent, Root } from "mdast";
 import HTMLParse from "node-html-parser";
 import remarkDirective from "remark-directive";
+import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import remarkParse from "remark-parse";
 import remarkStringify from "remark-stringify";
@@ -20,10 +21,7 @@ export async function processMarkdown({ md, path, routes }: { md: string; path: 
     let preprocessed_markdown = processRegex(md);
 
     const processed_markdown = (
-        await unified()
-            .use(remarkParse)
-            .use(remarkDirective)
-            .use(remarkMath)
+        await RemarkProcessingPipeline()
             .use(processMAst, {
                 routes,
                 path,
@@ -50,7 +48,7 @@ ${processed_markdown}
 `.trim();
     const save_path = path.withExt("mdx");
 
-    const raw_result = await saveFile({ content: md, path: save_path, raw: true });
+    const raw_result = await saveFile({ content: preprocessed_markdown, path: save_path, raw: true });
     if (isErr(raw_result)) log.warn_error(raw_result);
 
     const result = await saveFile({ content: page, path: save_path });
@@ -66,6 +64,8 @@ export interface ProcessorContext {
     path: PagePath;
     callbacks: ProcessorCallback[];
 }
+
+export const RemarkProcessingPipeline = unified().use(remarkParse).use(remarkDirective).use(remarkMath).use(remarkGfm);
 
 function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
     return async function (tree: Root): Promise<void> {
@@ -85,7 +85,7 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
             switch (node.type) {
                 case "html":
                     return process_all(HtmlProcessors, {
-                        node,
+                        node: undefined,
                         parsed_node: HTMLParse.parse(node.value),
                         ctx,
                     });

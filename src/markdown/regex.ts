@@ -1,6 +1,6 @@
 const regexes: [RegExp, string][] = [
     /**
-     * Convert block component syntax into container directive with newline terminator
+     * Convert block component syntax into a container directive with newline terminator.
      * FROM:
          %% START COMPONENT
              ...
@@ -14,7 +14,7 @@ const regexes: [RegExp, string][] = [
     [/%{2,}\s*END/, "\n:::\n"],
 
     /**
-     * Convert inline component syntax into text directive
+     * Convert inline component syntax into an inline text directive.
      * FROM:
          %\{ COMPONENT ... \}%
      * TO:
@@ -23,13 +23,13 @@ const regexes: [RegExp, string][] = [
     [/%\\\{\s*([a-zA-Z]+)\s+([\s\S]*?)\s*\\\}%/, ":$1[$2]"],
 
     /**
-     * Add newline after various elements to ensure parser recognizes them as distinct nodes
+     * Add newline after various elements to ensure parser recognizes them as distinct nodes.
      * Supported elements:
-        - Any closing HTML tag (e.g., </details>) on its own line
+        - Any closing HTML tag (e.g., </details>) on its own line EXCEPT </colgroup> | </tr> since this breaks HTML tables
         - A closing code block fence (i.e., ```) on its own line
         - An opening or closing LaTeX fence (i.e., $$) on its own line
      */
-    [/^((<\/[a-zA-Z_-]+>)|(```)|(\$\$))$/, "$1\n"],
+    [/^((<\/(?!colgroup|tr)[a-zA-Z_-]+>)|(```)|(\$\$))$/, "$1\n"],
 
     /**
      * Add newline after last list item

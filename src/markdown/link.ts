@@ -6,25 +6,14 @@ import { CONTINUE } from "unist-util-visit";
 export const LinkProcessors = [normalizePageLink];
 
 /**
- * Normalize URL in Markdown link block
- */
-function normalizePageLink({ node, ctx }: ProcessorInput<Link>): ProcessorOutput {
-    const err_base = `'link' element on page ${ctx.path} (${node})`;
-    if (node.url.includes("notion.so")) return normalizeNotionUrl({ url: node.url, err_base, ctx });
-}
-
-/**
  * If a link points to a `www.notion.so` domain, replace it with a link to that page's location in the wiki
  */
-export function normalizeNotionUrl({
-    url,
-    err_base,
-    ctx,
-}: {
-    url: string;
-    err_base: string;
-    ctx: ProcessorContext;
-}): ProcessorOutput {
+function normalizePageLink({ node, ctx }: ProcessorInput<Link>): ProcessorOutput {
+    const url = node.url;
+    if (!node.url.includes("notion.so")) return;
+
+    const err_base = `'link' element on page ${ctx.path} (${node})`;
+
     // Extract Notion page ID from URL
     const page_id = url.match(/(?<=notion.so\/)[a-f0-9]{32}/)?.[0];
     if (!page_id) return new Error(`${err_base} has no valid id`);

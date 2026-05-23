@@ -1,46 +1,49 @@
 import { isErr } from "../utils";
-import { normalizeNotionUrl } from "./link";
-import type { ProcessorInput, ProcessorOutput } from "./markdown";
-import type { Html } from "mdast";
+import { RemarkProcessingPipeline, type ProcessorInput, type ProcessorOutput } from "./markdown";
+import type { Html, Link, PhrasingContent, Table, TableCell, TableRow } from "mdast";
 import type { HTMLElement } from "node-html-parser";
-import { CONTINUE } from "unist-util-visit";
+import { SKIP } from "unist-util-visit";
 
-export const HtmlProcessors = [normalizePageMention, replaceEmptyBlocks];
+export const HtmlProcessors = [normalizePageMention, replaceEmptyBlocks, parseTables];
 
-type HtmlProcessorInput = ProcessorInput<Html> & { parsed_node: HTMLElement };
+type HtmlProcessorInput = ProcessorInput<void> & { parsed_node: HTMLElement };
 
 /**
- * Normalize link in `<mention-page url="...">` block and replace with a Markdown link block
+ * Convert `<mention-page url="...">` to Markdown link
  */
-function normalizePageMention({ node, ctx, parsed_node }: HtmlProcessorInput): ProcessorOutput {
+function normalizePageMention({ ctx, parsed_node }: HtmlProcessorInput): ProcessorOutput {
     const mention_element = parsed_node.querySelector("mention-page");
     if (!mention_element) {
         return;
     }
 
-    const err_base = `'mention-page' element on page ${ctx.path} (${node})`;
+    const err_base = `'mention-page' element on page ${ctx.path} (${parsed_node})`;
 
     const url = mention_element.attributes["url"];
     if (!url) {
         return new Error(`${err_base} has no valid attribute 'url'`);
     }
 
-    const res = normalizeNotionUrl({ url, err_base, ctx });
-    if (isErr(res)) return res;
+    const new_node: Link = {
+        type: "link",
+        url,
+        children: [{ type: "text", value: "PAGE" }],
+    };
+    // Replace with a `Link` node
+    ctx.parent.children[ctx.index] = new_node;
 
     const first_child = ctx.parent.children[ctx.index + 1];
     const second_child = ctx.parent.children[ctx.index + 2];
 
     if (first_child && second_child && first_child.type === "text" && second_child.type === "html") {
         // The form of this block is `<mention-page url="...">...</mention-page>`
-        // Splice out the text and closing HTML block
+        // Remove the text and closing HTML block
         ctx.parent.children.splice(ctx.index + 1, 2);
-        // Continue at the element that is now at `ctx.index + 1`
-        return [CONTINUE, ctx.index + 1];
-    } else {
-        // The form of this block is `<mention-page url="..."/>`
-        return res;
+        // There shouldn't be any children, but skip if there are
     }
+
+    // Walk the new `Link` node
+    return [SKIP, ctx.index];
 }
 
 /**
@@ -58,5 +61,71 @@ function replaceEmptyBlocks({ ctx, parsed_node }: HtmlProcessorInput): Processor
     };
 
     ctx.parent.children[ctx.index] = new_node;
-    return CONTINUE;
+    // Skip children of this node (there shouldn't be any, but just in case)
+    return SKIP;
+}
+
+/**
+ * Notion injects tables as HTML.
+ * This parses them back to Markdown components so cells are properly processed.
+ */
+function parseTables({ ctx, parsed_node }: HtmlProcessorInput): ProcessorOutput {
+    const table_elem = parsed_node.querySelector("table");
+    if (!table_elem) return;
+    console.log(`Table: ${table_elem.innerHTML}`);
+
+    const has_header = table_elem.getAttribute("header-row") === "true";
+    const html_rows = table_elem.querySelectorAll("tr");
+
+    const rows = html_rows.map((html_row) => {
+        const html_cells = html_row.querySelectorAll("td");
+
+        const cells = html_cells.map((html_cell) => {
+            const cell_content = html_cell.innerHTML.trim();
+            const parsed_cell = RemarkProcessingPipeline().parse(cell_content);
+
+            const children: PhrasingContent[] = parsed_cell.children.flatMap((child) =>
+                "children" in child ? (child.children as PhrasingContent[]) : [],
+            );
+
+            const cell: TableCell = {
+                type: "tableCell",
+                children: children,
+            };
+            return cell;
+        });
+
+        const row: TableRow = {
+            type: "tableRow",
+            children: cells,
+        };
+        return row;
+    });
+
+    if (!has_header) {
+        // We need to insert a dummy (blank) header row
+        const dummy_row: TableRow = {
+            type: "tableRow",
+            // Array of empty text elements
+            children: Array.from(
+                { length: rows[0]!.children.length },
+                (): TableCell => ({
+                    type: "tableCell",
+                    children: [{ type: "text", value: "" }],
+                }),
+            ),
+        };
+        // Prepend dummy row to `rows`
+        rows.splice(0, 0, dummy_row);
+    }
+
+    const table: Table = {
+        type: "table",
+        children: rows,
+    };
+    ctx.parent.children[ctx.index] = table;
+
+    // Skip children of the origin node
+    // Traverse the new `Table` element
+    return [SKIP, ctx.index];
 }
