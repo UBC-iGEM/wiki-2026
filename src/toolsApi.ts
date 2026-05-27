@@ -1,10 +1,12 @@
 import axios, { type AxiosInstance } from "axios";
 import { wrapper } from "axios-cookiejar-support";
 import { CookieJar } from "tough-cookie";
+import type { Result } from "./utils";
 import mime from "mime-types";
 import FormData from "form-data";
+import pkg from "../../package.json";
 
-type Result<T> = T | Error;
+const teamId = pkg.notion_export_config.team_id;
 
 interface UploadResult {
     fileName: string;
@@ -24,11 +26,15 @@ export async function getToolsClient(): Promise<Result<ToolsClient>> {
     if (_clientPromise) return _clientPromise;
 
     _clientPromise = (async (): Promise<Result<ToolsClient>> => {
-        const { IGEM_TOOLS_USERNAME: username, IGEM_TOOLS_PASSWORD: password, IGEM_TOOLS_TEAM_ID: teamId } =
+        const { IGEM_TOOLS_USERNAME: username, IGEM_TOOLS_PASSWORD: password} =
             process.env;
 
-        if (!username || !password || !teamId) {
+        if (!username || !password) {
             return Error("Missing IGEM_TOOLS_ environment variables.");
+        }
+
+        if (!teamId) {
+            return Error("teamId variable is unset!");
         }
 
         return await ToolsClient.withAuthentication({
@@ -84,7 +90,7 @@ class ToolsClient {
 
     // Simple upload function to igem CDN. No specific directory specified yet.
     public async upload(uid: string, url: string): Promise<Result<UploadResult>> {
-        const folderName = "images"; // Hardcoded for now
+        const folderName = "assets"; // Hardcoded for now
 
         try {
             // Get image stream from url/notion
@@ -119,7 +125,6 @@ class ToolsClient {
             };
 
         } catch(error) {
-            console.error("Error uploading image: " + error);
             return error instanceof Error ? error : Error("Image upload failed");
         }
     }
@@ -146,7 +151,6 @@ class ToolsClient {
 
             return exists;
         } catch (error) {
-            console.error(`Failed to check if ${uid} is uploaded:`, error);
             return error instanceof Error ? error : Error("Check upload status failed");
         }
     }
