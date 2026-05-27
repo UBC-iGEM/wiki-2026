@@ -1,7 +1,7 @@
 import * as log from "./log";
 import { processMarkdown } from "./markdown/markdown";
 import { PageId, DatabaseId, BlockId } from "./notion";
-import { isErr, type Result } from "./utils";
+import { $unsafe, isErr, type Result } from "./utils";
 
 export class PagePathComponent {
     constructor(private path: string) {}
@@ -166,7 +166,8 @@ export async function parseAggregate({ agg_id }: { agg_id: PageId }): Promise<Re
     const agg_entries = await getAggregateEntries({ agg_id });
     if (isErr(agg_entries)) return agg_entries;
 
-    try {
+    /** Use {@link $unsafe} scope to fail-fast on inner errors */
+    return $unsafe(async () => {
         const paths = await Promise.all(
             agg_entries.map(async (entry) => {
                 const res = await entry.paths();
@@ -176,9 +177,7 @@ export async function parseAggregate({ agg_id }: { agg_id: PageId }): Promise<Re
             }),
         );
         return { item: new AggregateMap(paths), path: new PagePathComponent(agg_name) };
-    } catch (err) {
-        return err as Error;
-    }
+    });
 }
 
 async function getAggregateEntries({ agg_id }: { agg_id: PageId }): Promise<Result<(PageId | DatabaseId)[]>> {
@@ -187,10 +186,36 @@ async function getAggregateEntries({ agg_id }: { agg_id: PageId }): Promise<Resu
     if (isErr(blocks)) return blocks;
 
     const pageIds = [];
-    for (const block of blocks) {
-        if (block.type === "paragraph" && block.paragraph.rich_text.length === 0) {
-            // Empty whitespace
-            continue;
+    block_loop: for (const block of blocks) {
+        if (block.type === "paragraph") {
+            // Skip empty whitespace
+            if (block.paragraph.rich_text.length === 0) continue block_loop;
+
+            for (const item of block.paragraph.rich_text) {
+                // Skip empty whitespace
+                if (item.type === "text" && item.text.content.trim() === "") continue;
+
+                if (item.type === "mention") {
+                    switch (item.mention.type) {
+                        case "page":
+                            pageIds.push(new PageId(item.mention.page.id));
+                            break;
+                        case "database":
+                            pageIds.push(new DatabaseId(item.mention.database.id));
+                            break;
+                        default:
+                            return new Error(
+                                `Aggregate ${agg_id} contains unsupported mention type ${item.mention.type}`,
+                            );
+                    }
+                } else {
+                    return new Error(
+                        `Aggregate ${agg_id} contains Paragraph with non-mention element of type ${item.type}: ${item.plain_text}`,
+                    );
+                }
+            }
+
+            continue block_loop;
         }
 
         if (block.type !== "link_to_page") {
@@ -200,10 +225,10 @@ async function getAggregateEntries({ agg_id }: { agg_id: PageId }): Promise<Resu
         switch (block.link_to_page.type) {
             case "page_id":
                 pageIds.push(new PageId(block.link_to_page.page_id));
-                break;
+                continue block_loop;
             case "database_id":
                 pageIds.push(new DatabaseId(block.link_to_page.database_id));
-                break;
+                continue block_loop;
             case "comment_id":
                 return new Error(`Aggregate ${agg_id} contains link to comment ${block.link_to_page.comment_id}"`);
         }

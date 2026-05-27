@@ -60,9 +60,14 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
     } else {
         // This is a linked image that exists somewhere online
 
+        // The AWS URLs returned by Notion often have changing query parameters
+        const stable_url = image_node_url.split("?")[0]!;
+
         // A stable hash of the image URL
-        const id = uuidv5(image_node_url, uuidv5.DNS);
+        const id = uuidv5(stable_url, uuidv5.DNS);
         image_id = new Id(id);
+
+        // Include full query parameters for data to avoid "Access Denied" errors
         image_data_url = image_node_url;
 
         const callback = async () => {
