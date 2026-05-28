@@ -1,6 +1,6 @@
-import pkg from "../../package.json";
 import { existsSync } from "node:fs";
 import { rm } from "node:fs/promises";
+import { CONFIG } from "./config";
 
 // ERROR HANDLING
 
@@ -76,8 +76,7 @@ export async function $withRetries<Args extends any[], Ret>(
 
 // FILE I/O HELPERS
 
-const CONTENT_DIR_PATH = pkg.notion_export_config.content_dir_path;
-const DEBUG_DIR_PATH = pkg.notion_export_config.debug_dir_path;
+const DEBUG_DIR_PATH = "exporter/debug";
 
 export async function saveFile({
     content,
@@ -92,32 +91,24 @@ export async function saveFile({
      * If `debug_path` is set, save to the local `debug` directory
      * If unset, save to {@link CONTENT_DIR_PATH}
      */
-    const dest = debug_path ? `${DEBUG_DIR_PATH}/${debug_path}/${path}` : `${CONTENT_DIR_PATH}/${path}`;
+    const dest = debug_path ? `${DEBUG_DIR_PATH}/${debug_path}/${path}` : `${CONFIG.content_dir_path}/${path}`;
     const makeError = errorGenerator({ base: `Unable to write to path ${dest}` });
 
-    if (typeof Bun !== "undefined") {
-        // The Bun runtime is available
-        const res = await $unsafe(async () => {
-            return Bun.write(dest, content);
-        });
-        if (isErr(res)) return makeError(res.message);
-    } else {
-        // Fallback to NodeJS
-        const fs = await import("node:fs/promises");
-        const fspath = await import("node:path");
+    // Fallback to NodeJS
+    const fs = await import("node:fs/promises");
+    const fspath = await import("node:path");
 
-        const dir_res = await $unsafe(fs.mkdir, fspath.dirname(dest), { recursive: true });
-        if (isErr(dir_res)) return makeError(`failed to create parent directory with ${dir_res}`);
+    const dir_res = await $unsafe(fs.mkdir, fspath.dirname(dest), { recursive: true });
+    if (isErr(dir_res)) return makeError(`failed to create parent directory with ${dir_res}`);
 
-        const write_res = await $unsafe(fs.writeFile, dest, content);
-        if (isErr(write_res)) return makeError(write_res.message);
-    }
+    const write_res = await $unsafe(fs.writeFile, dest, content);
+    if (isErr(write_res)) return makeError(write_res.message);
 }
 
 export async function clearPreviousOutputs(): Promise<Result<void>> {
     const makeError = errorGenerator({ base: "Unable to clean content directory" });
 
-    for (const dir of [CONTENT_DIR_PATH, DEBUG_DIR_PATH]) {
+    for (const dir of [CONFIG.content_dir_path, DEBUG_DIR_PATH]) {
         const exists = await $unsafe(existsSync, dir);
         if (isErr(exists)) return makeError(`failed to determine if directory ${dir} exists with ${exists}`);
 

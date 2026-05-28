@@ -1,17 +1,11 @@
-import pkg from "../../package.json";
+import { CONFIG } from "./config";
 import * as log from "./log";
 import { PageId } from "./notion";
 import * as parse from "./parse";
 import { clearPreviousOutputs, isErr, saveFile } from "./utils";
-import dotenv from "dotenv";
-
-dotenv.config({ path: ".env" });
 
 async function main(): Promise<void> {
-    const master_id = pkg.notion_export_config.master_id;
-    if (!master_id) log.error_and_quit("MASTER env. variable is unset!");
-
-    const parse_map = await parse.parseMaster(new PageId(master_id));
+    const parse_map = await parse.parseMaster(new PageId(CONFIG.master_id));
     if (isErr(parse_map)) log.error_and_quit(parse_map);
 
     const clear_res = await clearPreviousOutputs();
@@ -24,4 +18,4 @@ async function main(): Promise<void> {
     await parse.exportAllPages({ content_map: parse_map });
 }
 
-main();
+await main();
