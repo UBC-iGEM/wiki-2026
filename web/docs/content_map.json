@@ -1,0 +1,46 @@
+{
+    "aggregates": [
+        {
+            "item": {
+                "entries": [
+                    {
+                        "item": {
+                            "id": "356d65dd82be809eb77bf5b3704dc316"
+                        },
+                        "path": {
+                            "path": "Test Content Page"
+                        }
+                    },
+                    {
+                        "item": {
+                            "entries": [
+                                {
+                                    "item": {
+                                        "id": "362d65dd82be805a916fe5de72e143ff"
+                                    },
+                                    "path": {
+                                        "path": "Test Entry 1"
+                                    }
+                                },
+                                {
+                                    "item": {
+                                        "id": "362d65dd82be80758ebbe85f95b74c33"
+                                    },
+                                    "path": {
+                                        "path": "Test Entry 2"
+                                    }
+                                }
+                            ]
+                        },
+                        "path": {
+                            "path": "Test Lab Notebook"
+                        }
+                    }
+                ]
+            },
+            "path": {
+                "path": "Test Aggregate Page"
+            }
+        }
+    ]
+}

@@ -20,7 +20,7 @@ const REGEXES: [RegExp, string][] = [
      * TO:
          :COMPONENT[...]
      */
-    [/%\\\{([a-zA-Z]+)\s+([\s\S]*?)\\\}%/, ":$1[$2]"],
+    [/%\\\{\s*([a-zA-Z]+)\s+([\s\S]*?)\\\}%/, ":$1[$2]"],
 
     /**
      * Add newline after various elements to ensure parser recognizes them as distinct nodes.
@@ -35,7 +35,7 @@ const REGEXES: [RegExp, string][] = [
      * Replace Notion HTML tags with standard Markdown blocks.
      * The Markdown blocks may later be parsed and transformed.
      */
-    [/<(mention-page|mention-database) url="([^"]*)"(?:\/>)|(?:>[^<]*<\/mention-(?:page|database)>)/, "[$1]($2)"],
+    [/<(mention-page|mention-database)\s+url="([^"]*)"(?:\/>|>([^<]*)<\/mention-(?:page|database)>)/, "[$1]($2)"],
     [/<empty-block\/>/, "\n"],
 
     /**

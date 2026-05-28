@@ -1,5 +1,5 @@
 import * as log from "./log";
-import { DatabaseMap, PagePathComponent, type MapItem } from "./parse";
+import { DatabaseMap, PagePathComponent, type MapItem } from "./map";
 import { $unsafe, $unsafeSync, $withRetries, errorGenerator, isErr, type Result } from "./utils";
 import {
     Client,

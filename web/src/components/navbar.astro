@@ -1,0 +1,14 @@
+---
+import { slugifyPath } from "../../../exporter/src/utils";
+import config from "../../docs/content_map.json";
+
+const content_map = config.aggregates.map(({ path, item: pages }) => {
+    const aggregate_path_slug = slugifyPath(path.path);
+    const aggregate_page_slugs = pages.entries.map(({ path }) => slugifyPath(path.path));
+
+    return {
+        aggregate_path: aggregate_path_slug,
+        content_paths: aggregate_page_slugs,
+    };
+});
+---

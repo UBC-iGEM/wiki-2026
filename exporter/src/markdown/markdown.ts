@@ -51,7 +51,7 @@ ${processed_markdown}
     const raw_result = await saveFile({ content: md, path: save_path, debug_path: "raw" });
     if (isErr(raw_result)) log.warn_error(raw_result);
 
-    const regex_result = await saveFile({ content: md, path: save_path, debug_path: "regex" });
+    const regex_result = await saveFile({ content: preprocessed_markdown, path: save_path, debug_path: "regex" });
     if (isErr(regex_result)) log.warn_error(regex_result);
 
     const result = await saveFile({ content: page, path: save_path });

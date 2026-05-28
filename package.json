@@ -1,32 +1,27 @@
 {
-    "name": "notion-exporter-2",
-    "module": "index.ts",
-    "scripts": {},
-    "type": "module",
+    "name": "wiki",
     "private": true,
+    "workspaces": [
+        "exporter/",
+        "web/"
+    ],
     "devDependencies": {
-        "@types/mdast": "^4.0.4",
-        "@types/unist": "^3.0.3",
-        "@types/uuid": "^11.0.0",
-        "jiti": "^2.7.0"
+        "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+        "@types/node": "^25.9.1",
+        "exporter": "workspace:*",
+        "prettier": "^3.8.3",
+        "prettier-plugin-astro": "^0.14.1"
+    },
+    "notion_export_config": {
+        "master_id": "364d65dd82be80f0aed8fcb8bfaf9353",
+        "content_dir_path": "web/docs",
+        "debug_dir_path": "exporter/debug"
+    },
+    "scripts": {
+        "export": "npx tsx --env-file=.env exporter/src/main.ts",
+        "dev": "npm run dev -w web"
     },
     "dependencies": {
-        "@notionhq/client": "^5.21.0",
-        "async-unist-util-visit": "^1.0.0",
-        "dotenv": "^17.4.2",
-        "node-html-parser": "^7.1.0",
-        "rehype-raw": "^7.0.0",
-        "rehype-stringify": "^10.0.1",
-        "remark": "^15.0.1",
-        "remark-directive": "^4.0.0",
-        "remark-gfm": "^4.0.1",
-        "remark-math": "^6.0.0",
-        "remark-mdx": "^3.1.1",
-        "remark-parse": "^11.0.0",
-        "remark-rehype": "^11.1.2",
-        "remark-stringify": "^11.0.0",
-        "unified": "^11.0.5",
-        "unist-util-visit": "^5.1.0",
-        "uuid": "^14.0.0"
+        "tsx": "^4.22.3"
     }
 }
