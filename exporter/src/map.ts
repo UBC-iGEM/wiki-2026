@@ -82,14 +82,6 @@ export class ContentMap extends PathMap {
             yield* item.pages().map(({ path, item }) => ({ path: new PagePath([agg_path, path]), item }));
         }
     }
-
-    /**
-     * Each entry is the page collection of a specialization or subteam.
-     * The {@link MapItem} returned provides both the path of the collection and its entries.
-     */
-    public *aggregateEntries(): Generator<MapItem<AggregateMap>> {
-        yield* this.aggregates;
-    }
 }
 
 export class AggregateMap extends PathMap {
@@ -114,14 +106,6 @@ export class AggregateMap extends PathMap {
                     break;
             }
         }
-    }
-
-    /**
-     * Each page represents either a content page or a database.
-     * The {@link MapItem} returned provides the path of the page; its content or type is obscured.
-     */
-    public *pageEntries(): Generator<MapItem<void>> {
-        yield* this.entries.map(({ path }) => ({ path, item: undefined }));
     }
 }
 

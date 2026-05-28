@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
-import { rm } from "node:fs/promises";
+import { mkdir, rm, writeFile } from "node:fs/promises";
 import { CONFIG } from "./config";
+import { dirname } from "node:path";
 
 // ERROR HANDLING
 
@@ -94,14 +95,10 @@ export async function saveFile({
     const dest = debug_path ? `${DEBUG_DIR_PATH}/${debug_path}/${path}` : `${CONFIG.content_dir_path}/${path}`;
     const makeError = errorGenerator({ base: `Unable to write to path ${dest}` });
 
-    // Fallback to NodeJS
-    const fs = await import("node:fs/promises");
-    const fspath = await import("node:path");
-
-    const dir_res = await $unsafe(fs.mkdir, fspath.dirname(dest), { recursive: true });
+    const dir_res = await $unsafe(mkdir, dirname(dest), { recursive: true });
     if (isErr(dir_res)) return makeError(`failed to create parent directory with ${dir_res}`);
 
-    const write_res = await $unsafe(fs.writeFile, dest, content);
+    const write_res = await $unsafe(writeFile, dest, content);
     if (isErr(write_res)) return makeError(write_res.message);
 }
 
@@ -119,7 +116,7 @@ export async function clearPreviousOutputs(): Promise<Result<void>> {
     }
 }
 
-// HTML stringification
+// STRINGIFICATION AND CLEANUP HELPERS
 
 const web_regex_replacements: [string | RegExp, string][] = [
     [" ", "-"],
@@ -132,4 +129,8 @@ export function cleanWebString(s: string): string {
         output = output.replaceAll(search, replacement);
     }
     return output;
+}
+
+export function slugifyPath(s: string): string {
+    return s.trim().toLowerCase().replace(/\s+/g, "-");
 }

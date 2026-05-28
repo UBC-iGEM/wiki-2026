@@ -9,7 +9,8 @@
         "@trivago/prettier-plugin-sort-imports": "^6.0.2",
         "@types/node": "^25.9.1",
         "exporter": "workspace:*",
-        "prettier": "^3.8.3"
+        "prettier": "^3.8.3",
+        "prettier-plugin-astro": "^0.14.1"
     },
     "notion_export_config": {
         "master_id": "364d65dd82be80f0aed8fcb8bfaf9353",
@@ -17,7 +18,8 @@
         "debug_dir_path": "exporter/debug"
     },
     "scripts": {
-        "export": "npx tsx --env-file=.env exporter/src/main.ts"
+        "export": "npx tsx --env-file=.env exporter/src/main.ts",
+        "dev": "npm run dev -w web"
     },
     "dependencies": {
         "tsx": "^4.22.3"
