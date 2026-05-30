@@ -1,5 +1,5 @@
 import * as log from "../log";
-import { PagePath, type ContentMap } from "../parse";
+import { PagePath, type ContentMap } from "../map";
 import { isErr, saveFile } from "../utils";
 import { COMPONENT_MAP, type ComponentOutput } from "./components";
 import { INLINE_COMPONENT_MAP } from "./components-inline";
@@ -29,7 +29,7 @@ export async function processMarkdown({
     const preprocessed_markdown = processRegex(md);
 
     const processed_markdown = (
-        await REMARK_PROCESSING_PIPELINE()
+        await remarkProcessingPipeline()
             .use(processMAst, {
                 routes,
                 path,
@@ -57,13 +57,13 @@ ${processed_markdown}
     const save_path = path.withExt("mdx");
 
     const raw_result = await saveFile({ content: md, path: save_path, debug_path: "raw" });
-    if (isErr(raw_result)) log.warn_error(raw_result);
+    if (isErr(raw_result)) log.warnError(raw_result);
 
     const regex_result = await saveFile({ content: preprocessed_markdown, path: save_path, debug_path: "regex" });
-    if (isErr(regex_result)) log.warn_error(regex_result);
+    if (isErr(regex_result)) log.warnError(regex_result);
 
     const result = await saveFile({ content: page, path: save_path });
-    if (isErr(result)) log.warn_error(result);
+    if (isErr(result)) log.warnError(result);
 }
 
 type ProcessorCallback = () => Promise<void | Error>;
@@ -76,11 +76,7 @@ export interface ProcessorContext {
     callbacks: ProcessorCallback[];
 }
 
-export const REMARK_PROCESSING_PIPELINE = unified()
-    .use(remarkParse)
-    .use(remarkDirective)
-    .use(remarkMath)
-    .use(remarkGfm);
+export const remarkProcessingPipeline = unified().use(remarkParse).use(remarkDirective).use(remarkMath).use(remarkGfm);
 
 /**
  * A remark plugin that walks the Markdown AST and dispatches various processors on different node types
@@ -116,7 +112,7 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
 
         const results = await Promise.all(callbacks.map(async (callback) => await callback()));
         for (const result of results) {
-            if (result) log.warn_error(result);
+            if (result) log.warnError(result);
         }
         callbacks = [];
 
@@ -150,14 +146,14 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
             }
 
             if (!transform) {
-                log.warn_error(`Component type ${component_type} at ${path} not understood`);
+                log.warnError(`Component type ${component_type} at ${path} not understood`);
                 return;
             }
 
             // Cast since we are guaranteed that transform matches the argument type
             const res = (transform as (arg: any) => ComponentOutput)({ node, ctx });
             if (isErr(res)) {
-                log.warn_error(res);
+                log.warnError(res);
                 return;
             }
 
@@ -185,7 +181,7 @@ function processAll<T>(processors: Processor<T>[], input: T): VisitorResult {
         const res = processor(input);
 
         if (isErr(res)) {
-            log.warn_error(res);
+            log.warnError(res);
             // Stop all processing on this node
             return;
         }

@@ -7,13 +7,13 @@ import mime from "mime-types";
 import { CookieJar } from "tough-cookie";
 
 interface UploadResult {
-    fileName: string;
+    file_name: string;
     key: string;
     location: string; // public CDN URL to reference in markdown
-    contentType: string;
+    content_type: string;
 }
 
-let _clientPromise: Promise<Result<ToolsClient>> | null = null;
+let CLIENT_PROMISE: Promise<Result<ToolsClient>> | null = null;
 
 /**
  * Public interface to a singleton `ToolsClient` interface.
@@ -21,9 +21,9 @@ let _clientPromise: Promise<Result<ToolsClient>> | null = null;
  * TODO: do we want to pull credentials from .env?
  */
 export async function getToolsClient(): Promise<Result<ToolsClient>> {
-    if (_clientPromise) return _clientPromise;
+    if (CLIENT_PROMISE) return CLIENT_PROMISE;
 
-    _clientPromise = (async (): Promise<Result<ToolsClient>> => {
+    CLIENT_PROMISE = (async (): Promise<Result<ToolsClient>> => {
         const { IGEM_TOOLS_USERNAME: username, IGEM_TOOLS_PASSWORD: password } = process.env;
 
         if (!username || !password) {
@@ -33,18 +33,17 @@ export async function getToolsClient(): Promise<Result<ToolsClient>> {
         return await ToolsClient.withAuthentication({
             username,
             password,
-            teamId: CONFIG.team_id,
+            team_id: CONFIG.team_id,
         });
     })();
 
-    return _clientPromise;
+    return CLIENT_PROMISE;
 }
 
 class ToolsClient {
     private client: AxiosInstance;
-    private teamId: string;
 
-    private constructor(teamId: string) {
+    private constructor(private team_id: string) {
         // Internally holds a cookie store so we don't need to constantly re-authenticate our session
         const jar = new CookieJar();
         this.client = wrapper(
@@ -54,19 +53,19 @@ class ToolsClient {
                 baseURL: "https://api.igem.org/v1",
             }),
         );
-        this.teamId = teamId;
+        this.team_id = team_id;
     }
 
     public static async withAuthentication({
         username,
         password,
-        teamId,
+        team_id,
     }: {
         username: string;
         password: string;
-        teamId: string;
+        team_id: string;
     }): Promise<Result<ToolsClient>> {
-        const instance = new ToolsClient(teamId);
+        const instance = new ToolsClient(team_id);
 
         const params = new URLSearchParams({
             identifier: username,
@@ -83,52 +82,52 @@ class ToolsClient {
 
     // Simple upload function to igem CDN. No specific directory specified yet.
     public async upload(uid: string, url: string): Promise<Result<UploadResult>> {
-        const folderName = "assets"; // Hardcoded for now
+        const folder_name = "assets"; // Hardcoded for now
 
         try {
             // Get image stream from url/notion
             const response = await axios.get(url, { responseType: "stream" });
 
             // Infer extension and content type
-            const contentType = String(response.headers["content-type"]) || "image/jpeg";
-            const fileExtension = mime.extension(contentType) || "jpg";
+            const content_type = String(response.headers["content-type"]) || "image/jpeg";
+            const file_extension = mime.extension(content_type) || "jpg";
 
             // build data
-            const formData = new FormData();
-            formData.append("file", response.data, `${uid}.${fileExtension}`);
+            const form_data = new FormData();
+            form_data.append("file", response.data, `${uid}.${file_extension}`);
 
             // Make POST request to igem api endpoint
             // /websites/teams/{teamId}?directory={folderName}
-            await this.client.post(`/websites/teams/${this.teamId}`, formData, {
-                params: { directory: folderName },
-                headers: formData.getHeaders?.(),
+            await this.client.post(`/websites/teams/${this.team_id}`, form_data, {
+                params: { directory: folder_name },
+                headers: form_data.getHeaders?.(),
             });
 
             // return the upload result
-            const publicURL = `https://static.igem.wiki/teams/${this.teamId}/${folderName}/${uid}.${fileExtension}`;
+            const public_url = `https://static.igem.wiki/teams/${this.team_id}/${folder_name}/${uid}.${file_extension}`;
             return {
-                fileName: `${uid}.${fileExtension}`,
-                key: `${folderName}/${uid}.${fileExtension}`,
-                location: publicURL,
-                contentType,
+                file_name: `${uid}.${file_extension}`,
+                key: `${folder_name}/${uid}.${file_extension}`,
+                location: public_url,
+                content_type: content_type,
             };
         } catch (error) {
             return error instanceof Error ? error : Error("Image upload failed");
         }
     }
 
-    public async alreadyUploaded({ folderName, uid }: { folderName: string; uid: string }): Promise<Result<boolean>> {
+    public async alreadyUploaded({ folder_name, uid }: { folder_name: string; uid: string }): Promise<Result<boolean>> {
         try {
-            const response = await this.client.get(`/websites/teams/${this.teamId}`, {
-                params: { directory: folderName },
+            const response = await this.client.get(`/websites/teams/${this.team_id}`, {
+                params: { directory: folder_name },
             });
 
             // files returned:
             const files = response.data || [];
 
             const exists = files.some((file: any) => {
-                const fetchedFileName = file.name || file.key || "";
-                return fetchedFileName.startsWith(uid);
+                const fetched_file_name = file.name || file.key || "";
+                return fetched_file_name.startsWith(uid);
             });
 
             return exists;

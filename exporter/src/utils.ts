@@ -118,14 +118,14 @@ export async function clearPreviousOutputs(): Promise<Result<void>> {
 
 // STRINGIFICATION AND CLEANUP HELPERS
 
-const web_regex_replacements: [string | RegExp, string][] = [
+const WEB_REGEX_REPLACEMENTS: [string | RegExp, string][] = [
     [" ", "-"],
     ['"', "&quot;"],
 ];
 
 export function cleanWebString(s: string): string {
     let output = s;
-    for (const [search, replacement] of web_regex_replacements) {
+    for (const [search, replacement] of WEB_REGEX_REPLACEMENTS) {
         output = output.replaceAll(search, replacement);
     }
     return output;

@@ -46,7 +46,7 @@ async function getAggregateEntries({ agg_id }: { agg_id: PageId }): Promise<Resu
     const blocks = await agg_block.getChildren();
     if (isErr(blocks)) return blocks;
 
-    const pageIds = [];
+    const page_ids = [];
     block_loop: for (const block of blocks) {
         if (block.type === "paragraph") {
             // Skip empty whitespace
@@ -59,10 +59,10 @@ async function getAggregateEntries({ agg_id }: { agg_id: PageId }): Promise<Resu
                 if (item.type === "mention") {
                     switch (item.mention.type) {
                         case "page":
-                            pageIds.push(new PageId(item.mention.page.id));
+                            page_ids.push(new PageId(item.mention.page.id));
                             break;
                         case "database":
-                            pageIds.push(new DatabaseId(item.mention.database.id));
+                            page_ids.push(new DatabaseId(item.mention.database.id));
                             break;
                         default:
                             return new Error(
@@ -85,17 +85,17 @@ async function getAggregateEntries({ agg_id }: { agg_id: PageId }): Promise<Resu
 
         switch (block.link_to_page.type) {
             case "page_id":
-                pageIds.push(new PageId(block.link_to_page.page_id));
+                page_ids.push(new PageId(block.link_to_page.page_id));
                 continue block_loop;
             case "database_id":
-                pageIds.push(new DatabaseId(block.link_to_page.database_id));
+                page_ids.push(new DatabaseId(block.link_to_page.database_id));
                 continue block_loop;
             case "comment_id":
                 return new Error(`Aggregate ${agg_id} contains link to comment ${block.link_to_page.comment_id}"`);
         }
     }
 
-    return pageIds;
+    return page_ids;
 }
 
 export async function exportAllPages({ content_map }: { content_map: ContentMap }): Promise<void> {
@@ -111,7 +111,7 @@ async function exportPage({
 }): Promise<void> {
     const markdown = await item.getMarkdown();
     if (isErr(markdown)) {
-        log.warn_error(markdown);
+        log.warnError(markdown);
         return;
     }
 

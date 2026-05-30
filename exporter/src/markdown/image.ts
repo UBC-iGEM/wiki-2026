@@ -33,6 +33,8 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
 
         try {
             interface UrlData {
+                // `permissionRecord` matches exactly the property in the URL
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 permissionRecord: {
                     id: string;
                 };
