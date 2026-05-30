@@ -17,7 +17,15 @@ import remarkStringify from "remark-stringify";
 import { unified } from "unified";
 import { visit, type Action, type ActionTuple, type VisitorResult } from "unist-util-visit";
 
-export async function processMarkdown({ md, path, routes }: { md: string; path: PagePath; routes: ContentMap }) {
+export async function processMarkdown({
+    md,
+    path,
+    routes,
+}: {
+    md: string;
+    path: PagePath;
+    routes: ContentMap;
+}): Promise<void> {
     const preprocessed_markdown = processRegex(md);
 
     const processed_markdown = (
@@ -146,6 +154,8 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
                 return;
             }
 
+            // Cast since we are guaranteed that transform matches the argument type
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const res = (transform as (arg: any) => ComponentOutput)({ node, ctx });
             if (isErr(res)) {
                 log.warn_error(res);

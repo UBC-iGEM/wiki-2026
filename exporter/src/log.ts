@@ -7,11 +7,11 @@ export function error_and_quit(error: Error | string): never {
     process.exit(1);
 }
 
-export function warn_error(error: Error | string) {
+export function warn_error(error: Error | string): void {
     log_error({ error, ansi_color: BOLD_YELLOW });
 }
 
-function log_error({ error, ansi_color }: { error: Error | string; ansi_color: string }) {
+function log_error({ error, ansi_color }: { error: Error | string; ansi_color: string }): void {
     if (typeof error === "string") error = new Error(error);
     console.error(`${ansi_color}${error.stack}${RESET}`);
 }

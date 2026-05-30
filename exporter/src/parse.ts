@@ -98,7 +98,7 @@ async function getAggregateEntries({ agg_id }: { agg_id: PageId }): Promise<Resu
     return pageIds;
 }
 
-export async function exportAllPages({ content_map }: { content_map: ContentMap }) {
+export async function exportAllPages({ content_map }: { content_map: ContentMap }): Promise<void> {
     await Promise.all(content_map.pages().map((page) => exportPage({ page, content_map })));
 }
 
@@ -108,7 +108,7 @@ async function exportPage({
 }: {
     page: MapPath<PageId>;
     content_map: ContentMap;
-}) {
+}): Promise<void> {
     const markdown = await item.getMarkdown();
     if (isErr(markdown)) {
         log.warn_error(markdown);

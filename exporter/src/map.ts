@@ -89,7 +89,7 @@ export class AggregateMap extends PathMap {
         super();
     }
 
-    push(item: MapItem<PageId | DatabaseMap>) {
+    push(item: MapItem<PageId | DatabaseMap>): void {
         this.entries.push(item);
     }
 
@@ -118,7 +118,7 @@ export class DatabaseMap extends PathMap {
         yield* this.entries.map(({ path, item }) => ({ path: new PagePath([path]), item }));
     }
 
-    push(item: MapItem<PageId>) {
+    push(item: MapItem<PageId>): void {
         this.entries.push(item);
     }
 }

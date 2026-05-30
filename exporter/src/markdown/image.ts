@@ -1,5 +1,5 @@
 import { BlockId, Id } from "../notion";
-import { isErr } from "../utils";
+import { isErr, type Result } from "../utils";
 import type { ProcessorInput, ProcessorOutput } from "./markdown";
 import type { Image } from "mdast";
 import { CONTINUE } from "unist-util-visit";
@@ -43,7 +43,7 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
             image_id = new Id(id);
             const block_id = new BlockId(id);
 
-            const callback = async () => {
+            const callback = async (): Promise<Result<void>> => {
                 const block_data = await block_id.get();
                 if (isErr(block_data)) return block_data;
                 if (block_data.type !== "image" || block_data.image.type !== "file")
@@ -68,9 +68,9 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
         image_id = new Id(id);
 
         // Include full query parameters for data to avoid "Access Denied" errors
-        image_data_url = image_node_url;
+        image_data_url = image_node_url; // eslint-disable-line @typescript-eslint/no-unused-vars
 
-        const callback = async () => {
+        const callback = async (): Promise<Result<void>> => {
             // TODO: GET AND UPLOAD
         };
         ctx.callbacks.push(callback);

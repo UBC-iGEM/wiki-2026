@@ -1,6 +1,6 @@
+import { CONFIG } from "./config";
 import { existsSync } from "node:fs";
 import { mkdir, rm, writeFile } from "node:fs/promises";
-import { CONFIG } from "./config";
 import { dirname } from "node:path";
 
 // ERROR HANDLING
@@ -16,6 +16,7 @@ export function errorGenerator({ base }: { base: string }): (err: string) => Err
 }
 
 // FUNCTION WRAPPERS
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
  * Safely calls a function that may throw an Exception.
@@ -74,6 +75,8 @@ export async function $withRetries<Args extends any[], Ret>(
     // Call it one last time, and return the value regardless of what happens
     return await fn(...args);
 }
+
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 // FILE I/O HELPERS
 

@@ -1,10 +1,10 @@
+import { CONFIG } from "./config";
+import type { Result } from "./utils";
 import axios, { type AxiosInstance } from "axios";
 import { wrapper } from "axios-cookiejar-support";
-import { CookieJar } from "tough-cookie";
-import type { Result } from "./utils";
-import mime from "mime-types";
 import FormData from "form-data";
-import { CONFIG } from "./config";
+import mime from "mime-types";
+import { CookieJar } from "tough-cookie";
 
 interface UploadResult {
     fileName: string;
@@ -124,9 +124,10 @@ class ToolsClient {
             });
 
             // files returned:
-            const files: any[] = response.data || [];
+            const files = response.data || [];
 
-            const exists = files.some((file) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const exists = files.some((file: any) => {
                 const fetchedFileName = file.name || file.key || "";
                 return fetchedFileName.startsWith(uid);
             });

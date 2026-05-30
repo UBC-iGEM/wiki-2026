@@ -1,4 +1,0 @@
-{
-    "extends": "../.prettierrc"
-    "plugins": ["prettier-plugin-astro"],
-}
