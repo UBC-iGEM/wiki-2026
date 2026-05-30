@@ -2,13 +2,11 @@ import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
-    {
-        files: ["**/*.ts"],
-    },
     ...tseslint.configs.recommended,
     {
+        files: ["**/*.ts"],
         rules: {
-            "@typescript-eslint/no-explicit-any": "warn",
+            // Error
             "@typescript-eslint/explicit-function-return-type": "error",
             "prefer-const": "error",
             eqeqeq: "error",
@@ -16,7 +14,10 @@ export default defineConfig([
             "no-useless-assignment": "error",
             "prefer-arrow-callback": "error",
             "prefer-promise-reject-errors": "error",
-            yoda: "warn",
+            yoda: "error",
+
+            // Lenient
+            "@typescript-eslint/no-explicit-any": "off",
         },
     },
 ]);

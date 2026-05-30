@@ -146,7 +146,6 @@ function generateComponent({
     slots,
 }: ComponentInput & {
     tag: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     attrs: Record<string, any>;
     slots: Record<string, BlockElement[]>;
 }): ComponentOutput {

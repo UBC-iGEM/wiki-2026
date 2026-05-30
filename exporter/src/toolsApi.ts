@@ -126,7 +126,6 @@ class ToolsClient {
             // files returned:
             const files = response.data || [];
 
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const exists = files.some((file: any) => {
                 const fetchedFileName = file.name || file.key || "";
                 return fetchedFileName.startsWith(uid);

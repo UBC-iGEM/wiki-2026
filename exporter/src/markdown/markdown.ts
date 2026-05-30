@@ -155,7 +155,6 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
             }
 
             // Cast since we are guaranteed that transform matches the argument type
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const res = (transform as (arg: any) => ComponentOutput)({ node, ctx });
             if (isErr(res)) {
                 log.warn_error(res);
