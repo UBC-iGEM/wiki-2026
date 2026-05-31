@@ -1,7 +1,9 @@
 ---
+// eslint-disable-next-line
 import { slugifyPath } from "../../../exporter/src/utils";
 import config from "../../docs/content_map.json";
 
+// eslint-disable-next-line
 const content_map = config.aggregates.map(({ path, item: pages }) => {
     const aggregate_path = path.path;
     const content_paths = pages.entries.map(({ path }) => path.path);

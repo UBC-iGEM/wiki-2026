@@ -1,5 +1,5 @@
 import { BlockId, Id } from "../notion";
-import { isErr, type Result } from "../utils";
+import { $unsafeSync, isErr, type Result } from "../utils";
 import type { ProcessorInput, ProcessorOutput } from "./markdown";
 import type { Image } from "mdast";
 import { CONTINUE } from "unist-util-visit";
@@ -24,41 +24,40 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
     /**
      * A URL that points to the actual image data.
      */
-    let image_data_url: string | undefined = undefined;
+    let _image_data_url: string | undefined = undefined;
 
     if (image_node_url.includes("file://")) {
         // This is a file uploaded to Notion
         // The URL contains metadata, including the Notion block id
         const decoded_url = decodeURIComponent(image_node_url.replace("file://", ""));
 
-        try {
-            interface UrlData {
-                // `permissionRecord` matches exactly the property in the URL
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                permissionRecord: {
-                    id: string;
-                };
-            }
-
-            const url_data: UrlData = JSON.parse(decoded_url);
-            const id = url_data.permissionRecord.id;
-            image_id = new Id(id);
-            const block_id = new BlockId(id);
-
-            const callback = async (): Promise<Result<void>> => {
-                const block_data = await block_id.get();
-                if (isErr(block_data)) return block_data;
-                if (block_data.type !== "image" || block_data.image.type !== "file")
-                    return new Error(`Image block ${block_id} does not point to expected image data`);
-
-                image_data_url = block_data.image.file.url;
-
-                // TODO: GET AND UPLOAD
+        interface UrlData {
+            // `permissionRecord` matches exactly the property in the URL
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            permissionRecord: {
+                id: string;
             };
-            ctx.callbacks.push(callback);
-        } catch (err) {
-            return new Error(`Failed to parse image URL ${decoded_url} on page ${ctx.path}: ${err}`);
         }
+
+        const url_data: Result<UrlData> = $unsafeSync(JSON.parse, decoded_url);
+        if (isErr(url_data))
+            return new Error(`Failed to parse image URL ${decoded_url} on page ${ctx.path}: ${url_data}`);
+
+        const id = url_data.permissionRecord.id;
+        image_id = new Id(id);
+        const block_id = new BlockId(id);
+
+        const callback = async (): Promise<Result<void>> => {
+            const block_data = await block_id.get();
+            if (isErr(block_data)) return block_data;
+            if (block_data.type !== "image" || block_data.image.type !== "file")
+                return new Error(`Image block ${block_id} does not point to expected image data`);
+
+            _image_data_url = block_data.image.file.url;
+
+            // TODO: GET AND UPLOAD
+        };
+        ctx.callbacks.push(callback);
     } else {
         // This is a linked image that exists somewhere online
 
@@ -70,7 +69,7 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
         image_id = new Id(id);
 
         // Include full query parameters for data to avoid "Access Denied" errors
-        image_data_url = image_node_url; // eslint-disable-line @typescript-eslint/no-unused-vars
+        _image_data_url = image_node_url; // eslint-disable-line @typescript-eslint/no-unused-vars
 
         const callback = async (): Promise<Result<void>> => {
             // TODO: GET AND UPLOAD

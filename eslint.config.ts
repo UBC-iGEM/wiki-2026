@@ -1,7 +1,11 @@
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
+    {
+        ignores: ["**/.astro/**", "**/node_modules/**"],
+    },
     ...tseslint.configs.recommended,
     {
         files: ["**/*.ts"],
@@ -54,6 +58,7 @@ export default defineConfig([
                 {
                     selector: "variable",
                     format: ["snake_case", "UPPER_CASE"],
+                    leadingUnderscore: "forbid",
                 },
                 {
                     selector: "variable",
@@ -71,6 +76,8 @@ export default defineConfig([
                     leadingUnderscore: "require",
                     format: ["snake_case"],
                 },
+
+                // Anything goes, since sometimes specific shapes are required
                 {
                     selector: "objectLiteralMethod",
                     format: null,
@@ -94,4 +101,5 @@ export default defineConfig([
             "@typescript-eslint/naming-convention": "off",
         },
     },
+    eslintPluginPrettierRecommended,
 ]);
