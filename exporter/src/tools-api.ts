@@ -1,5 +1,5 @@
 import { CONFIG } from "./config";
-import type { Result } from "./utils";
+import { $unsafe, $withRetries, isErr, type Result } from "./utils";
 import axios, { type AxiosInstance } from "axios";
 import { wrapper } from "axios-cookiejar-support";
 import FormData from "form-data";
@@ -72,67 +72,68 @@ class ToolsClient {
             password,
         });
 
-        try {
-            await instance.client.post("/auth/sign-in", params);
-            return instance;
-        } catch (e) {
-            return e instanceof Error ? e : Error("Authentication failed");
-        }
+        const post_res = await $withRetries($unsafe, async () => await instance.client.post("/auth/sign-in", params));
+        if (isErr(post_res)) return post_res;
+
+        return instance;
     }
 
     // Simple upload function to igem CDN. No specific directory specified yet.
     public async upload(uid: string, url: string): Promise<Result<UploadResult>> {
         const folder_name = "assets"; // Hardcoded for now
 
-        try {
-            // Get image stream from url/notion
-            const response = await axios.get(url, { responseType: "stream" });
+        // Get image stream from url/notion
+        const response = await $withRetries($unsafe, async () => await axios.get(url, { responseType: "stream" }));
+        if (isErr(response)) return response;
 
-            // Infer extension and content type
-            const content_type = String(response.headers["content-type"]) || "image/jpeg";
-            const file_extension = mime.extension(content_type) || "jpg";
+        // Infer extension and content type
+        const content_type = String(response.headers["content-type"]) || "image/jpeg";
+        const file_extension = mime.extension(content_type) || "jpg";
 
-            // build data
-            const form_data = new FormData();
-            form_data.append("file", response.data, `${uid}.${file_extension}`);
+        // build data
+        const form_data = new FormData();
+        form_data.append("file", response.data, `${uid}.${file_extension}`);
 
-            // Make POST request to igem api endpoint
-            // /websites/teams/{teamId}?directory={folderName}
-            await this.client.post(`/websites/teams/${this.team_id}`, form_data, {
-                params: { directory: folder_name },
-                headers: form_data.getHeaders?.(),
-            });
+        // Make POST request to igem api endpoint
+        // /websites/teams/{teamId}?directory={folderName}
+        const post_res = await $withRetries(
+            $unsafe,
+            async () =>
+                await this.client.post(`/websites/teams/${this.team_id}`, form_data, {
+                    params: { directory: folder_name },
+                    headers: form_data.getHeaders?.(),
+                }),
+        );
+        if (isErr(post_res)) return post_res;
 
-            // return the upload result
-            const public_url = `https://static.igem.wiki/teams/${this.team_id}/${folder_name}/${uid}.${file_extension}`;
-            return {
-                file_name: `${uid}.${file_extension}`,
-                key: `${folder_name}/${uid}.${file_extension}`,
-                location: public_url,
-                content_type: content_type,
-            };
-        } catch (error) {
-            return error instanceof Error ? error : Error("Image upload failed");
-        }
+        // return the upload result
+        const public_url = `https://static.igem.wiki/teams/${this.team_id}/${folder_name}/${uid}.${file_extension}`;
+        return {
+            file_name: `${uid}.${file_extension}`,
+            key: `${folder_name}/${uid}.${file_extension}`,
+            location: public_url,
+            content_type: content_type,
+        };
     }
 
     public async alreadyUploaded({ folder_name, uid }: { folder_name: string; uid: string }): Promise<Result<boolean>> {
-        try {
-            const response = await this.client.get(`/websites/teams/${this.team_id}`, {
-                params: { directory: folder_name },
-            });
+        const response = await $withRetries(
+            $unsafe,
+            async () =>
+                await this.client.get(`/websites/teams/${this.team_id}`, {
+                    params: { directory: folder_name },
+                }),
+        );
+        if (isErr(response)) return response;
 
-            // files returned:
-            const files = response.data || [];
+        // files returned:
+        const files = response.data || [];
 
-            const exists = files.some((file: any) => {
-                const fetched_file_name = file.name || file.key || "";
-                return fetched_file_name.startsWith(uid);
-            });
+        const exists = files.some((file: any) => {
+            const fetched_file_name = file.name || file.key || "";
+            return fetched_file_name.startsWith(uid);
+        });
 
-            return exists;
-        } catch (error) {
-            return error instanceof Error ? error : Error("Check upload status failed");
-        }
+        return exists;
     }
 }
