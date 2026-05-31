@@ -8,9 +8,16 @@
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "^6.0.2",
         "@types/node": "^25.9.1",
+        "@typescript-eslint/parser": "^8.60.0",
+        "eslint": "^10.4.1",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-astro": "^1.7.0",
+        "eslint-plugin-prettier": "^5.5.6",
         "exporter": "workspace:*",
+        "jiti": "^2.7.0",
         "prettier": "^3.8.3",
-        "prettier-plugin-astro": "^0.14.1"
+        "prettier-plugin-astro": "^0.14.1",
+        "typescript-eslint": "^8.60.0"
     },
     "notion_export_config": {
         "master_id": "364d65dd82be80f0aed8fcb8bfaf9353",
@@ -20,7 +27,11 @@
     },
     "scripts": {
         "export": "npx tsx --env-file=.env exporter/src/main.ts",
-        "dev": "npm run dev -w web"
+        "dev": "npm run dev -w web",
+        "fmt": "prettier . --write",
+        "lint": "eslint .",
+        "check": "tsc --noEmit -p exporter/tsconfig.json && npm run astro check -w web",
+        "validate": "npm run check && npm run lint"
     },
     "dependencies": {
         "tsx": "^4.22.3"

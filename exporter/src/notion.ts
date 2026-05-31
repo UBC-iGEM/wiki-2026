@@ -16,10 +16,10 @@ function notion(): Client {
     }
 
     const key = process.env.NOTION_API_KEY;
-    if (!key) log.error_and_quit("NOTION_API_KEY env. variable is unset");
+    if (!key) log.errorAndQuit("NOTION_API_KEY env. variable is unset");
 
     const client_res = $unsafeSync(() => new Client({ auth: key }));
-    if (isErr(client_res)) log.error_and_quit(`Failed to connect new Notion client. Error: ${client_res}`);
+    if (isErr(client_res)) log.errorAndQuit(`Failed to connect new Notion client. Error: ${client_res}`);
 
     NOTION_CLIENT = client_res;
     return NOTION_CLIENT;
@@ -136,7 +136,7 @@ export class DatabaseId extends Id implements Named {
             return makeError("db has no data sources");
         }
 
-        const pageIds: string[] = [];
+        const page_ids: string[] = [];
         for (const ds of db.data_sources) {
             let cursor: string | undefined = undefined;
             do {
@@ -149,12 +149,12 @@ export class DatabaseId extends Id implements Named {
                 const res = await $withRetries($unsafe, notion().dataSources.query, params);
                 if (isErr(res)) return makeError(`database query failed with ${res}`);
 
-                pageIds.push(...res.results.map((r) => r.id));
+                page_ids.push(...res.results.map((r) => r.id));
                 cursor = res.has_more ? (res.next_cursor ?? undefined) : undefined;
             } while (cursor);
         }
 
-        return pageIds.map((id) => new PageId(id));
+        return page_ids.map((id) => new PageId(id));
     }
 }
 

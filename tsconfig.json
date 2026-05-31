@@ -1,4 +1,4 @@
 {
     "files": [],
-    "references": [{ "path": "./exporter" }, { "path": "./web" }],
+    "references": [{ "path": "./exporter" }, { "path": "./web" }]
 }
