@@ -34,7 +34,7 @@ const Components = Object.fromEntries(
         // Extract the filename without extension to use as a key
         const name = path.split("/").pop()!.replace(".astro", "");
         // The component is the default module export
-        const component = (module as any).default;
+        const component = (module as any).default; /* eslint-disable-line @typescript-eslint/no-explicit-any */
         return [name, component];
     }),
 );

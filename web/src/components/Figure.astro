@@ -1,6 +1,6 @@
 ---
 import { type FigureAttrs, FIGURE_SLOTS } from "@exporter/markdown/components";
-interface Props extends FigureAttrs {}
+type Props = FigureAttrs;
 
 const { imgs } = Astro.props;
 FIGURE_SLOTS satisfies readonly ["content"];

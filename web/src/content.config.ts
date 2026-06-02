@@ -4,7 +4,7 @@ import { defineCollection } from "astro:content";
 const DOCS = defineCollection({
     loader: glob({
         base: "./docs",
-        pattern: "**/*.{md,mdx}",
+        pattern: "**/*.mdx",
     }),
 });
 
