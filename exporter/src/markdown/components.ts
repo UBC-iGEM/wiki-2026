@@ -150,7 +150,7 @@ function generateComponent({
     slots: Record<string, BlockElement[]>;
 }): ComponentOutput {
     let attr_string = Object.entries(attrs)
-        .map(([name, value]) => `${name}=${JSON.stringify(value)}`)
+        .map(([name, value]) => `${name}={${JSON.stringify(value)}}`)
         .join(" ");
     // If there are attributes, they must be prepended with a space
     if (attr_string !== "") attr_string = " " + attr_string;

@@ -28,6 +28,7 @@
     "scripts": {
         "export": "npx tsx --env-file=.env exporter/src/main.ts",
         "dev": "npm run dev -w web",
+        "build": "npm run build -w web",
         "fmt": "prettier . --write",
         "lint": "eslint .",
         "check": "tsc --noEmit -p exporter/tsconfig.json && npm run astro check -w web",

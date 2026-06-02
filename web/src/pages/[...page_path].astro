@@ -1,0 +1,41 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection, render } from "astro:content";
+
+type DocsEntry = CollectionEntry<"docs">;
+type StaticPath = {
+    params: { page_path: string };
+    props: { page: DocsEntry };
+};
+type RouteMapping = {
+    id: string;
+    route: string;
+};
+
+export async function getStaticPaths(): Promise<StaticPath[]> {
+    const routePathForEntryId = (id: string): string => {
+        const route_path = id.replace(/\/index$/, "");
+
+        return route_path === "" || route_path === "index" ? "docs" : route_path;
+    };
+    const pages = await getCollection("docs");
+    const route_mappings: RouteMapping[] = pages.map((page) => ({
+        id: page.id,
+        route: routePathForEntryId(page.id),
+    }));
+
+    console.log("[content-routing-poc] docs collection route mappings", JSON.stringify(route_mappings, null, 2));
+
+    return pages.map((page) => ({
+        params: { page_path: routePathForEntryId(page.id) },
+        props: { page },
+    }));
+}
+
+const { page } = Astro.props as { page: DocsEntry };
+const { Content } = await render(page);
+---
+
+<main>
+    <Content />
+</main>
