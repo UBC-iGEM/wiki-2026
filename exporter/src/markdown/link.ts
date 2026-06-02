@@ -10,12 +10,12 @@ export const LINK_PROCESSORS = [normalizePageLink];
  */
 function normalizePageLink({ node, ctx }: ProcessorInput<Link>): ProcessorOutput {
     const url = node.url;
-    if (!node.url.includes("notion.so")) return;
+    if (!node.url.includes("app.notion.com")) return;
 
     const err_base = `'link' element on page ${ctx.path} (${node})`;
 
     // Extract Notion page ID from URL
-    const page_id = url.match(/(?<=notion.so\/)[a-f0-9]{32}/)?.[0];
+    const page_id = url.match(/(?<=app.notion.com\/p\/)[a-f0-9]{32}/)?.[0];
     if (!page_id) return new Error(`${err_base} has no valid id`);
 
     const page_path = ctx.routes.get(new PageId(page_id));

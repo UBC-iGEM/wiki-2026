@@ -32,8 +32,18 @@ export const COMPONENT_MAP: Record<string, (input: ComponentInput) => ComponentO
     skip,
 };
 
+// ====================
+// FIGURE COMPONENT
+// ====================
+
+export interface FigureAttrs {
+    imgs: { url: string; alt: string }[];
+}
+export const FIGURE_SLOTS = ["content"] as const;
+type FigureSlots = SlotRecord<typeof FIGURE_SLOTS>;
+
 function figure({ node, ctx }: ComponentInput): ComponentOutput {
-    const images: { url: string; alt: string }[] = [];
+    const images: FigureAttrs["imgs"] = [];
 
     // A figure block should start with one or more paragraphs containing images
     const paragraphs: Paragraph[] = [];
@@ -88,7 +98,8 @@ function figure({ node, ctx }: ComponentInput): ComponentOutput {
 
     // Images have been removed from the node body and
     // will be added as a JSON attribute of the component
-    return generateComponent({
+
+    return generateComponent<FigureAttrs, FigureSlots>({
         node,
         ctx,
         tag: "figure",
@@ -96,6 +107,14 @@ function figure({ node, ctx }: ComponentInput): ComponentOutput {
         slots: { content: filtered_children },
     });
 }
+
+// ====================
+// DBTL COMPONENT
+// ====================
+
+type DbtlAttrs = Record<string, never>;
+export const DBTL_SLOTS = ["design", "build", "test", "learn"] as const;
+type DbtlSlots = SlotRecord<typeof DBTL_SLOTS>;
 
 function dbtl({ node, ctx }: ComponentInput): ComponentOutput {
     /**
@@ -129,8 +148,19 @@ function dbtl({ node, ctx }: ComponentInput): ComponentOutput {
         );
 
     const [design, build, test, learn] = sections as [BlockElement[], BlockElement[], BlockElement[], BlockElement[]];
-    return generateComponent({ node, ctx, tag: "dbtl", attrs: {}, slots: { design, build, test, learn } });
+
+    return generateComponent<DbtlAttrs, DbtlSlots>({
+        node,
+        ctx,
+        tag: "dbtl",
+        attrs: {},
+        slots: { design, build, test, learn },
+    });
 }
+
+// ====================
+// SKIP COMPONENT
+// ====================
 
 function skip({ ctx }: ComponentInput): ComponentOutput {
     // Remove this element entirely
@@ -139,15 +169,20 @@ function skip({ ctx }: ComponentInput): ComponentOutput {
     return [SKIP, ctx.index];
 }
 
-function generateComponent({
+// ====================
+// HELPERS
+// ====================
+
+type SlotRecord<Slots extends readonly string[]> = Record<Slots[number], BlockElement[]>;
+function generateComponent<Attrs extends Record<string, any>, Slots extends SlotRecord<readonly string[]>>({
     ctx,
     tag,
     attrs,
     slots,
 }: ComponentInput & {
     tag: string;
-    attrs: Record<string, any>;
-    slots: Record<string, BlockElement[]>;
+    attrs: Attrs;
+    slots: Slots;
 }): ComponentOutput {
     let attr_string = Object.entries(attrs)
         .map(([name, value]) => `${name}=${JSON.stringify(value)}`)
@@ -177,7 +212,7 @@ function generateComponent({
             value: "</Fragment>",
         };
 
-        return [slot_open, ...elements, slot_close];
+        return [slot_open, ...(elements as BlockElement[]), slot_close];
     });
 
     ctx.parent.children.splice(ctx.index, 1, opening_element, ...component_elements, closing_element);
