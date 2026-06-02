@@ -159,6 +159,13 @@ function dbtl({ node, ctx }: ComponentInput): ComponentOutput {
 }
 
 // ====================
+// CALLOUT COMPONENT
+// ====================
+export interface CalloutAttrs {
+    icon: string;
+}
+
+// ====================
 // SKIP COMPONENT
 // ====================
 

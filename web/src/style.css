@@ -1,0 +1,25 @@
+table {
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table:has(th:empty) thead {
+    display: none;
+}
+
+table th,
+table td {
+    border: 1px solid #333333;
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background-color: #f4f4f4;
+    color: #000000;
+}
+
+pre.astro-code {
+    padding: 15px;
+    border-radius: 10px;
+}

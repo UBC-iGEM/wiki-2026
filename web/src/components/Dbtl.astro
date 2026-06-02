@@ -1,22 +1,47 @@
 ---
-import { DBTL_SLOTS } from "../../../exporter/src/markdown/components";
+import { DBTL_SLOTS } from "@exporter/markdown/components";
 
 DBTL_SLOTS satisfies readonly ["design", "build", "test", "learn"];
 ---
 
 <div class="dbtl">
-    <div class="design">
-        <slot name="design" />
+    <div class="step">
+        <div class="sidebar">Design</div>
+        <div class="content"><slot name="design" /></div>
     </div>
-    <div class="build">
-        <slot name="build" />
+    <div class="step">
+        <div class="sidebar">Build</div>
+        <div class="content"><slot name="build" /></div>
     </div>
-    <div class="test">
-        <slot name="test" />
+    <div class="step">
+        <div class="sidebar">Test</div>
+        <div class="content"><slot name="test" /></div>
     </div>
-    <div class="learn">
-        <slot name="learn" />
+    <div class="step">
+        <div class="sidebar">Learn</div>
+        <div class="content"><slot name="learn" /></div>
     </div>
 </div>
 
-<style></style>
+<style>
+    /* This makes all 4 rows identical in structure */
+    .step {
+        display: flex;
+        gap: 24px;
+        margin-bottom: 20px;
+    }
+
+    /* Identical sidebar styling */
+    .sidebar {
+        width: 100px;
+        flex-shrink: 0;
+        font-weight: bold;
+        border-right: 2px solid #333;
+        letter-spacing: 0.05em;
+    }
+
+    /* Content styling */
+    .content {
+        flex-grow: 1;
+    }
+</style>

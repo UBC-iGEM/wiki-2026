@@ -32,11 +32,16 @@ const REGEXES: [RegExp, string][] = [
     [/^((<\/(?!colgroup|tr)[a-zA-Z_-]+>)|(```)|(\$\$))$/, "$1\n"],
 
     /**
-     * Replace Notion HTML tags with standard Markdown blocks.
+     * Replace Notion mentions with standard Markdown blocks.
      * The Markdown blocks may later be parsed and transformed.
      */
     [/<(mention-page|mention-database)\s+url="([^"]*)"(?:\/>|>([^<]*)<\/mention-(?:page|database)>)/, "[$1]($2)"],
     [/<empty-block\/>/, "\n"],
+
+    /**
+     * Update Notion callout elements to be parsed as a component.
+     */
+    [/<(\/?)callout/, "<$1Callout"],
 
     /**
      * Add newline after last list item

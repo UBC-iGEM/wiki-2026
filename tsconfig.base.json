@@ -28,6 +28,6 @@
 
         // Allows resolving `.json` files as modules
         // Used for setting config variables in `package.json` files
-        "resolveJsonModule": true
-    }
+        "resolveJsonModule": true,
+    },
 }
