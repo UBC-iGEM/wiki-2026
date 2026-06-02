@@ -1,41 +1,45 @@
 ---
+import { slugifyPath } from "../../../exporter/src/utils";
 import type { CollectionEntry } from "astro:content";
 import { getCollection, render } from "astro:content";
+import MainLayout from "../layouts/MainLayout.astro";
 
 type DocsEntry = CollectionEntry<"docs">;
 type StaticPath = {
-    params: { page_path: string };
+    params: { page_path: string | undefined };
     props: { page: DocsEntry };
-};
-type RouteMapping = {
-    id: string;
-    route: string;
 };
 
 export async function getStaticPaths(): Promise<StaticPath[]> {
-    const routePathForEntryId = (id: string): string => {
-        const route_path = id.replace(/\/index$/, "");
-
-        return route_path === "" || route_path === "index" ? "docs" : route_path;
-    };
     const pages = await getCollection("docs");
-    const route_mappings: RouteMapping[] = pages.map((page) => ({
-        id: page.id,
-        route: routePathForEntryId(page.id),
-    }));
 
-    console.log("[content-routing-poc] docs collection route mappings", JSON.stringify(route_mappings, null, 2));
+    return pages.map((page) => {
+        let page_slug = page.id.replace(/\.mdx$/, "");
+        page_slug = slugifyPath(page_slug);
 
-    return pages.map((page) => ({
-        params: { page_path: routePathForEntryId(page.id) },
-        props: { page },
-    }));
+        return {
+            params: { page_path: page_slug === "index" || page_slug === "" ? undefined : page_slug },
+            props: { page },
+        };
+    });
 }
 
 const { page } = Astro.props as { page: DocsEntry };
 const { Content } = await render(page);
+
+// Collect all components in the components directory
+const componentFiles = import.meta.glob("../components/*.astro", { eager: true });
+const Components = Object.fromEntries(
+    Object.entries(componentFiles).map(([path, module]) => {
+        // Extract the filename without extension to use as a key
+        const name = path.split("/").pop()!.replace(".astro", "");
+        // The component is the default module export
+        const component = (module as any).default;
+        return [name, component];
+    }),
+);
 ---
 
-<main>
-    <Content />
-</main>
+<MainLayout>
+    <Content components={Components} />
+</MainLayout>

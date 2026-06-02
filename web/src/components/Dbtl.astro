@@ -1,0 +1,22 @@
+---
+import { DBTL_SLOTS } from "../../../exporter/src/markdown/components";
+
+DBTL_SLOTS satisfies readonly ["design", "build", "test", "learn"];
+---
+
+<div class="dbtl">
+    <div class="design">
+        <slot name="design" />
+    </div>
+    <div class="build">
+        <slot name="build" />
+    </div>
+    <div class="test">
+        <slot name="test" />
+    </div>
+    <div class="learn">
+        <slot name="learn" />
+    </div>
+</div>
+
+<style></style>
