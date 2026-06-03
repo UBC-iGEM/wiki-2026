@@ -24,10 +24,18 @@ function normalizePageLink({ node, ctx }: ProcessorInput<Link>): ProcessorOutput
 
     const path_slug = `/${slugifyPath(page_path.toString())}`;
 
+    const children =
+        // A mention link?
+        node.children.length === 1 && node.children[0]!.type === "text" && node.children[0]!.value.includes("mention")
+            ? // Replace children with page name
+              [{ type: "text" as const, value: page_path.components().at(-1)!.toString() }]
+            : // Retain children
+              node.children;
+
     const new_link: Link = {
         type: "link",
         url: path_slug,
-        children: [{ type: "text", value: page_path.components().at(-1)!.toString() }],
+        children,
     };
     ctx.parent.children[ctx.index] = new_link;
 

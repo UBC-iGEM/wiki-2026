@@ -1,7 +1,7 @@
 import * as log from "../log";
 import { PagePath, type ContentMap } from "../map";
 import { isErr, saveFile } from "../utils";
-import { COMPONENT_MAP, type ComponentOutput } from "./components";
+import { COMPONENT_MAP } from "./components";
 import { INLINE_COMPONENT_MAP } from "./components-inline";
 import { HTML_PROCESSORS } from "./html";
 import { IMAGE_PROCESSORS } from "./image";
@@ -83,7 +83,7 @@ export const remarkProcessingPipeline = unified().use(remarkParse).use(remarkDir
  */
 function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
     return async function (tree: Root): Promise<void> {
-        let callbacks: ProcessorCallback[] = [];
+        const callbacks: ProcessorCallback[] = [];
 
         // Initial pass: handle all content cleanup and modifications
         visit(tree, (node, index, parent) => {
@@ -107,6 +107,22 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
                     return processAll(LINK_PROCESSORS, { node, ctx });
                 case "image":
                     return processAll(IMAGE_PROCESSORS, { node, ctx });
+                case "textDirective": {
+                    const inline_component_type = node.name.toLowerCase();
+                    const transform = INLINE_COMPONENT_MAP[inline_component_type];
+                    if (!transform) {
+                        log.warnError(`Inline component type ${inline_component_type} at ${path} not understood`);
+                        return;
+                    }
+
+                    const res = transform({ node, ctx });
+                    if (isErr(res)) {
+                        log.warnError(res);
+                        return;
+                    }
+
+                    return res;
+                }
             }
         });
 
@@ -114,44 +130,26 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
         for (const result of results) {
             if (result) log.warnError(result);
         }
-        callbacks = [];
 
-        visit(tree, (node, index, parent) => {
+        visit(tree, "containerDirective", (node, index, parent) => {
             if (index === undefined || !parent) return;
-
-            const node_type = node.type;
-            if (node_type !== "containerDirective" && node_type !== "textDirective") return;
 
             const ctx: ProcessorContext = {
                 index,
                 parent,
                 routes,
                 path,
-                callbacks,
+                callbacks: [],
             };
 
             const component_type = node.name.toLowerCase();
-
-            let transform = undefined;
-
-            switch (node_type) {
-                case "containerDirective": {
-                    transform = COMPONENT_MAP[component_type];
-                    break;
-                }
-                case "textDirective": {
-                    transform = INLINE_COMPONENT_MAP[component_type];
-                    break;
-                }
-            }
-
+            const transform = COMPONENT_MAP[component_type];
             if (!transform) {
                 log.warnError(`Component type ${component_type} at ${path} not understood`);
                 return;
             }
 
-            // Cast since we are guaranteed that transform matches the argument type
-            const res = (transform as (arg: any) => ComponentOutput)({ node, ctx });
+            const res = transform({ node, ctx });
             if (isErr(res)) {
                 log.warnError(res);
                 return;
@@ -176,7 +174,7 @@ export interface ProcessorInput<T> {
 }
 
 type Processor<T> = (input: T) => ProcessorOutput;
-function processAll<T>(processors: Processor<T>[], input: T): VisitorResult {
+export function processAll<T>(processors: Processor<T>[], input: T): VisitorResult {
     for (const processor of processors) {
         const res = processor(input);
 

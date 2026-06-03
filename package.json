@@ -32,7 +32,8 @@
         "fmt": "prettier . --write",
         "lint": "eslint .",
         "check": "tsc --noEmit -p exporter/tsconfig.json && npm run astro check -w web",
-        "validate": "npm run check && npm run lint"
+        "validate": "npm run check && npm run lint",
+        "clean": "rm -r web/docs && rm -r exporter/debug"
     },
     "dependencies": {
         "rehype-katex": "^7.0.1",

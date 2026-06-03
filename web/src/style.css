@@ -1,3 +1,4 @@
+/* Table styling */
 table {
     border-collapse: collapse;
     margin: 20px 0;
@@ -19,7 +20,13 @@ table th {
     color: #000000;
 }
 
+/* Format code blocks */
 pre.astro-code {
     padding: 15px;
     border-radius: 10px;
+}
+
+/* Notion injects underlines as <span underline="true"> */
+[underline="true"] {
+    text-decoration: underline;
 }
