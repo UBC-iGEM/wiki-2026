@@ -13,8 +13,8 @@ sensitive details. Be sure everyone shown in pictures agree to them being shown.
 
 ## Inspirations
 
+- [2025 McGill](https://2025.igem.wiki/mcgill/team)
+- [2025 EPFL](https://2025.igem.wiki/epfl/team)
 - [2024 Waseda-Tokyo](https://2024.igem.wiki/waseda-tokyo/members)
 - [2024 Aachen](https://2024.igem.wiki/aachen/team)
 - [2024 Patras](https://2024.igem.wiki/patras/team)
-- [2024 DTU-Denmark](https://2024.igem.wiki/dtu-denmark/team)
-- [2024 Fudan](https://2024.igem.wiki/fudan/team)

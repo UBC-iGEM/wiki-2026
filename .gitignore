@@ -1,7 +1,8 @@
 env
 venv
 .vscode
+.idea
+.DS_Store
 __pycache__
 public
-
 node_modules

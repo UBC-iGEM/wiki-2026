@@ -1,16 +1,15 @@
 #### Best Model
 
-Models and computer simulations can help us understand the function and
-operation of BioBrick Parts and Devices. Simulation and modeling are critical
-engineering skills that can contribute to project design or provide a better
-understanding of the modeled process. These processes are even more useful
-and/or informative when real-world data are included in the model. This award is
-for teams who build a model of their system and use it to inform system design
-or simulate expected behavior before, or in conjunction with, experiments in the
-wetlab.
+Models help us understand, predict, and design biological systems. Mechanistic
+modeling, machine learning, and other computational approaches can guide project
+design and deepen understanding of the system being studied, especially when
+grounded in data from the team's own experiments or from existing sources. This
+award is for teams who build or apply a model and use it to inform design,
+predict behavior, or interpret results, before or alongside their experimental
+work.
 
 Visit
-the [Special Prizes page](https://competition.igem.org/judging/special-prizes) for
+the [Special Awards page](https://competition.igem.org/judging/awards/special) for
 more information.
 
 ## Overview
@@ -23,9 +22,9 @@ iterated many times in a computer before moving to the lab.
 
 ## Inspirations
 
-- [2024 UToronto](https://2024.igem.wiki/utoronto/model)
-- [2024 Heidelberg](https://2024.igem.wiki/heidelberg/model)
-- [2024 Waseda-Tokyo](https://2024.igem.wiki/waseda-tokyo/model)
-- [2024 BNUZH-China](https://2024.igem.wiki/bnuzh-china/model)
-- [2024 CJUH-JLU-China](https://2024.igem.wiki/cjuh-jlu-china/model)
-- [2024 Tsinghua](https://2024.igem.wiki/tsinghua/model)
+- [2025 Heidelberg](https://2025.igem.wiki/heidelberg/model)
+- [2025 Peking](https://2025.igem.wiki/peking/model)
+- [2025 GreatBay-SCIE](https://2025.igem.wiki/greatbay-scie/model)
+- [2025 DTU-Denmark](https://2025.igem.wiki/dtu-denmark/model)
+- [2025 Munich](https://2025.igem.wiki/munich/model)
+- [2025 Toronto](https://2025.igem.wiki/toronto/model)

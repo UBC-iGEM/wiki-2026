@@ -1,15 +1,13 @@
 #### Best Hardware
 
-This is a prize for the team that has developed a piece of hardware for
-synthetic biology. Hardware in iGEM should make synthetic biology based on
-standard parts easier, faster, better or more accessible to our community. Did
-your team make a sensor to help teams characterize parts? Did you make a robot
-that can help teams perform experiments or do cloning more easily? Strong
-competitors for this prize will demonstrate utility, user testing, and easy
-reproducibility.
+This award is for teams who develop hardware for synthetic biology. Good iGEM
+hardware makes work with standard parts easier, faster, better, or more
+accessible: think a sensor that helps characterize parts, or a robot that
+automates experiments and cloning. Strong contenders demonstrate utility, user
+testing, and easy reproducibility.
 
 Visit
-the [Special Prizes page](https://competition.igem.org/judging/special-prizes) for
+the [Special Awards page](https://competition.igem.org/judging/awards/special) for
 more information.
 
 ## Overview
@@ -23,7 +21,6 @@ synthetic biology.
 
 ## Inspirations
 
-- [2024 Aachen](https://2024.igem.wiki/aachen/hardware)
-- [2023 Rochester](https://2023.igem.wiki/rochester)
-- [2023 HUST-China](https://2023.igem.wiki/hust-china/hardware)
-- [2023 Kyoto](https://2023.igem.wiki/kyoto/hardware)
+- [2025 TUDarmstadt](https://2025.igem.wiki/tudarmstadt/hardware)
+- [2025 Cornell](https://2025.igem.wiki/cornell/hardware)
+- [2025 SHSID](https://2025.igem.wiki/shsid/hardware)

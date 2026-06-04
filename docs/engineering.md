@@ -3,8 +3,8 @@
 Demonstrate engineering success in a technical aspect of your project by going
 through at least one iteration of the engineering design cycle.
 
-Visit the [Medals page](https://competition.igem.org/judging/medals) for more
-information.
+Visit the [Medals page](https://competition.igem.org/judging/awards/medals) for
+more information.
 
 ## What Should this Page Contain?
 

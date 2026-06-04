@@ -13,5 +13,6 @@
 
 ## Inspirations
 
-- [2024 EPFL](https://2024.igem.wiki/epfl/notebook)
+- [2025 EPFL](https://2025.igem.wiki/epfl/notebook)
+- [2025 WageningenUR](https://2025.igem.wiki/wageningenur/notebook)
 - [2024 JU-Krakow](https://2024.igem.wiki/ju-krakow/notebook)

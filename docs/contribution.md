@@ -2,8 +2,8 @@
 
 Make a useful contribution for future iGEM teams and document it on this page.
 
-Visit the [Medals page](https://competition.igem.org/judging/medals) for more
-information.
+Visit the [Medals page](https://competition.igem.org/judging/awards/medals) for
+more information.
 
 ## What Should this Page Contain?
 

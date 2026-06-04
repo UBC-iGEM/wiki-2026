@@ -24,33 +24,10 @@
         </li>
 
         <!-- TEAM -->
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="navbar-team"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('pages', page='team') }}"
+            >Team</a
           >
-            Team
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbar-team">
-            <li>
-              <a
-                class="dropdown-item"
-                href="{{ url_for('pages', page='members') }}"
-                >Members</a
-              >
-            </li>
-            <li>
-              <a
-                class="dropdown-item"
-                href="{{ url_for('pages', page='attributions') }}"
-                >Attributions</a
-              >
-            </li>
-          </ul>
         </li>
 
         <!-- PROJECT -->
@@ -134,8 +111,8 @@
             <li>
               <a
                 class="dropdown-item"
-                href="{{ url_for('pages', page='plant') }}"
-                >Plant</a
+                href="{{ url_for('pages', page='alternative-platform') }}"
+                >Alternative Platform</a
               >
             </li>
             <li>

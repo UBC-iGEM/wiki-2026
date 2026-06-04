@@ -6,7 +6,7 @@
     "format": "prettier --write \"{wiki,static,docs}/**/*.{html,css,js,md}\""
   },
   "devDependencies": {
-    "prettier": "^2.8.8",
-    "prettier-plugin-jinja-template": "^0.5.0"
+    "prettier": "^3.3.3",
+    "prettier-plugin-jinja-template": "^2.2.0"
   }
 }

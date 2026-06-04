@@ -15,14 +15,9 @@
 
 ## Inspirations
 
-- [2024 Heidelberg](https://2024.igem.wiki/heidelberg/results)
-- [2024 Marburg](https://2024.igem.wiki/marburg/results)
-- [2024 EPFL](https://2024.igem.wiki/epfl/results)
-- [2024 UToronto](https://2024.igem.wiki/utoronto/results)
-- [2024 Marburg](https://2024.igem.wiki/marburg/results)
-- [2024 Sydney-Australia](https://2024.igem.wiki/sydney-australia/results)
-- [2024 Toulouse-INSA-UPS](https://2024.igem.wiki/toulouse-insa-ups/results)
-- [2024 BNDS-China](https://2024.igem.wiki/bnds-china/results)
-- [2024 Vilnius-Lithuania](https://2024.igem.wiki/vilnius-lithuania/results)
-- [2024 XMU-China](https://2024.igem.wiki/xmu-china/results)
-- [2023 Estonia-TUIT](https://2023.igem.wiki/estonia-tuit/results)
+- [2025 Heidelberg](https://2025.igem.wiki/heidelberg/results)
+- [2025 McGill](https://2025.igem.wiki/mcgill/results)
+- [2025 EPFL](https://2025.igem.wiki/epfl/results)
+- [2025 Marburg](https://2025.igem.wiki/marburg/results)
+- [2025 Munich](https://2025.igem.wiki/munich/results)
+- [2025 Freiburg](https://2025.igem.wiki/freiburg/results)

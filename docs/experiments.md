@@ -15,7 +15,6 @@ experimental process. Share any lessons learned that could benefit future teams.
 
 ## Inspirations
 
-- [2024 Heidelberg](https://2024.igem.wiki/heidelberg/experiments)
-- [2024 Marburg](https://2024.igem.wiki/marburg/experiments)
-- [2024 EPFL](https://2024.igem.wiki/epfl/experiments)
-- [2023 Estonia-TUIT](https://2023.igem.wiki/estonia-tuit/experiments)
+- [2025 Heidelberg](https://2025.igem.wiki/heidelberg/experiments)
+- [2025 McGill](https://2025.igem.wiki/mcgill/experiments)
+- [2025 EPFL](https://2025.igem.wiki/epfl/experiments)

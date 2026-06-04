@@ -2,8 +2,8 @@
 
 Describe how and why you chose your iGEM project.
 
-Visit the [Medals page](https://competition.igem.org/judging/medals) for more
-information.
+Visit the [Medals page](https://competition.igem.org/judging/awards/medals) for
+more information.
 
 ## What Should this Page Contain?
 
@@ -18,12 +18,12 @@ information.
 
 ## Inspirations
 
-- [2024 Heidelberg](https://2024.igem.wiki/heidelberg/description)
+- [2025 Heidelberg](https://2025.igem.wiki/heidelberg/description)
+- [2025 McGill](https://2025.igem.wiki/mcgill/description)
+- [2025 IZJU-China](https://2025.igem.wiki/izju-china/description)
+- [2025 GreatBay-SCIE](https://2025.igem.wiki/greatbay-scie/description)
 - [2024 Marburg](https://2024.igem.wiki/marburg/description)
 - [2024 EPFL](https://2024.igem.wiki/epfl/description)
-- [2024 JU-Krakow](https://2024.igem.wiki/ju-krakow/description)
-- [2024 UToronto](https://2024.igem.wiki/utoronto/description)
-- [2023 Estonia-TUIT](https://2023.igem.wiki/estonia-tuit/description)
 
 ## Tips for Success
 

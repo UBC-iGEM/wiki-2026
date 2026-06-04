@@ -17,6 +17,7 @@
   "trailingComma": "es5",
   "useTabs": false,
   "vueIndentScriptAndStyle": false,
+  "plugins": ["prettier-plugin-jinja-template"],
   "overrides": [
     {
       "files": "*.html",

@@ -4,15 +4,16 @@ Familiarize yourself with the official iGEM competition rules, policies, and
 judging criteria:
 
 - Carefully review
-  the [Wiki Requirements page](https://competition.igem.org/deliverables/team-wiki) to
+  the [Wiki Requirements page](https://teams.igem.org/go/deliverables/wiki) to
   ensure your wiki meets all necessary standards for judging and awards.
 - Understand the criteria and required wiki pages for Gold, Silver, and Bronze
-  Medals on the [Medals page](https://competition.igem.org/judging/medals).
-- Explore the various Project Prizes and their corresponding wiki requirements
+  Medals on
+  the [Medals page](https://competition.igem.org/judging/awards/medals).
+- Explore the various Project Awards and their corresponding wiki requirements
   on
-  the [Project Prizes Page](https://competition.igem.org/judging/project-prizes).
-- Discover the eligibility criteria and wiki requirements for Special Prizes on
-  the [Special Prizes Page](https://competition.igem.org/judging/special-prizes).
+  the [Project Awards Page](https://competition.igem.org/judging/awards/project).
+- Discover the eligibility criteria and wiki requirements for Special Awards on
+  the [Special Awards Page](https://competition.igem.org/judging/awards/special).
 
 ## Building Your Wiki
 
@@ -28,7 +29,7 @@ judging criteria:
   wait until the Wiki Freeze.
 - **Prepare for Deadlines**: Stay up-to-date with important deadlines and events
   by checking
-  the [iGEM Competition Calendar](https://competition.igem.org/calendar).
+  the [iGEM Competition Calendar](https://competition.igem.org/about/calendar).
 
 ## Tips for Success
 
@@ -49,13 +50,13 @@ judging criteria:
 
 You can also view other team wikis for inspiration! Here are some examples:
 
-- [2024 JU-Krakow](https://2024.igem.wiki/ju-krakow)
-- [2024 GEMS-Taiwan](https://2024.igem.wiki/gems-taiwan)
-- [2024 Heidelberg](https://2024.igem.wiki/heidelberg)
-- [2024 Marburg](https://2024.igem.wiki/marburg)
-- [2024 Sydney-Australia](https://2024.igem.wiki/sydney-australia)
-- [2024 Toulouse-INSA-UPS](https://2024.igem.wiki/toulouse-insa-ups)
-- [2024 BNDS-China](https://2024.igem.wiki/bnds-china)
-- [2024 Vilnius-Lithuania](https://2024.igem.wiki/vilnius-lithuania)
-- [2024 BNUZH-China](https://2024.igem.wiki/bnuzh-china)
-- [2024 XMU-China](https://2024.igem.wiki/xmu-china)
+- [2025 Brno Czech Republic](https://2025.igem.wiki/brno-czech-republic)
+- [2025 McGill](https://2025.igem.wiki/mcgill)
+- [2025 GreatBay-SCIE](https://2025.igem.wiki/greatbay-scie)
+- [2025 EPFL](https://2025.igem.wiki/epfl)
+- [2025 Heidelberg](https://2025.igem.wiki/heidelberg)
+- [2025 Uprize-I](https://2025.igem.wiki/uprize-i)
+- [2025 IZJU-China](https://2025.igem.wiki/izju-china)
+- [2025 Marburg](https://2025.igem.wiki/marburg)
+- [2025 Munich](https://2025.igem.wiki/munich)
+- [2025 WageningenUR](https://2025.igem.wiki/wageningenur)

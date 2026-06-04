@@ -1,15 +1,14 @@
 #### Inclusivity Award
 
-The Inclusivity Award recognizes exceptional efforts to include people with
-diverse identities in scientific research. Who is allowed to have a voice in
-iGEM, synthetic biology and science more broadly? How have you developed new
-opportunities to eliminate barriers and allow more people to contribute to,
-participate in and/or be represented by these communities? To compete for this
-prize, activities do not have to be directly related to your team’s project.
-Document your approach, how you improved inclusivity and what was learned.
+This award recognizes exceptional efforts to include people with diverse
+identities in scientific research. Who gets a voice in iGEM, synthetic biology,
+and science more broadly? How have you created new opportunities to remove
+barriers and let more people contribute, participate, or be represented?
+Activities do not have to relate directly to your team's project. Document your
+approach, how you improved inclusivity, and what was learned.
 
 Visit
-the [Special Prizes page](https://competition.igem.org/judging/special-prizes) for
+the [Special Awards page](https://competition.igem.org/judging/awards/special) for
 more information.
 
 ## Overview
@@ -24,9 +23,9 @@ implications of research.
 
 ## Inspirations
 
-- [2024 Patras-Med](https://2024.igem.wiki/patras-med/inclusivity)
-- [2024 Fudan](https://2024.igem.wiki/fudan/inclusivity)
-- [2023 UniMuenster](https://2023.igem.wiki/unimuenster/inclusivity)
-- [2023 UGM-Indonesia](https://2023.igem.wiki/ugm-indonesia/inclusivity)
-- [2023 Vilnius-Lithuania](https://2023.igem.wiki/vilnius-lithuania/inclusivity)
-- [2023 NIS-Kazakhstan](https://2023.igem.wiki/nis-kazakhstan/inclusivity)
+- [2025 USP-Brazil](https://2025.igem.wiki/usp-brazil/inclusivity)
+- [2025 SUSTech-BIO](https://2025.igem.wiki/sustech-bio/inclusivity)
+- [2025 DBHS-CA](https://2025.igem.wiki/dbhs-ca/inclusivity)
+- [2025 Fudan](https://2025.igem.wiki/fudan/inclusivity)
+- [2025 Technion-Israel](https://2025.igem.wiki/technion-israel/inclusivity)
+- [2025 Thessaloniki](https://2025.igem.wiki/thessaloniki/inclusivity)

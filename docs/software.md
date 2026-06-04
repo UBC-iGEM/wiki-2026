@@ -1,16 +1,21 @@
-#### Best Software Tool
+#### Best Software
 
-Regardless of what the topic is, iGEM projects often create or adapt
-computational tools to move their overall project forward. Because they are born
-out of a direct practical need, these software tools (or new computational
-methods) can even prove surprisingly useful for others. Without necessarily
-being big or complex, they can make the crucial difference to a project's
-success. This award tries to find and honor such "nuggets" of computational
-work. To be eligible, your software has to be documented and made available
-under an OSI-approved open-source license.
+iGEM projects often build or adapt computational tools to move their work
+forward. Born out of practical need, these tools can be surprisingly useful for
+others, and they don't have to be large or complex to make a real difference.
+This award finds and honors such "nuggets" of computational work.
+
+To be eligible:
+
+- Your software must be documented and released under an OSI-approved
+  open-source license.
+- The source code must be hosted on the dedicated repository in iGEM's GitLab.
+  See the [Software Project](https://teams.igem.org/go/deliverables/software)
+  page for full requirements.
+- Software & AI Village teams are not eligible for this award.
 
 Visit
-the [Special Prizes page](https://competition.igem.org/judging/special-prizes) for
+the [Special Awards page](https://competition.igem.org/judging/awards/special) for
 more information.
 
 ## What Should this Page Contain?
@@ -33,5 +38,8 @@ the repository.
 
 ## Inspirations
 
-- [2024 Vilnius-Lithuania](https://2024.igem.wiki/vilnius-lithuania/software)
-- [2023 Fudan](https://2023.igem.wiki/fudan/software)
+- [2025 Marburg](https://2025.igem.wiki/marburg/software)
+- [2025 Munich](https://2025.igem.wiki/munich/software)
+- [2025 EPFL](https://2025.igem.wiki/epfl/software)
+- [2025 Lambert-GA](https://2025.igem.wiki/lambert-ga/software)
+- [2025 BIT-China](https://2025.igem.wiki/bit-china/software)
