@@ -1,0 +1,15 @@
+---
+import { ContentMap, PagePath, type JsonMap } from "@exporter/map";
+import config from "../../docs/content_map.json";
+
+const content_map = ContentMap.fromJSON(config as JsonMap);
+
+const { parent_db_path } = Astro.props as { parent_db_path: string };
+const parent_db_entries = content_map.queryDbEntries(PagePath.fromString(parent_db_path));
+---
+
+<p>Database also contains:</p>
+<ul>
+    <!-- .components().at(-1) gets the last path component -->
+    {parent_db_entries.map((entry) => <li>{entry.components().at(-1)!.toString()}</li>)}
+</ul>

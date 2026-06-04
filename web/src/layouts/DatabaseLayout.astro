@@ -1,0 +1,22 @@
+---
+import type { DatabaseAttrs } from "@exporter/markdown/markdown";
+import DbSidebar from "../components/DbSidebar.astro";
+import MainLayout from "./MainLayout.astro";
+
+const { attrs } = Astro.props as { attrs: DatabaseAttrs };
+---
+
+<MainLayout title={attrs.title}>
+    <!-- <div class="db-datetime">{attrs.datetime}</div> -->
+
+    <aside class="db-sidebar">
+        <DbSidebar parent_db_path={attrs.parent_db_path} />
+    </aside>
+    <slot />
+</MainLayout>
+
+<style>
+    aside.db-sidebar {
+        /* Add CSS here */
+    }
+</style>

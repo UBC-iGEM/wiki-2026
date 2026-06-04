@@ -1,13 +1,10 @@
 ---
-// eslint-disable-next-line
-import { slugifyPath } from "@exporter/utils";
+import { ContentMap, type JsonMap } from "@exporter/map";
 import config from "../../docs/content_map.json";
 
-// eslint-disable-next-line
-const content_map = config.aggregates.map(({ path, item: pages }) => {
-    const aggregate_path = path.path;
-    const content_paths = pages.entries.map(({ path }) => path.path);
-
-    return { aggregate_path, content_paths };
-});
+const content_map = ContentMap.fromJSON(config as JsonMap);
+const nav_entries = content_map.aggregates.map((agg) => ({
+    name: agg.name,
+    entries: agg.topLevelPages(),
+}));
 ---

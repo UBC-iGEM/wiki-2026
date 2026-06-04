@@ -115,9 +115,3 @@ export async function clearPreviousOutputs(): Promise<Result<void>> {
         }
     }
 }
-
-// CLEANUP HELPERS
-
-export function slugifyPath(s: string): string {
-    return s.trim().toLowerCase().replace(/\s+/g, "-");
-}

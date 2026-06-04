@@ -1,5 +1,6 @@
 import * as log from "../log";
 import { PagePath, type ContentMap } from "../map";
+import type { PageId } from "../notion";
 import { isErr, saveFile } from "../utils";
 import { COMPONENT_MAP } from "./components";
 import { INLINE_COMPONENT_MAP } from "./components-inline";
@@ -17,11 +18,26 @@ import remarkStringify from "remark-stringify";
 import { unified } from "unified";
 import { visit, type Action, type ActionTuple, type VisitorResult } from "unist-util-visit";
 
+export interface PageAttrs {
+    type: "page";
+    title: string;
+}
+
+export interface DatabaseAttrs {
+    type: "database";
+    title: string;
+    // datetime: string;
+    parent_db_path: string;
+}
+
+export type MarkdownHeader = PageAttrs | DatabaseAttrs;
+
 export async function processMarkdown({
     md,
     path,
     routes,
 }: {
+    id: PageId;
     md: string;
     path: PagePath;
     routes: ContentMap;
@@ -41,12 +57,16 @@ export async function processMarkdown({
     ).toString();
 
     const type = path.components().length === 3 ? "database" : "page";
-    const name = path.components().at(-1)!.toString();
-    const header_items: Record<string, string> = { type, name };
-    const page_header = Object.entries(header_items)
-        .map(([k, v]) => `${k} = ${v}`)
-        .join("\n");
+    const title = path.components().at(-1)!.toString();
 
+    const header_items: MarkdownHeader =
+        type === "page"
+            ? { type, title }
+            : { type, title, parent_db_path: new PagePath(path.components().slice(0, 2)).toString() };
+
+    const page_header = Object.entries(header_items)
+        .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
+        .join("\n");
     const page = `
 ---
 ${page_header}

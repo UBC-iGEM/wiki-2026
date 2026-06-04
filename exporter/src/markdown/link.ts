@@ -1,5 +1,4 @@
 import { PageId } from "../notion";
-import { slugifyPath } from "../utils";
 import type { ProcessorInput, ProcessorOutput } from "./markdown";
 import type { Link } from "mdast";
 import { CONTINUE } from "unist-util-visit";
@@ -22,7 +21,7 @@ function normalizePageLink({ node, ctx }: ProcessorInput<Link>): ProcessorOutput
     const page_path = ctx.routes.get(new PageId(page_id));
     if (!page_path) return new Error(`${err_base} links to page ${page_id}, which is not a known wiki path`);
 
-    const path_slug = `/${slugifyPath(page_path.toString())}`;
+    const path_slug = `/${page_path.toSlug()}`;
 
     const children =
         // A mention link?

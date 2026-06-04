@@ -1,4 +1,5 @@
-import { isErr, slugifyPath } from "../utils";
+import { PagePathComponent } from "../map";
+import { isErr } from "../utils";
 import type { ComponentOutput } from "./components";
 import { LINK_PROCESSORS } from "./link";
 import { processAll, type ProcessorInput } from "./markdown";
@@ -31,7 +32,7 @@ function anchor({ node, ctx }: ComponentInput): ComponentOutput {
         return new Error(`Anchor component content is malformed: ${children}`);
 
     const [anchor_node] = children;
-    const anchor_name = slugifyPath(anchor_node.value.trim());
+    const anchor_name = new PagePathComponent(anchor_node.value.trim()).toSlug();
 
     const new_node: Html = {
         type: "html",
@@ -79,7 +80,7 @@ function link({ node, ctx }: ComponentInput): ComponentOutput {
             return malformed_err;
         }
         anchor_text = anchor_text.replace(/@\s*/, "");
-        const anchor_slug = slugifyPath(anchor_text);
+        const anchor_slug = new PagePathComponent(anchor_text).toSlug();
 
         const children: PhrasingContent[] = display
             ? [

@@ -61,10 +61,28 @@ export class PageId extends Id implements Named {
         }
 
         const title_property = Object.values(page.properties).find((p) => p.type === "title");
-        if (title_property && title_property.type === "title") {
+        if (title_property) {
             return title_property.title.map((t) => t.plain_text).join("");
         } else {
             return makeError("`title` property missing");
+        }
+    }
+
+    async getDate(): Promise<Result<string | undefined>> {
+        const makeError = errorGenerator({ base: `Unable to retrieve date property of page ${this}` });
+
+        const page = await $withRetries($unsafe, notion().pages.retrieve, { page_id: this.toString() });
+        if (isErr(page)) return makeError(`failed to retrieve page with ${page}`);
+
+        if (!("properties" in page)) {
+            return makeError("no `properties` field found");
+        }
+
+        const date_property = Object.values(page.properties).find((p) => p.type === "date");
+        if (date_property) {
+            return date_property.date?.start;
+        } else {
+            return makeError("`date` property missing");
         }
     }
 
@@ -123,6 +141,7 @@ export class DatabaseId extends Id implements Named {
                     return res as MapItem<PageId>;
                 }),
             );
+
             return { item: new DatabaseMap(pages), path: new PagePathComponent(db_name) };
         });
     }

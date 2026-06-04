@@ -1,5 +1,5 @@
 import * as log from "./log";
-import { AggregateMap, ContentMap, PagePathComponent, type MapItem, type MapPath } from "./map";
+import { AggregateMap, ContentMap, PagePathComponent, type MapPath } from "./map";
 import { processMarkdown } from "./markdown/markdown";
 import { PageId, DatabaseId, BlockId } from "./notion";
 import { $unsafe, isErr, type Result } from "./utils";
@@ -17,10 +17,10 @@ export async function parseMaster(master_id: PageId): Promise<Result<ContentMap>
     const first_error = aggregate_maps.find((item) => isErr(item));
     if (first_error) return first_error;
 
-    return new ContentMap(aggregate_maps as MapItem<AggregateMap>[]);
+    return new ContentMap(aggregate_maps as AggregateMap[]);
 }
 
-export async function parseAggregate({ agg_id }: { agg_id: PageId }): Promise<Result<MapItem<AggregateMap>>> {
+export async function parseAggregate({ agg_id }: { agg_id: PageId }): Promise<Result<AggregateMap>> {
     const agg_name = await agg_id.getName();
     if (isErr(agg_name)) return agg_name;
 
@@ -37,7 +37,7 @@ export async function parseAggregate({ agg_id }: { agg_id: PageId }): Promise<Re
                 return res;
             }),
         );
-        return { item: new AggregateMap(paths), path: new PagePathComponent(agg_name) };
+        return new AggregateMap({ name: new PagePathComponent(agg_name), entries: paths });
     });
 }
 
@@ -115,5 +115,5 @@ async function exportPage({
         return;
     }
 
-    await processMarkdown({ md: markdown, path, routes });
+    await processMarkdown({ id: item, md: markdown, path, routes });
 }

@@ -1,8 +1,10 @@
 ---
-import { slugifyPath } from "@exporter/utils";
 import type { CollectionEntry } from "astro:content";
 import { getCollection, render } from "astro:content";
-import MainLayout from "../layouts/MainLayout.astro";
+import PageLayout from "../layouts/PageLayout.astro";
+import DatabaseLayout from "../layouts/DatabaseLayout.astro";
+import { PagePathComponent } from "@exporter/map";
+import type { MarkdownHeader } from "@exporter/markdown/markdown";
 
 type DocsEntry = CollectionEntry<"docs">;
 type StaticPath = {
@@ -15,7 +17,7 @@ export async function getStaticPaths(): Promise<StaticPath[]> {
 
     return pages.map((page) => {
         let page_slug = page.id.replace(/\.mdx$/, "");
-        page_slug = slugifyPath(page_slug);
+        page_slug = new PagePathComponent(page_slug).toSlug();
 
         return {
             params: { page_path: page_slug === "index" || page_slug === "" ? undefined : page_slug },
@@ -23,9 +25,6 @@ export async function getStaticPaths(): Promise<StaticPath[]> {
         };
     });
 }
-
-const { page } = Astro.props as { page: DocsEntry };
-const { Content } = await render(page);
 
 // Collect all components in the components directory
 const componentFiles = import.meta.glob("../components/*.astro", { eager: true });
@@ -38,8 +37,18 @@ const Components = Object.fromEntries(
         return [name, component];
     }),
 );
+
+const { page } = Astro.props as { page: DocsEntry };
+const { Content } = await render(page);
+
+const data = page.data as MarkdownHeader;
+const layouts = {
+    page: PageLayout,
+    database: DatabaseLayout,
+};
+const SelectedLayout = layouts[data.type]!;
 ---
 
-<MainLayout>
+<SelectedLayout attrs={data}>
     <Content components={Components} />
-</MainLayout>
+</SelectedLayout>
