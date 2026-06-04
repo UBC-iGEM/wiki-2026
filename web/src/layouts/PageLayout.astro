@@ -2,7 +2,10 @@
 import type { PageAttrs } from "@exporter/markdown/markdown";
 import MainLayout from "./MainLayout.astro";
 
-const { attrs } = Astro.props as { attrs: PageAttrs };
+interface Props {
+    attrs: PageAttrs;
+}
+const { attrs } = Astro.props;
 ---
 
 <MainLayout title={attrs.title}>

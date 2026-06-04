@@ -3,7 +3,10 @@ import type { DatabaseAttrs } from "@exporter/markdown/markdown";
 import DbSidebar from "../components/DbSidebar.astro";
 import MainLayout from "./MainLayout.astro";
 
-const { attrs } = Astro.props as { attrs: DatabaseAttrs };
+interface Props {
+    attrs: DatabaseAttrs;
+}
+const { attrs } = Astro.props;
 ---
 
 <MainLayout title={attrs.title}>

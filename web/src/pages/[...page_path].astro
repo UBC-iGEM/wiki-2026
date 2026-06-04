@@ -49,6 +49,7 @@ const layouts = {
 const SelectedLayout = layouts[data.type]!;
 ---
 
-<SelectedLayout attrs={data}>
+<!-- Attrs is guaranteed to match by the exporter -->
+<SelectedLayout attrs={data as never}>
     <Content components={Components} />
 </SelectedLayout>

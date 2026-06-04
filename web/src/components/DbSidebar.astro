@@ -4,7 +4,11 @@ import config from "../../docs/content_map.json";
 
 const content_map = ContentMap.fromJSON(config as JsonMap);
 
-const { parent_db_path } = Astro.props as { parent_db_path: string };
+interface Props {
+    parent_db_path: string;
+}
+const { parent_db_path } = Astro.props;
+
 const parent_db_entries = content_map.queryDbEntries(PagePath.fromString(parent_db_path));
 ---
 

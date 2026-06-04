@@ -83,12 +83,9 @@ abstract class PathMap {
  * Holds the original hierarchy of all content pages, as ordered and defined on Notion
  */
 export class ContentMap extends PathMap {
-    public aggregates: AggregateMap[];
-
     // Each entry on the top-level map must be another map representing entries in an aggregate
-    constructor(aggregates: AggregateMap[]) {
+    constructor(public aggregates: AggregateMap[]) {
         super();
-        this.aggregates = aggregates;
     }
 
     override *pages(): Generator<MapPath<PageId>> {
@@ -144,9 +141,12 @@ export class ContentMap extends PathMap {
         );
     }
 
-    *queryDbEntries(db_name: PagePath): Generator<PagePath> {
+    /**
+     * Fetches all pages that in the database at `db_path`
+     */
+    *queryDbEntries(db_path: PagePath): Generator<PagePath> {
         yield* this.pages()
-            .filter(({ path }) => path.startsWith(db_name))
+            .filter(({ path }) => path.startsWith(db_path))
             .map(({ path }) => path);
     }
 }
