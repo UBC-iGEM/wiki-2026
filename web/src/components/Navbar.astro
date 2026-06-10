@@ -3,9 +3,26 @@ import { ContentMap, type JsonMap } from "@exporter/map";
 import config from "../../docs/content_map.json";
 
 const content_map = ContentMap.fromJSON(config as JsonMap);
-const nav_entries = content_map.aggregates.map((agg) => ({
-    name: agg.name,
-    entries: agg.topLevelPages(),
-}));
-void nav_entries;
+
+const nav_items = content_map.aggregates.map((agg) => {
+  const label = agg.name.toString();
+  const firstPair = agg.topLevelPages().next().value;
+  const href = firstPair ? `/${firstPair[1].toSlug()}` : "#";
+  return { label, href };
+});
+
 ---
+<style>
+  nav.primary { width: 100%; }
+  nav.primary ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 3rem; }
+  nav.primary li { display: inline-block; }
+  nav.primary a { text-decoration: none; color: inherit; }
+</style>
+
+<nav class="primary" aria-label="Primary navigation">
+  <ul>
+    {nav_items.map(({ label, href }) => (
+      <li><a href={href}>{label}</a></li>
+    ))}
+  </ul>
+</nav>
