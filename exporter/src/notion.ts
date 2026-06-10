@@ -1,6 +1,14 @@
-import * as log from "./log";
 import { DatabaseMap, PagePathComponent, type MapItem } from "./map";
-import { $unsafe, $unsafeSync, $withRetries, errorGenerator, isErr, type Result } from "./utils";
+import {
+    $unsafe,
+    $unsafeExporterPromises,
+    $unsafeSync,
+    $withRetries,
+    ExporterError,
+    isErr,
+    isExporterErr,
+    type ExporterResult,
+} from "./utils";
 import {
     Client,
     type BlockObjectResponse,
@@ -16,12 +24,21 @@ function notion(): Client {
     }
 
     const key = process.env.NOTION_API_KEY;
-    if (!key) log.errorAndQuit("NOTION_API_KEY env. variable is unset");
+    if (!key)
+        new ExporterError(
+            "The environment variable NOTION_API_KEY is unset. The exporter has not been configured with the necessary credentials.",
+            ["exporter configuration", "notion server"],
+        ).logAndQuit();
 
     const client_res = $unsafeSync(() => new Client({ auth: key }));
-    if (isErr(client_res)) log.errorAndQuit(`Failed to connect new Notion client. Error: ${client_res}`);
+    if (isErr(client_res))
+        new ExporterError(
+            "Failed to construct a client to connect to the Notion server.",
+            ["notion server"],
+            client_res,
+        ).logAndQuit();
 
-    NOTION_CLIENT = client_res;
+    NOTION_CLIENT = client_res as Client;
     return NOTION_CLIENT;
 }
 
@@ -41,8 +58,8 @@ export class Id {
 }
 
 interface Named {
-    getName(): Promise<Result<string>>;
-    paths(): Promise<Result<MapItem<PageId | DatabaseMap>>>;
+    getName(): Promise<ExporterResult<string>>;
+    paths(): Promise<ExporterResult<MapItem<PageId | DatabaseMap>>>;
 }
 
 export class PageId extends Id implements Named {
@@ -50,57 +67,63 @@ export class PageId extends Id implements Named {
         super(id);
     }
 
-    async getName(): Promise<Result<string>> {
-        const makeError = errorGenerator({ base: `Unable to retrieve title of page ${this}` });
+    async getName(): Promise<ExporterResult<string>> {
+        const page_res = await $withRetries($unsafe, notion().pages.retrieve, { page_id: this.toString() });
+        if (isErr(page_res))
+            return new ExporterError(`Failed to retrieve page at Notion ID ${this}.`, ["notion server"], page_res);
 
-        const page = await $withRetries($unsafe, notion().pages.retrieve, { page_id: this.toString() });
-        if (isErr(page)) return makeError(`failed to retrieve page with ${page}`);
-
-        if (!("properties" in page)) {
-            return makeError("no `properties` field found");
+        if (!("properties" in page_res)) {
+            return new ExporterError(`Failed to read properties of page at Notion ID ${this}.`, ["notion server"]);
         }
 
-        const title_property = Object.values(page.properties).find((p) => p.type === "title");
+        const title_property = Object.values(page_res.properties).find((p) => p.type === "title");
         if (title_property) {
             return title_property.title.map((t) => t.plain_text).join("");
         } else {
-            return makeError("`title` property missing");
+            return new ExporterError(`Failed to retrieve title of page at Notion ID ${this}.`, ["notion server"]);
         }
     }
 
-    async getDate(): Promise<Result<string | undefined>> {
-        const makeError = errorGenerator({ base: `Unable to retrieve date property of page ${this}` });
+    async getDate(): Promise<ExporterResult<string | undefined>> {
+        const page_res = await $withRetries($unsafe, notion().pages.retrieve, { page_id: this.toString() });
+        if (isErr(page_res))
+            return new ExporterError(`Failed to retrieve page at Notion ID ${this}.`, ["notion server"], page_res);
 
-        const page = await $withRetries($unsafe, notion().pages.retrieve, { page_id: this.toString() });
-        if (isErr(page)) return makeError(`failed to retrieve page with ${page}`);
-
-        if (!("properties" in page)) {
-            return makeError("no `properties` field found");
+        if (!("properties" in page_res)) {
+            return new ExporterError(`Failed to read properties of page at Notion ID ${this}.`, ["notion server"]);
         }
 
-        const date_property = Object.values(page.properties).find((p) => p.type === "date");
+        const date_property = Object.values(page_res.properties).find((p) => p.type === "date");
         if (date_property) {
             return date_property.date?.start;
         } else {
-            return makeError("`date` property missing");
+            return new ExporterError(
+                `Page at Notion ID ${this} has no date property. Does its parent database not have a date field?`,
+                ["malformed content", "notion server"],
+            );
         }
     }
 
-    async paths(): Promise<Result<MapItem<PageId | DatabaseMap>>> {
-        const path = await this.getName();
-        if (isErr(path)) return path;
+    async paths(): Promise<ExporterResult<MapItem<PageId | DatabaseMap>>> {
+        const path_res = await this.getName();
+        if (isExporterErr(path_res)) return path_res;
 
-        return { item: this, path: new PagePathComponent(path) };
+        return { item: this, path: new PagePathComponent(path_res) };
     }
 
-    async getMarkdown(): Promise<Result<string>> {
-        const page = await $withRetries($unsafe, notion().pages.retrieveMarkdown, {
+    async getMarkdown(): Promise<ExporterResult<string>> {
+        const page_res = await $withRetries($unsafe, notion().pages.retrieveMarkdown, {
             page_id: this.toString(),
             include_transcript: true,
         });
-        if (isErr(page)) return new Error(`Unable to fetch page ${this} as markdown: ${page}`);
+        if (isErr(page_res))
+            return new ExporterError(
+                `Failed to fetch page at Notion ID ${this} as markdown.`,
+                ["notion server"],
+                page_res,
+            );
 
-        return page.markdown;
+        return page_res.markdown;
     }
 }
 
@@ -109,33 +132,32 @@ export class DatabaseId extends Id implements Named {
         super(id);
     }
 
-    async getName(): Promise<Result<string>> {
-        const makeError = errorGenerator({ base: `Unable to retrieve title of page ${this}` });
+    async getName(): Promise<ExporterResult<string>> {
+        const db_res = await $withRetries($unsafe, notion().databases.retrieve, { database_id: this.toString() });
+        if (isErr(db_res))
+            return new ExporterError(`Failed to retrieve database at Notion ID ${this}.`, ["notion server"], db_res);
 
-        const db = await $withRetries($unsafe, notion().databases.retrieve, { database_id: this.toString() });
-        if (isErr(db)) return makeError(`failed to retrieve database with ${db}`);
-
-        if (!("title" in db)) {
-            return makeError("`title` property missing.");
+        if (!("title" in db_res)) {
+            return new ExporterError("`title` property missing from database at Notion ID ${this}.", ["notion server"]);
         }
 
-        const title_plain_text = db.title.map((t) => t.plain_text).join("");
+        const title_plain_text = db_res.title.map((t) => t.plain_text).join("");
         return title_plain_text;
     }
 
-    async paths(): Promise<Result<MapItem<PageId | DatabaseMap>>> {
+    async paths(): Promise<ExporterResult<MapItem<PageId | DatabaseMap>>> {
         const db_name = await this.getName();
-        if (isErr(db_name)) return db_name;
+        if (isExporterErr(db_name)) return db_name;
 
         const db_entries = await this.getEntries();
-        if (isErr(db_entries)) return db_entries;
+        if (isExporterErr(db_entries)) return db_entries;
 
         /** Use {@link $unsafe} scope to fail-fast on inner errors */
-        return $unsafe(async () => {
+        return $unsafeExporterPromises(async () => {
             const pages = await Promise.all(
                 db_entries.map(async (entry) => {
                     const res = await entry.paths();
-                    if (isErr(res)) throw res;
+                    if (isExporterErr(res)) throw res;
 
                     // Should be a page, since `entry` is a `PageId`
                     return res as MapItem<PageId>;
@@ -146,17 +168,18 @@ export class DatabaseId extends Id implements Named {
         });
     }
 
-    async getEntries(): Promise<Result<PageId[]>> {
-        const makeError = errorGenerator({ base: `Error while retrieving entries of database ${this}` });
-
-        const db = await $withRetries($unsafe, notion().databases.retrieve, { database_id: this.toString() });
-        if (isErr(db)) return makeError(`failed to retrieve database with ${db}`);
-        if (!("data_sources" in db)) {
-            return makeError("db has no data sources");
+    async getEntries(): Promise<ExporterResult<PageId[]>> {
+        const db_res = await $withRetries($unsafe, notion().databases.retrieve, { database_id: this.toString() });
+        if (isErr(db_res))
+            return new ExporterError(`Failed to retrieve database at Notion ID ${this}.`, ["notion server"], db_res);
+        if (!("data_sources" in db_res)) {
+            return new ExporterError("`data_sources` property missing from database at Notion ID ${this}.", [
+                "notion server",
+            ]);
         }
 
         const page_ids: string[] = [];
-        for (const ds of db.data_sources) {
+        for (const ds of db_res.data_sources) {
             let cursor: string | undefined = undefined;
             do {
                 const params: QueryDataSourceParameters = {
@@ -166,7 +189,12 @@ export class DatabaseId extends Id implements Named {
                 };
 
                 const res = await $withRetries($unsafe, notion().dataSources.query, params);
-                if (isErr(res)) return makeError(`database query failed with ${res}`);
+                if (isErr(res))
+                    return new ExporterError(
+                        `Querying database at Notion ID ${this} for pages based on "ID" property failed. Does the database have such a field?`,
+                        ["malformed content", "notion server"],
+                        res,
+                    );
 
                 page_ids.push(...res.results.map((r) => r.id));
                 cursor = res.has_more ? (res.next_cursor ?? undefined) : undefined;
@@ -182,14 +210,19 @@ export class BlockId extends Id {
         super(id);
     }
 
-    async get(): Promise<Result<BlockObjectResponse>> {
+    async get(): Promise<ExporterResult<BlockObjectResponse>> {
         const res = await $withRetries($unsafe, notion().blocks.retrieve, { block_id: this.toString() });
-        if (isErr(res)) return new Error(`Failed to retrieve content of block ${this.toString()}: ${res}`);
+        if (isErr(res))
+            return new ExporterError(
+                `Failed to retrieve content of block at Notion ID ${this}.`,
+                ["notion server"],
+                res,
+            );
 
         return res as BlockObjectResponse;
     }
 
-    async getChildren(): Promise<Result<BlockObjectResponse[]>> {
+    async getChildren(): Promise<ExporterResult<BlockObjectResponse[]>> {
         const blocks: BlockObjectResponse[] = [];
         let cursor: string | undefined = undefined;
 
@@ -201,7 +234,11 @@ export class BlockId extends Id {
 
             const res = await $withRetries($unsafe, notion().blocks.children.list, params);
             if (isErr(res))
-                return new Error(`Unable to retrieve blocks of ${this}: failed to fetch block children with ${res}`);
+                return new ExporterError(
+                    `Failed to retrieve children of block at Notion ID ${this}.`,
+                    ["notion server"],
+                    res,
+                );
 
             blocks.push(...(res.results as BlockObjectResponse[]));
             cursor = res.has_more ? (res.next_cursor ?? undefined) : undefined;

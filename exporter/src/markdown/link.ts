@@ -1,4 +1,5 @@
 import { PageId } from "../notion";
+import { ExporterError } from "../utils";
 import type { ProcessorInput, ProcessorOutput } from "./markdown";
 import type { Link } from "mdast";
 import { CONTINUE } from "unist-util-visit";
@@ -12,14 +13,20 @@ function normalizePageLink({ node, ctx }: ProcessorInput<Link>): ProcessorOutput
     const url = node.url;
     if (!node.url.includes("app.notion.com")) return;
 
-    const err_base = `'link' element on page ${ctx.path} (${node})`;
-
     // Extract Notion page ID from URL
     const page_id = url.match(/(?<=app.notion.com\/p\/)[a-f0-9]{32}/)?.[0];
-    if (!page_id) return new Error(`${err_base} has no valid id`);
+    if (!page_id)
+        return new ExporterError(
+            `Mention element on page "${ctx.path}" could not be understood; it does not link to a valid Notion ID. Its URL is ${node.url}.`,
+            ["notion server", "bug?"],
+        );
 
     const page_path = ctx.routes.get(new PageId(page_id));
-    if (!page_path) return new Error(`${err_base} links to page ${page_id}, which is not a known wiki path`);
+    if (!page_path)
+        return new ExporterError(
+            `Mention element on page "${ctx.path}" does not link to a known wiki page. It links to the page at Notion ID ${page_id}; are you sure this page is part of the wiki?`,
+            ["malformed content"],
+        );
 
     const path_slug = `/${page_path.toSlug()}`;
 

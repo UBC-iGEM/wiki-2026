@@ -1,5 +1,5 @@
 import { BlockId, Id } from "../notion";
-import { $unsafeSync, isErr, type Result } from "../utils";
+import { $unsafeSync, ExporterError, isErr, isExporterErr, type ExporterResult, type Result } from "../utils";
 import type { ProcessorInput, ProcessorOutput } from "./markdown";
 import type { Image } from "mdast";
 import { CONTINUE } from "unist-util-visit";
@@ -39,19 +39,27 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
             };
         }
 
-        const url_data: Result<UrlData> = $unsafeSync(JSON.parse, decoded_url);
-        if (isErr(url_data))
-            return new Error(`Failed to parse image URL ${decoded_url} on page ${ctx.path}: ${url_data}`);
+        const url_data_res: Result<UrlData> = $unsafeSync(JSON.parse, decoded_url);
+        if (isErr(url_data_res))
+            return new ExporterError(
+                `The image on page "${ctx.path}" with URL ${decoded_url} could not be understood; it does not match the expected format.`,
+                ["bug?"],
+                url_data_res,
+            );
 
-        const id = url_data.permissionRecord.id;
+        const id = url_data_res.permissionRecord.id;
         image_id = new Id(id);
         const block_id = new BlockId(id);
 
-        const callback = async (): Promise<Result<void>> => {
+        const callback = async (): Promise<ExporterResult<void>> => {
             const block_data = await block_id.get();
-            if (isErr(block_data)) return block_data;
+            if (isExporterErr(block_data)) return block_data;
             if (block_data.type !== "image" || block_data.image.type !== "file")
-                return new Error(`Image block ${block_id} does not point to expected image data`);
+                return new ExporterError(
+                    `The image on page "${ctx.path}" at Notion block ID ${block_id} could not be understood; its data type is unexpected.`,
+                    ["notion server", "bug?"],
+                    new Error(JSON.stringify(block_data, null, 2)),
+                );
 
             _image_data_url = block_data.image.file.url;
 
@@ -71,7 +79,7 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
         // Include full query parameters for data to avoid "Access Denied" errors
         _image_data_url = image_node_url; // eslint-disable-line @typescript-eslint/no-unused-vars
 
-        const callback = async (): Promise<Result<void>> => {
+        const callback = async (): Promise<ExporterResult<void>> => {
             // TODO: GET AND UPLOAD
         };
         ctx.callbacks.push(callback);

@@ -1,21 +1,21 @@
 import { CONFIG } from "./config";
-import * as log from "./log";
+import type { ContentMap } from "./map";
 import { PageId } from "./notion";
 import * as parse from "./parse";
-import { clearPreviousOutputs, isErr, saveFile } from "./utils";
+import { clearPreviousOutputs, isExporterErr, saveFile } from "./utils";
 
 async function main(): Promise<void> {
-    const parse_map = await parse.parseMaster(new PageId(CONFIG.master_id));
-    if (isErr(parse_map)) log.errorAndQuit(parse_map);
+    const parse_map_res = await parse.parseMaster(new PageId(CONFIG.master_id));
+    if (isExporterErr(parse_map_res)) parse_map_res.logAndQuit();
 
     const clear_res = await clearPreviousOutputs();
-    if (isErr(clear_res)) log.errorAndQuit(clear_res);
+    if (isExporterErr(clear_res)) clear_res.logAndQuit();
 
-    const content_map_json = JSON.stringify(parse_map, null, 4);
+    const content_map_json = JSON.stringify(parse_map_res, null, 4);
     const content_map_res = await saveFile({ content: content_map_json, path: "content_map.json" });
-    if (isErr(content_map_res)) log.warnError("Failed to save content map!");
+    if (isExporterErr(content_map_res)) content_map_res.logAndQuit();
 
-    await parse.exportAllPages({ content_map: parse_map });
+    await parse.exportAllPages({ content_map: parse_map_res as ContentMap });
 }
 
 await main();

@@ -1,4 +1,5 @@
-import type { ProcessorInput, ProcessorOutput } from "./markdown";
+import { ExporterError } from "../utils";
+import { constructNodeErrorSource, type ProcessorInput, type ProcessorOutput } from "./markdown";
 import type { BlockContent, DefinitionContent, Html, Image, Paragraph, ThematicBreak } from "mdast";
 import type { ContainerDirective } from "mdast-util-directive";
 import { SKIP } from "unist-util-visit";
@@ -89,7 +90,11 @@ function figure({ node, ctx }: ComponentInput): ComponentOutput {
     }
 
     if (images.length === 0)
-        return new Error(`Figure component at ${ctx.path} does not start with images: ${node.children}`);
+        return new ExporterError(
+            `Figure component on page "${ctx.path}" could not be understood: it does not start with images. Figure components should follow the format <images> <description>.`,
+            ["malformed content"],
+            constructNodeErrorSource(node.children),
+        );
 
     const filtered_children = node.children.filter(
         // Remove empty paragraphs
@@ -143,8 +148,10 @@ function dbtl({ node, ctx }: ComponentInput): ComponentOutput {
     sections.push(cur_section);
 
     if (sections.length !== 4)
-        return new Error(
-            `DBTL component at ${ctx.path} does not have 4 components: ${JSON.stringify(node.children, null, 2)}`,
+        return new ExporterError(
+            `DBTL component on page "${ctx.path}" could not be understood: it does not have 4 sections delimited by dividers. DBTL components should follow the format <design content> <divider> <build content> <divider> <test content> <divider> <learn content>.`,
+            ["malformed content"],
+            constructNodeErrorSource(node.children),
         );
 
     const [design, build, test, learn] = sections as [BlockElement[], BlockElement[], BlockElement[], BlockElement[]];

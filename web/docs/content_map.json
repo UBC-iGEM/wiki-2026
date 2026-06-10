@@ -1,10 +1,10 @@
 {
     "aggregates": [
         {
-            "name": "Test Aggregate Page",
+            "name": "Testing",
             "entries": [
                 {
-                    "path": "Test Content Page",
+                    "path": "Content Page",
                     "type": "page",
                     "item": "356d65dd82be809eb77bf5b3704dc316"
                 },

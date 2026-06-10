@@ -1,14 +1,13 @@
-import * as log from "../log";
 import { PagePath, type ContentMap } from "../map";
 import type { PageId } from "../notion";
-import { isErr, saveFile } from "../utils";
+import { ExporterError, isExporterErr, saveFile } from "../utils";
 import { COMPONENT_MAP } from "./components";
 import { INLINE_COMPONENT_MAP } from "./components-inline";
 import { HTML_PROCESSORS } from "./html";
 import { IMAGE_PROCESSORS } from "./image";
 import { LINK_PROCESSORS } from "./link";
 import { processRegex } from "./regex";
-import type { Parent, Root } from "mdast";
+import type { Parent, Root, Node } from "mdast";
 import HTMLParse from "node-html-parser";
 import remarkDirective from "remark-directive";
 import remarkGfm from "remark-gfm";
@@ -57,7 +56,7 @@ export async function processMarkdown({
     ).toString();
 
     const type = path.components().length === 3 ? "database" : "page";
-    const title = path.components().at(-1)!.toString();
+    const title = path.name().toString();
 
     const header_items: MarkdownHeader = type === "page" ? { type, title } : { type, title, path: path.toString() };
 
@@ -74,16 +73,16 @@ ${processed_markdown}
     const save_path = path.withExt("mdx");
 
     const raw_result = await saveFile({ content: md, path: save_path, debug_path: "raw" });
-    if (isErr(raw_result)) log.warnError(raw_result);
+    if (isExporterErr(raw_result)) raw_result.warn();
 
     const regex_result = await saveFile({ content: preprocessed_markdown, path: save_path, debug_path: "regex" });
-    if (isErr(regex_result)) log.warnError(regex_result);
+    if (isExporterErr(regex_result)) regex_result.warn();
 
     const result = await saveFile({ content: page, path: save_path });
-    if (isErr(result)) log.warnError(result);
+    if (isExporterErr(result)) result.warn();
 }
 
-type ProcessorCallback = () => Promise<void | Error>;
+type ProcessorCallback = () => Promise<void | ExporterError>;
 
 export interface ProcessorContext {
     index: number;
@@ -115,26 +114,29 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
 
             switch (node.type) {
                 case "html":
-                    return processAll(HTML_PROCESSORS, {
+                    return processAllAndWarnErrors(HTML_PROCESSORS, {
                         node: undefined,
                         parsed_node: HTMLParse.parse(node.value),
                         ctx,
                     });
                 case "link":
-                    return processAll(LINK_PROCESSORS, { node, ctx });
+                    return processAllAndWarnErrors(LINK_PROCESSORS, { node, ctx });
                 case "image":
-                    return processAll(IMAGE_PROCESSORS, { node, ctx });
+                    return processAllAndWarnErrors(IMAGE_PROCESSORS, { node, ctx });
                 case "textDirective": {
                     const inline_component_type = node.name.toLowerCase();
                     const transform = INLINE_COMPONENT_MAP[inline_component_type];
                     if (!transform) {
-                        log.warnError(`Inline component type ${inline_component_type} at ${path} not understood`);
+                        new ExporterError(
+                            `Inline component type ${inline_component_type} on page "${path}" could not be understood. It is either misspelt or not yet implemented.`,
+                            ["malformed content"],
+                        ).warn();
                         return;
                     }
 
                     const res = transform({ node, ctx });
-                    if (isErr(res)) {
-                        log.warnError(res);
+                    if (isExporterErr(res)) {
+                        res.warn();
                         return;
                     }
 
@@ -145,7 +147,7 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
 
         const results = await Promise.all(callbacks.map(async (callback) => await callback()));
         for (const result of results) {
-            if (result) log.warnError(result);
+            if (result) result.warn();
         }
 
         visit(tree, "containerDirective", (node, index, parent) => {
@@ -162,13 +164,16 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
             const component_type = node.name.toLowerCase();
             const transform = COMPONENT_MAP[component_type];
             if (!transform) {
-                log.warnError(`Component type ${component_type} at ${path} not understood`);
+                new ExporterError(
+                    `Component type ${component_type} on page "${path}" could not be understood. It is either misspelt or not yet implemented.`,
+                    ["malformed content"],
+                ).warn();
                 return;
             }
 
             const res = transform({ node, ctx });
-            if (isErr(res)) {
-                log.warnError(res);
+            if (isExporterErr(res)) {
+                res.warn();
                 return;
             }
 
@@ -181,9 +186,9 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
  * Processor functions can either return:
  * @returns  `undefined`: no processing to be done
  * @returns `Action`: processing succeeded and should finish with this action
- * @returns `Error`: processing failed
+ * @returns `ExporterError`: processing failed
  */
-export type ProcessorOutput = undefined | Action | ActionTuple | Error;
+export type ProcessorOutput = undefined | Action | ActionTuple | ExporterError;
 
 export interface ProcessorInput<T> {
     node: T;
@@ -191,18 +196,32 @@ export interface ProcessorInput<T> {
 }
 
 type Processor<T> = (input: T) => ProcessorOutput;
-export function processAll<T>(processors: Processor<T>[], input: T): VisitorResult {
+export function processAll<T>(processors: Processor<T>[], input: T): ProcessorOutput {
     for (const processor of processors) {
         const res = processor(input);
 
-        if (isErr(res)) {
-            log.warnError(res);
+        if (isExporterErr(res)) {
             // Stop all processing on this node
-            return;
+            return res;
         }
 
         if (res !== undefined) {
             return res;
         }
     }
+}
+
+export function processAllAndWarnErrors<T>(processors: Processor<T>[], input: T): VisitorResult {
+    const res = processAll(processors, input);
+
+    if (isExporterErr(res)) {
+        res.warn();
+        return undefined;
+    }
+
+    return res;
+}
+
+export function constructNodeErrorSource(children: Node[]): Error {
+    return new Error(`Malformed block has children: ${JSON.stringify(children.map((child) => child.type))}`);
 }
