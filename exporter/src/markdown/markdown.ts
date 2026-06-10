@@ -27,7 +27,7 @@ export interface DatabaseAttrs {
     type: "database";
     title: string;
     // datetime: string;
-    parent_db_path: string;
+    path: string;
 }
 
 export type MarkdownHeader = PageAttrs | DatabaseAttrs;
@@ -59,10 +59,7 @@ export async function processMarkdown({
     const type = path.components().length === 3 ? "database" : "page";
     const title = path.components().at(-1)!.toString();
 
-    const header_items: MarkdownHeader =
-        type === "page"
-            ? { type, title }
-            : { type, title, parent_db_path: new PagePath(path.components().slice(0, 2)).toString() };
+    const header_items: MarkdownHeader = type === "page" ? { type, title } : { type, title, path: path.toString() };
 
     const page_header = Object.entries(header_items)
         .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)

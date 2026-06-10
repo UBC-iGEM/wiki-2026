@@ -1,6 +1,6 @@
 ---
 import type { DatabaseAttrs } from "@exporter/markdown/markdown";
-import { PagePath, PagePathComponent } from "@exporter/map";
+import { PagePath } from "@exporter/map";
 import DbSidebar from "../components/DbSidebar.astro";
 import MainLayout from "./MainLayout.astro";
 
@@ -9,29 +9,15 @@ interface Props {
 }
 const { attrs } = Astro.props;
 
-type DatabaseAttrsWithPath = DatabaseAttrs & {
-    current_page_path?: string;
-    page_path?: string;
-    path?: string;
-};
-
-const attrs_with_path = attrs as DatabaseAttrsWithPath;
-const current_page_path =
-    attrs_with_path.current_page_path ??
-    attrs_with_path.page_path ??
-    attrs_with_path.path ??
-    // Current exports only expose the database path and page title, so reconstruct the full path here.
-    new PagePath([
-        ...PagePath.fromString(attrs.parent_db_path).components(),
-        new PagePathComponent(attrs.title),
-    ]).toString();
+const current_page_path = attrs.path;
+const parent_db_path = new PagePath(PagePath.fromString(attrs.path).components().slice(0, 2)).toString();
 ---
 
 <MainLayout title={attrs.title}>
     <!-- <div class="db-datetime">{attrs.datetime}</div> -->
     <div class="db-layout">
         <aside class="db-sidebar">
-            <DbSidebar parent_db_path={attrs.parent_db_path} current_page_path={current_page_path} />
+            <DbSidebar parent_db_path={parent_db_path} current_page_path={current_page_path} />
         </aside>
         <main class="db-content">
             <slot />
