@@ -6,13 +6,13 @@ const content_map = ContentMap.fromJSON(config as JsonMap);
 
 interface Props {
     parent_db_path: string;
-    current_page_path?: string;
+    current_page_path: string;
 }
 const { current_page_path, parent_db_path } = Astro.props;
 
 const parent_db = PagePath.fromString(parent_db_path);
-const current_page = current_page_path ? PagePath.fromString(current_page_path) : undefined;
-const database_title = parent_db.components().at(-1)?.toString() ?? parent_db.toString();
+const current_page = PagePath.fromString(current_page_path);
+const database_title = parent_db.name().toString();
 const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
 ---
 
@@ -21,8 +21,8 @@ const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
     <ul>
         {
             parent_db_entries.map((entry) => {
-                const label = entry.components().at(-1)?.toString() ?? entry.toString();
-                const is_active = current_page?.equals(entry) ?? false;
+                const label = entry.name().toString();
+                const is_active = current_page.equals(entry);
 
                 return (
                     <li>

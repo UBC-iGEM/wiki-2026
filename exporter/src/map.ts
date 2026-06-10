@@ -29,6 +29,10 @@ export class PagePath {
         return this.items;
     }
 
+    name(): PagePathComponent {
+        return this.items.at(-1) || new PagePathComponent("");
+    }
+
     toString(): string {
         return this.items.map((item) => item.toString()).join("/");
     }
