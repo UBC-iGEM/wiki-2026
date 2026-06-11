@@ -2,6 +2,7 @@ import { BlockId, Id } from "../notion";
 import { $unsafeSync, ExporterError, isErr, isExporterErr, type ExporterResult, type Result } from "../utils";
 import type { ProcessorInput, ProcessorOutput } from "./markdown";
 import type { Image } from "mdast";
+import { todo } from "node:test";
 import { CONTINUE } from "unist-util-visit";
 import { v5 as uuidv5 } from "uuid";
 
@@ -24,7 +25,7 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
     /**
      * A URL that points to the actual image data.
      */
-    let _image_data_url: string | undefined = undefined;
+    let image_data_url: string | undefined = undefined;
 
     if (image_node_url.includes("file://")) {
         // This is a file uploaded to Notion
@@ -61,9 +62,10 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
                     new Error(JSON.stringify(block_data, null, 2)),
                 );
 
-            _image_data_url = block_data.image.file.url;
+            image_data_url = block_data.image.file.url;
 
             // TODO: GET AND UPLOAD
+            node.url = "TODO";
         };
         ctx.callbacks.push(callback);
     } else {
@@ -77,17 +79,14 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
         image_id = new Id(id);
 
         // Include full query parameters for data to avoid "Access Denied" errors
-        _image_data_url = image_node_url; // eslint-disable-line @typescript-eslint/no-unused-vars
+        image_data_url = image_node_url; // eslint-disable-line @typescript-eslint/no-unused-vars
 
         const callback = async (): Promise<ExporterResult<void>> => {
             // TODO: GET AND UPLOAD
+            node.url = "TODO";
         };
         ctx.callbacks.push(callback);
     }
 
-    // TODO: replace with static.igem.org/...
-    const TOOLS_API_BASE = "TOOLS_API_BASE";
-
-    node.url = `${TOOLS_API_BASE}/${image_id}`;
     return CONTINUE;
 }
