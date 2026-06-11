@@ -3,9 +3,76 @@ import { ContentMap, type JsonMap } from "@exporter/map";
 import config from "../../docs/content_map.json";
 
 const content_map = ContentMap.fromJSON(config as JsonMap);
-const nav_entries = content_map.aggregates.map((agg) => ({
-    name: agg.name,
-    entries: agg.topLevelPages(),
-}));
-void nav_entries;
+
+const nav_items = content_map.aggregates.map((agg) => {
+    const label = agg.name.toString();
+    const children = Array.from(agg.topLevelPages()).map(([entry_path, dest_path]) => {
+        const child_label = entry_path.components().at(-1)?.toString() ?? entry_path.toString();
+        return {
+            label: child_label,
+            href: `/${dest_path.toSlug()}`,
+        };
+    });
+    return { label, children };
+});
 ---
+
+<nav class="primary" aria-label="Primary navigation">
+    <ul class="top-level">
+        {
+            nav_items.map(({ label, children }) => (
+                <li class="nav-group">
+                    <span class="folder-label">{label}</span>
+
+                    <ul class="submenu">
+                        {children.map(({ label, href }) => (
+                            <li>
+                                <a href={href}>{label}</a>
+                            </li>
+                        ))}
+                    </ul>
+                </li>
+            ))
+        }
+    </ul>
+</nav>
+
+<style>
+    nav.primary {
+        box-sizing: border-box;
+        background-color: #f5f5f5;
+        padding: 0.5rem 4rem 0.5rem;
+        border-radius: 8px;
+    }
+
+    nav.primary ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .top-level {
+        display: flex;
+        justify-content: flex-end;
+        gap: 3rem;
+    }
+
+    .nav-group {
+        position: relative;
+    }
+
+    .submenu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: max-content;
+    }
+
+    .nav-group:hover > .submenu {
+        display: block;
+        background-color: #f5f5f5;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+</style>

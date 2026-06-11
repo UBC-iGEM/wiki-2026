@@ -1,15 +1,45 @@
 {
     "aggregates": [
         {
+            "name": "Wet Lab",
+            "entries": [
+                {
+                    "path": "Wet Lab Page 1",
+                    "type": "page",
+                    "item": "37cd65dd82be803d8954c8972d61552c"
+                }
+            ]
+        },
+        {
+            "name": "Modelling",
+            "entries": [
+                {
+                    "path": "Modelling Page 1",
+                    "type": "page",
+                    "item": "37cd65dd82be8034bf42f0c51ee63db3"
+                }
+            ]
+        },
+        {
+            "name": "Hardware",
+            "entries": [
+                {
+                    "path": "Hardware Page 1",
+                    "type": "page",
+                    "item": "37cd65dd82be80829626fb3218a9a21f"
+                }
+            ]
+        },
+        {
             "name": "Testing",
             "entries": [
                 {
-                    "path": "Content Page",
+                    "path": "Content",
                     "type": "page",
                     "item": "356d65dd82be809eb77bf5b3704dc316"
                 },
                 {
-                    "path": "Test Lab Notebook",
+                    "path": "Lab Notebook",
                     "type": "db",
                     "item": [
                         {
