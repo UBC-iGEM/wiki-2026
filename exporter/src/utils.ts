@@ -16,7 +16,7 @@ export class ExporterError {
         private tags: (
             | "malformed content"
             | "notion server"
-            | "igem upload tools server"
+            | "igem tools server"
             | "wiki server"
             | "bug?"
             | "exporter configuration"

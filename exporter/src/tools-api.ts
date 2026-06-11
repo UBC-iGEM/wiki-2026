@@ -1,5 +1,6 @@
 import { CONFIG } from "./config";
-import { $unsafe, $withRetries, isErr, type Result } from "./utils";
+import type { PagePath } from "./map";
+import { $unsafe, $withRetries, ExporterError, isErr, type ExporterResult, type Result } from "./utils";
 import axios, { type AxiosInstance } from "axios";
 import { wrapper } from "axios-cookiejar-support";
 import FormData from "form-data";
@@ -13,28 +14,37 @@ interface UploadResult {
     content_type: string;
 }
 
-let CLIENT_PROMISE: Promise<Result<ToolsClient>> | null = null;
+let CLIENT_PROMISE: Promise<ExporterResult<ToolsClient>> | null = null;
 
 /**
  * Public interface to a singleton `ToolsClient` interface.
- *
- * TODO: do we want to pull credentials from .env?
  */
-export async function getToolsClient(): Promise<Result<ToolsClient>> {
+export async function getToolsClient(): Promise<ExporterResult<ToolsClient>> {
     if (CLIENT_PROMISE) return CLIENT_PROMISE;
 
-    CLIENT_PROMISE = (async (): Promise<Result<ToolsClient>> => {
+    CLIENT_PROMISE = (async (): Promise<ExporterResult<ToolsClient>> => {
         const { IGEM_TOOLS_USERNAME: username, IGEM_TOOLS_PASSWORD: password } = process.env;
 
         if (!username || !password) {
-            return Error("Missing IGEM_TOOLS_ environment variables.");
+            new ExporterError(
+                "The environment variable IGEM_TOOLS_USERNAME or IGEM_TOOLS_PASSWORD is unset. The exporter has not been configured with the necessary credentials.",
+                ["exporter configuration", "igem tools server"],
+            ).logAndQuit();
         }
 
-        return await ToolsClient.withAuthentication({
-            username,
-            password,
+        const tools_client_res = await ToolsClient.withAuthentication({
+            username: username!,
+            password: password!,
             team_id: CONFIG.team_id,
         });
+        if (isErr(tools_client_res))
+            return new ExporterError(
+                "Failed to authenticate with the iGEM Tools API for uploading media.",
+                ["igem tools server"],
+                tools_client_res,
+            );
+
+        return tools_client_res;
     })();
 
     return CLIENT_PROMISE;
@@ -79,12 +89,25 @@ class ToolsClient {
     }
 
     // Simple upload function to igem CDN. No specific directory specified yet.
-    public async upload(uid: string, url: string): Promise<Result<UploadResult>> {
-        const folder_name = "assets"; // Hardcoded for now
+    public async upload({
+        uid,
+        url,
+        path,
+    }: {
+        uid: string;
+        url: string;
+        path: PagePath;
+    }): Promise<ExporterResult<UploadResult>> {
+        const folder_name = "assets";
 
         // Get image stream from url/notion
         const response = await $withRetries($unsafe, async () => await axios.get(url, { responseType: "stream" }));
-        if (isErr(response)) return response;
+        if (isErr(response))
+            return new ExporterError(
+                `Failed to retrieve data from url "${url}" while attempting to upload asset on page "${path}" with UID ${uid}.`,
+                ["igem tools server", "notion server"],
+                response,
+            );
 
         // Infer extension and content type
         const content_type = String(response.headers["content-type"]) || "image/jpeg";
@@ -104,7 +127,12 @@ class ToolsClient {
                     headers: form_data.getHeaders?.(),
                 }),
         );
-        if (isErr(post_res)) return post_res;
+        if (isErr(post_res))
+            return new ExporterError(
+                `Failed to upload asset on page "${path}" with UID ${uid}.`,
+                ["igem tools server"],
+                post_res,
+            );
 
         // return the upload result
         const public_url = `https://static.igem.wiki/teams/${this.team_id}/${folder_name}/${uid}.${file_extension}`;
@@ -116,7 +144,15 @@ class ToolsClient {
         };
     }
 
-    public async alreadyUploaded({ folder_name, uid }: { folder_name: string; uid: string }): Promise<Result<boolean>> {
+    public async alreadyUploaded({
+        folder_name,
+        uid,
+        path,
+    }: {
+        folder_name: string;
+        uid: string;
+        path: PagePath;
+    }): Promise<ExporterResult<boolean>> {
         const response = await $withRetries(
             $unsafe,
             async () =>
@@ -124,7 +160,12 @@ class ToolsClient {
                     params: { directory: folder_name },
                 }),
         );
-        if (isErr(response)) return response;
+        if (isErr(response))
+            return new ExporterError(
+                `Failed to determine if asset on page "${path}" with UID ${uid} already exists.`,
+                ["igem tools server"],
+                response,
+            );
 
         // files returned:
         const files = response.data || [];
