@@ -6,23 +6,63 @@ const content_map = ContentMap.fromJSON(config as JsonMap);
 
 const nav_items = content_map.aggregates.map((agg) => {
   const label = agg.name.toString();
-  const firstPair = agg.topLevelPages().next().value;
-  const href = firstPair ? `/${firstPair[1].toSlug()}` : "#";
-  return { label, href };
+  const children = Array.from(agg.topLevelPages()).map(([entry_path, dest_path]) => {
+    const child_label = entry_path.components().at(-1)?.toString() ?? entry_path.toString();
+    return {
+      label: child_label,
+      href: `/${dest_path.toSlug()}`,
+    };
+  });
+  return { label, children };
 });
 
 ---
-<style>
-  nav.primary { width: 100%; }
-  nav.primary ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 3rem; }
-  nav.primary li { display: inline-block; }
-  nav.primary a { text-decoration: none; color: inherit; }
-</style>
 
 <nav class="primary" aria-label="Primary navigation">
-  <ul>
-    {nav_items.map(({ label, href }) => (
-      <li><a href={href}>{label}</a></li>
+  <ul class="top-level">
+    {nav_items.map(({ label, children }) => (
+    <li class="nav-group">
+      <span class="folder-label">{label}</span>
+
+      <ul class="submenu">
+        {children.map(({ label, href }) => (
+          <li><a href={href}>{label}</a></li>
+        ))}
+      </ul>
+    </li>
     ))}
   </ul>
 </nav>
+
+<style>
+  nav.primary {
+    width: 100%;
+  }
+
+  nav.primary ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .top-level {
+    display: flex;
+    justify-content: left;
+    gap: 3rem;
+  }
+
+  .nav-group {
+    position: relative;
+  }
+
+  .submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+
+  .nav-group:hover > .submenu {
+    display: block;
+  }
+</style>
