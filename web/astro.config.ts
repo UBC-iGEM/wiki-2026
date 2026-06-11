@@ -2,6 +2,7 @@
 import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
 import { defineConfig } from "astro/config";
+import rehypeCitation from "rehype-citation";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 
@@ -10,7 +11,18 @@ export default defineConfig({
     markdown: {
         processor: unified({
             remarkPlugins: [remarkMath],
-            rehypePlugins: [rehypeKatex],
+            rehypePlugins: [
+                rehypeKatex,
+                [
+                    rehypeCitation,
+                    {
+                        bibliography: "./src/content/references/litdb.bib",
+                        csl: "vancouver",
+                        linkCitations: true,
+                        path: process.cwd(),
+                    },
+                ],
+            ],
         }),
     },
     integrations: [mdx()],
