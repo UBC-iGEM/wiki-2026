@@ -3,6 +3,7 @@ import type { ContentMap } from "./map";
 import { PageId } from "./notion";
 import * as parse from "./parse";
 import { clearPreviousOutputs, isExporterErr, saveFile } from "./utils";
+import { saveZoteroDb } from "./zotero";
 
 async function main(): Promise<void> {
     const parse_map_res = await parse.parseMaster(new PageId(CONFIG.master_id));
@@ -10,6 +11,9 @@ async function main(): Promise<void> {
 
     const clear_res = await clearPreviousOutputs();
     if (isExporterErr(clear_res)) clear_res.logAndQuit();
+
+    const zotero_res = await saveZoteroDb();
+    if (isExporterErr(zotero_res)) zotero_res.logAndQuit();
 
     const content_map_json = JSON.stringify(parse_map_res, null, 4);
     const content_map_res = await saveFile({ content: content_map_json, path: "content_map.json" });

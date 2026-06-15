@@ -23,7 +23,8 @@
         "master_id": "364d65dd82be80f0aed8fcb8bfaf9353",
         "content_dir_path": "web/docs",
         "debug_dir_path": "exporter/debug",
-        "team_id": "6279"
+        "team_id": "6279",
+        "zotero_group_id": 5833846
     },
     "scripts": {
         "export": "npx tsx --env-file=.env exporter/src/main.ts",
