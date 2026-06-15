@@ -7,6 +7,28 @@
                     "path": "Wet Lab Page 1",
                     "type": "page",
                     "item": "37cd65dd82be803d8954c8972d61552c"
+                },
+                {
+                    "path": "Lab Notebook 2026",
+                    "type": "db",
+                    "item": [
+                        {
+                            "path": "Notebook Entry Template",
+                            "item": "36dd65dd82be80b6a286ce3121c64387"
+                        },
+                        {
+                            "path": "Sample Notebook Entry",
+                            "item": "36dd65dd82be801e87eac615d082d8bf"
+                        },
+                        {
+                            "path": "BLANK ENTRY",
+                            "item": "36ed65dd82be805a8c17d6cbfb2066e2"
+                        },
+                        {
+                            "path": "Cloning Round 1 - HiFi Assembly",
+                            "item": "37ad65dd82be80b6998fe86801e1e445"
+                        }
+                    ]
                 }
             ]
         },

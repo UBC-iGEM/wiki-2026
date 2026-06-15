@@ -51,6 +51,7 @@ export async function processMarkdown({
             })
             .use(remarkStringify, {
                 bullet: "-",
+                resourceLink: true,
             })
             .process(preprocessed_markdown)
     ).toString();

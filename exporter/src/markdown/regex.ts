@@ -1,5 +1,10 @@
 const REGEXES: [RegExp, string][] = [
     /**
+     * Escape raw colons to avoid unexpected directives
+     */
+    [/:/, "\\:"],
+
+    /**
      * Convert block component syntax into a container directive with newline terminator.
      * FROM:
          %% START COMPONENT

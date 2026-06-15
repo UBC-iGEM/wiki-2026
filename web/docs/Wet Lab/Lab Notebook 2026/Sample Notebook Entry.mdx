@@ -1,0 +1,99 @@
+---
+type: "database"
+title: "Sample Notebook Entry"
+path: "Wet Lab/Lab Notebook 2026/Sample Notebook Entry"
+---
+
+# Purpose
+
+The purpose of this experiment is to clone the plasmid CpxP and transform the plasmid into DH5a *E. coli!*
+
+# Materials & Methods
+
+|                    |                         |                                 |
+| ------------------ | ----------------------- | ------------------------------- |
+| **DNA Components** | **Restriction Enzymes** | **Cloning Reagents/Kits**       |
+| pSB1C3             | PstI                    | 2x HiFi DNA Assembly Master Mix |
+| CpxP gBlock        | EcoRI                   | Miniprep Kit                    |
+|                    |                         | DNA gel Extraction              |
+
+**Step 1: Linearizing Plasmid Backbone**
+
+1. Pick bacteria from the glycerol stock and culture in 5 mL of Chloramphenicol LB media overnight while shaking
+2. Extract plasmid via Miniprep kit and measure DNA concentration via Nanodrop
+3. Linearize the plasmid and remove the RFP gene using restriction enzymes PstI and EcoRI.
+   1. Follow the reagent mixture below for linearization:
+
+**Table 1. Reagent mix and amount**
+
+|                                    |            |
+| ---------------------------------- | ---------- |
+| **Plasmid Linearization Reagents** | **Amount** |
+| Plasmid                            | 1 ug       |
+| 10x rCutSmart™ Buffer              | 4 uL       |
+| PstI restriction enzyme            | 0.8 uL     |
+| EcoRI restriction enzyme           | 0.8 uL     |
+| ddH2O                              | to 40 uL   |
+| **Total Volume**                   | **40 uL**  |
+
+Note: Add the reagents in this order: ddH20, plasmid, 10x rCutSmart buffer, restriction enzymes
+
+1. Incubate the mixture at 37C for \~ 1 hr
+2. Run gel electrophoresis on the incubated mixture
+   1. Gel Preparation
+      1. 500 ug Agarose + 50 mL 1x TAE buffer → 1 min Microwave
+      2. Add 10 uL Ethidium Bromide/Syber Safe into the heated mixture → swirl
+      3. Pour into gel casting tray + insert comb (remove all bubbles)
+      4. Let gel sit for 30 min to solidify
+   2. Dilute 6x loading dye to 1x by adding to incubated mixture
+      1. For 40 uL volume, add 8 uL of 6X gel loading dye (scale appropriately)
+   3. Run gel electrophoresis w/ following parameters: 130 V, 400 A, 30 minutes
+      1. You should see 2 bands → linearized plasmid + cut-out fragment
+3. Extract linearized plasmid via DNA gel extraction kit and Nandrop!
+   1. Only cut out the linearized plasmid precisely (identify using DNA ladder)
+
+**Step 2: Insert gBlock into Linearized Plasmid via HIFI Assembly**
+
+1. Insert gBlock via HIFI Assembly following protocol below:
+   1. Prepare reaction mixture with the following reagents:
+
+**Table 2. Reagent Mix and amount**
+
+|                                     |            |
+| ----------------------------------- | ---------- |
+| **HIFI Assembly Reaction Reagents** | **Amount** |
+| DNA backbone                        | 0.6 uL     |
+| gBlock                              | 0.3 uL     |
+| HiFi DNA Assembly Master Mix        | 2 uL       |
+| ddH2O                               | 1.1 uL     |
+| **Total Volume**                    | **4 uL**   |
+
+Note: DNA calculation done using: [https://nebiocalculator.neb.com/#!/dsdnaamt](https://nebiocalculator.neb.com/#!/dsdnaamt)
+
+1. Incubate the HIFI assembly mixture at 50℃ for 15 min via Thermocycler
+
+**Step 3: Bacterial Transformation**
+
+1. Add 5 uL cloned plasmid and 45 uL \*high efficiency competent DH5a E. coli \*in a 1:10 volume ratio.
+2. Incubate the mixture on ice for 30 min
+3. Heat shock the bacterial mixture at 42C for 30 seconds via waterbath or heatblock
+4. Incubate the mixture on ice for 5 min
+5. Add 100 uL of SOC media + incubate the mixture at 37C for 1 hour
+
+**Step 4: Plating bacteria**
+
+1. Spin down and plate 50 uL of transformed bacteria on a chloramphenicol plate
+2. Incubate the plate overnight at 37C
+
+# Results
+
+As expected, the plate grew single colonies overnight!
+![](https://TODO.com)
+
+# Summary
+
+In this experiment, we aimed to create the CpxP reporter plasmid using the pSB1C3 backbone and CpxP gBlock via HIFI assembly. The plasmid was cloned and successfully transformed into DH5a \*E. coli \*as shown by the single colonies.
+
+# Hand off/Next Steps
+
+The next steps include picking and culturing a few single colonies. Following miniprep, the extracted plasmids should be sent for sequencing to verify the cloning worked!

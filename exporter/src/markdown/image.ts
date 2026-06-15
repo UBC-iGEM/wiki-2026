@@ -65,7 +65,7 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
             image_data_url = block_data.image.file.url;
 
             // TODO: GET AND UPLOAD
-            node.url = "TODO";
+            node.url = "https://TODO.com";
         };
         ctx.callbacks.push(callback);
     } else {
@@ -83,7 +83,7 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
 
         const callback = async (): Promise<ExporterResult<void>> => {
             // TODO: GET AND UPLOAD
-            node.url = "TODO";
+            node.url = "https://TODO.com";
         };
         ctx.callbacks.push(callback);
     }

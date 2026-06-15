@@ -10,7 +10,14 @@ export default defineConfig({
     markdown: {
         processor: unified({
             remarkPlugins: [remarkMath],
-            rehypePlugins: [rehypeKatex],
+            rehypePlugins: [
+                [
+                    rehypeKatex,
+                    {
+                        strict: false,
+                    },
+                ],
+            ],
         }),
     },
     integrations: [mdx()],
