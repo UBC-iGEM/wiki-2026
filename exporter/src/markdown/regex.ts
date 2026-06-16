@@ -37,6 +37,12 @@ const REGEXES: [RegExp, string][] = [
     [/^((<\/(?!colgroup|tr)[a-zA-Z_-]+>)|(```)|(\$\$))$/, "$1\n"],
 
     /**
+     * Remove the ticks that Notion injects around inline math delimiters
+     */
+    [/\$`/, "$"],
+    [/`\$/, "$"],
+
+    /**
      * Replace Notion mentions with standard Markdown blocks.
      * The Markdown blocks may later be parsed and transformed.
      */
