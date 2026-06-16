@@ -18,6 +18,7 @@ export class ExporterError {
             | "notion server"
             | "igem tools server"
             | "wiki server"
+            | "zotero server"
             | "bug?"
             | "exporter configuration"
         )[],
