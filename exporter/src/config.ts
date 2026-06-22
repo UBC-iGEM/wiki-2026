@@ -7,6 +7,7 @@ const CONFIG_SCHEMA = z.object({
     debug_dir_path: z.string(),
     team_id: z.string(),
     zotero_group_id: z.number().int().positive(),
+    repo_uuid: z.string(),
 });
 
 export type Config = z.infer<typeof CONFIG_SCHEMA>;

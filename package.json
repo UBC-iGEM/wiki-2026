@@ -24,7 +24,8 @@
         "content_dir_path": "web/docs",
         "debug_dir_path": "exporter/debug",
         "team_id": "6279",
-        "zotero_group_id": 5833846
+        "zotero_group_id": 5833846,
+        "repo_uuid": "79d2f9df-96ea-47b4-8757-83b01ad6ee8c"
     },
     "scripts": {
         "export": "npx tsx --env-file=.env exporter/src/main.ts",

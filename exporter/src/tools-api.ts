@@ -122,10 +122,13 @@ class ToolsClient {
         const post_res = await $withRetries(
             $unsafe,
             async () =>
-                await this.client.post(`/websites/teams/${this.team_id}`, form_data, {
-                    params: { directory: folder_name },
-                    headers: form_data.getHeaders?.(),
-                }),
+                await this.client.post(
+                    `/teams/${this.team_id}/repositories/${CONFIG.repo_uuid}/files`,
+                    form_data,
+                    {
+                        params: { directory: folder_name },
+                        headers: form_data.getHeaders?.(),
+                    }),
         );
         if (isErr(post_res))
             return new ExporterError(
@@ -133,14 +136,27 @@ class ToolsClient {
                 ["igem tools server"],
                 post_res,
             );
+        
+        const job_data = post_res.data?.data;
+        const upload_key = job_data?.uploadKey; // e.g., "teams/6279/wiki/assets/test-img.avif"
+
+        // accounting for server-side file extension auto-conversion
+        const final_extension = "avif";
+        const final_filename = `${uid}.${final_extension}`;
 
         // return the upload result
-        const public_url = `https://static.igem.wiki/teams/${this.team_id}/${folder_name}/${uid}.${file_extension}`;
+        let public_url: string;
+        if (upload_key) {
+            public_url = `https://static.igem.wiki/${upload_key}`;
+        } else {
+            public_url = `https://static.igem.wiki/teams/${this.team_id}/wiki/${folder_name}/${final_filename}`;
+        }
+        
         return {
-            file_name: `${uid}.${file_extension}`,
-            key: `${folder_name}/${uid}.${file_extension}`,
+            file_name: final_filename,
+            key: `${folder_name}/${final_filename}`,
             location: public_url,
-            content_type: content_type,
+            content_type: "image/avif",
         };
     }
 
@@ -156,7 +172,7 @@ class ToolsClient {
         const response = await $withRetries(
             $unsafe,
             async () =>
-                await this.client.get(`/websites/teams/${this.team_id}`, {
+                await this.client.get(`/teams/${this.team_id}/repositories/${CONFIG.repo_uuid}/files`, {
                     params: { directory: folder_name },
                 }),
         );
