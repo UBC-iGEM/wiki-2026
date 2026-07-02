@@ -1,0 +1,22 @@
+---
+interface Props {
+    url: string;
+    alt?: string;
+}
+
+const { url, alt = "Interactive 3D model" } = Astro.props;
+---
+
+<model-viewer src={url} alt={alt} camera-controls auto-rotate touch-action="pan-y"></model-viewer>
+
+<script>
+    import "@google/model-viewer";
+</script>
+
+<style>
+    model-viewer {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+    }
+</style>
