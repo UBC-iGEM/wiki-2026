@@ -4,6 +4,7 @@ import type { ProcessorInput, ProcessorOutput } from "./markdown";
 import type { Image } from "mdast";
 import { CONTINUE } from "unist-util-visit";
 import { v5 as uuidv5 } from "uuid";
+import { getToolsClient } from "../tools-api.ts";
 
 export const IMAGE_PROCESSORS = [updateImageUrl];
 
@@ -64,7 +65,17 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
             image_data_url = block_data.image.file.url;
 
             // TODO: GET AND UPLOAD
-            node.url = "https://TODO.com";
+            const client_res = await getToolsClient();
+            if (isExporterErr(client_res)) return client_res;
+
+            const upload_res = await client_res.upload({
+                uid: image_id!.toString(),
+                url: image_data_url,
+                path: ctx.path
+            });
+
+            if (isExporterErr(upload_res)) return upload_res;
+            node.url = upload_res.location;
         };
         ctx.callbacks.push(callback);
     } else {
@@ -82,7 +93,17 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
 
         const callback = async (): Promise<ExporterResult<void>> => {
             // TODO: GET AND UPLOAD
-            node.url = "https://TODO.com";
+            const client_res = await getToolsClient();
+            if (isExporterErr(client_res)) return client_res;
+            
+            const upload_res = await client_res.upload({
+                uid: image_id!.toString(),
+                url: image_data_url!,
+                path: ctx.path
+            });
+
+            if (isExporterErr(upload_res)) return upload_res;
+            node.url = upload_res.location;
         };
         ctx.callbacks.push(callback);
     }
