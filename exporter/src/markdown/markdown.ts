@@ -9,6 +9,7 @@ import { LINK_PROCESSORS } from "./link";
 import { processRegex } from "./regex";
 import type { Parent, Root, Node } from "mdast";
 import HTMLParse from "node-html-parser";
+import rehypeCitation from "rehype-citation";
 import remarkDirective from "remark-directive";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -93,7 +94,12 @@ export interface ProcessorContext {
     callbacks: ProcessorCallback[];
 }
 
-export const remarkProcessingPipeline = unified().use(remarkParse).use(remarkDirective).use(remarkMath).use(remarkGfm);
+export const remarkProcessingPipeline = unified()
+    .use(remarkParse)
+    .use(remarkDirective)
+    .use(remarkMath)
+    .use(rehypeCitation)
+    .use(remarkGfm);
 
 /**
  * A remark plugin that walks the Markdown AST and dispatches various processors on different node types

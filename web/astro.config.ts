@@ -25,6 +25,7 @@ export default defineConfig({
                         bibliography: "./docs/litdb.bib",
                         csl: "vancouver",
                         linkCitations: true,
+                        showTooltips: true,
                         path: process.cwd(),
                     },
                 ],
