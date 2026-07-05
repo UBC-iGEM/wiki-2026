@@ -2,6 +2,7 @@
 import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
 import { defineConfig } from "astro/config";
+import rehypeCitation from "rehype-citation";
 import rehypeKatex from "rehype-katex";
 import remarkBreaks from "remark-breaks";
 import remarkMath from "remark-math";
@@ -16,6 +17,15 @@ export default defineConfig({
                     rehypeKatex,
                     {
                         strict: false,
+                    },
+                ],
+                [
+                    rehypeCitation,
+                    {
+                        bibliography: "./docs/litdb.bib",
+                        csl: "vancouver",
+                        linkCitations: true,
+                        path: process.cwd(),
                     },
                 ],
             ],
