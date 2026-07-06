@@ -3,7 +3,7 @@ import { ExporterError, isExporterErr } from "../utils";
 import type { ComponentOutput } from "./components";
 import { LINK_PROCESSORS } from "./link";
 import { constructNodeErrorSource, processAll, type ProcessorInput } from "./markdown";
-import type { Html, Link, PhrasingContent, Text } from "mdast";
+import type { Html, Link } from "mdast";
 import type { TextDirective } from "mdast-util-directive";
 import { SKIP } from "unist-util-visit";
 
@@ -50,70 +50,48 @@ function anchor({ node, ctx }: ComponentInput): ComponentOutput {
 function link({ node, ctx }: ComponentInput): ComponentOutput {
     const children = node.children;
 
-    // Helper to generate new `Link` node
-    // This replaces the component
-    const generateNewLink = ({
-        link_node,
-        anchor_node,
-        display,
-    }: {
-        link_node: Link;
-        anchor_node: Text;
-        display?: string | undefined;
-    }): ComponentOutput => {
-        // Replace this node with a Link
-        const new_node: Link = {
-            type: "link",
-            url: link_node.url,
-            children: link_node.children,
-        };
-        ctx.parent.children[ctx.index] = new_node;
+    const malformed = (detail: string): ExporterError =>
+        new ExporterError(
+            `Inline link component on page "${ctx.path}" could not be understood: ${detail} This component should follow the format <optional display text> <optional page mention> @ <anchor name>.`,
+            ["malformed content"],
+            constructNodeErrorSource(node.children),
+        );
 
-        // Process the link to replace URL
-        const processing_res = processAll(LINK_PROCESSORS, {
-            node: new_node,
-            ctx,
-        });
-        if (isExporterErr(processing_res)) return processing_res;
-
-        const processed_link_node = ctx.parent.children[ctx.index] as Link;
-
-        let anchor_text = anchor_node.value.trimStart();
-        if (!anchor_text.startsWith("@")) {
-            return new ExporterError(
-                `Inline link component on page "${ctx.path}" could not be understood: an "@" separator was not identified. This component's link should follow the format <page mention> @ <anchor name>.`,
-                ["malformed content"],
-                constructNodeErrorSource(node.children),
-            );
-        }
-        anchor_text = anchor_text.replace(/@\s*/, "");
-        const anchor_slug = new PagePathComponent(anchor_text).toSlug();
-
-        const children: PhrasingContent[] = display
-            ? [
-                  {
-                      type: "text",
-                      value: display,
-                  },
-              ]
-            : processed_link_node.children;
+    // Builds and installs the final `Link` node that replaces the component.
+    const generateNewLink = (url: string, anchor_text: string, display?: string): ComponentOutput => {
+        const trimmed_anchor = anchor_text.trimStart();
+        if (!trimmed_anchor.startsWith("@")) return malformed(`an "@" separator was not identified.`);
+        const anchor_name = trimmed_anchor.replace(/@\s*/, "").trim();
 
         const final_link: Link = {
             type: "link",
-            url: `${processed_link_node.url}#${anchor_slug}`,
-            children,
+            url: `${url}#${new PagePathComponent(anchor_name).toSlug()}`,
+            children: [{ type: "text", value: display || anchor_name }],
         };
         ctx.parent.children[ctx.index] = final_link;
 
         return SKIP;
     };
 
-    // No display message provided, form of content is %{ LINK <mention> @ <anchor> }
+    // Normalizes a mention link node into its wiki URL.
+    const processMention = (link_node: Link): string | ExporterError => {
+        ctx.parent.children[ctx.index] = link_node;
+
+        const processing_res = processAll(LINK_PROCESSORS, { node: link_node, ctx });
+        if (isExporterErr(processing_res)) return processing_res;
+
+        return (ctx.parent.children[ctx.index] as Link).url;
+    };
+
+    // Mention provided: <mention> @ <anchor>
     if (children.length === 2 && children[0]!.type === "link" && children[1]!.type === "text") {
         const [link_node, anchor_node] = children;
-        return generateNewLink({ link_node, anchor_node });
+        const url = processMention(link_node);
+        if (isExporterErr(url)) return url;
+        return generateNewLink(url, anchor_node.value);
     }
-    // Display message provided, form of content is %{ LINK <display>; <mention> @ <anchor> }
+
+    // Mention and display text provided: <display> <mention> @ <anchor>
     if (
         children.length === 3 &&
         children[0]!.type === "text" &&
@@ -121,14 +99,24 @@ function link({ node, ctx }: ComponentInput): ComponentOutput {
         children[2]!.type === "text"
     ) {
         const [display_node, link_node, anchor_node] = children;
-        const display_text = display_node.value.trim();
-
-        return generateNewLink({ link_node, anchor_node, display: display_text });
+        const url = processMention(link_node);
+        if (isExporterErr(url)) return url;
+        return generateNewLink(url, anchor_node.value, display_node.value.trim());
     }
 
-    return new ExporterError(
-        `Inline link component on page "${ctx.path}" could not be understood: its format is incorrect. This component should follow the format <optional display text> <page mention> @ <anchor name>.`,
-        ["malformed content"],
-        constructNodeErrorSource(node.children),
-    );
+    // No mention provided; link targets the current page.
+    // <optional display text> @ <anchor> all in a single text node.
+    if (children.length === 1 && children[0]!.type === "text") {
+        const text = children[0]!.value;
+        const at_index = text.indexOf("@");
+        if (at_index === -1) return malformed(`an "@" separator was not identified.`);
+
+        return generateNewLink(
+            `/${ctx.path.toSlug()}`,
+            text.slice(at_index),
+            text.slice(0, at_index).trim() || undefined,
+        );
+    }
+
+    return malformed("its format is incorrect.");
 }
