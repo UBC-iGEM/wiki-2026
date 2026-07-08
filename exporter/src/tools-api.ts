@@ -6,6 +6,11 @@ import { wrapper } from "axios-cookiejar-support";
 import FormData from "form-data";
 import mime from "mime-types";
 import { CookieJar } from "tough-cookie";
+import { createReadStream, createWriteStream } from "node:fs";
+import { mkdtemp, rm, stat } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import * as nodePath from "node:path";
+import { pipeline } from "node:stream/promises";
 
 interface UploadResult {
     file_name: string;
@@ -16,6 +21,21 @@ interface UploadResult {
 
 let CLIENT_PROMISE: Promise<ExporterResult<ToolsClient>> | null = null;
 const ASSETS_FOLDER = "assets";
+const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
+
+async function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+
+    const timeout_promise = new Promise<never>((_, reject) => {
+        timeout = setTimeout(() => reject(new Error(`${label} timed out after ${ms}ms`)), ms);
+    });
+
+    try {
+        return await Promise.race([promise, timeout_promise]);
+    } finally {
+        if (timeout) clearTimeout(timeout);
+    }
+}
 
 /**
  * Public interface to a singleton `ToolsClient` interface.
@@ -84,7 +104,7 @@ class ToolsClient {
             password,
         });
 
-        const post_res = await $withRetries($unsafe, async () => await instance.client.post("/auth/sign-in", params));
+        const post_res = await $withRetries($unsafe, async () => await instance.client.post("/auth/sign-in", params, { timeout: 30000 }));
         if (isErr(post_res)) return post_res;
 
         return instance;
@@ -127,7 +147,16 @@ class ToolsClient {
         }
 
         // Get image stream from url/notion
-        const response = await $withRetries($unsafe, async () => await axios.get(url, { responseType: "stream" }));
+        const response = await $withRetries(
+            $unsafe,
+            async () =>
+                await axios.get(url, {
+                    responseType: "stream",
+                    timeout: 30000,
+                    maxBodyLength: Infinity,
+                    maxContentLength: Infinity,
+                }),
+        );
         if (isErr(response))
             return new ExporterError(
                 `Failed to retrieve data from url "${url}" while attempting to upload asset on page "${path}" with UID ${uid}.`,
@@ -136,52 +165,111 @@ class ToolsClient {
             );
 
         // Infer extension and content type
-        const content_type = String(response.headers["content-type"]) || "image/jpeg";
+        const content_type =
+            typeof response.headers["content-type"] === "string"
+                ? response.headers["content-type"].split(";")[0]!
+                : "image/jpeg";
         const file_extension = mime.extension(content_type) || "jpg";
 
-        // build data
-        const form_data = new FormData();
-        form_data.append("file", response.data, `${uid}.${file_extension}`);
-
-        // Make POST request to igem api endpoint
-        // /websites/teams/{teamId}?directory={folderName}
-        const post_res = await $withRetries(
-            $unsafe,
-            async () =>
-                await this.client.post(
-                    `/teams/${this.team_id}/repositories/${CONFIG.repo_uuid}/files`,
-                    form_data,
-                    {
-                        params: { directory: folder_name },
-                        headers: form_data.getHeaders?.(),
-                    }),
-        );
-        if (isErr(post_res))
-            return new ExporterError(
-                `Failed to upload asset on page "${path}" with UID ${uid}.`,
-                ["igem tools server"],
-                post_res,
+        const content_length = Number(response.headers["content-length"]);
+        if (Number.isFinite(content_length) && content_length > MAX_UPLOAD_BYTES) {
+            console.warn(
+                `[image-upload] skipped ${uid} on "${path}": file is ${content_length} bytes, which is larger than ${MAX_UPLOAD_BYTES} bytes.`,
             );
-        
-        const job_data = post_res.data?.data;
-        const upload_key = job_data?.uploadKey; // e.g., "teams/6279/wiki/assets/test-img.avif"
 
-        // return the upload result
-        let public_url: string;
-        if (upload_key) {
-            public_url = `https://static.igem.wiki/${upload_key}`;
-        } else {
-            public_url = expected_public_url;
+            return {
+                file_name: final_filename,
+                key: "",
+                location: "",
+                content_type: "image/avif"
+            };
         }
 
-        console.log(`[image-upload] uploaded ${uid} -> ${public_url}`);
-        
-        return {
-            file_name: final_filename,
-            key: `${folder_name}/${final_filename}`,
-            location: public_url,
-            content_type: "image/avif",
-        };
+        const temp_dir = await mkdtemp(nodePath.join(tmpdir(), "igem-upload-"));
+        const temp_file_path = nodePath.join(temp_dir, `${uid}.${file_extension}`);
+
+        try {
+            await withTimeout(
+                pipeline(response.data, createWriteStream(temp_file_path)),
+                30000,
+                `Download image ${uid}`,
+            );
+
+            const temp_file_stat = await stat(temp_file_path);
+
+            if (temp_file_stat.size > MAX_UPLOAD_BYTES) {
+                console.warn(
+                    `[image-upload] skipped ${uid} on "${path}": file is ${temp_file_stat.size} bytes, which is larger than ${MAX_UPLOAD_BYTES} bytes. Leaving original image URL in MDX.`,
+                );
+
+                return {
+                    file_name: final_filename,
+                    key: "",
+                    location: "",
+                    content_type: "image/avif"
+                };
+            }
+
+            // build data
+            // Make POST request to igem api endpoint
+            // /websites/teams/{teamId}?directory={folderName}
+            const post_res = await $withRetries(
+                $unsafe,
+                async () => {
+                    const form_data = new FormData();
+                    form_data.append("file", createReadStream(temp_file_path), {
+                        filename: `${uid}.${file_extension}`,
+                        contentType: content_type,
+                    });
+
+                    return await this.client.post(
+                        `/teams/${this.team_id}/repositories/${CONFIG.repo_uuid}/files`,
+                        form_data,
+                        {
+                            params: { directory: folder_name },
+                            headers: form_data.getHeaders?.(),
+                            timeout: 60000,
+                            maxBodyLength: Infinity,
+                            maxContentLength: Infinity,
+                        },
+                    );
+                },
+            );
+            if (isErr(post_res))
+                return new ExporterError(
+                    `Failed to upload asset on page "${path}" with UID ${uid}.`,
+                    ["igem tools server"],
+                    post_res,
+                );
+
+            const job_data = post_res.data?.data;
+            const upload_key = job_data?.uploadKey; // e.g., "teams/6279/wiki/assets/test-img.avif"
+
+            // return the upload result
+            let public_url: string;
+            if (upload_key) {
+                public_url = `https://static.igem.wiki/${upload_key}`;
+            } else {
+                public_url = expected_public_url;
+            }
+
+            console.log(`[image-upload] uploaded ${uid} -> ${public_url}`);
+
+            return {
+                file_name: final_filename,
+                key: `${folder_name}/${final_filename}`,
+                location: public_url,
+                content_type: "image/avif",
+            };
+        } catch (error) {
+            return new ExporterError(
+                `Failed to retrieve data from url "${url}" while attempting to upload asset on page "${path}" with UID ${uid}.`,
+                ["igem tools server", "notion server"],
+                error instanceof Error ? error : new Error(String(error)),
+            );
+        } finally {
+            await rm(temp_dir, { recursive: true, force: true });
+        }
     }
 
     public async alreadyUploaded({
@@ -221,7 +309,7 @@ class ToolsClient {
 
         return file_name.slice(0, dot_index);
     }
-    
+
 
     // Make GET request to igem api endpoint to retrieve list of files in a directory
     private async getUploadedAssetUids({
@@ -241,6 +329,7 @@ class ToolsClient {
                 async () =>
                     await this.client.get(`/teams/${this.team_id}/repositories/${CONFIG.repo_uuid}/files`, {
                         params: { directory: folder_name },
+                        timeout: 30000,
                     }),
             );
 
