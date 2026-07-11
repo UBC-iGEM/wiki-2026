@@ -38,6 +38,7 @@
         "clean": "rm -r web/docs && rm -r exporter/debug"
     },
     "dependencies": {
+        "sharp": "^0.35.3",
         "tsx": "^4.22.3"
     },
     "allowScripts": {

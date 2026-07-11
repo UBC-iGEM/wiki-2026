@@ -1,10 +1,11 @@
 import { CONFIG } from "./config";
 import type { PagePath } from "./map";
-import { $unsafe, $withRetries, ExporterError, isErr, isExporterErr, type ExporterResult, type Result } from "./utils";
+import { $unsafe, ExporterError, isErr, isExporterErr, type ExporterResult, type Result } from "./utils";
 import axios, { type AxiosInstance } from "axios";
 import { wrapper } from "axios-cookiejar-support";
 import FormData from "form-data";
 import mime from "mime-types";
+import sharp from "sharp";
 import { CookieJar } from "tough-cookie";
 import { createReadStream, createWriteStream } from "node:fs";
 import { mkdtemp, rm, stat } from "node:fs/promises";
@@ -34,6 +35,25 @@ async function withTimeout<T>(promise: Promise<T>, ms: number, label: string): P
         return await Promise.race([promise, timeout_promise]);
     } finally {
         if (timeout) clearTimeout(timeout);
+    }
+}
+
+async function convertToAvif(inputPath: string, outputPath: string): Promise<ExporterResult<void>> {
+    try {
+        await sharp(inputPath)
+            .avif({
+                quality: 70,
+                effort: 4,
+                lossless: false,
+                chromaSubsampling: '4:2:0',
+            })
+            .toFile(outputPath);
+    } catch (error) {
+        return new ExporterError(
+            `Failed to convert image at ${inputPath} to AVIF format.`,
+            ["igem tools server", "notion server"],
+            error instanceof Error ? error : new Error(String(error)),
+        );
     }
 }
 
@@ -104,7 +124,7 @@ class ToolsClient {
             password,
         });
 
-        const post_res = await $withRetries($unsafe, async () => await instance.client.post("/auth/sign-in", params, { timeout: 30000 }));
+        const post_res = await $unsafe(async () => await instance.client.post("/auth/sign-in", params, { timeout: 30000 }));
         if (isErr(post_res)) return post_res;
 
         return instance;
@@ -136,8 +156,6 @@ class ToolsClient {
         if (isExporterErr(already_uploaded)) return already_uploaded;
 
         if (already_uploaded) {
-            console.log(`[image-upload] skipped existing ${uid} -> ${expected_public_url}`);
-
             return {
                 file_name: final_filename,
                 key: `${folder_name}/${final_filename}`,
@@ -147,8 +165,7 @@ class ToolsClient {
         }
 
         // Get image stream from url/notion
-        const response = await $withRetries(
-            $unsafe,
+        const response = await $unsafe(
             async () =>
                 await axios.get(url, {
                     responseType: "stream",
@@ -171,20 +188,6 @@ class ToolsClient {
                 : "image/jpeg";
         const file_extension = mime.extension(content_type) || "jpg";
 
-        const content_length = Number(response.headers["content-length"]);
-        if (Number.isFinite(content_length) && content_length > MAX_UPLOAD_BYTES) {
-            console.warn(
-                `[image-upload] skipped ${uid} on "${path}": file is ${content_length} bytes, which is larger than ${MAX_UPLOAD_BYTES} bytes.`,
-            );
-
-            return {
-                file_name: final_filename,
-                key: "",
-                location: "",
-                content_type: "image/avif"
-            };
-        }
-
         const temp_dir = await mkdtemp(nodePath.join(tmpdir(), "igem-upload-"));
         const temp_file_path = nodePath.join(temp_dir, `${uid}.${file_extension}`);
 
@@ -195,12 +198,17 @@ class ToolsClient {
                 `Download image ${uid}`,
             );
 
-            const temp_file_stat = await stat(temp_file_path);
+            const avif_temp_file_path = nodePath.join(temp_dir, final_filename);
+            const convert_res = await convertToAvif(temp_file_path, avif_temp_file_path);
+            if (isExporterErr(convert_res)) return convert_res;
 
-            if (temp_file_stat.size > MAX_UPLOAD_BYTES) {
-                console.warn(
-                    `[image-upload] skipped ${uid} on "${path}": file is ${temp_file_stat.size} bytes, which is larger than ${MAX_UPLOAD_BYTES} bytes. Leaving original image URL in MDX.`,
-                );
+            const avif_temp_file_stat = await stat(avif_temp_file_path);
+
+            if (avif_temp_file_stat.size > MAX_UPLOAD_BYTES) {
+                new ExporterError(
+                    `Skipped asset on page "${path}": compressed AVIF is ${avif_temp_file_stat.size} bytes, which is larger than the ${MAX_UPLOAD_BYTES} byte limit even after compression.`,
+                    ["igem tools server"],
+                ).warn();
 
                 return {
                     file_name: final_filename,
@@ -213,13 +221,12 @@ class ToolsClient {
             // build data
             // Make POST request to igem api endpoint
             // /websites/teams/{teamId}?directory={folderName}
-            const post_res = await $withRetries(
-                $unsafe,
+            const post_res = await $unsafe(
                 async () => {
                     const form_data = new FormData();
-                    form_data.append("file", createReadStream(temp_file_path), {
-                        filename: `${uid}.${file_extension}`,
-                        contentType: content_type,
+                    form_data.append("file", createReadStream(avif_temp_file_path), {
+                        filename: final_filename,
+                        contentType: "image/avif",
                     });
 
                     return await this.client.post(
@@ -252,8 +259,6 @@ class ToolsClient {
             } else {
                 public_url = expected_public_url;
             }
-
-            console.log(`[image-upload] uploaded ${uid} -> ${public_url}`);
 
             return {
                 file_name: final_filename,
@@ -324,8 +329,7 @@ class ToolsClient {
         }
 
         this.uploadedAssetUidsPromise = (async (): Promise<ExporterResult<Set<string>>> => {
-            const response = await $withRetries(
-                $unsafe,
+            const response = await $unsafe(
                 async () =>
                     await this.client.get(`/teams/${this.team_id}/repositories/${CONFIG.repo_uuid}/files`, {
                         params: { directory: folder_name },
@@ -354,8 +358,6 @@ class ToolsClient {
                 const uid = this.getUidFromRemoteFile(file);
                 if (uid) uploaded_uids.add(uid);
             }
-
-            console.log(`[image-upload] loaded ${uploaded_uids.size} existing asset UID(s) from ${folder_name}`);
 
             return uploaded_uids;
         })();
