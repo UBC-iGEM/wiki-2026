@@ -1,4 +1,4 @@
-import pkg from "../../package.json";
+import pkg from "../config.json";
 import { z } from "zod";
 
 const CONFIG_SCHEMA = z.object({
@@ -12,4 +12,4 @@ const CONFIG_SCHEMA = z.object({
 
 export type Config = z.infer<typeof CONFIG_SCHEMA>;
 
-export const CONFIG: Config = CONFIG_SCHEMA.parse(pkg.notion_export_config);
+export const CONFIG: Config = CONFIG_SCHEMA.parse(pkg);
