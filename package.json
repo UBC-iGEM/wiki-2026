@@ -27,7 +27,7 @@
         "lint": "eslint .",
         "check": "tsc --noEmit -p exporter/tsconfig.json && npm run astro check -w web",
         "validate": "npm run check && npm run lint",
-        "clean": "rm -r web/docs && rm -r exporter/debug"
+        "clean": "rm -rf web/docs && rm -rf exporter/debug"
     },
     "dependencies": {
         "sharp": "^0.35.3",
