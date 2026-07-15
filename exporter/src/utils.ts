@@ -10,7 +10,6 @@ export class ExporterError {
     bold_yellow = "\x1b[1;33m";
     reset = "\x1b[0m";
 
-    private creation_site: string;
     constructor(
         private message: string,
         private tags: (
@@ -23,17 +22,15 @@ export class ExporterError {
             | "exporter configuration"
         )[],
         private source_error?: Error,
-    ) {
-        this.creation_site = source_error?.stack || new Error().stack!;
-    }
+    ) {}
 
-    display(type: "recoverable" | "unrecoverable"): string {
+    private display(type: "recoverable" | "unrecoverable"): string {
+        const trace = this.source_error ? `\nOriginal error:\n${this.source_error}` : "";
         return `
 === ERROR REPORT ===
 ${this.bold_red}${this.message}${this.reset}
 Type: ${type}. ${type === "recoverable" ? "The exporter can continue." : "The exporter must abort."}
-Tags: ${this.tags.join(", ")}
-${this.source_error ? `Original error:\n ${this.source_error}\n` : ""}Trace:\n ${this.creation_site}
+Tags: ${this.tags.join(", ")}${trace}
 ====================
 `;
     }
@@ -45,6 +42,14 @@ ${this.source_error ? `Original error:\n ${this.source_error}\n` : ""}Trace:\n $
 
     public warn(): void {
         console.error(this.display("recoverable"));
+    }
+
+    public static link({ with_label: label, to: url }: { with_label: string; to: string }): string {
+        return `\x1b]8;;${url}\x1b\\${label}\x1b]8;;\x1b\\`;
+    }
+
+    public static componentDocSuggestion(link: string): string {
+        return ` This component should follow the format defined ${ExporterError.link({ with_label: "here", to: link })}.`;
     }
 }
 

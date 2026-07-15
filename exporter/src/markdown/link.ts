@@ -31,7 +31,7 @@ function normalizePageLink({ node, ctx }: ProcessorInput<Link>): ProcessorOutput
 
             if (!property_res)
                 return new ExporterError(
-                    `Mention element on page "${ctx.path}" does not link to a known wiki page. It links to the page at Notion ID ${page_id}, which has no "Citation Key" property.`,
+                    `Mention element on page "${ctx.path}" does not link to a known wiki page or literature entry.`,
                     ["malformed content"],
                 );
 
@@ -41,7 +41,7 @@ function normalizePageLink({ node, ctx }: ProcessorInput<Link>): ProcessorOutput
             const node_index = ctx.parent.children.findIndex((child) => child === original_node);
             if (node_index === -1)
                 return new ExporterError(
-                    `Mention element on page "${ctx.path}" at Notion ID ${page_id} could not be replaced with a citation because its AST node was moved before async processing completed.`,
+                    `Mention element on page "${ctx.path}" at Notion ID ${page_id} could not be replaced with a citation.`,
                     ["bug?"],
                 );
 
@@ -78,14 +78,15 @@ function normalizePageLink({ node, ctx }: ProcessorInput<Link>): ProcessorOutput
 function getCitationKey(property: PageProperty, page_id: string): ExporterResult<string> {
     if (property.type !== "rich_text")
         return new ExporterError(
-            `Page at Notion ID ${page_id} has a "Citation Key" property, but it is type "${property.type}" instead of "rich_text".`,
-            ["malformed content"],
+            `Literature entry at Notion ID ${page_id} has a "Citation Key" property, but it is of type "${property.type}" instead of rich text.`,
+            ["bug?", "notion server"],
         );
 
     const citation_key = property.rich_text.map((text) => text.plain_text).join("");
     if (!citation_key.trim())
         return new ExporterError(`Page at Notion ID ${page_id} has an empty "Citation Key" property.`, [
-            "malformed content",
+            "bug?",
+            "notion server",
         ]);
 
     return citation_key;

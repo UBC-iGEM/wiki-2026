@@ -1,10 +1,10 @@
 import { BlockId, Id } from "../notion";
+import { getToolsClient } from "../tools-api.ts";
 import { $unsafeSync, ExporterError, isErr, isExporterErr, type ExporterResult, type Result } from "../utils";
 import type { ProcessorInput, ProcessorOutput } from "./markdown";
 import type { Image } from "mdast";
 import { CONTINUE } from "unist-util-visit";
 import { v5 as uuidv5 } from "uuid";
-import { getToolsClient } from "../tools-api.ts";
 
 export const IMAGE_PROCESSORS = [updateImageUrl];
 
@@ -45,7 +45,6 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
             return new ExporterError(
                 `The image on page "${ctx.path}" with URL ${decoded_url} could not be understood; it does not match the expected format.`,
                 ["bug?"],
-                url_data_res,
             );
 
         const id = url_data_res.permissionRecord.id;
@@ -59,19 +58,17 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
                 return new ExporterError(
                     `The image on page "${ctx.path}" at Notion block ID ${block_id} could not be understood; its data type is unexpected.`,
                     ["notion server", "bug?"],
-                    new Error(JSON.stringify(block_data, null, 2)),
                 );
 
             image_data_url = block_data.image.file.url;
 
-            // TODO: GET AND UPLOAD
             const client_res = await getToolsClient();
             if (isExporterErr(client_res)) return client_res;
 
             const upload_res = await client_res.upload({
                 uid: image_id!.toString(),
                 url: image_data_url,
-                path: ctx.path
+                path: ctx.path,
             });
 
             if (isExporterErr(upload_res)) return upload_res;
@@ -89,17 +86,16 @@ function updateImageUrl({ node, ctx }: ProcessorInput<Image>): ProcessorOutput {
         image_id = new Id(id);
 
         // Include full query parameters for data to avoid "Access Denied" errors
-        image_data_url = image_node_url; // eslint-disable-line @typescript-eslint/no-unused-vars
+        image_data_url = image_node_url;
 
         const callback = async (): Promise<ExporterResult<void>> => {
-            // TODO: GET AND UPLOAD
             const client_res = await getToolsClient();
             if (isExporterErr(client_res)) return client_res;
-            
+
             const upload_res = await client_res.upload({
                 uid: image_id!.toString(),
                 url: image_data_url!,
-                path: ctx.path
+                path: ctx.path,
             });
 
             if (isExporterErr(upload_res)) return upload_res;

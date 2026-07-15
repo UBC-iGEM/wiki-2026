@@ -1,8 +1,8 @@
 import { PagePathComponent } from "../map";
 import { ExporterError, isExporterErr } from "../utils";
-import type { ComponentOutput } from "./components";
+import type { ComponentOutput } from "./components-block";
 import { LINK_PROCESSORS } from "./link";
-import { constructNodeErrorSource, processAll, type ProcessorInput } from "./markdown";
+import { processAll, type ProcessorInput } from "./markdown";
 import type { Html, Link } from "mdast";
 import type { TextDirective } from "mdast-util-directive";
 import { SKIP } from "unist-util-visit";
@@ -30,9 +30,11 @@ function anchor({ node, ctx }: ComponentInput): ComponentOutput {
     const children = node.children;
     if (children.length !== 1 || children[0]!.type !== "text")
         return new ExporterError(
-            `Inline anchor component on page "${ctx.path}"" is malformed. Anchor components should only have a singular text field representing the name of the anchor.`,
+            `Inline anchor component on page "${ctx.path}" is malformed.` +
+                ExporterError.componentDocSuggestion(
+                    "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#395d65dd82be8038bc35eecac6d31cdb",
+                ),
             ["malformed content"],
-            constructNodeErrorSource(node.children),
         );
 
     const [anchor_node] = children;
@@ -52,15 +54,17 @@ function link({ node, ctx }: ComponentInput): ComponentOutput {
 
     const malformed = (detail: string): ExporterError =>
         new ExporterError(
-            `Inline link component on page "${ctx.path}" could not be understood: ${detail} This component should follow the format <optional display text> <optional page mention> @ <anchor name>.`,
+            `Inline link component on page "${ctx.path}" could not be understood: ${detail}.` +
+                ExporterError.componentDocSuggestion(
+                    "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#395d65dd82be80f49c21fbfba6e448eb",
+                ),
             ["malformed content"],
-            constructNodeErrorSource(node.children),
         );
 
     // Builds and installs the final `Link` node that replaces the component.
     const generateNewLink = (url: string, anchor_text: string, display?: string): ComponentOutput => {
         const trimmed_anchor = anchor_text.trimStart();
-        if (!trimmed_anchor.startsWith("@")) return malformed(`an "@" separator was not identified.`);
+        if (!trimmed_anchor.startsWith("@")) return malformed(`an "@" separator was not identified`);
         const anchor_name = trimmed_anchor.replace(/@\s*/, "").trim();
 
         const final_link: Link = {
@@ -109,7 +113,7 @@ function link({ node, ctx }: ComponentInput): ComponentOutput {
     if (children.length === 1 && children[0]!.type === "text") {
         const text = children[0]!.value;
         const at_index = text.indexOf("@");
-        if (at_index === -1) return malformed(`an "@" separator was not identified.`);
+        if (at_index === -1) return malformed(`an "@" separator was not identified`);
 
         return generateNewLink(
             `/${ctx.path.toSlug()}`,
@@ -118,5 +122,5 @@ function link({ node, ctx }: ComponentInput): ComponentOutput {
         );
     }
 
-    return malformed("its format is incorrect.");
+    return malformed("its format is incorrect");
 }
