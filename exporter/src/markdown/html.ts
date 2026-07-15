@@ -48,13 +48,10 @@ function parseTables({ ctx, parsed_node }: HtmlProcessorInput): ProcessorOutput 
         const dummy_row: TableRow = {
             type: "tableRow",
             // Array of empty text elements
-            children: Array.from(
-                { length: rows[0]!.children.length },
-                (): TableCell => ({
-                    type: "tableCell",
-                    children: [{ type: "text", value: "" }],
-                }),
-            ),
+            children: Array.from({ length: rows[0]!.children.length }, (): TableCell => ({
+                type: "tableCell",
+                children: [{ type: "text", value: "" }],
+            })),
         };
         // Prepend dummy row to `rows`
         rows.splice(0, 0, dummy_row);

@@ -1,5 +1,5 @@
 import { CONFIG } from "./config";
-import { ExporterError, type ExporterResult, isErr, saveFile } from "./utils";
+import { $unsafe, $withRetries, ExporterError, type ExporterResult, isErr, saveFile } from "./utils";
 import zoteroApiClient, { type AnyResponse } from "zotero-api-client";
 
 const LIMIT = 100;
@@ -8,10 +8,6 @@ const zoteroApi =
     typeof zoteroApiClient === "function"
         ? zoteroApiClient
         : (zoteroApiClient as unknown as { default: typeof zoteroApiClient }).default;
-
-function asError(err: unknown): Error {
-    return err instanceof Error ? err : new Error(`${err}`);
-}
 
 function getRawResponse(response: AnyResponse): Response | undefined {
     const raw = response.raw;
@@ -34,41 +30,42 @@ export async function saveZoteroDb(): Promise<ExporterResult<void>> {
     let bibtex = "";
 
     while (true) {
-        let response: AnyResponse;
-        try {
-            response = await zoteroApi().library("group", CONFIG.zotero_group_id).items().get({
+        const response = await $withRetries($unsafe, () =>
+            zoteroApi().library("group", CONFIG.zotero_group_id).items().get({
                 format: "bibtex",
                 limit: LIMIT,
                 start,
-            });
-        } catch (err) {
+            }),
+        );
+        if (isErr(response)) {
             return new ExporterError(
-                `Failed to retrieve Zotero BibTeX page starting at item ${start}.`,
+                `Failed to retrieve literature list from Zotero, starting at item ${start}.`,
                 ["zotero server"],
-                asError(err),
+                response,
             );
         }
 
         const raw_response = getRawResponse(response);
         if (raw_response === undefined) {
             return new ExporterError(
-                `Expected Zotero BibTeX request to return a raw response, but received ${response.getResponseType()}.`,
+                `Zotero returned a response in a format that could not be understood.`,
                 ["zotero server", "bug?"],
+                new Error(`Returned response type: ${response.getResponseType()}`),
             );
         }
 
         const total_results = getTotalResults(raw_response);
         if (total_results === undefined) {
             return new ExporterError(
-                `Zotero BibTeX response starting at item ${start} did not include a valid Total-Results header.`,
+                `Zotero returned a response without the expected headers, starting at item ${start}.`,
                 ["zotero server"],
             );
         }
 
-        const page_bibtex_res = await raw_response.text().catch(asError);
+        const page_bibtex_res = await $unsafe(() => raw_response.text());
         if (isErr(page_bibtex_res)) {
             return new ExporterError(
-                `Failed to read Zotero BibTeX response body starting at item ${start}.`,
+                `Failed to read Zotero response, starting at item ${start}.`,
                 ["zotero server"],
                 page_bibtex_res,
             );

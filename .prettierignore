@@ -1,2 +1,10 @@
 *.md
 *.mdx
+
+# Astro build output and generated types
+web/dist/
+web/.astro/
+
+# Exporter output
+web/docs/
+exporter/debug/

@@ -5,13 +5,13 @@ import axios, { type AxiosInstance } from "axios";
 import { wrapper } from "axios-cookiejar-support";
 import FormData from "form-data";
 import mime from "mime-types";
-import sharp from "sharp";
-import { CookieJar } from "tough-cookie";
 import { createReadStream, createWriteStream } from "node:fs";
 import { mkdtemp, rm, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import * as nodePath from "node:path";
 import { pipeline } from "node:stream/promises";
+import sharp from "sharp";
+import { CookieJar } from "tough-cookie";
 
 interface UploadResult {
     file_name: string;
@@ -27,7 +27,7 @@ const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
 async function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
     let timeout: ReturnType<typeof setTimeout> | undefined;
 
-    const timeout_promise = new Promise<never>((_, reject) => {
+    const timeout_promise = new Promise<never>((_executor, reject) => {
         timeout = setTimeout(() => reject(new Error(`${label} timed out after ${ms}ms`)), ms);
     });
 
@@ -38,19 +38,19 @@ async function withTimeout<T>(promise: Promise<T>, ms: number, label: string): P
     }
 }
 
-async function convertToAvif(inputPath: string, outputPath: string): Promise<ExporterResult<void>> {
+async function convertToAvif(input_path: string, output_path: string): Promise<ExporterResult<void>> {
     try {
-        await sharp(inputPath)
+        await sharp(input_path)
             .avif({
                 quality: 70,
                 effort: 4,
                 lossless: false,
-                chromaSubsampling: '4:2:0',
+                chromaSubsampling: "4:2:0",
             })
-            .toFile(outputPath);
+            .toFile(output_path);
     } catch (error) {
         return new ExporterError(
-            `Failed to convert image at ${inputPath} to AVIF format.`,
+            `Failed to convert image at ${input_path} to AVIF format.`,
             ["igem tools server", "notion server"],
             error instanceof Error ? error : new Error(String(error)),
         );
@@ -93,7 +93,7 @@ export async function getToolsClient(): Promise<ExporterResult<ToolsClient>> {
 
 class ToolsClient {
     private client: AxiosInstance;
-    private uploadedAssetUidsPromise: Promise<ExporterResult<Set<string>>> | null = null;
+    private uploaded_asset_uuids_promise: Promise<ExporterResult<Set<string>>> | null = null;
 
     private constructor(private team_id: string) {
         // Internally holds a cookie store so we don't need to constantly re-authenticate our session
@@ -124,7 +124,9 @@ class ToolsClient {
             password,
         });
 
-        const post_res = await $unsafe(async () => await instance.client.post("/auth/sign-in", params, { timeout: 30000 }));
+        const post_res = await $unsafe(
+            async () => await instance.client.post("/auth/sign-in", params, { timeout: 30000 }),
+        );
         if (isErr(post_res)) return post_res;
 
         return instance;
@@ -214,34 +216,32 @@ class ToolsClient {
                     file_name: final_filename,
                     key: "",
                     location: "",
-                    content_type: "image/avif"
+                    content_type: "image/avif",
                 };
             }
 
             // build data
             // Make POST request to igem api endpoint
             // /websites/teams/{teamId}?directory={folderName}
-            const post_res = await $unsafe(
-                async () => {
-                    const form_data = new FormData();
-                    form_data.append("file", createReadStream(avif_temp_file_path), {
-                        filename: final_filename,
-                        contentType: "image/avif",
-                    });
+            const post_res = await $unsafe(async () => {
+                const form_data = new FormData();
+                form_data.append("file", createReadStream(avif_temp_file_path), {
+                    filename: final_filename,
+                    contentType: "image/avif",
+                });
 
-                    return await this.client.post(
-                        `/teams/${this.team_id}/repositories/${CONFIG.repo_uuid}/files`,
-                        form_data,
-                        {
-                            params: { directory: folder_name },
-                            headers: form_data.getHeaders?.(),
-                            timeout: 60000,
-                            maxBodyLength: Infinity,
-                            maxContentLength: Infinity,
-                        },
-                    );
-                },
-            );
+                return await this.client.post(
+                    `/teams/${this.team_id}/repositories/${CONFIG.repo_uuid}/files`,
+                    form_data,
+                    {
+                        params: { directory: folder_name },
+                        headers: form_data.getHeaders?.(),
+                        timeout: 60000,
+                        maxBodyLength: Infinity,
+                        maxContentLength: Infinity,
+                    },
+                );
+            });
             if (isErr(post_res))
                 return new ExporterError(
                     `Failed to upload asset on page "${path}" with UID ${uid}.`,
@@ -298,11 +298,7 @@ class ToolsClient {
 
     // assumes UID == filename excluding file extension
     private getUidFromRemoteFile(file: any): string | null {
-        const file_name =
-            file.name ??
-            file.key?.split("/").pop() ??
-            file.uploadKey?.split("/").pop() ??
-            "";
+        const file_name = file.name ?? file.key?.split("/").pop() ?? file.uploadKey?.split("/").pop() ?? "";
 
         if (!file_name) return null;
 
@@ -315,7 +311,6 @@ class ToolsClient {
         return file_name.slice(0, dot_index);
     }
 
-
     // Make GET request to igem api endpoint to retrieve list of files in a directory
     private async getUploadedAssetUids({
         folder_name,
@@ -324,11 +319,11 @@ class ToolsClient {
         folder_name: string;
         path: PagePath;
     }): Promise<ExporterResult<Set<string>>> {
-        if (this.uploadedAssetUidsPromise) {
-            return this.uploadedAssetUidsPromise;
+        if (this.uploaded_asset_uuids_promise) {
+            return this.uploaded_asset_uuids_promise;
         }
 
-        this.uploadedAssetUidsPromise = (async (): Promise<ExporterResult<Set<string>>> => {
+        this.uploaded_asset_uuids_promise = (async (): Promise<ExporterResult<Set<string>>> => {
             const response = await $unsafe(
                 async () =>
                     await this.client.get(`/teams/${this.team_id}/repositories/${CONFIG.repo_uuid}/files`, {
@@ -347,8 +342,8 @@ class ToolsClient {
             const files = Array.isArray(response.data)
                 ? response.data
                 : Array.isArray(response.data?.files)
-                ? response.data.files
-                : Array.isArray(response.data?.data)
+                  ? response.data.files
+                  : Array.isArray(response.data?.data)
                     ? response.data.data
                     : [];
 
@@ -362,11 +357,11 @@ class ToolsClient {
             return uploaded_uids;
         })();
 
-        const result = await this.uploadedAssetUidsPromise;
+        const result = await this.uploaded_asset_uuids_promise;
 
         // If the GET failed, do not permanently cache the failed result.
         if (isExporterErr(result)) {
-            this.uploadedAssetUidsPromise = null;
+            this.uploaded_asset_uuids_promise = null;
         }
 
         return result;
