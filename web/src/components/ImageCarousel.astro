@@ -1,0 +1,180 @@
+---
+import { type CarouselAttrs, CAROUSEL_SLOTS } from "@exporter/markdown/components";
+
+type Props = CarouselAttrs;
+CAROUSEL_SLOTS satisfies readonly ["descriptions"];
+const { slides } = Astro.props;
+---
+
+<div class="carousel">
+    <div class="carousel-slides">
+        {
+            slides.map((slide, i) => (
+                <div class="carousel-slide" data-index={i}>
+                    <img src={slide.url} alt={slide.alt} />
+                </div>
+            ))
+        }
+    </div>
+
+    {
+        slides.length > 1 && (
+            <div class="carousel-controls">
+                <button class="carousel-arrow prev" aria-label="Previous image">
+                    ‹
+                </button>
+                <div class="carousel-dots">
+                    {slides.map((_, i) => (
+                        <button class="carousel-dot" data-index={i} aria-label={`Go to image ${i + 1}`} />
+                    ))}
+                </div>
+                <button class="carousel-arrow next" aria-label="Next image">
+                    ›
+                </button>
+            </div>
+        )
+    }
+
+    <div class="carousel-descs">
+        <!-- Descriptions arrive pre-wrapped in `.carousel-desc[data-index]` divs from the exporter (static slot names only) -->
+        <slot name="descriptions" />
+    </div>
+</div>
+
+<script>
+    for (const carousel of document.querySelectorAll<HTMLElement>(".carousel")) {
+        const slides = Array.from(carousel.querySelectorAll<HTMLElement>(".carousel-slide"));
+        const descs = Array.from(carousel.querySelectorAll<HTMLElement>(".carousel-desc"));
+        const dots = Array.from(carousel.querySelectorAll<HTMLButtonElement>(".carousel-dot"));
+        const prev = carousel.querySelector<HTMLButtonElement>(".carousel-arrow.prev");
+        const next = carousel.querySelector<HTMLButtonElement>(".carousel-arrow.next");
+
+        const n = slides.length;
+        if (n === 0) continue;
+
+        // Match by `data-index` rather than DOM/array position, so slides (rendered directly
+        // in this template) and descriptions (arriving via <slot>) can't silently drift apart
+        const indexOf = (el: HTMLElement) => Number(el.dataset.index);
+
+        // Show slide `index`, wrapping around in either direction
+        const show = (index: number) => {
+            slides.forEach((slide) => slide.classList.toggle("active", indexOf(slide) === index));
+            descs.forEach((desc) => desc.classList.toggle("active", indexOf(desc) === index));
+            dots.forEach((dot) => dot.classList.toggle("active", indexOf(dot) === index));
+        };
+
+        let current = 0;
+        prev?.addEventListener("click", () => show((current = (current - 1 + n) % n)));
+        next?.addEventListener("click", () => show((current = (current + 1) % n)));
+        dots.forEach((dot) => dot.addEventListener("click", () => show((current = indexOf(dot)))));
+
+        // Everything up to here is a no-JS fallback (CSS shows only the first slide);
+        // this flips the carousel into JS-driven mode once navigation is wired up
+        carousel.classList.add("js-ready");
+        show(current);
+    }
+</script>
+
+<style>
+
+    .carousel-slides {
+        height: 450px;
+        width: 100%;
+        border-radius: 8px; 
+        overflow: hidden; 
+    }
+
+    .carousel-slide {
+        height: 100%;
+        width: 100%;
+    }
+
+    /* No-JS fallback: show only the first slide until the script marks the carousel ready */
+    .carousel-slide:not(:first-child) {
+        display: none;
+    }
+
+    .carousel.js-ready .carousel-slide {
+        display: none;
+    }
+
+    .carousel.js-ready .carousel-slide.active {
+        display: block;
+    }
+
+    /* Descriptions arrive via <slot>, so Astro can't scope these - they need :global() */
+    :global(.carousel-desc) {
+        text-align: center;
+        width: 100%;
+    }
+
+    :global(.carousel-desc p) {
+        margin: 0;
+        padding: 0;
+    }
+
+    :global(.carousel-desc:not(:first-child)) {
+        display: none;
+    }
+
+    :global(.carousel.js-ready .carousel-desc) {
+        display: none;
+    }
+
+    :global(.carousel.js-ready .carousel-desc.active) {
+        display: block;
+    }
+
+    .carousel-slide img {
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+    }
+
+    .carousel-controls {
+        align-items: center;
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin: 12px 0;
+    }
+
+    .carousel-arrow {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.5rem;
+        line-height: 1;
+        padding: 4px 8px;
+    }
+
+    .carousel-dots {
+        display: flex;
+        gap: 6px;
+    }
+
+    .carousel-dot {
+        background: #ccc;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        height: 8px;
+        padding: 0;
+        width: 8px;
+    }
+
+    .carousel-dot.active {
+        background: #333;
+    }
+    .carousel-descs {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+       
+</style>
