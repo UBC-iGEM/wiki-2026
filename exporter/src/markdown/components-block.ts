@@ -30,6 +30,7 @@ type BlockElement = BlockContent | DefinitionContent;
 export const COMPONENT_MAP: Record<string, (input: ComponentInput) => ComponentOutput> = {
     figure,
     dbtl,
+    carousel,
     skip,
 };
 
@@ -166,6 +167,91 @@ function dbtl({ node, ctx }: ComponentInput): ComponentOutput {
         tag: "Dbtl",
         attrs: {},
         slots: { design, build, test, learn },
+    });
+}
+
+// ====================
+// CAROUSEL COMPONENT
+// ====================
+
+export interface CarouselAttrs {
+    slides: { url: string; alt: string }[];
+}
+export const CAROUSEL_SLOTS = ["descriptions"] as const;
+type CarouselSlots = SlotRecord<typeof CAROUSEL_SLOTS>;
+
+function carousel({ node, ctx }: ComponentInput): ComponentOutput {
+    /**
+     * Possible types of carousel slide sections.
+     *
+     * {@link ThematicBreak} is excluded, since it divides slides.
+     */
+    type SectionContent = Exclude<BlockElement, ThematicBreak>;
+
+    const sections: SectionContent[][] = [];
+    let cur_section: SectionContent[] = [];
+
+    for (const child of node.children) {
+        switch (child.type) {
+            case "thematicBreak":
+                // Start a new slide on divider
+                sections.push(cur_section);
+                cur_section = [];
+                break;
+            default:
+                // Add to the current slide
+                cur_section.push(child);
+        }
+    }
+    
+    // Push last slide
+    sections.push(cur_section);
+
+    const slides: CarouselAttrs["slides"] = [];
+    const descriptions: BlockElement[] = [];
+
+    for (let i = 0; i < sections.length; i++) {
+        const section = sections[i]!;
+        const first = section[0];
+
+        if (!first || first.type !== "paragraph")
+            return new ExporterError(
+                `Carousel component on page "${ctx.path}" could not be understood: slide ${i + 1} does not start with an image. Carousel slides should follow the format <image> <optional description>.`,
+                ["malformed content"],
+                constructNodeErrorSource(node.children),
+            );
+
+        // Skip leading whitespace-only text nodes before the image, e.g. a stray leading space
+        while (first.children[0]?.type === "text" && first.children[0].value.trim() === "") {
+            first.children.shift();
+        }
+
+        if (first.children[0]?.type !== "image")
+            return new ExporterError(
+                `Carousel component on page "${ctx.path}" could not be understood: slide ${i + 1} does not start with an image. Carousel slides should follow the format <image> <optional description>.`,
+                ["malformed content"],
+                constructNodeErrorSource(node.children),
+            );
+
+        const image = first.children.shift() as Image;
+        slides.push({ url: image.url, alt: image.alt || "" });
+
+        const filtered_section = section.filter(
+            // Removing the now-empty leading paragraph
+            (child)=> !(child.type === "paragraph" && child.children.length === 0),
+        );
+
+        const desc_open: Html = { type: "html", value: `<div class="carousel-desc" data-index="${i}">` };
+        const desc_close: Html = { type: "html", value: "</div>" };
+        descriptions.push(desc_open, ...filtered_section, desc_close);
+    }
+
+    return generateComponent<CarouselAttrs, CarouselSlots>({
+        node,
+        ctx,
+        tag: "ImageCarousel",
+        attrs: { slides },
+        slots: { descriptions },
     });
 }
 
