@@ -69,7 +69,7 @@ export function processRegex(s: string): string {
     let processed = s;
 
     for (const [search, replace] of REGEXES) {
-        // Add flags `Global`, `case Insensitive`, `Multiline`
+        // Add flags `Global`, `case Insensitive`, `Multiline` to all
         const search_regex = new RegExp(search, "gim");
         processed = processed.replaceAll(search_regex, replace);
     }

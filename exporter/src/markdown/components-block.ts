@@ -1,7 +1,7 @@
 import { BlockId, Id } from "../notion";
 import { getToolsClient } from "../tools-api";
 import { $unsafeSync, ExporterError, isErr, isExporterErr, type ExporterResult, type Result } from "../utils";
-import { constructNodeErrorSource, type ProcessorInput, type ProcessorOutput } from "./markdown";
+import { type ProcessorInput, type ProcessorOutput } from "./markdown";
 import type { BlockContent, DefinitionContent, Html, Image, Paragraph, ThematicBreak } from "mdast";
 import type { ContainerDirective } from "mdast-util-directive";
 import HTMLParse from "node-html-parser";
@@ -95,9 +95,11 @@ function figure({ node, ctx }: ComponentInput): ComponentOutput {
 
     if (images.length === 0)
         return new ExporterError(
-            `Figure component on page "${ctx.path}" could not be understood: it does not start with images. Figure components should follow the format <images> <description>.`,
+            `Figure component on page "${ctx.path}" could not be understood: it does not start with images.` +
+                ExporterError.componentDocSuggestion(
+                    "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#395d65dd82be80849d9eff853d8453a2",
+                ),
             ["malformed content"],
-            constructNodeErrorSource(node.children),
         );
 
     const filtered_children = node.children.filter(
@@ -153,9 +155,11 @@ function dbtl({ node, ctx }: ComponentInput): ComponentOutput {
 
     if (sections.length !== 4)
         return new ExporterError(
-            `DBTL component on page "${ctx.path}" could not be understood: it does not have 4 sections delimited by dividers. DBTL components should follow the format <design content> <divider> <build content> <divider> <test content> <divider> <learn content>.`,
+            `DBTL component on page "${ctx.path}" could not be understood: it does not have 4 sections delimited by dividers.` +
+                ExporterError.componentDocSuggestion(
+                    "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#395d65dd82be805ea14ed9af6aaeff99",
+                ),
             ["malformed content"],
-            constructNodeErrorSource(node.children),
         );
 
     const [design, build, test, learn] = sections as [BlockElement[], BlockElement[], BlockElement[], BlockElement[]];
@@ -197,7 +201,7 @@ function model3d({ node, ctx }: ComponentInput): ComponentOutput {
     ctx.parent.children.splice(ctx.index, 1, emitted_node);
 
     const callback = async (): Promise<ExporterResult<void>> => {
-        const file_data_res: Result<{ permissionRecord: { id: string } }> = $unsafeSync(
+        const file_data_res: Result<Record<"permissionRecord", { id: string }>> = $unsafeSync(
             JSON.parse,
             decodeURIComponent(file_url.replace("file://", "")),
         );
@@ -219,7 +223,11 @@ function model3d({ node, ctx }: ComponentInput): ComponentOutput {
 
         const tools_res = await getToolsClient();
         if (isExporterErr(tools_res)) return tools_res;
-        const upload_res = await tools_res.upload({ uid: file_id.toString(), url: block_res.file.file.url, path: ctx.path });
+        const upload_res = await tools_res.upload({
+            uid: file_id.toString(),
+            url: block_res.file.file.url,
+            path: ctx.path,
+        });
         if (isExporterErr(upload_res)) return upload_res;
 
         emitted_node.value = model3dMdx(upload_res.location, description_text);
@@ -237,6 +245,10 @@ function malformedModel3d(path: string, children: BlockElement[], problem: strin
     );
 }
 
+function constructNodeErrorSource(children: BlockElement[]): Error {
+    return new Error(`Malformed block has children: ${JSON.stringify(children.map((child) => child.type))}`);
+}
+
 function getModelDescription(children: BlockElement[]): string | undefined {
     if (
         children.length !== 1 ||
@@ -245,7 +257,10 @@ function getModelDescription(children: BlockElement[]): string | undefined {
     )
         return undefined;
 
-    const description = children[0]!.children.map((child) => child.value).join("").trim();
+    const description = children[0]!.children
+        .map((child) => child.value)
+        .join("")
+        .trim();
     return description || undefined;
 }
 

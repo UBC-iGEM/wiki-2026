@@ -18,6 +18,12 @@ import {
 
 let NOTION_CLIENT: Client | null = null;
 
+type PageWithProperties = Extract<
+    Awaited<ReturnType<Client["pages"]["retrieve"]>>,
+    { properties: Record<string, unknown> }
+>;
+export type PageProperty = PageWithProperties["properties"][string];
+
 function notion(): Client {
     if (NOTION_CLIENT) {
         return NOTION_CLIENT;
@@ -82,6 +88,18 @@ export class PageId extends Id implements Named {
         } else {
             return new ExporterError(`Failed to retrieve title of page at Notion ID ${this}.`, ["notion server"]);
         }
+    }
+
+    async getProperty(name: string): Promise<ExporterResult<PageProperty | undefined>> {
+        const page_res = await $withRetries($unsafe, notion().pages.retrieve, { page_id: this.toString() });
+        if (isErr(page_res))
+            return new ExporterError(`Failed to retrieve page at Notion ID ${this}.`, ["notion server"], page_res);
+
+        if (!("properties" in page_res)) {
+            return new ExporterError(`Failed to read properties of page at Notion ID ${this}.`, ["notion server"]);
+        }
+
+        return page_res.properties[name];
     }
 
     async getDate(): Promise<ExporterResult<string | undefined>> {

@@ -1,9 +1,9 @@
+import type { ContainerDirective } from "mdast-util-directive";
 import assert from "node:assert/strict";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
-import type { ContainerDirective } from "mdast-util-directive";
 
 const FILE_ID = "12345678-1234-1234-1234-123456789abc";
 const NOTION_FILE_URL = "https://notion.example/model.glb";
@@ -44,8 +44,18 @@ test("exports Model3D files through the existing upload callback", async (t) => 
     });
     t.mock.module(new URL("../src/tools-api.ts", import.meta.url), {
         exports: {
-            getToolsClient: async () => ({
-                upload: async ({ uid, url, path }: { uid: string; url: string; path: { toString(): string } }) => {
+            getToolsClient: async (): Promise<{
+                upload: ({
+                    uid,
+                    url,
+                    path,
+                }: {
+                    uid: string;
+                    url: string;
+                    path: { toString(): string };
+                }) => Promise<{ location: string }>;
+            }> => ({
+                upload: async ({ uid, url, path }): Promise<{ location: string }> => {
                     upload_count++;
                     uploaded_args = { uid, url, path: path.toString() };
                     return { location: HOSTED_URL };
@@ -54,16 +64,23 @@ test("exports Model3D files through the existing upload callback", async (t) => 
         },
     });
 
-    const [{ CONFIG }, { ContentMap, PagePath }, { COMPONENT_MAP }, { IMAGE_PROCESSORS }, { processMarkdown, remarkProcessingPipeline }, { processRegex }, { isExporterErr }] =
-        await Promise.all([
-            import("../src/config.ts"),
-            import("../src/map.ts"),
-            import("../src/markdown/components.ts"),
-            import("../src/markdown/image.ts"),
-            import("../src/markdown/markdown.ts"),
-            import("../src/markdown/regex.ts"),
-            import("../src/utils.ts"),
-        ]);
+    const [
+        { CONFIG },
+        { ContentMap: content_map, PagePath: page_path },
+        { COMPONENT_MAP },
+        { IMAGE_PROCESSORS },
+        { processMarkdown, remarkProcessingPipeline },
+        { processRegex },
+        { isExporterErr },
+    ] = await Promise.all([
+        import("../src/config.ts"),
+        import("../src/map.ts"),
+        import("../src/markdown/components-block.ts"),
+        import("../src/markdown/image.ts"),
+        import("../src/markdown/markdown.ts"),
+        import("../src/markdown/regex.ts"),
+        import("../src/utils.ts"),
+    ]);
 
     const output_dir = await mkdtemp(join(tmpdir(), "model3d-exporter-"));
     const original_content_dir = CONFIG.content_dir_path;
@@ -83,8 +100,8 @@ test("exports Model3D files through the existing upload callback", async (t) => 
     });
 
     const encoded_file = encodeURIComponent(JSON.stringify({ permissionRecord: { id: FILE_ID } }));
-    const path = PagePath.fromString("Model Test");
-    const routes = new ContentMap([]);
+    const path = page_path.fromString("Model Test");
+    const routes = new content_map([]);
     const model3d = COMPONENT_MAP.model3d;
     assert.ok(model3d);
 
@@ -126,7 +143,7 @@ DESCRIPTION
 
     for (const malformed_markdown of [
         "%% START Model3D\n%% END",
-        "%% START Model3D\n<file src=\"https://example.test/model.glb\"></file>\n%% END",
+        '%% START Model3D\n<file src="https://example.test/model.glb"></file>\n%% END',
     ]) {
         const tree = remarkProcessingPipeline().parse(processRegex(malformed_markdown));
         const node = tree.children.find((child) => child.type === "containerDirective") as ContainerDirective;
@@ -142,7 +159,11 @@ DESCRIPTION
         });
 
         assert.ok(isExporterErr(result));
-        assert.match(result.display("recoverable"), /Type: recoverable\./);
-        assert.match(result.display("recoverable"), /Tags: malformed content/);
+        const consoleError = t.mock.method(console, "error", (): void => {});
+        result.warn();
+        const warning = consoleError.mock.calls.at(-1)?.arguments[0];
+        assert.equal(typeof warning, "string");
+        assert.match(warning, /Type: recoverable\./);
+        assert.match(warning, /Tags: malformed content/);
     }
 });

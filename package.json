@@ -15,16 +15,9 @@
         "eslint-plugin-prettier": "^5.5.6",
         "exporter": "workspace:*",
         "jiti": "^2.7.0",
-        "prettier": "^3.8.3",
+        "prettier": "^3.9.0",
         "prettier-plugin-astro": "^0.14.1",
         "typescript-eslint": "^8.60.0"
-    },
-    "notion_export_config": {
-        "master_id": "364d65dd82be80f0aed8fcb8bfaf9353",
-        "content_dir_path": "web/docs",
-        "debug_dir_path": "exporter/debug",
-        "team_id": "6279",
-        "zotero_group_id": 5833846
     },
     "scripts": {
         "export": "npx tsx --env-file=.env exporter/src/main.ts",
@@ -35,9 +28,10 @@
         "lint": "eslint .",
         "check": "tsc --noEmit -p exporter/tsconfig.json && npm run astro check -w web",
         "validate": "npm run check && npm run lint",
-        "clean": "rm -r web/docs && rm -r exporter/debug"
+        "clean": "rm -rf web/docs && rm -rf exporter/debug"
     },
     "dependencies": {
+        "sharp": "^0.35.3",
         "tsx": "^4.22.3"
     },
     "allowScripts": {

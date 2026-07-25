@@ -1,4 +1,4 @@
-/* Table styling */
+/* Tables */
 table {
     border-collapse: collapse;
     margin: 20px 0;
@@ -20,7 +20,7 @@ table th {
     color: #000000;
 }
 
-/* Format code blocks */
+/* Code blocks */
 pre.astro-code {
     padding: 15px;
     border-radius: 10px;
@@ -29,4 +29,9 @@ pre.astro-code {
 /* Notion injects underlines as <span underline="true"> */
 [underline="true"] {
     text-decoration: underline;
+}
+
+/* Scrolling to a TOC heading should leave a gap above */
+.page-content :is(h1, h2, h3, h4, h5, h6) {
+    scroll-margin-top: 1.5rem;
 }

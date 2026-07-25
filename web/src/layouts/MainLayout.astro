@@ -1,33 +1,77 @@
 ---
 import "katex/dist/katex.min.css";
 import "../style.css";
+import type { MarkdownHeading } from "astro";
 import Navbar from "../components/Navbar.astro";
+import TableOfContents from "../components/TableOfContents.astro";
 
-const { title } = Astro.props;
+interface Props {
+    title?: string;
+    headings?: MarkdownHeading[];
+}
+const { title, headings = [] } = Astro.props;
+const show_toc = headings.length > 0;
 ---
 
 <!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <title>Astro Page</title>
+        <title>{title ?? "UBC iGEM Wiki"}</title>
     </head>
     <body>
-        <div class="navbar-container">
-            <Navbar />
+        <Navbar />
+        <div class:list={["page-layout", { "has-toc": show_toc }]}>
+            <main class="page-content">
+                {title && <div class="page-title">{title}</div>}
+                <slot />
+            </main>
+            {
+                show_toc && (
+                    <aside class="page-toc">
+                        <TableOfContents headings={headings} />
+                    </aside>
+                )
+            }
         </div>
-        <div class="page-title">{title}</div>
-        <slot />
     </body>
 </html>
 
 <style>
-    .navbar-container {
-        /* TODO */
+    .page-layout {
+        padding: 1rem;
+    }
+
+    .page-layout.has-toc {
+        align-items: start;
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: minmax(0, 1fr) minmax(11rem, 15rem);
+    }
+
+    .page-content {
+        min-width: 0;
     }
 
     .page-title {
         font-size: 50px;
         font-weight: 600;
+    }
+
+    .page-toc {
+        max-height: calc(100vh - 6rem);
+        overflow-y: auto;
+        position: sticky;
+        top: 1rem;
+    }
+
+    @media (max-width: 1000px) {
+        .page-layout.has-toc {
+            display: block;
+        }
+
+        .page-toc {
+            display: none;
+        }
     }
 </style>

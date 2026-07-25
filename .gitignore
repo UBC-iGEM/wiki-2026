@@ -2,3 +2,5 @@ node_modules
 exporter/debug*
 .env
 .DS_Store
+
+**/graphify-out/*

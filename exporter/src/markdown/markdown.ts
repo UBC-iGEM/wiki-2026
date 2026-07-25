@@ -1,14 +1,15 @@
 import { PagePath, type ContentMap } from "../map";
 import type { PageId } from "../notion";
 import { ExporterError, isExporterErr, saveFile } from "../utils";
-import { COMPONENT_MAP } from "./components";
+import { COMPONENT_MAP as BLOCK_COMPONENT_MAP } from "./components-block";
 import { INLINE_COMPONENT_MAP } from "./components-inline";
 import { HTML_PROCESSORS } from "./html";
 import { IMAGE_PROCESSORS } from "./image";
 import { LINK_PROCESSORS } from "./link";
 import { processRegex } from "./regex";
-import type { Parent, Root, Node } from "mdast";
+import type { Parent, Root } from "mdast";
 import HTMLParse from "node-html-parser";
+import rehypeCitation from "rehype-citation";
 import remarkDirective from "remark-directive";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -93,7 +94,12 @@ export interface ProcessorContext {
     callbacks: ProcessorCallback[];
 }
 
-export const remarkProcessingPipeline = unified().use(remarkParse).use(remarkDirective).use(remarkMath).use(remarkGfm);
+export const remarkProcessingPipeline = unified()
+    .use(remarkParse)
+    .use(remarkDirective)
+    .use(remarkMath)
+    .use(rehypeCitation)
+    .use(remarkGfm);
 
 /**
  * A remark plugin that walks the Markdown AST and dispatches various processors on different node types
@@ -129,7 +135,7 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
                     const transform = INLINE_COMPONENT_MAP[inline_component_type];
                     if (!transform) {
                         new ExporterError(
-                            `Inline component type ${inline_component_type} on page "${path}" could not be understood. It is either misspelt or not yet implemented.`,
+                            `Inline component type ${inline_component_type} on page "${path}" could not be understood. It is either misspelt or not yet implemented. See all inline component options ${ExporterError.link({ with_label: "here", to: "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#395d65dd82be805ea268e80e32b7bf19" })}.`,
                             ["malformed content"],
                         ).warn();
                         return;
@@ -164,10 +170,10 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
             };
 
             const component_type = node.name.toLowerCase();
-            const transform = COMPONENT_MAP[component_type];
+            const transform = BLOCK_COMPONENT_MAP[component_type];
             if (!transform) {
                 new ExporterError(
-                    `Component type ${component_type} on page "${path}" could not be understood. It is either misspelt or not yet implemented.`,
+                    `Block component type ${component_type} on page "${path}" could not be understood. It is either misspelt or not yet implemented. See all block component options ${ExporterError.link({ with_label: "here", to: "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#395d65dd82be80ac838ef0a1375455cf" })}.`,
                     ["malformed content"],
                 ).warn();
                 return;
@@ -227,8 +233,4 @@ export function processAllAndWarnErrors<T>(processors: Processor<T>[], input: T)
     }
 
     return res;
-}
-
-export function constructNodeErrorSource(children: Node[]): Error {
-    return new Error(`Malformed block has children: ${JSON.stringify(children.map((child) => child.type))}`);
 }

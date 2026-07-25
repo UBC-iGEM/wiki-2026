@@ -18,6 +18,7 @@
         "axios-cookiejar-support": "^7.0.0",
         "class-transformer": "^0.5.1",
         "node-html-parser": "^7.1.0",
+        "rehype-citation": "^2.3.2",
         "rehype-raw": "^7.0.0",
         "rehype-stringify": "^10.0.1",
         "remark": "^15.0.1",

@@ -56,6 +56,12 @@ export default defineConfig([
                     format: ["snake_case"],
                 },
                 {
+                    selector: "parameter",
+                    modifiers: ["unused"],
+                    leadingUnderscore: "require",
+                    format: ["snake_case"],
+                },
+                {
                     selector: "variable",
                     format: ["snake_case", "UPPER_CASE"],
                     leadingUnderscore: "forbid",
