@@ -1,7 +1,10 @@
-import { ExporterError } from "../utils";
+import { BlockId, Id } from "../notion";
+import { getToolsClient } from "../tools-api";
+import { $unsafeSync, ExporterError, isErr, isExporterErr, type ExporterResult, type Result } from "../utils";
 import { constructNodeErrorSource, type ProcessorInput, type ProcessorOutput } from "./markdown";
 import type { BlockContent, DefinitionContent, Html, Image, Paragraph, ThematicBreak } from "mdast";
 import type { ContainerDirective } from "mdast-util-directive";
+import HTMLParse from "node-html-parser";
 import { SKIP } from "unist-util-visit";
 
 /**
@@ -30,6 +33,7 @@ type BlockElement = BlockContent | DefinitionContent;
 export const COMPONENT_MAP: Record<string, (input: ComponentInput) => ComponentOutput> = {
     figure,
     dbtl,
+    model3d,
     skip,
 };
 
@@ -163,6 +167,103 @@ function dbtl({ node, ctx }: ComponentInput): ComponentOutput {
         attrs: {},
         slots: { design, build, test, learn },
     });
+}
+
+// ====================
+// MODEL3D COMPONENT
+// ====================
+
+function model3d({ node, ctx }: ComponentInput): ComponentOutput {
+    const [file_node, ...description] = node.children;
+    const file_html =
+        file_node?.type === "html"
+            ? file_node
+            : file_node?.type === "paragraph" && file_node.children[0]?.type === "html"
+              ? file_node.children[0]
+              : undefined;
+    if (!file_html)
+        return malformedModel3d(ctx.path.toString(), node.children, "it does not start with an uploaded file");
+
+    const parsed_file = HTMLParse.parse(file_html.value).querySelector("file");
+    const file_url = parsed_file?.getAttribute("src")?.replaceAll("\\:", ":");
+    if (!file_url?.startsWith("file://"))
+        return malformedModel3d(ctx.path.toString(), node.children, "its file source is not a Notion-uploaded file");
+
+    const description_text = getInlineModelDescription(file_node) || getModelDescription(description);
+    const emitted_node: Html = {
+        type: "html",
+        value: model3dMdx("", description_text),
+    };
+    ctx.parent.children.splice(ctx.index, 1, emitted_node);
+
+    const callback = async (): Promise<ExporterResult<void>> => {
+        const file_data_res: Result<{ permissionRecord: { id: string } }> = $unsafeSync(
+            JSON.parse,
+            decodeURIComponent(file_url.replace("file://", "")),
+        );
+        if (isErr(file_data_res))
+            return new ExporterError(
+                `Model3D component on page "${ctx.path}" could not understand its uploaded file URL.`,
+                ["malformed content"],
+                file_data_res,
+            );
+
+        const file_id = new Id(file_data_res.permissionRecord.id);
+        const block_res = await new BlockId(file_id.toString()).get();
+        if (isExporterErr(block_res)) return block_res;
+        if (block_res.type !== "file" || block_res.file.type !== "file")
+            return new ExporterError(
+                `Model3D component on page "${ctx.path}" points to Notion block ${file_id}, which is not an uploaded file.`,
+                ["malformed content", "notion server"],
+            );
+
+        const tools_res = await getToolsClient();
+        if (isExporterErr(tools_res)) return tools_res;
+        const upload_res = await tools_res.upload({ uid: file_id.toString(), url: block_res.file.file.url, path: ctx.path });
+        if (isExporterErr(upload_res)) return upload_res;
+
+        emitted_node.value = model3dMdx(upload_res.location, description_text);
+    };
+    ctx.callbacks.push(callback);
+
+    return [SKIP, ctx.index + 1];
+}
+
+function malformedModel3d(path: string, children: BlockElement[], problem: string): ExporterError {
+    return new ExporterError(
+        `Model3D component on page "${path}" could not be understood: ${problem}. Model3D components should follow the format <uploaded .glb or .gltf file> <optional description>.`,
+        ["malformed content"],
+        constructNodeErrorSource(children),
+    );
+}
+
+function getModelDescription(children: BlockElement[]): string | undefined {
+    if (
+        children.length !== 1 ||
+        children[0]!.type !== "paragraph" ||
+        !children[0]!.children.every((child) => child.type === "text")
+    )
+        return undefined;
+
+    const description = children[0]!.children.map((child) => child.value).join("").trim();
+    return description || undefined;
+}
+
+function getInlineModelDescription(file_node: BlockElement | undefined): string | undefined {
+    if (file_node?.type !== "paragraph") return;
+
+    const description = file_node.children
+        .slice(1)
+        .flatMap((child) => (child.type === "text" ? [child.value] : []))
+        .join("")
+        .trim();
+    return description || undefined;
+}
+
+function model3dMdx(url: string, alt: string | undefined): string {
+    const attrs = [`url={${JSON.stringify(url)}}`];
+    if (alt) attrs.push(`alt={${JSON.stringify(alt)}}`);
+    return `<Model3D ${attrs.join(" ")} />`;
 }
 
 // ====================

@@ -150,6 +150,7 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
         for (const result of results) {
             if (result) result.warn();
         }
+        callbacks.length = 0;
 
         visit(tree, "containerDirective", (node, index, parent) => {
             if (index === undefined || !parent) return;
@@ -159,7 +160,7 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
                 parent,
                 routes,
                 path,
-                callbacks: [],
+                callbacks,
             };
 
             const component_type = node.name.toLowerCase();
@@ -180,6 +181,11 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
 
             return res;
         });
+
+        const component_results = await Promise.all(callbacks.map(async (callback) => await callback()));
+        for (const result of component_results) {
+            if (result) result.warn();
+        }
     };
 }
 
