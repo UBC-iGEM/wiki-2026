@@ -277,6 +277,109 @@ class ToolsClient {
         }
     }
 
+    /**
+     * Upload a 3D model without image conversion. The endpoint and cache are shared
+     * with image uploads, but the original model extension and MIME type are retained.
+     */
+    public async uploadModel({
+        uid,
+        url,
+        file_name,
+        path,
+    }: {
+        uid: string;
+        url: string;
+        file_name: string;
+        path: PagePath;
+    }): Promise<ExporterResult<UploadResult>> {
+        const folder_name = ASSETS_FOLDER;
+        const extension = nodePath.extname(file_name).toLowerCase();
+        if (extension !== ".glb" && extension !== ".gltf")
+            return new ExporterError(
+                `Model on page "${path}" has unsupported file type "${extension || "unknown"}"; expected .glb or .gltf.`,
+                ["malformed content"],
+            );
+
+        const final_filename = `${uid}${extension}`;
+        const content_type = mime.contentType(final_filename) || "application/octet-stream";
+        const expected_public_url = `https://static.igem.wiki/teams/${this.team_id}/wiki/${folder_name}/${final_filename}`;
+
+        const already_uploaded = await this.alreadyUploaded({ folder_name, uid, path });
+        if (isExporterErr(already_uploaded)) return already_uploaded;
+        if (already_uploaded)
+            return {
+                file_name: final_filename,
+                key: `${folder_name}/${final_filename}`,
+                location: expected_public_url,
+                content_type,
+            };
+
+        const response = await $unsafe(
+            async () =>
+                await axios.get(url, {
+                    responseType: "stream",
+                    timeout: 30000,
+                    maxBodyLength: Infinity,
+                    maxContentLength: Infinity,
+                }),
+        );
+        if (isErr(response))
+            return new ExporterError(`Failed to retrieve the Model3D file for page "${path}".`, [
+                "igem tools server",
+                "notion server",
+            ]);
+
+        const temp_dir = await mkdtemp(nodePath.join(tmpdir(), "igem-model-upload-"));
+        const temp_file_path = nodePath.join(temp_dir, final_filename);
+
+        try {
+            await withTimeout(
+                pipeline(response.data, createWriteStream(temp_file_path)),
+                30000,
+                `Download model ${uid}`,
+            );
+
+            const post_res = await $unsafe(async () => {
+                const form_data = new FormData();
+                form_data.append("file", createReadStream(temp_file_path), {
+                    filename: final_filename,
+                    contentType: content_type,
+                });
+
+                return await this.client.post(
+                    `/teams/${this.team_id}/repositories/${CONFIG.repo_uuid}/files`,
+                    form_data,
+                    {
+                        params: { directory: folder_name },
+                        headers: form_data.getHeaders?.(),
+                        timeout: 60000,
+                        maxBodyLength: Infinity,
+                        maxContentLength: Infinity,
+                    },
+                );
+            });
+            if (isErr(post_res))
+                return new ExporterError(`Failed to upload the Model3D file for page "${path}".`, [
+                    "igem tools server",
+                ]);
+
+            const upload_key = post_res.data?.data?.uploadKey;
+            return {
+                file_name: final_filename,
+                key: `${folder_name}/${final_filename}`,
+                location: upload_key ? `https://static.igem.wiki/${upload_key}` : expected_public_url,
+                content_type,
+            };
+        } catch {
+            return new ExporterError(`Failed to upload the Model3D file for page "${path}".`, [
+                "igem tools server",
+                "notion server",
+            ]);
+        } finally {
+            await rm(temp_dir, { recursive: true, force: true });
+        }
+    }
+
     public async alreadyUploaded({
         folder_name,
         uid,

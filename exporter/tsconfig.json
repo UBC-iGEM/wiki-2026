@@ -4,5 +4,5 @@
         "types": ["node"],
         "experimentalDecorators": true,
     },
-    "include": ["src/**/*", "test/**/*"],
+    "include": ["src/**/*"],
 }

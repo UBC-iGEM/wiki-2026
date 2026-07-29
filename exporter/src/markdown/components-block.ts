@@ -7,6 +7,8 @@ import type { ContainerDirective } from "mdast-util-directive";
 import HTMLParse from "node-html-parser";
 import { SKIP } from "unist-util-visit";
 
+const MODEL3D_DOC_URL = "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link";
+
 /**
  * Support for block components.
  *
@@ -185,13 +187,25 @@ function model3d({ node, ctx }: ComponentInput): ComponentOutput {
             : file_node?.type === "paragraph" && file_node.children[0]?.type === "html"
               ? file_node.children[0]
               : undefined;
-    if (!file_html)
-        return malformedModel3d(ctx.path.toString(), node.children, "it does not start with an uploaded file");
+    if (!file_html) return malformedModel3d(ctx.path.toString(), "it does not start with an uploaded file");
 
     const parsed_file = HTMLParse.parse(file_html.value).querySelector("file");
     const file_url = parsed_file?.getAttribute("src")?.replaceAll("\\:", ":");
     if (!file_url?.startsWith("file://"))
-        return malformedModel3d(ctx.path.toString(), node.children, "its file source is not a Notion-uploaded file");
+        return malformedModel3d(ctx.path.toString(), "its file source is not a Notion-uploaded file");
+
+    interface ModelFileData {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        permissionRecord?: { id?: unknown };
+    }
+    const file_data_res: Result<ModelFileData> = $unsafeSync(
+        JSON.parse,
+        decodeURIComponent(file_url.replace("file://", "")),
+    );
+    if (isErr(file_data_res) || typeof file_data_res.permissionRecord?.id !== "string")
+        return malformedModel3d(ctx.path.toString(), "it has an invalid uploaded file URL");
+
+    const file_id = new Id(file_data_res.permissionRecord.id);
 
     const description_text = getInlineModelDescription(file_node) || getModelDescription(description);
     const emitted_node: Html = {
@@ -201,31 +215,17 @@ function model3d({ node, ctx }: ComponentInput): ComponentOutput {
     ctx.parent.children.splice(ctx.index, 1, emitted_node);
 
     const callback = async (): Promise<ExporterResult<void>> => {
-        const file_data_res: Result<Record<"permissionRecord", { id: string }>> = $unsafeSync(
-            JSON.parse,
-            decodeURIComponent(file_url.replace("file://", "")),
-        );
-        if (isErr(file_data_res))
-            return new ExporterError(
-                `Model3D component on page "${ctx.path}" could not understand its uploaded file URL.`,
-                ["malformed content"],
-                file_data_res,
-            );
-
-        const file_id = new Id(file_data_res.permissionRecord.id);
         const block_res = await new BlockId(file_id.toString()).get();
         if (isExporterErr(block_res)) return block_res;
         if (block_res.type !== "file" || block_res.file.type !== "file")
-            return new ExporterError(
-                `Model3D component on page "${ctx.path}" points to Notion block ${file_id}, which is not an uploaded file.`,
-                ["malformed content", "notion server"],
-            );
+            return malformedModel3d(ctx.path.toString(), `Notion block ${file_id} is not an uploaded file`);
 
         const tools_res = await getToolsClient();
         if (isExporterErr(tools_res)) return tools_res;
-        const upload_res = await tools_res.upload({
+        const upload_res = await tools_res.uploadModel({
             uid: file_id.toString(),
             url: block_res.file.file.url,
+            file_name: block_res.file.name,
             path: ctx.path,
         });
         if (isExporterErr(upload_res)) return upload_res;
@@ -237,16 +237,12 @@ function model3d({ node, ctx }: ComponentInput): ComponentOutput {
     return [SKIP, ctx.index + 1];
 }
 
-function malformedModel3d(path: string, children: BlockElement[], problem: string): ExporterError {
+function malformedModel3d(path: string, problem: string): ExporterError {
     return new ExporterError(
-        `Model3D component on page "${path}" could not be understood: ${problem}. Model3D components should follow the format <uploaded .glb or .gltf file> <optional description>.`,
+        `Model3D component on page "${path}" could not be understood: ${problem}.` +
+            ExporterError.componentDocSuggestion(MODEL3D_DOC_URL),
         ["malformed content"],
-        constructNodeErrorSource(children),
     );
-}
-
-function constructNodeErrorSource(children: BlockElement[]): Error {
-    return new Error(`Malformed block has children: ${JSON.stringify(children.map((child) => child.type))}`);
 }
 
 function getModelDescription(children: BlockElement[]): string | undefined {
