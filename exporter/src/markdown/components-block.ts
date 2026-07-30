@@ -216,9 +216,11 @@ function carousel({ node, ctx }: ComponentInput): ComponentOutput {
 
         if (!first || first.type !== "paragraph")
             return new ExporterError(
-                `Carousel component on page "${ctx.path}" could not be understood: slide ${i + 1} does not start with an image. Carousel slides should follow the format <image> <optional description>.`,
+                `Carousel component on page "${ctx.path}" could not be understood: slide ${i + 1} does not start with an image.` +
+                    ExporterError.componentDocSuggestion(
+                        "https://www.notion.so/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?v=390d65dd82be80879bd4000c8f0deedc&source=copy_link#3add65dd82be8004a504cb122ae5ca7b",
+                    ),
                 ["malformed content"],
-                constructNodeErrorSource(node.children),
             );
 
         // Skip leading whitespace-only text nodes before the image, e.g. a stray leading space
@@ -228,9 +230,11 @@ function carousel({ node, ctx }: ComponentInput): ComponentOutput {
 
         if (first.children[0]?.type !== "image")
             return new ExporterError(
-                `Carousel component on page "${ctx.path}" could not be understood: slide ${i + 1} does not start with an image. Carousel slides should follow the format <image> <optional description>.`,
+                `Carousel component on page "${ctx.path}" could not be understood: slide ${i + 1} does not start with an image.` +
+                    ExporterError.componentDocSuggestion(
+                        "https://www.notion.so/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?v=390d65dd82be80879bd4000c8f0deedc&source=copy_link#3add65dd82be8004a504cb122ae5ca7b",
+                    ),
                 ["malformed content"],
-                constructNodeErrorSource(node.children),
             );
 
         const image = first.children.shift() as Image;
