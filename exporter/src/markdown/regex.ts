@@ -63,6 +63,12 @@ const REGEXES: [RegExp, string][] = [
      * Add newline before and after dividers to avoid parsing issues
      */
     [/^---$/, "\n---\n"],
+
+    /**
+     * Notion emits bold spans with whitespace before the closing `**`
+     * We need to strip this out.
+     */
+    [/\*\*(\s*)([^*]+?)(\s*)\*\*/, "$1**$2**$3"],
 ];
 
 export function processRegex(s: string): string {

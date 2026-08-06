@@ -142,19 +142,33 @@ this is a test 3d model
 
 And then more information yada yada yada.
 
-:::CAROUSEL
-![](https://static.igem.wiki/teams/6279/wiki/assets/0b8ca386f45c5963864cee3f1c4024eb.avif)
+<ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/0b8ca386f45c5963864cee3f1c4024eb.avif","alt":""},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/952233b3876a5bb3b46bd80d0ab0b9cb.avif","alt":""},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/8214094d87655112add216514cbe89d4.avif","alt":""}]}>
+
+<Fragment slot="descriptions">
+
+<div class="carousel-desc" data-index="0">
+
+
 Hello this is a caption
 
-***
+</div>
 
-![](https://static.igem.wiki/teams/6279/wiki/assets/952233b3876a5bb3b46bd80d0ab0b9cb.avif)
+<div class="carousel-desc" data-index="1">
+
+
 This is the igem logo! And this is caption.
 
-***
+</div>
 
-![](https://static.igem.wiki/teams/6279/wiki/assets/8214094d87655112add216514cbe89d4.avif)
+<div class="carousel-desc" data-index="2">
+
+
 This is the UBC iGEM logo
-:::
+
+</div>
+
+</Fragment>
+
+</ImageCarousel>
 
 And the text continues
