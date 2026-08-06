@@ -66,7 +66,10 @@ const REGEXES: [RegExp, string][] = [
 ];
 
 export function processRegex(s: string): string {
-    let processed = s;
+    // Remove <synced_block> ... </synced_block> tags and dedent the inner content
+    let processed = s.replace(/<synced_block[^>]*>\n?([\s\S]*?)\n?<\/synced_block>/gi, (_match, body: string) =>
+        body.replace(/^\t/gm, ""),
+    );
 
     for (const [search, replace] of REGEXES) {
         // Add flags `Global`, `case Insensitive`, `Multiline` to all
