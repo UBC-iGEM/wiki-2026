@@ -1,0 +1,131 @@
+---
+type: "database"
+title: "Notebook Entry 7"
+path: "Wet Lab/Lab Notebook 2026/Notebook Entry 7"
+---
+
+# Purpose
+
+Following the preliminary GFP expression sensitivity assay in [Notebook Entry 6](/wet-lab/lab-notebook-2026/notebook-entry-6), we will perform a subsequent titration to narrow down the antibioitc concentration range for optimal GFP expression.
+For the RecA reporter, we will use a narrowed down MIC range based on the findings described in Takeaway 4.1  from[Notebook Entry 6](/wet-lab/lab-notebook-2026/notebook-entry-6). For the CpxP reporter, we will investigate GFP expression induced by antibioitc concentrations that are higher than literature MIC values, based on the finding that the stimulated Cpxp biosensor is not significantly distinguishable from the negative control (refer to Takeaway 4.2 in [Notebook Entry 6](/wet-lab/lab-notebook-2026/notebook-entry-6)).
+Additionally, we will test the impact of higher bacterial densities on GFP expression, aiming for an OD600 values of 0.4 and 0.8.
+In the end, we hope to identify an optimized antibiotic concentration range and incubation time range for each antibiotic that allows for a differential fluorescence signal relative to the unstimulated control.
+
+# Materials & Methods
+
+<span underline="true">Materials</span>
+
+- Gentamicin (Sigma Aldrich, #G1264-50MG)
+- Kanamycin (BioShop, #KAN201)
+- Amoxicillin (Sigma Aldrich, #A8523-1G)
+- Cephalexin (AmBeed, #A320894)
+- 0.2 uM sterile filter
+- LB-Cm media (17 mg/ml)
+- RecA and CpxP biosensor strains (from [Notebook Entry 5](/wet-lab/lab-notebook-2026/notebook-entry-5))
+- 96-well plates, flat bottom
+- Varioskan microplate reader
+
+<span underline="true">Day 1: Prepare bacteria and antibiotic solutions</span>
+
+- For each biosensor strain, inoculate bacteria into 50 ml of LB-Cm media (17 mg/ml). Incubate at 37˚C and 250 rpm overnight (> 16 hours).
+- Reconstitute antibiotics in MiliQ water and sterilize through 0.2uM filter.
+  - Gentamicin (4 mg/ml)
+  - Kanamycin (20 mg/ml) → resuspended to 19.9mg/ml
+  - Amoxicillin (1 mg/ml) → resuspended to 1.2mg/ml
+  - Cephalexin (2 mg/ml) → resuspended to 1.9mg/ml
+- Make each condition media at a 2X concentration according to Tables 1 and 2.
+  - Gentamicin 4µg/ml (RecA plate = 800ul): 2ml LB + 2ul
+  - Gentamicin 8µg/ml (2 plates = 2 x 800ul): 2ml LB + 4ul
+  - Gentamicin 16µg/ml (2 plates = 2 x 800ul): 2ml LB + 8ul
+  - Gentamicin 32µg/ml (CpxP plate = 800ul): 2ml LB + 16ul
+  - Kanamycin 40μg/ml (RecA plate = 800ul): 2ml LB + 4ul
+  - Kanamycin 50μg/ml (RecA plate = 800ul): 2ml LB + 5ul
+  - Kanamycin 60μg/ml (RecA plate = 800ul): 2ml LB + 6ul
+  - Kanamycin 80μg/ml (CpxP plate = 800ul): 2ml LB + 8ul
+  - Kanamycin 120μg/ml (CpxP plate = 800ul): 2ml LB + 12ul
+  - Kanamycin 160μg/ml (CpxP plate = 800ul): 2ml LB + 16ul
+  - Amoxicillin 6μg/ml (RecA plate = 800ul): 2ml LB + 12ul
+  - Amoxicillin 8μg/ml (RecA plate = 800ul): 2ml LB + 16ul
+  - Amoxicillin 12μg/ml (RecA plate = 800ul): 2ml LB + 24ul
+  - Amoxicillin 10μg/ml (CpxP plate = 800ul): 2ml LB + 20ul
+  - Amoxicillin 20μg/ml (CpxP plate = 800ul): 2ml LB + 40ul
+  - Amoxicillin 30μg/mL (CpxP plate = 800ul): 2ml LB + 60ul
+  - Cephalexin 2μg/ml (2 plates =  2 x 800ul): 2ml LB + 2ul
+  - Cephalexin 4μg/ml (RecA plate = 800ul): 2ml LB + 4ul
+  - Cephalexin 6μg/ml (RecA plate = 800ul): 2ml LB + 6ul
+  - Cephalexin 16μg/ml (CpxP plate = 800ul): 2ml LB + 16ul
+  - Cephalexin 32μg/ml (CpxP plate = 800ul): 2ml LB + 32ul
+
+**Table 1.** Antibiotic concentrations for RecA MIC titration.
+
+|                |                              |                                    |
+| -------------- | ---------------------------- | ---------------------------------- |
+| **Antibiotic** | **2X concentration (µg/ml)** | **Final 1X concentration (µg/ml)** |
+| Gentamicin     | 4µg/ml, 8µg/ml, 16µg/ml      | 2µg/ml, 4µg/ml, 8µg/ml             |
+| Kanamycin      | 40μg/ml, 50μg/ml, 60μg/ml    | 20μg/ml, 25μg/ml, 30μg/ml          |
+| Amoxicillin    | 6μg/ml, 8μg/ml, 12μg/ml      | 3μg/ml, 4μg/ml, 6μg/ml             |
+| Cephalexin     | 2μg/ml, 4μg/ml, 6μg/ml       | 1μg/ml, 2μg/ml, 3μg/ml             |
+
+**Table 2.** Antibiotic concentrations for CpxP MIC titration.
+
+|                |                              |                                    |
+| -------------- | ---------------------------- | ---------------------------------- |
+| **Antibiotic** | **2X concentration (µg/ml)** | **Final 1X concentration (µg/ml)** |
+| Gentamicin     | 8µg/ml, 16µg/ml, 32µg/ml     | 4µg/ml, 8µg/ml, 16µg/ml            |
+| Kanamycin      | 80μg/ml, 120μg/ml, 160μg/ml  | 40μg/ml, 60μg/ml, 80μg/ml          |
+| Amoxicillin    | 10μg/ml, 20μg/ml, 30μg/mL    | 5μg/ml, 10μg/ml, 15μg/mL           |
+| Cephalexin     | 2μg/ml, 16μg/ml, 32μg/ml     | 1μg/ml, 8μg/ml, 16μg/ml            |
+
+<span underline="true">Day 2: GFP stimulation assay</span>
+
+- Measure the OD600 of each overnight culture in a cuvette, using LB-Cm as the blank.
+- Create at least 4 ml of bacterial culture diluted to half the OD600 of the original culture. Reserve the remaining culture.
+  - 1X culture: original culture
+  - 0.5X culture: diluted culture
+- For two 96-well plates, add 100ul of condition media in triplicate according to the layout in Figures 1 and 2.
+  - Use a 96-well deep well plate to allow the transfer of media with a multi-channel pipetting into Rows A—G.
+- For Rows G—H on each plate, make the control wells:
+  - Blank controls (12 wells/plate): do not add cells to row G; add an additional 100ul of media
+  - Blank LB-Cm control (2 wells/plate): 200ul of LB-Cm media
+  - Unstimulated biosensor (3 wells/plate): 100ul of culture and 100ul LB-Cm
+- For each biosensor strain, add 100ul of bacterial suspensions into the appropriate wells, according to the layout in Figures 1 and 2.
+- Incubate the plate for 30 at 37˚C, using an excitation wavelength of 488 nm and measuring fluorescence at 510 nm.
+  - Measure every 2 minutes for the first 10min interval
+  - Measure once every 10 mins
+
+![](https://static.igem.wiki/teams/6279/wiki/assets/c9f53bc3d15a5987bf31946f3b240e0e.avif)
+**Figure 1.** 96-well plate setup for RecA assay. Each plate contains bacterial culture at either a 1X or 0.5X density, diluted according to OD600.
+
+![](https://static.igem.wiki/teams/6279/wiki/assets/c52e21de765959f98a64511a77e5c520.avif)
+**Figure 2.** 96-well plate setup for CpxP assay. Each plate contains bacterial culture at either a 1X or 0.5X density, diluted according to OD600.
+
+# Results
+
+Raw data analyzed in spreadsheet found here: [https://docs.google.com/spreadsheets/d/1Mi4UIL3Evs4lroh\_\_WX6S2HnOXAIlSVqagbe1JyRdEo/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1Mi4UIL3Evs4lroh__WX6S2HnOXAIlSVqagbe1JyRdEo/edit?usp=sharing)
+While we originally intended to test multiple densities, the cultures grew too slowly. Thus, we tested the original OD600 of 0.4 to make our results comparable to the previous experiment in [Notebook Entry 6](/wet-lab/lab-notebook-2026/notebook-entry-6).
+
+**Table 2.** OD600 readings after 20 hours of incubation at 37˚C, 250 rpm.
+
+|             |                                |                                 |
+| ----------- | ------------------------------ | ------------------------------- |
+| **Culture** | **Original OD600, 1X culture** | **Diluted OD600, 0.5X culture** |
+| CpxP        | 0.357                          | n/a                             |
+| RecA        | 0.358                          | n/a                             |
+
+**Table 3.** OD600 readings after 23 hours of incubation at 37˚C, 250 rpm.
+
+|             |                                |                                 |
+| ----------- | ------------------------------ | ------------------------------- |
+| **Culture** | **Original OD600, 1X culture** | **Diluted OD600, 0.5X culture** |
+| CpxP        | 0.380                          | N/a                             |
+| RecA        | 0.422                          | N/a                             |
+
+![](https://static.igem.wiki/teams/6279/wiki/assets/7ac52d7b8dca59859c58085a9edcab7f.avif)
+**Figure 3.** Fluorescence intensity at 510 nm for CpxP biosensor cultured in 4 different antibiotics over a 1 hour incubation.
+
+![](https://static.igem.wiki/teams/6279/wiki/assets/734669ed2e6953ba990c218bfcd114af.avif)
+**Figure 4.** Fluorescence intensity at 510 nm for RecA biosensor cultured in 4 different antibiotics over a 1 hour incubation.
+
+# Summary
+
+# Hand off/Next Steps
