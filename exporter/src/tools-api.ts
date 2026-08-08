@@ -137,16 +137,28 @@ class ToolsClient {
         uid,
         url,
         path,
+        original_file,
     }: {
         uid: string;
         url: string;
         path: PagePath;
+        original_file?: { file_name: string };
     }): Promise<ExporterResult<UploadResult>> {
         const folder_name = ASSETS_FOLDER;
 
-        // accounting for server-side file extension auto-conversion
-        const final_extension = "avif";
+        const final_extension = original_file
+            ? nodePath.extname(original_file.file_name).toLowerCase().slice(1)
+            : "avif";
+        if (original_file && !final_extension)
+            return new ExporterError(
+                `Failed to upload asset on page "${path}" with UID ${uid}: the original filename has no extension.`,
+                ["malformed content"],
+            );
+
         const final_filename = `${uid}.${final_extension}`;
+        const content_type = original_file
+            ? mime.contentType(final_filename) || "application/octet-stream"
+            : "image/avif";
         const expected_public_url = `https://static.igem.wiki/teams/${this.team_id}/wiki/${folder_name}/${final_filename}`;
 
         const already_uploaded = await this.alreadyUploaded({
@@ -162,11 +174,11 @@ class ToolsClient {
                 file_name: final_filename,
                 key: `${folder_name}/${final_filename}`,
                 location: expected_public_url,
-                content_type: "image/avif",
+                content_type,
             };
         }
 
-        // Get image stream from url/notion
+        // Get source stream from url/notion
         const response = await $unsafe(
             async () =>
                 await axios.get(url, {
@@ -183,12 +195,12 @@ class ToolsClient {
                 response,
             );
 
-        // Infer extension and content type
-        const content_type =
+        // Use the source content type only to choose a temporary extension for image conversion.
+        const source_content_type =
             typeof response.headers["content-type"] === "string"
                 ? response.headers["content-type"].split(";")[0]!
                 : "image/jpeg";
-        const file_extension = mime.extension(content_type) || "jpg";
+        const file_extension = original_file ? final_extension : mime.extension(source_content_type) || "jpg";
 
         const temp_dir = await mkdtemp(nodePath.join(tmpdir(), "igem-upload-"));
         const temp_file_path = nodePath.join(temp_dir, `${uid}.${file_extension}`);
@@ -200,24 +212,29 @@ class ToolsClient {
                 `Download image ${uid}`,
             );
 
-            const avif_temp_file_path = nodePath.join(temp_dir, final_filename);
-            const convert_res = await convertToAvif(temp_file_path, avif_temp_file_path);
-            if (isExporterErr(convert_res)) return convert_res;
+            let upload_file_path = temp_file_path;
+            if (!original_file) {
+                const avif_temp_file_path = nodePath.join(temp_dir, final_filename);
+                const convert_res = await convertToAvif(temp_file_path, avif_temp_file_path);
+                if (isExporterErr(convert_res)) return convert_res;
 
-            const avif_temp_file_stat = await stat(avif_temp_file_path);
+                const avif_temp_file_stat = await stat(avif_temp_file_path);
 
-            if (avif_temp_file_stat.size > MAX_UPLOAD_BYTES) {
-                new ExporterError(
-                    `Skipped asset on page "${path}": compressed AVIF is ${avif_temp_file_stat.size} bytes, which is larger than the ${MAX_UPLOAD_BYTES} byte limit even after compression.`,
-                    ["igem tools server"],
-                ).warn();
+                if (avif_temp_file_stat.size > MAX_UPLOAD_BYTES) {
+                    new ExporterError(
+                        `Skipped asset on page "${path}": compressed AVIF is ${avif_temp_file_stat.size} bytes, which is larger than the ${MAX_UPLOAD_BYTES} byte limit even after compression.`,
+                        ["igem tools server"],
+                    ).warn();
 
-                return {
-                    file_name: final_filename,
-                    key: "",
-                    location: "",
-                    content_type: "image/avif",
-                };
+                    return {
+                        file_name: final_filename,
+                        key: "",
+                        location: "",
+                        content_type,
+                    };
+                }
+
+                upload_file_path = avif_temp_file_path;
             }
 
             // build data
@@ -225,9 +242,9 @@ class ToolsClient {
             // /websites/teams/{teamId}?directory={folderName}
             const post_res = await $unsafe(async () => {
                 const form_data = new FormData();
-                form_data.append("file", createReadStream(avif_temp_file_path), {
+                form_data.append("file", createReadStream(upload_file_path), {
                     filename: final_filename,
-                    contentType: "image/avif",
+                    contentType: content_type,
                 });
 
                 return await this.client.post(
@@ -264,7 +281,7 @@ class ToolsClient {
                 file_name: final_filename,
                 key: `${folder_name}/${final_filename}`,
                 location: public_url,
-                content_type: "image/avif",
+                content_type,
             };
         } catch (error) {
             return new ExporterError(
@@ -272,109 +289,6 @@ class ToolsClient {
                 ["igem tools server", "notion server"],
                 error instanceof Error ? error : new Error(String(error)),
             );
-        } finally {
-            await rm(temp_dir, { recursive: true, force: true });
-        }
-    }
-
-    /**
-     * Upload a 3D model without image conversion. The endpoint and cache are shared
-     * with image uploads, but the original model extension and MIME type are retained.
-     */
-    public async uploadModel({
-        uid,
-        url,
-        file_name,
-        path,
-    }: {
-        uid: string;
-        url: string;
-        file_name: string;
-        path: PagePath;
-    }): Promise<ExporterResult<UploadResult>> {
-        const folder_name = ASSETS_FOLDER;
-        const extension = nodePath.extname(file_name).toLowerCase();
-        if (extension !== ".glb" && extension !== ".gltf")
-            return new ExporterError(
-                `Model on page "${path}" has unsupported file type "${extension || "unknown"}"; expected .glb or .gltf.`,
-                ["malformed content"],
-            );
-
-        const final_filename = `${uid}${extension}`;
-        const content_type = mime.contentType(final_filename) || "application/octet-stream";
-        const expected_public_url = `https://static.igem.wiki/teams/${this.team_id}/wiki/${folder_name}/${final_filename}`;
-
-        const already_uploaded = await this.alreadyUploaded({ folder_name, uid, path });
-        if (isExporterErr(already_uploaded)) return already_uploaded;
-        if (already_uploaded)
-            return {
-                file_name: final_filename,
-                key: `${folder_name}/${final_filename}`,
-                location: expected_public_url,
-                content_type,
-            };
-
-        const response = await $unsafe(
-            async () =>
-                await axios.get(url, {
-                    responseType: "stream",
-                    timeout: 30000,
-                    maxBodyLength: Infinity,
-                    maxContentLength: Infinity,
-                }),
-        );
-        if (isErr(response))
-            return new ExporterError(`Failed to retrieve the Model3D file for page "${path}".`, [
-                "igem tools server",
-                "notion server",
-            ]);
-
-        const temp_dir = await mkdtemp(nodePath.join(tmpdir(), "igem-model-upload-"));
-        const temp_file_path = nodePath.join(temp_dir, final_filename);
-
-        try {
-            await withTimeout(
-                pipeline(response.data, createWriteStream(temp_file_path)),
-                30000,
-                `Download model ${uid}`,
-            );
-
-            const post_res = await $unsafe(async () => {
-                const form_data = new FormData();
-                form_data.append("file", createReadStream(temp_file_path), {
-                    filename: final_filename,
-                    contentType: content_type,
-                });
-
-                return await this.client.post(
-                    `/teams/${this.team_id}/repositories/${CONFIG.repo_uuid}/files`,
-                    form_data,
-                    {
-                        params: { directory: folder_name },
-                        headers: form_data.getHeaders?.(),
-                        timeout: 60000,
-                        maxBodyLength: Infinity,
-                        maxContentLength: Infinity,
-                    },
-                );
-            });
-            if (isErr(post_res))
-                return new ExporterError(`Failed to upload the Model3D file for page "${path}".`, [
-                    "igem tools server",
-                ]);
-
-            const upload_key = post_res.data?.data?.uploadKey;
-            return {
-                file_name: final_filename,
-                key: `${folder_name}/${final_filename}`,
-                location: upload_key ? `https://static.igem.wiki/${upload_key}` : expected_public_url,
-                content_type,
-            };
-        } catch {
-            return new ExporterError(`Failed to upload the Model3D file for page "${path}".`, [
-                "igem tools server",
-                "notion server",
-            ]);
         } finally {
             await rm(temp_dir, { recursive: true, force: true });
         }

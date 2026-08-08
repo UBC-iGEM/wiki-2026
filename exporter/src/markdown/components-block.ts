@@ -179,8 +179,14 @@ function dbtl({ node, ctx }: ComponentInput): ComponentOutput {
 // MODEL3D COMPONENT
 // ====================
 
+interface Model3dAttrs {
+    url: string;
+}
+export const MODEL3D_SLOTS = ["content"] as const;
+type Model3dSlots = SlotRecord<typeof MODEL3D_SLOTS>;
+
 function model3d({ node, ctx }: ComponentInput): ComponentOutput {
-    const [file_node, ...description] = node.children;
+    const [file_node, ...following_content] = node.children;
     const file_html =
         file_node?.type === "html"
             ? file_node
@@ -188,6 +194,12 @@ function model3d({ node, ctx }: ComponentInput): ComponentOutput {
               ? file_node.children[0]
               : undefined;
     if (!file_html) return malformedModel3d(ctx.path.toString(), "it does not start with an uploaded file");
+
+    const inline_content =
+        file_node?.type === "paragraph" && file_node.children.length > 1
+            ? [{ ...file_node, children: file_node.children.slice(1) }]
+            : [];
+    const content = [...inline_content, ...following_content];
 
     const parsed_file = HTMLParse.parse(file_html.value).querySelector("file");
     const file_url = parsed_file?.getAttribute("src")?.replaceAll("\\:", ":");
@@ -207,34 +219,38 @@ function model3d({ node, ctx }: ComponentInput): ComponentOutput {
 
     const file_id = new Id(file_data_res.permissionRecord.id);
 
-    const description_text = getInlineModelDescription(file_node) || getModelDescription(description);
-    const emitted_node: Html = {
-        type: "html",
-        value: model3dMdx("", description_text),
-    };
-    ctx.parent.children.splice(ctx.index, 1, emitted_node);
+    const result = generateComponent<Model3dAttrs, Model3dSlots>({
+        node,
+        ctx,
+        tag: "Model3D",
+        attrs: { url: "" },
+        slots: { content },
+    });
+    const opening_node = ctx.parent.children[ctx.index] as Html;
 
     const callback = async (): Promise<ExporterResult<void>> => {
         const block_res = await new BlockId(file_id.toString()).get();
         if (isExporterErr(block_res)) return block_res;
         if (block_res.type !== "file" || block_res.file.type !== "file")
             return malformedModel3d(ctx.path.toString(), `Notion block ${file_id} is not an uploaded file`);
+        if (!/\.gl(?:b|tf)$/i.test(block_res.file.name))
+            return malformedModel3d(ctx.path.toString(), "its uploaded file is not a .glb or .gltf model");
 
         const tools_res = await getToolsClient();
         if (isExporterErr(tools_res)) return tools_res;
-        const upload_res = await tools_res.uploadModel({
+        const upload_res = await tools_res.upload({
             uid: file_id.toString(),
             url: block_res.file.file.url,
-            file_name: block_res.file.name,
             path: ctx.path,
+            original_file: { file_name: block_res.file.name },
         });
         if (isExporterErr(upload_res)) return upload_res;
 
-        emitted_node.value = model3dMdx(upload_res.location, description_text);
+        opening_node.value = componentOpeningTag("Model3D", { url: upload_res.location });
     };
     ctx.callbacks.push(callback);
 
-    return [SKIP, ctx.index + 1];
+    return result;
 }
 
 function malformedModel3d(path: string, problem: string): ExporterError {
@@ -243,38 +259,6 @@ function malformedModel3d(path: string, problem: string): ExporterError {
             ExporterError.componentDocSuggestion(MODEL3D_DOC_URL),
         ["malformed content"],
     );
-}
-
-function getModelDescription(children: BlockElement[]): string | undefined {
-    if (
-        children.length !== 1 ||
-        children[0]!.type !== "paragraph" ||
-        !children[0]!.children.every((child) => child.type === "text")
-    )
-        return undefined;
-
-    const description = children[0]!.children
-        .map((child) => child.value)
-        .join("")
-        .trim();
-    return description || undefined;
-}
-
-function getInlineModelDescription(file_node: BlockElement | undefined): string | undefined {
-    if (file_node?.type !== "paragraph") return;
-
-    const description = file_node.children
-        .slice(1)
-        .flatMap((child) => (child.type === "text" ? [child.value] : []))
-        .join("")
-        .trim();
-    return description || undefined;
-}
-
-function model3dMdx(url: string, alt: string | undefined): string {
-    const attrs = [`url={${JSON.stringify(url)}}`];
-    if (alt) attrs.push(`alt={${JSON.stringify(alt)}}`);
-    return `<Model3D ${attrs.join(" ")} />`;
 }
 
 // ====================
@@ -310,13 +294,7 @@ function generateComponent<Attrs extends Record<string, any>, Slots extends Slot
     attrs: Attrs;
     slots: Slots;
 }): ComponentOutput {
-    let attr_string = Object.entries(attrs)
-        .map(([name, value]) => `${name}={${JSON.stringify(value)}}`)
-        .join(" ");
-    // If there are attributes, they must be prepended with a space
-    if (attr_string !== "") attr_string = " " + attr_string;
-
-    const opening_tag = `<${tag}${attr_string}>`;
+    const opening_tag = componentOpeningTag(tag, attrs);
     const closing_tag = `</${tag}>`;
 
     const opening_element: Html = {
@@ -347,4 +325,13 @@ function generateComponent<Attrs extends Record<string, any>, Slots extends Slot
     const num_elements = component_elements.length + 2;
     // Skip all newly inserted elements
     return [SKIP, ctx.index + num_elements];
+}
+
+function componentOpeningTag(tag: string, attrs: Record<string, any>): string {
+    let attr_string = Object.entries(attrs)
+        .map(([name, value]) => `${name}={${JSON.stringify(value)}}`)
+        .join(" ");
+    if (attr_string !== "") attr_string = " " + attr_string;
+
+    return `<${tag}${attr_string}>`;
 }
