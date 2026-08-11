@@ -7,8 +7,6 @@ import type { ContainerDirective } from "mdast-util-directive";
 import HTMLParse from "node-html-parser";
 import { SKIP } from "unist-util-visit";
 
-const MODEL3D_DOC_URL = "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link";
-
 /**
  * Support for block components.
  *
@@ -257,7 +255,9 @@ function model3d({ node, ctx }: ComponentInput): ComponentOutput {
 function malformedModel3d(path: string, problem: string): ExporterError {
     return new ExporterError(
         `Model3D component on page "${path}" could not be understood: ${problem}.` +
-        ExporterError.componentDocSuggestion(MODEL3D_DOC_URL),
+            ExporterError.componentDocSuggestion(
+                "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link",
+            ),
         ["malformed content"],
     );
 }

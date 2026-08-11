@@ -69,6 +69,11 @@ const REGEXES: [RegExp, string][] = [
      * We need to strip this out.
      */
     [/\*\*(\s*)([^*]+?)(\s*)\*\*/, "$1**$2**$3"],
+
+    /**
+     * Strip closing </file> tags to avoid parsing issues
+     */
+    [/<\/file>/, ""],
 ];
 
 export function processRegex(s: string): string {
