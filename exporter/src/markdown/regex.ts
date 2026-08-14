@@ -1,5 +1,23 @@
 const REGEXES: [RegExp, string][] = [
     /**
+     * Render Notion date mentions as text.
+     * Attributes are emitted in a fixed order per the spec.
+     * FROM:
+         <mention-date start="YYYY-MM-DD" end="YYYY-MM-DD"/>
+         <mention-date start="YYYY-MM-DD" startTime="HH:mm" timeZone="IANA_TIMEZONE"/>
+         <mention-date start="YYYY-MM-DD"/>
+     * TO:
+         DD/MM/YYYY to DD/MM/YYYY
+         DD/MM/YYYY at HH:mm
+         DD/MM/YYYY
+     * These must precede the colon-escape rule below, which would otherwise turn the `:` in
+     * `startTime="HH:mm"` into `\:` before the time pattern can match it.
+     */
+    [/<mention-date\s+start="(\d{4})-(\d{2})-(\d{2})"\s+end="(\d{4})-(\d{2})-(\d{2})"[^>]*\/>/, "$3/$2/$1 to $6/$5/$4"],
+    [/<mention-date\s+start="(\d{4})-(\d{2})-(\d{2})"\s+startTime="(\d{2}:\d{2})"[^>]*\/>/, "$3/$2/$1 at $4"],
+    [/<mention-date\s+start="(\d{4})-(\d{2})-(\d{2})"[^>]*\/>/, "$3/$2/$1"],
+
+    /**
      * Escape raw colons to avoid unexpected directives
      */
     [/:/, "\\:"],

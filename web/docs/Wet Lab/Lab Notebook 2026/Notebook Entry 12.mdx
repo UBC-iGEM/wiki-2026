@@ -1,0 +1,208 @@
+---
+type: "database"
+title: "Notebook Entry 12"
+path: "Wet Lab/Lab Notebook 2026/Notebook Entry 12"
+date: "2026-08-22"
+---
+
+# Background
+
+## Objective
+
+<Callout icon="🗣" color="green_bg">
+	What is the maximum antibiotic concentration, seeding density, and the amount of time in which we get the best fluorescence from our biosensors?
+</Callout>
+
+## Variables
+
+Independent:  Seeding Density (3 concentrations, OD = 0.3, 0.4, 0.5), Type of antibiotic (4 of them), Antibiotic Concentration (6 concentrations), Gene (Cpxp, recA), Time (0–2h)
+Number of wells = 3 × 4 × 6 × 2 × 3plicate = 144 × 3plicate = 432 wells (8 × 96-well plates)
+v
+Dependent: Fluorescence intensity
+note as well: + control?
+Find our cutoff for concentrations (what is the ideal Fluorescence/OD value for us? which values would work?)
+Seeding density: → based around OD 0.4 ( low middle high)
+OD 0.4 was determined to work (OD 0.2 was determined not to. optimize OD from prev expreiments but not a huge jump in optimization.
+→ biofactorial can make OD concentrations?
+
+Antibiotic concentration: → make a large range for ALL Abs.
+→ encourage a wide range of Ab concentrations: previous experiments only did THREE values. Each showed relatively similar results ( except for recA + aminoglycosides, in which concentrations did mattter). if Ab concentration does matter, we need a much larger range of Abs to observe a difference.
+
+time: → just do intervals over x period of time
+previous experiments showed convergence at abt 1 hour (mostly), but we can put it on for longer \~3 hours at most? robots dont get tired.
+
+# Background
+
+Our sensors did not display good sensitivity to antibiotic stimulation. We need to perform a more detailed biosensor output optimization experiment to determine the optimal conditions for sensor sensitivity.
+Previous Concentrations:
+
+|               |            |            |             |            |
+| ------------- | ---------- | ---------- | ----------- | ---------- |
+| **Biosensor** | Gentamicin | Kanamycin  | Amoxicillin | Cephalexin |
+| RecA          | 2, 4, 8    | 20, 25, 30 | 3, 4, 6     | 1, 2, 3    |
+| CpxP          | 4, 8, 16   | 40, 60, 80 | 5, 10, 15   | 1, 8, 16   |
+
+# Experiment
+
+## Materials and Reagents
+
+- Gentamicin (Sigma Aldrich, #G1264-50MG)
+- Kanamycin (BioShop, #KAN201)
+- Amoxicillin (Sigma Aldrich, #A8523-1G)
+- Cephalexin (AmBeed, #A320894)
+- MilliQ Water
+- 0.2 uM sterile filter
+- LB-Cm media (17 mg/ml)
+- RecA and CpxP biosensor strains (from [Notebook Entry 5](/wet-lab/lab-notebook-2026/notebook-entry-5))
+- 96-well plates, flat bottom
+- Varioskan microplate reader
+
+## Strains x Antibiotics
+
+Proposed Concentration Ranges: CpxP and recA have 6 Ab concentration conditions each. There are 4 Ab conditions. There are 3 OD conditions for each, each on a new plate. <br>Each well is labelled with its culture content initials and antibiotic condition initial, then the concentration and OD number <br>Each replicate will be performed on a new plate, 3 times.
+
+New idea: no need to compare antibiotics, more proof of concept for them. → put each Ab on a different plate alongside OD. 6\*3+1+1
+Compare OD’s on same plate?
+Need to compare: replicates, OD?
+
+An example would be RecA, Kan, 20ug/mL, OD 0.5 → well label: R;K;20;0.5
+Bb (-), Gen, 0 ug/mL, OD 0.6 → well label: B-;0.6 → skips the concentration and Ab because it is a - control
+
+| Strain        | Gen **(µg/ml)**     | Kan **(µg/ml)**          | Amox **(µg/ml)**    | Ceph **(µg/ml)**     |
+| ------------- | ------------------- | ------------------------ | ------------------- | -------------------- |
+| RecA (R)      | 2, 4, 6, 8, 12, 16  | 10, 20, 30, 40, 60, 80   | 2, 4, 6, 8, 12, 16  | 2, 3, 4, 6, 8, 12    |
+| CpxP (C)      | 4, 6, 8, 12, 16, 24 | 20, 40, 60, 80, 120, 160 | 4, 6, 8, 12, 16, 24 | 4, 8, 12, 16, 24, 36 |
+| RecA (-) (R-) | 0                   | 0                        | 0                   | 0                    |
+| CpxP (-) (C-) | 0                   | 0                        | 0                   | 0                    |
+| Bb (-) (B-)   | 0                   | 0                        | 0                   | 0                    |
+
+Stock Concentrations to Make
+
+|                                   |                 |                 |                  |                  |
+| --------------------------------- | --------------- | --------------- | ---------------- | ---------------- |
+|                                   | Gen **(µg/ml)** | Kan **(µg/ml)** | Amox **(µg/ml)** | Ceph **(µg/ml)** |
+| **Master Stock**                  | 4000            | 20000           | 1000             | 2000             |
+| **Working Stock (for dilutions)** | 80              | 400             | 80               | 80               |
+
+<details>
+<summary>**Preparation of Working Stocks**</summary>
+	### Preparation of Gentamicin Working Stock
+	Master Stock = 4mg/ml = 4000ug/mL
+	1. Prepare an intermediate stock\:
+		- 1 mL of 4 mg/mL gentamicin
+		- 9.0 mL sterile Milli-Q water
+		- Final = 10mL of **400 ug/mL**
+	2. Prepare the 80ug/mL working stock\:
+		- 2.0 mL of 400 ug/Ml intermediate stock
+		- 8.0 mL LB-Media
+		- Final = 10 mL of 80 ug/mL gentamicin
+
+```
+### Preparation of Kanamycin Working Stock
+Master Stock = 20mg/ml = 20,000ug/mL
+1. Prepare an intermediate stock\:
+	- 2 mL of 20 mg/mL Kanamycin
+	- 8.0 mL sterile Milli-Q water
+	- Final = 10mL of **4 mg/mL**
+2. Prepare the 400 ug/mL working stock\:
+	- 1.0 mL of 4 mg/mL intermediate stock
+	- 9.0 mL sterile LB-Media
+	- Final = 10 mL of 400 ug/mL Kanamycin
+
+### Preparation of Amoxicillin Working Stock
+Master Stock = 1 mg/ml = 1000 ug/mL
+1. Directly prepare 80 ug/mL working stock\:
+	- 0.8 mL of 1 mg/mL Amoxicillin
+	- 9.2 mL sterile LB-Media
+	- Final = 10mL of 80 **ug/mL Amoxicillin**
+
+### Preparation of Cephalexin Working Stock
+Master Stock = 2mg/ml = 2,000ug/mL
+1. Prepare an intermediate stock\:
+	- 2 mL of 2 mg/mL Cephalexin
+	- 8.0 mL sterile Milli-Q water
+	- Final = 10mL of **400 ug/mL**
+2. Prepare the 80 ug/mL working stock\:
+	- 2.0 mL of 400 ug/mL intermediate stock
+	- 8.0 mL sterile LB-Media
+	- Final = 10 mL of 80 ug/mL Cephalexin
+```
+
+</details>
+
+|                                 |                              |                                            |                          |
+| ------------------------------- | ---------------------------- | ------------------------------------------ | ------------------------ |
+| **Final Concentration (µg/ml)** | **2X Concentration (µg/ml)** | **80 ug/ml Gentamicin working stock (µL)** | **LB-Cm to 2.00ml (µL)** |
+| 2                               | 4                            | 100                                        | 1900                     |
+| 4                               | 8                            | 200                                        | 1800                     |
+| 6                               | 12                           | 300                                        | 1700                     |
+| 8                               | 16                           | 400                                        | 1600                     |
+| 12                              | 24                           | 600                                        | 1400                     |
+| 16                              | 32                           | 800                                        | 1200                     |
+
+### Seeding Density (OD600) —> 3 Conditions
+
+| Condition | Final Well OD600 | 2X OD600 (before 1:1 mixing) |
+| --------- | ---------------- | ---------------------------- |
+| Low       | 0.3?             | 0.6                          |
+| Middle    | 0.4              | 0.8                          |
+| High      | 0.5?             | 1.0                          |
+
+Each antibiotic concentration will be tested at all three starting OD600 concentrations for both RecA and CpxP. <unknown url="https\://app.notion.com/p/3c4d65dd82be80d6a203f71741c4cfcc#3c4d65dd82be805ebfd0d31113bb35c7" alt="external_object_instance"/>
+
+## Procedure
+
+<span underline="true">Day 1: Prepare bacteria and antibiotic solutions</span>
+
+- For each biosensor strain, inoculate bacteria into 50 ml of LB-Cm media (17 mg/ml). Incubate at 37˚C and 250 rpm overnight (> 16 hours).
+- For WT, incubate at 37C and 250 rpm agitation in 50mL LB only media.
+
+1. Reconstitute antibiotics in MiliQ water and sterilize through 0.2uM filter.
+   - Gentamicin (4 mg/ml)
+   - Kanamycin (20 mg/ml)
+   - Amoxicillin (1 mg/ml)
+   - Cephalexin (2 mg/ml)
+   - See reconstitution protocol from [mention-page](https://app.notion.com/p/38ad65dd82be80b98f23c20278bee82e)
+   - This is the **Master Stock**
+2. Prepare Working Stocks from **Master Stocks** based on appropriate dilution above
+3. Measure the OD600 of each overnight RecA and CpxP culture
+4. Preparation of 2X Antibiotic Tubes:
+   - For each tube add the antibiotic working stock volume and then add LB-Cm to a final total volume of 2.00 mL according to the 8 tables above.
+   - Vortex each antibiotic condition thoroughly
+     - Antibiotic solutions are prepared at 2X the desired final concentrations because they will be mixed 1:1 with bacterial culture
+
+<span underline="true">Day 2: Prepare bacteria and antibiotic solutions</span>
+
+1. Plating:
+   - For each experimental well:
+     1. Add 100µl of the appropriate 2X antibiotic solution.
+     2. Add 100µl of the appropriate culture 2X OD600
+        1. Final well volume 200**µl**
+        2. Final concentration = 1X
+   - For unstimulated controls:
+     - 100 µl bacterial culture
+     - 100 µl antibiotic-free medium
+   - For blanks:
+     - media only, no cell
+   - Water moat:
+     - Place DI H2O in the recesses between wells.=<br>
+2. Robot Measurement
+   - Following preparation, load the plate into the biofactorial/plate-reader workflow
+   - Incubate the plate at 37C
+   - Record:
+     - OD600
+     - GFP Fluorescence
+     - Normalized GFP to OD600
+   - Record measurements every 10 minutes for 2 hours
+     - Timepoints: 0, 10, 20, 30, … 100, 110, 120(13 measurements per condition)
+
+## Results:
+
+Concentrations: (ug/mL)
+
+| Strain | Gen | Kan | Amox | Ceph |
+| ------ | --- | --- | ---- | ---- |
+| RecA   |     |     |      |      |
+| CpxP   |     |     |      |      |
+
+Times (minutes):

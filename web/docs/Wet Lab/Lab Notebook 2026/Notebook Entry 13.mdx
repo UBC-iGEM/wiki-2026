@@ -1,0 +1,81 @@
+---
+type: "database"
+title: "Notebook Entry 13"
+path: "Wet Lab/Lab Notebook 2026/Notebook Entry 13"
+---
+
+# Background
+
+## Objective
+
+To measure the baseline growth kinetics of each strain and determine burden of the backbone w/wo promotor+sfGFP <Callout icon="🗣" color="green_bg">
+**How do our biosensors grow compared to normal EPI300, and EPI300+CmR, at both 37C and RT (22C)?** </Callout>
+
+Another piece of information we obtain is the level of basal expression of GFP at RT and 37C.
+
+## Variables
+
+Independent: Bacterial Strains
+
+| ID | Strain                 | Role                       |
+| -- | ---------------------- | -------------------------- |
+| 1  | EPI300, no plasmid     | Growth Ceiling             |
+| 2  | EPI300, empty backbone | Measuring cost of backbone |
+| 3  | EPI300, RecA           | Biosensor strain           |
+| 4  | EPI300, CpxP           | Biosensor strain           |
+
+Dependent: OD600 + fluorescence measurement at each timepoint
+
+# Experiment
+
+## Materials and Equipment
+
+- LB Broth
+- LB-Cm Broth (17mg/ml)
+- 96-well flat bottom, clear plate + lid
+- DI water
+- Culture tubes
+
+## Procedure
+
+### Day 1+2 - Streak and Starter
+
+1. Streak each strain and grow overnight at 37ºC
+   1. Use LB agar plates for strain 1, LB-Cm plates for strains 2-4
+2. Pick 3 colonies per strain, inoculate into separate tubes w/ 3mL of media each and grow overnight at 37C , 200rpm
+   1. Use LB for strain 1, LB-Cm for strains 2-4
+
+|                          |               |
+| ------------------------ | ------------- |
+| Condition                | Tube IDs      |
+| Wild Type (Strain 1)     | WT1, WT2, WT3 |
+| Backbone-only (Strain 2) | BB1, BB2, BB3 |
+| RecA (Strain 3)          | RC1, RC2, RC3 |
+| CpxP (Strain 4)          | CX1, CX2, CX3 |
+
+### Day 3 - Plating + Experiment
+
+1. Measure OD600 of each tube, diluting into linear range if needed
+2. For cells cultured in LB-Cm, pellet \~1mL, discard supernatant and resuspend in LB media, LB-Cm for those with plasmids.
+3. Dilute all cultures to 0.02 OD600 in LB media
+4. Dispense 200uL per plate using layout below. Create a total of 2 plates
+
+![](https://static.igem.wiki/teams/6279/wiki/assets/a459353383a35e9d83ea326f21903369.avif)
+
+## Biofactorial Plans
+
+### Equipment Used
+
+| Equipment         | Use                             |
+| ----------------- | ------------------------------- |
+| BMG PHERAstar FSX | OD600 and GFP fluorescence read |
+| Cytomat Incubator | Incubation of the 37C plate     |
+
+### Inputs
+
+- See above, end of [Day 3 - Step 4](/p/3afd65dd82be8030846bcd341d5c4025?v=3afd65dd82be80d88ddc000cd99a8813\&pvs=25#3afd65dd82be80b8bb25f122253eafac)
+
+### Data Recorded
+
+- OD600 and fluorescence (488nm excitation and 510nm emission), every 30 minutes
+- Duration: 24 hours
