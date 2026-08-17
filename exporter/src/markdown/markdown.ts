@@ -1,5 +1,5 @@
 import { PagePath, type ContentMap } from "../map";
-import type { PageId, PageProperty } from "../notion";
+import type { PageId } from "../notion";
 import { ExporterError, isExporterErr, saveFile } from "../utils";
 import { COMPONENT_MAP as BLOCK_COMPONENT_MAP } from "./components-block";
 import { INLINE_COMPONENT_MAP } from "./components-inline";
@@ -60,12 +60,13 @@ export async function processMarkdown({
 
     const type = path.components().length === 3 ? "database" : "page";
     const title = path.name().toString();
-    const date = type === "database" ? await getDatabaseDate(id) : undefined;
+    const date: string | undefined = type === "database" ? await id.getDate() : undefined;
 
     const header_items: MarkdownHeader =
-        type === "page" ? { type, title } : { type, title, path: path.toString(), ...(date ? { date } : {}) };
+        type === "page" ? { type, title } : { type, title, path: path.toString(), date };
 
     const page_header = Object.entries(header_items)
+        .filter(([, value]) => value !== undefined)
         .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
         .join("\n");
     const page = `
@@ -85,17 +86,6 @@ ${processed_markdown}
 
     const result = await saveFile({ content: page, path: save_path });
     if (isExporterErr(result)) result.warn();
-}
-
-async function getDatabaseDate(page: PageId): Promise<string | undefined> {
-    const property = await page.getProperty("Date");
-    return isExporterErr(property) ? undefined : getDatePropertyStart(property);
-}
-
-function getDatePropertyStart(property: PageProperty | undefined): string | undefined {
-    if (property?.type !== "date") return;
-
-    return property.date?.start?.trim() || undefined;
 }
 
 type ProcessorCallback = () => Promise<void | ExporterError>;
