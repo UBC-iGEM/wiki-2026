@@ -150,16 +150,21 @@ export async function saveFile({
     content,
     path,
     debug_path,
+    base_path,
 }: {
     content: string;
     path: string;
     debug_path?: string;
+    base_path?: string;
 }): Promise<ExporterResult<void>> {
     /**
-     * If `debug_path` is set, save to the local `debug` directory
-     * If unset, save to {@link CONTENT_DIR_PATH}
+     * If `debug_path` is set, save to the local `debug` directory.
+     * Else if `base_path` is set, save relative to it.
+     * If neither is set, save to {@link CONTENT_DIR_PATH}
      */
-    const dest = debug_path ? `${DEBUG_DIR_PATH}/${debug_path}/${path}` : `${CONFIG.content_dir_path}/${path}`;
+    const dest = debug_path
+        ? `${DEBUG_DIR_PATH}/${debug_path}/${path}`
+        : `${base_path ?? CONFIG.content_dir_path}/${path}`;
 
     const dir_res = await $unsafe(mkdir, dirname(dest), { recursive: true });
     if (isErr(dir_res))

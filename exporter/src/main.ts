@@ -2,6 +2,7 @@ import { CONFIG } from "./config";
 import type { ContentMap } from "./map";
 import { PageId } from "./notion";
 import * as parse from "./parse";
+import { exportTeamPage } from "./team";
 import { clearPreviousOutputs, isExporterErr, saveFile } from "./utils";
 import { saveZoteroDb } from "./zotero";
 
@@ -14,6 +15,9 @@ async function main(): Promise<void> {
 
     const zotero_res = await saveZoteroDb();
     if (isExporterErr(zotero_res)) zotero_res.logAndQuit();
+
+    const team_res = await exportTeamPage();
+    if (isExporterErr(team_res)) team_res.logAndQuit();
 
     const content_map_json = JSON.stringify(parse_map_res, null, 4);
     const content_map_res = await saveFile({ content: content_map_json, path: "content_map.json" });

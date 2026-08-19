@@ -13,6 +13,7 @@ import {
     Client,
     type BlockObjectResponse,
     type ListBlockChildrenParameters,
+    type PageObjectResponse,
     type QueryDataSourceParameters,
 } from "@notionhq/client";
 
@@ -220,6 +221,55 @@ export class DatabaseId extends Id implements Named {
         }
 
         return page_ids.map((id) => new PageId(id));
+    }
+
+    /**
+     * Fetches every row of the database as a full page object (including properties), without
+     * requiring an "ID" property to sort by. Unlike {@link getEntries}, this is meant for
+     * databases whose rows are structured data to read directly, not content pages to export.
+     */
+    async getRows(): Promise<ExporterResult<PageObjectResponse[]>> {
+        const db_res = await $withRetries($unsafe, notion().databases.retrieve, { database_id: this.toString() });
+        if (isErr(db_res))
+            return new ExporterError(`Failed to retrieve database at Notion ID ${this}.`, ["notion server"], db_res);
+        if (!("data_sources" in db_res)) {
+            return new ExporterError("`data_sources` property missing from database at Notion ID ${this}.", [
+                "notion server",
+            ]);
+        }
+
+        const rows: PageObjectResponse[] = [];
+        for (const ds of db_res.data_sources) {
+            let cursor: string | undefined = undefined;
+            do {
+                const params: QueryDataSourceParameters = {
+                    data_source_id: ds.id,
+                    start_cursor: cursor,
+                };
+
+                const res = await $withRetries($unsafe, notion().dataSources.query, params);
+                if (isErr(res))
+                    return new ExporterError(
+                        `Querying database at Notion ID ${this} for rows failed.`,
+                        ["malformed content", "notion server"],
+                        res,
+                    );
+
+                for (const row of res.results) {
+                    if (!("properties" in row)) {
+                        return new ExporterError(
+                            `A row in database at Notion ID ${this} could not be read as a page with properties.`,
+                            ["malformed content", "notion server"],
+                        );
+                    }
+                    rows.push(row as PageObjectResponse);
+                }
+
+                cursor = res.has_more ? (res.next_cursor ?? undefined) : undefined;
+            } while (cursor);
+        }
+
+        return rows;
     }
 }
 
