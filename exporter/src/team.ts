@@ -5,15 +5,15 @@ import type { PageObjectResponse } from "@notionhq/client";
 
 const TEAM_JSON_DIR = "web/src/data";
 const TEAM_JSON_FILE = "team.json";
+const HEADSHOTS_DIR = "web/src/data/headshots";
 
 // Property names on the team database. Update these if your Notion property names differ.
 const SUBTEAM_PROPERTY_NAME = "Subteam";
-const MAJOR_PROPERTY_NAME = "Major";
+const HEADSHOT_PROPERTY_NAME = "Headshot";
 
 interface TeamMember {
     name: string;
     role: string;
-    major?: string;
     // TODO: populate once local img script for headshots is implemented
     image?: string;
 }
@@ -61,7 +61,7 @@ export async function exportTeamPage(): Promise<ExporterResult<void>> {
     const sections: Record<string, TeamSection> = {};
 
     for (const row of rows_res) {
-        const member_res = rowToMember(row);
+        const member_res = await rowToMember(row);
         if (isExporterErr(member_res)) return member_res;
 
         const { member, section } = member_res;
@@ -76,7 +76,7 @@ export async function exportTeamPage(): Promise<ExporterResult<void>> {
     });
 }
 
-// Here we use "team_page_id" as the Attributions database's own ID 
+// Here we use "team_page_id" as the team/attribution database's own ID 
 async function findTeamDatabase(team_page_id: PageId): Promise<ExporterResult<DatabaseId>> {
     const database = new DatabaseId(team_page_id.toString());
     const name_res = await database.getName();
@@ -85,7 +85,9 @@ async function findTeamDatabase(team_page_id: PageId): Promise<ExporterResult<Da
     return database;
 }
 
-function rowToMember(row: PageObjectResponse): ExporterResult<{ member: TeamMember; section: SectionMeta }> {
+async function rowToMember(
+    row: PageObjectResponse,
+): Promise<ExporterResult<{ member: TeamMember; section: SectionMeta }>> {
     const name_res = getTitle(row);
     if (isExporterErr(name_res)) return name_res;
 
@@ -95,11 +97,13 @@ function rowToMember(row: PageObjectResponse): ExporterResult<{ member: TeamMemb
     const grouping_res = deriveSectionAndRole(row.id, tags_res);
     if (isExporterErr(grouping_res)) return grouping_res;
 
-    const major_res = getOptionalText(row, MAJOR_PROPERTY_NAME);
-    if (isExporterErr(major_res)) return major_res;
+    const headshot_url_res = getOptionalFileUrl(row, HEADSHOT_PROPERTY_NAME);
+    if (isExporterErr(headshot_url_res)) return headshot_url_res;
+
+    const image = headshot_url_res ? await saveHeadshotAvif(headshot_url_res, slugify(name_res)) : undefined;
 
     return {
-        member: { name: name_res, role: grouping_res.role, major: major_res },
+        member: { name: name_res, role: grouping_res.role, image },
         section: grouping_res.section,
     };
 }
@@ -184,24 +188,28 @@ function getMultiSelectTags(row: PageObjectResponse, property_name: string): Exp
     return property.multi_select.map((tag) => tag.name);
 }
 
-function getOptionalText(row: PageObjectResponse, property_name: string): ExporterResult<string | undefined> {
+function getOptionalFileUrl(row: PageObjectResponse, property_name: string): ExporterResult<string | undefined> {
     const property = row.properties[property_name];
     if (!property) return undefined;
 
-    if (property.type === "rich_text") {
-        const text = property.rich_text
-            .map((t) => t.plain_text)
-            .join("")
-            .trim();
-        return text || undefined;
-    }
+    if (property.type !== "files")
+        return new ExporterError(
+            `Team database row at Notion ID ${row.id} has a "${property_name}" property of unsupported type "${property.type}" (expected files).`,
+            ["malformed content", "notion server"],
+        );
 
-    if (property.type === "select") {
-        return property.select?.name;
-    }
+    const file = property.files[0];
+    if (!file) return undefined;
 
-    return new ExporterError(
-        `Team database row at Notion ID ${row.id} has a "${property_name}" property of unsupported type "${property.type}".`,
-        ["malformed content", "notion server"],
-    );
+    return file.type === "external" ? file.external.url : file.type === "file" ? file.file.url : undefined;
+}
+
+/**
+ * Downloads a headshot from `url` and re-encodes it as AVIF into {@link HEADSHOTS_DIR}, returning
+ * the path to store on the member's `image` field.
+ *
+ * Stub: not yet implemented
+ */
+async function saveHeadshotAvif(_url: string, _slug: string): Promise<string | undefined> {
+    return undefined;
 }

@@ -223,11 +223,7 @@ export class DatabaseId extends Id implements Named {
         return page_ids.map((id) => new PageId(id));
     }
 
-    /**
-     * Fetches every row of the database as a full page object (including properties), without
-     * requiring an "ID" property to sort by. Unlike {@link getEntries}, this is meant for
-     * databases whose rows are structured data to read directly, not content pages to export.
-     */
+    // for special pages like the Team page, which is a database, not a collection of pages
     async getRows(): Promise<ExporterResult<PageObjectResponse[]>> {
         const db_res = await $withRetries($unsafe, notion().databases.retrieve, { database_id: this.toString() });
         if (isErr(db_res))

@@ -1,0 +1,28 @@
+{
+  "design/wiki": {
+    "title": "Design/Wiki",
+    "members": [
+      {
+        "name": "Rachel Weng",
+        "role": "Design/Wiki"
+      }
+    ]
+  },
+  "directors-leads": {
+    "title": "Directors & Leads",
+    "members": [
+      {
+        "name": "Jessie Luo",
+        "role": "Wet Lab Lead"
+      },
+      {
+        "name": "Saige Mann",
+        "role": "Dry Lab Lead"
+      },
+      {
+        "name": "Sebastian Hyland",
+        "role": "Director"
+      }
+    ]
+  }
+}
