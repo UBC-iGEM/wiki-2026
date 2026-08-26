@@ -92,6 +92,11 @@ const REGEXES: [RegExp, string][] = [
      * Strip closing </file> tags to avoid parsing issues
      */
     [/<\/file>/, ""],
+
+    /**
+     * Strip unclosed <br> tags
+     */
+    [/<br>/, "<br/>"],
 ];
 
 export function processRegex(s: string): string {

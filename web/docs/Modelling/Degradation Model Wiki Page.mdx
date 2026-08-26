@@ -5,6 +5,35 @@ title: "Degradation Model Wiki Page"
 
 In order to support Wet Lab with their estimated degradation values, we developed a degradation model.  progression of paper style.
 
+#### **Abstract**
+
+Rapid detection of antibiotic resistance requires predicting whether a resistance enzyme can degrade a target antibiotic quickly enough to be diagnostically distinguishable from a susceptible strain. To stimulate the enzymatic degradation of antibiotics within a microfluidic chip in a well-mixed environment, we developed a non-spatial ordinary differential equation  model coupling three biological processes. Each are represented by their own kinetic framework: enzyme induction, antibiotic degradation and bacterial kill/regrowth. The model integrates Hill kinetics, Michaelis-Menten kinetics, and a sigmoidal Emax framework, parameterized where possible by using published enzymatic, kinetic, and phrarmodynamic data. The model provides a visualization of three coupled state variables over time: enzyme concentration (E), antibiotic concentration (A), and bacterial population (N).
+The purpose of this model is to predict the time required for antibiotic concentration to fall below defined fractions of a clinically relevant starting thresholds such as (1x MIC), and provide a quantitive basis for Wet Lab in evaluating assay feasibility and guiding experimental design.
+
+#### **Introduction**
+
+#### **Background**
+
+talk about how distinguishing antibiotic-resistant vs antibiotic suspectible bacterial strains with a useful timeframe is a challenge, \*\* the need for an accurate timescale for wet lab testing, done by predicting the time computationally before wet lab experiments to saves time, get results, expected assay duration, etc etc quicker, more efficiency also.
+
+#### **Build**
+
+The model was implemented in Python using scipy, matplotlib, and ipywidgets. Hosted on Good Colab, the interface allowed for real-time, slider adjustment of key parameters. We deliberately
+
+#### **Test**
+
+-why this is important, background, actually explaining the coupled biological processes and how they work
+how do we plan to investgiate / solve the problem
+
+Methods
+
+- explain the actual functions (hill, michaelis-menten, sigmoidal emax)
+- the actual equation
+- where we got our values from
+- how we got our model, using python, widgets with ipywidgets, Colab
+
+Results
+
 <Dbtl>
 
 <Fragment slot="design">
