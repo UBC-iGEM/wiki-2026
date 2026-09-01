@@ -1,0 +1,25 @@
+---
+import { MODEL3D_SLOTS } from "@exporter/markdown/components-block";
+
+interface Props {
+    url: string;
+}
+
+const { url } = Astro.props;
+MODEL3D_SLOTS satisfies readonly ["content"];
+---
+
+<model-viewer src={url} alt="Interactive 3D model" camera-controls auto-rotate touch-action="pan-y"></model-viewer>
+<slot name="content" />
+
+<script>
+    import "@google/model-viewer";
+</script>
+
+<style>
+    model-viewer {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+    }
+</style>

@@ -1,0 +1,37 @@
+/* Tables */
+table {
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table:has(th:empty) thead {
+    display: none;
+}
+
+table th,
+table td {
+    border: 1px solid #333333;
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background-color: #f4f4f4;
+    color: #000000;
+}
+
+/* Code blocks */
+pre.astro-code {
+    padding: 15px;
+    border-radius: 10px;
+}
+
+/* Notion injects underlines as <span underline="true"> */
+[underline="true"] {
+    text-decoration: underline;
+}
+
+/* Scrolling to a TOC heading should leave a gap above */
+.page-content :is(h1, h2, h3, h4, h5, h6) {
+    scroll-margin-top: 1.5rem;
+}

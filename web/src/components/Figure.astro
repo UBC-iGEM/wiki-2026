@@ -1,0 +1,21 @@
+---
+import { type FigureAttrs, FIGURE_SLOTS } from "@exporter/markdown/components-block";
+type Props = FigureAttrs;
+
+const { imgs } = Astro.props;
+FIGURE_SLOTS satisfies readonly ["content"];
+---
+
+<div class="figure">
+    <div class="figure-imgs">
+        {
+            /* Insert all images */
+            imgs.map((img) => <img src={img.url} alt={img.alt} />)
+        }
+    </div>
+    <div class="figure-desc">
+        <slot name="content" />
+    </div>
+</div>
+
+<style></style>

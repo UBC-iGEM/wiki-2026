@@ -1,0 +1,74 @@
+---
+import { ContentMap, PagePath, type JsonMap } from "@exporter/map";
+import config from "../../docs/content_map.json";
+
+const content_map = ContentMap.fromJSON(config as JsonMap);
+
+interface Props {
+    parent_db_path: string;
+    current_page_path: string;
+}
+const { current_page_path, parent_db_path } = Astro.props;
+
+const parent_db = PagePath.fromString(parent_db_path);
+const current_page = PagePath.fromString(current_page_path);
+const database_title = parent_db.name().toString();
+const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
+---
+
+<nav class="db-nav" aria-label={`${database_title} pages`}>
+    <p class="db-nav-title">{database_title}</p>
+    <ul>
+        {
+            parent_db_entries.map((entry) => {
+                const label = entry.name().toString();
+                const is_active = current_page.equals(entry);
+
+                return (
+                    <li>
+                        <a
+                            class={is_active ? "active" : undefined}
+                            href={`/${entry.toSlug()}`}
+                            aria-current={is_active ? "page" : undefined}
+                        >
+                            {label}
+                        </a>
+                    </li>
+                );
+            })
+        }
+    </ul>
+</nav>
+
+<style>
+    .db-nav-title {
+        font-weight: 600;
+        margin: 0 0 0.75rem;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    li + li {
+        margin-top: 0.25rem;
+    }
+
+    a {
+        color: inherit;
+        display: block;
+        padding: 0.35rem 0.5rem;
+        text-decoration: none;
+    }
+
+    a:hover,
+    a.active {
+        background: #eeeeee;
+    }
+
+    a.active {
+        font-weight: 600;
+    }
+</style>

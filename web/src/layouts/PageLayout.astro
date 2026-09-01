@@ -1,0 +1,15 @@
+---
+import type { MarkdownHeading } from "astro";
+import type { PageAttrs } from "@exporter/markdown/markdown";
+import MainLayout from "./MainLayout.astro";
+
+interface Props {
+    attrs: PageAttrs;
+    headings?: MarkdownHeading[];
+}
+const { attrs, headings } = Astro.props;
+---
+
+<MainLayout title={attrs.title} headings={headings}>
+    <slot />
+</MainLayout>

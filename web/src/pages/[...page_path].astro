@@ -1,0 +1,55 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection, render } from "astro:content";
+import PageLayout from "../layouts/PageLayout.astro";
+import DatabaseLayout from "../layouts/DatabaseLayout.astro";
+import { PagePathComponent } from "@exporter/map";
+import type { MarkdownHeader } from "@exporter/markdown/markdown";
+
+type DocsEntry = CollectionEntry<"docs">;
+type StaticPath = {
+    params: { page_path: string | undefined };
+    props: { page: DocsEntry };
+};
+
+export async function getStaticPaths(): Promise<StaticPath[]> {
+    const pages = await getCollection("docs");
+
+    return pages.map((page) => {
+        let page_slug = page.id.replace(/\.mdx$/, "");
+        page_slug = new PagePathComponent(page_slug).toSlug();
+
+        return {
+            params: { page_path: page_slug === "index" || page_slug === "" ? undefined : page_slug },
+            props: { page },
+        };
+    });
+}
+
+// Collect all components in the components directory
+const componentFiles = import.meta.glob("../components/*.astro", { eager: true });
+const Components = Object.fromEntries(
+    Object.entries(componentFiles).map(([path, module]) => {
+        // Extract the filename without extension to use as a key
+        const name = path.split("/").pop()!.replace(".astro", "");
+        // The component is the default module export
+        const component = (module as any).default; /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        return [name, component];
+    }),
+);
+
+const { page } = Astro.props as { page: DocsEntry };
+const { Content, headings } = await render(page);
+
+const data = page.data as MarkdownHeader;
+const layouts = {
+    page: PageLayout,
+    database: DatabaseLayout,
+};
+const SelectedLayout = layouts[data.type]!;
+---
+
+<!-- Attrs is guaranteed to match by the exporter -->
+<SelectedLayout attrs={data as never} headings={headings}>
+    <Content components={Components} />
+</SelectedLayout>

@@ -1,0 +1,109 @@
+flowchart TD
+    subgraph "Errors"
+        ERRNAPI[Notion API error]
+        ERRIAPI[iGEM API error]
+        ERRM[Malformed content]
+    end
+    START
+
+    START --> LENV[Load env. vars]
+
+    subgraph "Parse aggregate page"
+        PAP[Parse aggregate page]
+
+        PAP --> GPB[Get page blocks]
+        GPB -->|each| PPB[Parse block]
+        PPB -->|link_to_page?| PBL[Parse link]
+        PPB -->|empty paragraph?| SB[Skip block]
+
+        PBL -->|page?| PL[Page link]
+        PBL -->|db?| DL[Database link]
+
+        PRES[Parse result]
+        PL --> PRES
+        DL --> PRES
+    end
+        GPB -.->|GET err?| ERRNAPI
+        PPB -.->|other?| ERRM
+
+    subgraph "Discover aggregates"
+        LENV --> MID[Master page ID]
+
+        MID --> PAP
+        PRES --> MPR[Master parse results]
+        MID ==> MPR
+
+        MPR -->|all, page?| AIDS[Aggregate IDs]
+
+    end
+        PRES -.->|db?| ERRM
+        MID -.->|missing?| ERRM
+
+
+    subgraph "Discover pages"
+        AIDS -->|each| AID[Aggregate ID]
+        AID --> GAN[Get aggregate name]
+
+        AID -->|each| PAP[Parse aggregate page]
+        PRES --> APR[Aggregate parse results]
+        AID ==> APR
+
+        APR -->|page?| PID[Page ID]
+        PID --> GPN[Get page name]
+
+        APR -->|db?| DID[Database ID]
+        DID --> GDN[Get database name]
+        DID -->|entries| PID
+
+        GPN --> CP[Child path]
+        GDN --> CP
+    end
+        GAN -.->|GET err?| ERRNAPI
+        GPN -.->|GET err?| ERRNAPI
+        GAP -.->|GET err?| ERRNAPI
+
+
+    subgraph "Build routing map"
+        GAN --> PP[Page path]
+        CP --> PP
+
+        MAP[Id:Path Map]
+        PID --> MAP
+        PP --> MAP
+    end
+
+    subgraph "Process Markdown"
+        MAP -->|each| FM[Fetch as Markdown]
+
+        FM --> IM[Mention?]
+        FM --> IL[Link?]
+        subgraph "Normalize inter-links"
+            IM -->|notion link?| NL[Normalize]
+            IL -->|notion link?| NL
+
+            NL <-->|exists?| MAP
+        end
+            NL -.->|invalid path?| ERRM
+        NL --> MOUT
+
+        FM --> II[Image?]
+        subgraph "Handle images"
+            II -->|each| CE[Check already uploaded]
+            CE -->|yes?| SI[skip]
+            CE -->|no?| UI[Upload image]
+
+            UIL[Update image link]
+            SI --> UIL
+            UI --> UIL
+        end
+            CE -.->|GET err?| ERRIAPI
+            UI -.->|PUT err?| ERRIAPI
+        UIL --> MOUT
+
+        MOUT[Markdown output]
+
+
+    end
+        FM -.->|GET err?| ERRNAPI
+        CE -.->|GET err?| ERRIAPI
+        UI -.->|POST err?| ERRIAPI

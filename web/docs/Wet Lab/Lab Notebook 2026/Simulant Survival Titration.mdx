@@ -1,0 +1,80 @@
+---
+type: "database"
+title: "Simulant Survival Titration"
+path: "Wet Lab/Lab Notebook 2026/Simulant Survival Titration"
+date: "2026-08-30"
+---
+
+# Background
+
+## Objective
+
+<Callout icon="🗣" color="green_bg">
+	**What is the maximum amount of antibiotic we can use as an input for our patient samples?**
+</Callout>
+
+Independent: antibiotic concentration
+Readout: <span discussion-urls="discussion\://3cdd65dd-82be-80dd-8d4c-c534a89b9ada/3cdd65dd-82be-8048-889f-eca23f2ca1f7/3ced65dd-82be-80dd-bf07-001c555c73f5">count the number of colonies</span>
+Objective: To find the optimal antibiotic concentration for each strain that maximises the number of colonies on the agar plate to use for future validations
+
+# Experiment:
+
+## Materials:
+
+- Standard 96-well microplate (flat-bottom, sterile)
+- LB broth (or Mueller-Hinton broth)
+- Gentamicin, Kanamycin, and Beta-lactam (Amoxicillin, Cephalexin) stock solutions
+- Culture tubes
+- Multichannel pipette + trough
+- Sealing film for microplate
+- Square Petri dishes with LB-agar (for MBC plating)
+- Plate reader (OD600 capable)
+- PBS or 0.9% NaCl (saline) for dilutions
+
+## Procedure:
+
+## Day 1 - Preparation of Inoculum
+
+1. Using glycerol stocks of each strain, inoculate 10 mL of the LB-Cm broth.
+2. Grow each strain to mid-log phase (standardize OD600, e.g., 0.4–0.6) overnight at 37 ºC
+   1. LB-Gm = Gm resistant strain in LB-Cm
+   2. LB-Kn = Kan resistant strain in LB-Cm
+   3. LB-Amox = beta lactam resistant strain in LB-Cm
+   4. LB-Cephalexin = beta lactam resistant strain in LB-Cm
+
+## Day 2
+
+1. **Measuring OD600 of starting culture:** Use a spectrophotometer or plate reader to measure the OD600 of the culture. If OD600 is above 0.1, dilute with fresh broth. If it's between 0.09–0.1, proceed. If below 0.09, incubate 15–30 more minutes and re-check.
+2. **Prep of diluted, standardised inoculum**: Add 100 µL of OD-adjusted culture into 10 mL of fresh broth in a trough (a 1:100 dilution). Mix gently by pipetting up and down a few times. This gives \~10⁶ CFU/mL and is enough to inoculate about 16 rows of a 96-well plate.
+3. **Prep of antibiotic stock**: Dissolve antibiotic in broth at 2× the highest concentration to be tested. Check concentration range on literature MIC values for your strain, spanning at least several dilutions below and above that value.
+4. Using the layout below, add 50 µL of broth to columns 1–10 of the 96-well plate. Leave column 11 empty. Add 100 µL of broth to column 12 (sterility control).
+
+|             |                                                  |
+| ----------- | ------------------------------------------------ |
+| **Columns** | **Contents**                                     |
+| 1           | Growth control (broth + inoculum, no antibiotic) |
+| 2–10        | Serial 2-fold dilution series of antibiotic      |
+| 11          | Highest antibiotic concentration                 |
+| 12          | Sterility control (broth only, no inoculum)      |
+
+1. **Perform the serial dilution :** Add 100 µL from 2× antibiotic stock to column 11. Using a multichannel pipette, mix and transfer 50 µL from column 11 into column 10, mix, then transfer 50 µL from column 10 into column 9, and continue this pattern down to column 2. After mixing column 2, remove and discard 50 µL so all wells end at equal volume.
+2. **Inoculating the plate**: Using a multichannel pipette, add 50 µL of the diluted standardized inoculum to every well in columns 1–11. Do not add inoculum to column 12 (it must stay sterile). Complete this step within 15 minutes of preparing the inoculum in Step 3.
+3. Seal and incubate: cover the plate with a sealing film, then a lid. Incubate at 37°C overnight.
+
+|   |   |   |   |   |   |   |   |   |   |    |    |    |
+| - | - | - | - | - | - | - | - | - | - | -- | -- | -- |
+|   | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
+|   |   |   |   |   |   |   |   |   |   |    |    |    |
+|   |   |   |   |   |   |   |   |   |   |    |    |    |
+|   |   |   |   |   |   |   |   |   |   |    |    |    |
+|   |   |   |   |   |   |   |   |   |   |    |    |    |
+
+## Day 3: Read the Plate and Determine MIC
+
+1. Remove the plate from the incubator, take off the lid and sealing film, and let it sit at room temperature for 15 minutes before reading.
+2. **Read OD**: Load the plate into a plate reader and record the OD600 value for every well, including the growth control and sterility control.
+3. **Data analysis**: Subtract the sterility control OD600 (background) from each well. Plot OD600 versus antibiotic concentration (log scale on the x-axis) for each strain. Determine the MIC as the lowest concentration where no visible turbidity/growth occurs — this can be done visually or by fitting the curve with a <span discussion-urls="discussion\://3cdd65dd-82be-80dd-8d4c-c534a89b9ada/3cdd65dd-82be-800a-b39c-f58188d059dc/3ced65dd-82be-8044-a7dc-001c8573d6e5">Gompertz model</span> for a more precise value.
+
+# Results
+
+# Summary
