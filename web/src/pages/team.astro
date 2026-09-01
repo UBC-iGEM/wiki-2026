@@ -1,0 +1,85 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import teamData from "../data/team.json";
+
+interface TeamMember {
+    name: string;
+    role: string;
+    image?: string;
+}
+
+interface TeamSection {
+    title: string;
+    members: TeamMember[];
+}
+
+const sections = Object.values(teamData as Record<string, TeamSection>);
+---
+
+<MainLayout title="Team">
+    {
+        sections.map((section) => (
+            <section class="team-section">
+                <h2>{section.title}</h2>
+                <div class="team-grid">
+                    {section.members.map((member) => (
+                        <div class="team-card">
+                            <div class="team-photo">
+                                {member.image ? (
+                                    <img src={member.image} alt={member.name} />
+                                ) : (
+                                    <div class="team-photo-placeholder" />
+                                )}
+                            </div>
+                            <div class="team-name">{member.name}</div>
+                            <div class="team-role">{member.role}</div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+        ))
+    }
+</MainLayout>
+
+<style>
+    .team-section {
+        margin-bottom: 2rem;
+    }
+
+    .team-grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+
+    .team-card {
+        border: 1px solid #ccc;
+        padding: 0.5rem;
+    }
+
+    .team-photo {
+        aspect-ratio: 1;
+        margin-bottom: 0.5rem;
+        overflow: hidden;
+    }
+
+    .team-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .team-photo-placeholder {
+        background-color: #ddd;
+        width: 100%;
+        height: 100%;
+    }
+
+    .team-name {
+        font-weight: bold;
+    }
+
+    .team-role {
+        font-style: italic;
+    }
+</style>

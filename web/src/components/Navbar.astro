@@ -15,6 +15,8 @@ const nav_items = content_map.aggregates.map((agg) => {
     });
     return { label, children };
 });
+
+const static_links = content_map.static_links;
 ---
 
 <nav class="primary" aria-label="Primary navigation">
@@ -31,6 +33,13 @@ const nav_items = content_map.aggregates.map((agg) => {
                             </li>
                         ))}
                     </ul>
+                </li>
+            ))
+        }
+        {
+            static_links.map(({ label, href }) => (
+                <li class="nav-link">
+                    <a href={href}>{label}</a>
                 </li>
             ))
         }
@@ -74,5 +83,10 @@ const nav_items = content_map.aggregates.map((agg) => {
         background-color: #f5f5f5;
         padding: 5px 10px;
         border-radius: 5px;
+    }
+
+    .nav-link a {
+        color: inherit;
+        text-decoration: none;
     }
 </style>

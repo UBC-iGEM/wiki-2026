@@ -1,11 +1,14 @@
 import { CONFIG } from "./config";
+import { convertToAvif, downloadToTempFile } from "./media";
 import { DatabaseId, PageId } from "./notion";
-import { ExporterError, isExporterErr, saveFile, type ExporterResult } from "./utils";
+import { $unsafe, ExporterError, isErr, isExporterErr, saveFile, type ExporterResult } from "./utils";
 import type { PageObjectResponse } from "@notionhq/client";
+import { mkdir, rm } from "node:fs/promises";
 
 const TEAM_JSON_DIR = "web/src/data";
 const TEAM_JSON_FILE = "team.json";
-const HEADSHOTS_DIR = "web/src/data/headshots";
+const HEADSHOTS_DIR = "web/public/headshots";
+const HEADSHOTS_PUBLIC_PATH = "/headshots";
 
 // Property names on the team database. Update these if your Notion property names differ.
 const SUBTEAM_PROPERTY_NAME = "Subteam";
@@ -14,7 +17,6 @@ const HEADSHOT_PROPERTY_NAME = "Headshot";
 interface TeamMember {
     name: string;
     role: string;
-    // TODO: populate once local img script for headshots is implemented
     image?: string;
 }
 
@@ -49,6 +51,30 @@ function teamTagSection(tag: string): SectionMeta {
     return { slug: slugify(tag), title: tag };
 }
 
+// Fixed display order for team sections on the wiki page, independent of Notion row order.
+const SECTION_ORDER: string[] = [
+    "directors-leads",
+    "wet-lab",
+    "dry-lab",
+    "human-practices",
+    "administration",
+    "design/wiki",
+    "instructor",
+    "advisors",
+    "principal-investigators",
+];
+
+function orderSections(sections: Record<string, TeamSection>): Record<string, TeamSection> {
+    const ordered: Record<string, TeamSection> = {};
+    for (const slug of SECTION_ORDER) {
+        if (sections[slug]) ordered[slug] = sections[slug];
+    }
+    for (const slug of Object.keys(sections)) {
+        if (!(slug in ordered)) ordered[slug] = sections[slug]!;
+    }
+    return ordered;
+}
+
 export async function exportTeamPage(): Promise<ExporterResult<void>> {
     const team_page_id = new PageId(CONFIG.team_page_id);
 
@@ -57,6 +83,11 @@ export async function exportTeamPage(): Promise<ExporterResult<void>> {
 
     const rows_res = await database_res.getRows();
     if (isExporterErr(rows_res)) return rows_res;
+
+    // Re-download every headshot on each run so removed/replaced photos don't linger.
+    const clear_res = await $unsafe(rm, HEADSHOTS_DIR, { recursive: true, force: true });
+    if (isErr(clear_res))
+        return new ExporterError(`Failed to clear previous headshots at ${HEADSHOTS_DIR}.`, ["wiki server"], clear_res);
 
     const sections: Record<string, TeamSection> = {};
 
@@ -70,7 +101,7 @@ export async function exportTeamPage(): Promise<ExporterResult<void>> {
     }
 
     return await saveFile({
-        content: JSON.stringify(sections, null, 2),
+        content: JSON.stringify(orderSections(sections), null, 2),
         path: TEAM_JSON_FILE,
         base_path: TEAM_JSON_DIR,
     });
@@ -100,7 +131,12 @@ async function rowToMember(
     const headshot_url_res = getOptionalFileUrl(row, HEADSHOT_PROPERTY_NAME);
     if (isExporterErr(headshot_url_res)) return headshot_url_res;
 
-    const image = headshot_url_res ? await saveHeadshotAvif(headshot_url_res, slugify(name_res)) : undefined;
+    let image: string | undefined;
+    if (headshot_url_res) {
+        const image_res = await saveHeadshotAvif(headshot_url_res, slugify(name_res));
+        if (isExporterErr(image_res)) return image_res;
+        image = image_res;
+    }
 
     return {
         member: { name: name_res, role: grouping_res.role, image },
@@ -206,10 +242,29 @@ function getOptionalFileUrl(row: PageObjectResponse, property_name: string): Exp
 
 /**
  * Downloads a headshot from `url` and re-encodes it as AVIF into {@link HEADSHOTS_DIR}, returning
- * the path to store on the member's `image` field.
- *
- * Stub: not yet implemented
+ * the public path to store on the member's `image` field.
  */
-async function saveHeadshotAvif(_url: string, _slug: string): Promise<string | undefined> {
-    return undefined;
+async function saveHeadshotAvif(url: string, slug: string): Promise<ExporterResult<string>> {
+    const download_res = await downloadToTempFile({ url, uid: slug });
+    if (isExporterErr(download_res)) return download_res;
+
+    const { file_path, cleanup } = download_res;
+
+    try {
+        const mkdir_res = await $unsafe(mkdir, HEADSHOTS_DIR, { recursive: true });
+        if (isErr(mkdir_res))
+            return new ExporterError(
+                `Failed to create headshots directory ${HEADSHOTS_DIR}.`,
+                ["wiki server"],
+                mkdir_res,
+            );
+
+        const final_path = `${HEADSHOTS_DIR}/${slug}.avif`;
+        const convert_res = await convertToAvif(file_path, final_path);
+        if (isExporterErr(convert_res)) return convert_res;
+    } finally {
+        await cleanup();
+    }
+
+    return `${HEADSHOTS_PUBLIC_PATH}/${slug}.avif`;
 }

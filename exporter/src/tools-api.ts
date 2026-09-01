@@ -1,16 +1,14 @@
 import { CONFIG } from "./config";
 import type { PagePath } from "./map";
+import { convertToAvif, downloadToTempFile } from "./media";
 import { $unsafe, ExporterError, isErr, isExporterErr, type ExporterResult, type Result } from "./utils";
 import axios, { type AxiosInstance } from "axios";
 import { wrapper } from "axios-cookiejar-support";
 import FormData from "form-data";
 import mime from "mime-types";
-import { createReadStream, createWriteStream } from "node:fs";
-import { mkdtemp, rm, stat } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { createReadStream } from "node:fs";
+import { stat } from "node:fs/promises";
 import * as nodePath from "node:path";
-import { pipeline } from "node:stream/promises";
-import sharp from "sharp";
 import { CookieJar } from "tough-cookie";
 
 interface UploadResult {
@@ -23,39 +21,6 @@ interface UploadResult {
 let CLIENT_PROMISE: Promise<ExporterResult<ToolsClient>> | null = null;
 const ASSETS_FOLDER = "assets";
 const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
-
-async function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
-    let timeout: ReturnType<typeof setTimeout> | undefined;
-
-    const timeout_promise = new Promise<never>((_executor, reject) => {
-        timeout = setTimeout(() => reject(new Error(`${label} timed out after ${ms}ms`)), ms);
-    });
-
-    try {
-        return await Promise.race([promise, timeout_promise]);
-    } finally {
-        if (timeout) clearTimeout(timeout);
-    }
-}
-
-async function convertToAvif(input_path: string, output_path: string): Promise<ExporterResult<void>> {
-    try {
-        await sharp(input_path)
-            .avif({
-                quality: 70,
-                effort: 4,
-                lossless: false,
-                chromaSubsampling: "4:2:0",
-            })
-            .toFile(output_path);
-    } catch (error) {
-        return new ExporterError(
-            `Failed to convert image at ${input_path} to AVIF format.`,
-            ["igem tools server", "notion server"],
-            error instanceof Error ? error : new Error(String(error)),
-        );
-    }
-}
 
 /**
  * Public interface to a singleton `ToolsClient` interface.
@@ -179,42 +144,24 @@ class ToolsClient {
         }
 
         // Get source stream from url/notion
-        const response = await $unsafe(
-            async () =>
-                await axios.get(url, {
-                    responseType: "stream",
-                    timeout: 30000,
-                    maxBodyLength: Infinity,
-                    maxContentLength: Infinity,
-                }),
-        );
-        if (isErr(response))
+        const download_res = await downloadToTempFile({
+            url,
+            uid,
+            extension_hint: original_file ? final_extension : undefined,
+        });
+        if (isExporterErr(download_res))
             return new ExporterError(
                 `Failed to retrieve data from url "${url}" while attempting to upload asset on page "${path}" with UID ${uid}.`,
                 ["igem tools server", "notion server"],
-                response,
+                download_res,
             );
 
-        // Use the source content type only to choose a temporary extension for image conversion.
-        const source_content_type =
-            typeof response.headers["content-type"] === "string"
-                ? response.headers["content-type"].split(";")[0]!
-                : "image/jpeg";
-        const file_extension = original_file ? final_extension : mime.extension(source_content_type) || "jpg";
-
-        const temp_dir = await mkdtemp(nodePath.join(tmpdir(), "igem-upload-"));
-        const temp_file_path = nodePath.join(temp_dir, `${uid}.${file_extension}`);
+        const { file_path: temp_file_path, cleanup } = download_res;
 
         try {
-            await withTimeout(
-                pipeline(response.data, createWriteStream(temp_file_path)),
-                30000,
-                `Download image ${uid}`,
-            );
-
             let upload_file_path = temp_file_path;
             if (!original_file) {
-                const avif_temp_file_path = nodePath.join(temp_dir, final_filename);
+                const avif_temp_file_path = nodePath.join(nodePath.dirname(temp_file_path), final_filename);
                 const convert_res = await convertToAvif(temp_file_path, avif_temp_file_path);
                 if (isExporterErr(convert_res)) return convert_res;
 
@@ -290,7 +237,7 @@ class ToolsClient {
                 error instanceof Error ? error : new Error(String(error)),
             );
         } finally {
-            await rm(temp_dir, { recursive: true, force: true });
+            await cleanup();
         }
     }
 

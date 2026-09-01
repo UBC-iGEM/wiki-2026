@@ -83,12 +83,20 @@ abstract class PathMap {
     }
 }
 
+export interface StaticNavLink {
+    label: string;
+    href: string;
+}
+
 /**
  * Holds the original hierarchy of all content pages, as ordered and defined on Notion
  */
 export class ContentMap extends PathMap {
     // Each entry on the top-level map must be another map representing entries in an aggregate
-    constructor(public aggregates: AggregateMap[]) {
+    constructor(
+        public aggregates: AggregateMap[],
+        public static_links: StaticNavLink[] = [],
+    ) {
         super();
     }
 
@@ -119,6 +127,7 @@ export class ContentMap extends PathMap {
                     return { path: entry.path.toString(), ...value };
                 }),
             })),
+            static_links: this.static_links,
         };
     }
 
@@ -142,6 +151,7 @@ export class ContentMap extends PathMap {
                         })),
                     }),
             ),
+            map.static_links ?? [],
         );
     }
 
@@ -155,6 +165,10 @@ export class ContentMap extends PathMap {
     }
 }
 
+export function withStaticNavLinks(content_map: ContentMap, links: StaticNavLink[]): ContentMap {
+    return new ContentMap(content_map.aggregates, [...content_map.static_links, ...links]);
+}
+
 export interface JsonMap {
     aggregates: {
         name: string;
@@ -162,6 +176,7 @@ export interface JsonMap {
             path: string;
         } & ({ type: "page"; item: string } | { type: "db"; item: { path: string; item: string }[] }))[];
     }[];
+    static_links?: StaticNavLink[];
 }
 
 export class AggregateMap extends PathMap {
