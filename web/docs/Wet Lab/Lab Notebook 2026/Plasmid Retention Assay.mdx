@@ -1,0 +1,92 @@
+---
+type: "database"
+title: "Plasmid Retention Assay"
+path: "Wet Lab/Lab Notebook 2026/Plasmid Retention Assay"
+date: "2026-08-26"
+---
+
+Protocol from [mention-page](https://app.notion.com/p/3afd65dd82be80d1a9c2e67a29ad9c77)
+
+# Background
+
+## Objective
+
+Primary: Quantify plasmid retention over time in our biosensors when held without Cm selection at room temperature <Callout icon="🗣" color="green_bg">
+For what duration of time can be keep the biosensors in media without antibiotics at room temperature? </Callout>
+
+## Variables
+
+Independent: Time
+Dependent: Plasmid Retention Fraction ($CFU_{LBCM}/CFU_{LB}$)
+Dependent: sfGFP Florescence normalized to OD600
+
+# Experiment
+
+## Materials and Reagents
+
+- LB-Cm (17 mg/L)
+- LB
+- LB Plates
+- Cuvettes
+- Dilution tubes
+
+## Strains
+
+| Name | Purpose          |
+| ---- | ---------------- |
+| RecA | Directly testing |
+| CpxP | Directly testing |
+| WT   | Control          |
+
+## Procedure
+
+### Day 0 & 1 - Strain Prep
+
+1. From glycerol stock, streak a place per strain, leave overnight to grow.
+2. Inoculate 3 colonies of each strain into separate 3mL LB-Cm (LB for Control strain) and grow overnight (37C, 200rpm)
+
+### Day 2 & 3 - Experimentation
+
+1. Measure starting OD600, diluting to a linear range if needed
+2. Pellet \~1mL and wash once in Cm-free LB
+3. Inoculate each strain to a starting OD600 of 0.05, then transfer 5mL to a culture tube. You should have 6 tube types.
+
+|             | RecA | CpxP | Control (EPI300) |
+| ----------- | ---- | ---- | ---------------- |
+| LB Media    | RLX  | CLX  | ELX              |
+| LB-Cm Media | RLC  | CLC  | ELC              |
+
+1. Culture tubes at RT @ 200rpm (do we even have shakers at RT?)
+2. For each timepoint (0m, 1 hr, 2 hr, 4 hr, 8 hr, 24 hr) per tube
+   1. Vortex the tube and aspirate
+   2. Record the OD600 of the solution
+   3. Dilute the solution in the cuvette to an OD of 0.1. If the recorded OD is lower than 0.1 for the earlier timepoints, skip this step.
+   4. Mix 100uL of the solution in the cuvette with 900uL of LB-Cm media. Perform a 6 step 1:10 serial dilution. (-1, -2, -3, -4, -5, -6)
+   5. Divide a plate into 4 sectors, labelling them -3 to -6. To each, add 3 10uL spots of the corresponding dilution to the plate.
+   6. Allow the spots the fully absorb, then invert and store in 37C overnight
+
+## Results
+
+Table 1. OD values of biosensor or Epi300 strains.
+
+|        |                   |
+| ------ | ----------------- |
+| Strain | OD600(after wash) |
+| RLX    | 2.12              |
+| RLC    | 2.12              |
+| CLX    | 2.30              |
+| CLC    | 2.30              |
+| ELX    | 2.22              |
+| ELC    | 2.22              |
+
+![](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d3b946d-9c3d-4012-af64-bd74d1aeed96/4c604075-79c8-4337-9c7e-0a91ac88e0e5/36B8B859-3B21-4EC2-8741-7ED4D6A54360.heic?X-Amz-Algorithm=AWS4-HMAC-SHA256\&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD\&X-Amz-Credential=ASIAZI2LB466TWMW2IUM%2F20260902%2Fus-west-2%2Fs3%2Faws4_request\&X-Amz-Date=20260902T003520Z\&X-Amz-Expires=3600\&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIDQfZuXJhQN7gFpM7QapVX3vQ6mSvGMpfW5m7H1qvErAAiEApBPhUa9DGc12gwWaGCA3x20TI4toX3S6eyuwNi%2BxygEqiAQIuv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw2Mzc0MjMxODM4MDUiDLYsDBADNjAtGYEZQircA5EPKq6Tx0lVagNn7GR4uD5qDQPiwTt%2BeGBXw5GuDl5aSbaplR3y1rSsZqSVoPmSFqKMFhTj6cvntLHUEiYVQQVsNJt4F0cmLTYbFpS3rzqWVCWhNAuyqKjv5Dl6k6j5ALWVgyakUBDI5N3tFI2So7DXphX16PX%2Bn0ymkBDBUAyViAP%2FZ8tUbKGb84eJxWGBtIyXM8sDt4zE17CiYZoGZ%2BAqW4jlRz%2B2odHc%2BcpnesLWTJjTZLLQRsPIXLMMgg0FxtcTIb62kAtDR9G3SLfPkGqlArzzj4JKopIRi%2FybkcXJBMVafdaGhIVP%2B%2BxTcsgfVo6IERTLP%2Bf7%2BHlvHQoYoUa264UJNQouV0Uu0n1zqX9Gcd8cdl9%2FGjds%2FkkECht6JquJbcJNn8Emyp9dXug6Rj9cQtBeYeo%2FjuhoiV2abNQ2vx8kxjOZXMpTy%2FdBIsXO%2Fx16DcT3AFevLIL2dEcu3hQASUSOygF3xg215SaKIb0m%2F0oiL7%2Bq67tfMJnv6wajnNpmGvn6nnjDSqkUZB7VzHU%2BjpoliQzt6MBmBavKa%2BCDi2pHx0GMw57ZT%2BOp4Pg9kVI1XfQ6R%2BdriIcCADhQgiLIDfeHxYArxneaMjF2eHkkm1CY04fHum%2Fov8iNMOLa3dQGOqUBDDVZEvqXz9e8Odaj4WoC74nJ3tYhgXl%2BgZKqi5Wr45vSUo7DNyJ14lT6eXRx3wDZvTbuPx5VDYb1VH%2BQfkIYUxsnfxaEv04GwQ1%2BqetlA6ABri%2BjiyIAE6RFf0sfpDIODhsovkN28vwLOinLtAAi3rH7YQcp%2B2ofjbp8bFp5bWel1o%2B53FZYky6Eg5fIGlTwy4w9Yp8Cems64l8dnhsStI13Q61r\&X-Amz-Signature=da7ba4791533dcd91a27d0e9b42c52fb14c805ff30354cc631dff1121fed37f4\&X-Amz-SignedHeaders=host\&x-amz-checksum-mode=ENABLED\&x-id=GetObject)
+**Figure 1.** LB+Cm-agar plates inoculated with strains grown in LB-Cm liquid cultures. Cultures were incubated for 0, 1, 2, and 4 hours at 37˚C (left to right). Epi300 and CpxP cultures were mislabelled for time points 0, 1, and 2hrs.
+
+![](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d3b946d-9c3d-4012-af64-bd74d1aeed96/28e9b426-d579-410a-9127-f0bb2b36781a/E1C9247B-835A-43C4-96F2-38B012B6878D.heic?X-Amz-Algorithm=AWS4-HMAC-SHA256\&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD\&X-Amz-Credential=ASIAZI2LB466TWMW2IUM%2F20260902%2Fus-west-2%2Fs3%2Faws4_request\&X-Amz-Date=20260902T003520Z\&X-Amz-Expires=3600\&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIDQfZuXJhQN7gFpM7QapVX3vQ6mSvGMpfW5m7H1qvErAAiEApBPhUa9DGc12gwWaGCA3x20TI4toX3S6eyuwNi%2BxygEqiAQIuv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw2Mzc0MjMxODM4MDUiDLYsDBADNjAtGYEZQircA5EPKq6Tx0lVagNn7GR4uD5qDQPiwTt%2BeGBXw5GuDl5aSbaplR3y1rSsZqSVoPmSFqKMFhTj6cvntLHUEiYVQQVsNJt4F0cmLTYbFpS3rzqWVCWhNAuyqKjv5Dl6k6j5ALWVgyakUBDI5N3tFI2So7DXphX16PX%2Bn0ymkBDBUAyViAP%2FZ8tUbKGb84eJxWGBtIyXM8sDt4zE17CiYZoGZ%2BAqW4jlRz%2B2odHc%2BcpnesLWTJjTZLLQRsPIXLMMgg0FxtcTIb62kAtDR9G3SLfPkGqlArzzj4JKopIRi%2FybkcXJBMVafdaGhIVP%2B%2BxTcsgfVo6IERTLP%2Bf7%2BHlvHQoYoUa264UJNQouV0Uu0n1zqX9Gcd8cdl9%2FGjds%2FkkECht6JquJbcJNn8Emyp9dXug6Rj9cQtBeYeo%2FjuhoiV2abNQ2vx8kxjOZXMpTy%2FdBIsXO%2Fx16DcT3AFevLIL2dEcu3hQASUSOygF3xg215SaKIb0m%2F0oiL7%2Bq67tfMJnv6wajnNpmGvn6nnjDSqkUZB7VzHU%2BjpoliQzt6MBmBavKa%2BCDi2pHx0GMw57ZT%2BOp4Pg9kVI1XfQ6R%2BdriIcCADhQgiLIDfeHxYArxneaMjF2eHkkm1CY04fHum%2Fov8iNMOLa3dQGOqUBDDVZEvqXz9e8Odaj4WoC74nJ3tYhgXl%2BgZKqi5Wr45vSUo7DNyJ14lT6eXRx3wDZvTbuPx5VDYb1VH%2BQfkIYUxsnfxaEv04GwQ1%2BqetlA6ABri%2BjiyIAE6RFf0sfpDIODhsovkN28vwLOinLtAAi3rH7YQcp%2B2ofjbp8bFp5bWel1o%2B53FZYky6Eg5fIGlTwy4w9Yp8Cems64l8dnhsStI13Q61r\&X-Amz-Signature=168e09b0c1b29c5e667dede7dbf8d9b9275e62da9f0c77686b472bb6ccf931e0\&X-Amz-SignedHeaders=host\&x-amz-checksum-mode=ENABLED\&x-id=GetObject)
+**Figure 2.** LB+Cm-agar plates inoculated with strains grown in LB liquid cultures. Cultures were incubated for 0, 1, 2, and 4 hours at 37˚C (left to right). Epi300 and CpxP cultures were mislabelled for time points 0, 1, and 2hrs.
+
+## Summary
+
+- As expected, the Epi300 cultures did not survive on LB-Cm plates.
+- This data shows that CpxP and RecA strains retain their reporter plasmid when cultured in Cm-free LB media for at least 1 hour.
+- Experiment should be repeated with higher dilutions to prevent lawn of growth

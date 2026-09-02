@@ -103,24 +103,11 @@ export class PageId extends Id implements Named {
         return page_res.properties[name];
     }
 
-    async getDate(): Promise<ExporterResult<string | undefined>> {
-        const page_res = await $withRetries($unsafe, notion().pages.retrieve, { page_id: this.toString() });
-        if (isErr(page_res))
-            return new ExporterError(`Failed to retrieve page at Notion ID ${this}.`, ["notion server"], page_res);
+    async getDate(): Promise<string | undefined> {
+        const property = await this.getProperty("Date");
+        if (isExporterErr(property) || property?.type !== "date") return;
 
-        if (!("properties" in page_res)) {
-            return new ExporterError(`Failed to read properties of page at Notion ID ${this}.`, ["notion server"]);
-        }
-
-        const date_property = Object.values(page_res.properties).find((p) => p.type === "date");
-        if (date_property) {
-            return date_property.date?.start;
-        } else {
-            return new ExporterError(
-                `Page at Notion ID ${this} has no date property. Does its parent database not have a date field?`,
-                ["malformed content", "notion server"],
-            );
-        }
+        return property.date?.start?.trim() || undefined;
     }
 
     async paths(): Promise<ExporterResult<MapItem<PageId | DatabaseMap>>> {

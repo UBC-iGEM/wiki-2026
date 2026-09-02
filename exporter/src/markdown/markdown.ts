@@ -26,13 +26,14 @@ export interface PageAttrs {
 export interface DatabaseAttrs {
     type: "database";
     title: string;
-    // datetime: string;
     path: string;
+    date?: string;
 }
 
 export type MarkdownHeader = PageAttrs | DatabaseAttrs;
 
 export async function processMarkdown({
+    id,
     md,
     path,
     routes,
@@ -59,10 +60,13 @@ export async function processMarkdown({
 
     const type = path.components().length === 3 ? "database" : "page";
     const title = path.name().toString();
+    const date: string | undefined = type === "database" ? await id.getDate() : undefined;
 
-    const header_items: MarkdownHeader = type === "page" ? { type, title } : { type, title, path: path.toString() };
+    const header_items: MarkdownHeader =
+        type === "page" ? { type, title } : { type, title, path: path.toString(), date };
 
     const page_header = Object.entries(header_items)
+        .filter(([, value]) => value !== undefined)
         .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
         .join("\n");
     const page = `

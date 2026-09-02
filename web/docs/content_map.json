@@ -21,32 +21,68 @@
                             "item": "36dd65dd82be801e87eac615d082d8bf"
                         },
                         {
-                            "path": "Notebook Entry 1",
+                            "path": "Assembly of CpxP and RecA",
                             "item": "37ad65dd82be80b6998fe86801e1e445"
                         },
                         {
-                            "path": "Notebook Entry 2",
+                            "path": "Transformation of CpxP/RecA into DH5a",
                             "item": "388d65dd82be80519270e56b78d9e4a2"
                         },
                         {
-                            "path": "Notebook Entry 3",
+                            "path": "Sequencing for CpxP and RecA",
                             "item": "388d65dd82be80f1b9aded9137bcdb37"
                         },
                         {
-                            "path": "Notebook Entry 4",
+                            "path": "Miniprep for CpxP and RecA plasmids",
                             "item": "388d65dd82be80f7addff8006cdf17a9"
                         },
                         {
-                            "path": "Notebook Entry 5",
+                            "path": "Transformation of CpxP/RecA into Epi300",
                             "item": "3a0d65dd82be8006a207f9238485ada8"
                         },
                         {
-                            "path": "Notebook Entry 6",
+                            "path": "Biosensor GFP sensitivity assay v.1 ",
                             "item": "3a0d65dd82be800abdd8da381591996b"
                         },
                         {
-                            "path": "Notebook Entry 7",
+                            "path": "Biosensor GFP sensitivity assay v.2",
                             "item": "3add65dd82be8059898adbe453d45c26"
+                        },
+                        {
+                            "path": "WT Biosensor MIC Titration v.1",
+                            "item": "3b9d65dd82be8061aa93e33cb822c14f"
+                        },
+                        {
+                            "path": "WT Biosensor MIC Titration v.2",
+                            "item": "3c1d65dd82be803daff2fdc7973c9097"
+                        },
+                        {
+                            "path": "Patient Simulant (KanR, GmR) Cloning",
+                            "item": "3c2d65dd82be806b942fc3f784c5f6a9"
+                        },
+                        {
+                            "path": "Patient Simulant (B-Lact., CmR backbone) Cloning",
+                            "item": "3c2d65dd82be8073a263f8409653e257"
+                        },
+                        {
+                            "path": "Biosensor MIC Screening Titration",
+                            "item": "3c4d65dd82be80d6a203f71741c4cfcc"
+                        },
+                        {
+                            "path": "Growth Curve Experiment v1",
+                            "item": "3c4d65dd82be806a8633cb40bbf08923"
+                        },
+                        {
+                            "path": "Plasmid Retention Assay",
+                            "item": "3c5d65dd82be806da03ff26fff96ed54"
+                        },
+                        {
+                            "path": "Growth Curve Experiment v2",
+                            "item": "3cbd65dd82be808cb0f5d4c56efdd087"
+                        },
+                        {
+                            "path": "Simulant Survival Titration",
+                            "item": "3cdd65dd82be80dd8d4cc534a89b9ada"
                         }
                     ]
                 }
@@ -66,9 +102,9 @@
             "name": "Modelling",
             "entries": [
                 {
-                    "path": "Modelling Page 1",
+                    "path": "Degradation Model Wiki Page",
                     "type": "page",
-                    "item": "37cd65dd82be8034bf42f0c51ee63db3"
+                    "item": "3c0d65dd82be8013bb60fe7bd633c0a7"
                 }
             ]
         },
@@ -95,6 +131,12 @@
                     ]
                 }
             ]
+        }
+    ],
+    "static_links": [
+        {
+            "label": "Team",
+            "href": "/team"
         }
     ]
 }

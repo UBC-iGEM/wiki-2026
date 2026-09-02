@@ -13,6 +13,25 @@ const { attrs, headings } = Astro.props;
 
 const current_page_path = attrs.path;
 const parent_db_path = new PagePath(PagePath.fromString(attrs.path).components().slice(0, 2)).toString();
+const display_date = formatDate(attrs.date);
+
+function formatDate(value: string | undefined): string | undefined {
+    if (!value || Number.isNaN(Date.parse(value))) return;
+
+    const match = /^(\d{4})-(\d{2})-(\d{2})(?:$|T)/.exec(value);
+    if (!match) return;
+
+    const [year, month, day] = match.slice(1).map(Number);
+    const date = new Date(Date.UTC(year!, month! - 1, day!));
+    if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month! - 1 || date.getUTCDate() !== day) return;
+
+    return new Intl.DateTimeFormat("en-US", {
+        day: "numeric",
+        month: "long",
+        timeZone: "UTC",
+        year: "numeric",
+    }).format(date);
+}
 ---
 
 <MainLayout title={attrs.title} headings={headings}>
@@ -21,6 +40,13 @@ const parent_db_path = new PagePath(PagePath.fromString(attrs.path).components()
             <DbSidebar parent_db_path={parent_db_path} current_page_path={current_page_path} />
         </aside>
         <main class="db-content">
+            {
+                display_date && (
+                    <time class="db-date" datetime={attrs.date}>
+                        {display_date}
+                    </time>
+                )
+            }
             <slot />
         </main>
     </div>
@@ -45,6 +71,12 @@ const parent_db_path = new PagePath(PagePath.fromString(attrs.path).components()
 
     .db-content {
         min-width: 0;
+    }
+
+    .db-date {
+        color: #666666;
+        display: block;
+        margin-bottom: 1rem;
     }
 
     @media (max-width: 700px) {

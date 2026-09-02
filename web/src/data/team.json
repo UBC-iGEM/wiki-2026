@@ -1,16 +1,11 @@
 {
-  "design/wiki": {
-    "title": "Design/Wiki",
-    "members": [
-      {
-        "name": "Rachel Weng",
-        "role": "Design/Wiki"
-      }
-    ]
-  },
   "directors-leads": {
     "title": "Directors & Leads",
     "members": [
+      {
+        "name": "Aden Chan",
+        "role": "Director"
+      },
       {
         "name": "Jessie Luo",
         "role": "Wet Lab Lead"
@@ -22,6 +17,16 @@
       {
         "name": "Sebastian Hyland",
         "role": "Director"
+      }
+    ]
+  },
+  "design/wiki": {
+    "title": "Design/Wiki",
+    "members": [
+      {
+        "name": "Rachel Weng",
+        "role": "Design/Wiki",
+        "image": "/headshots/rachel-weng.avif"
       }
     ]
   }
