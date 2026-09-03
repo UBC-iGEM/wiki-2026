@@ -64,6 +64,14 @@ const SECTION_ORDER: string[] = [
     "principal-investigators",
 ];
 
+function sortDirectorsBeforeLeads(sections: Record<string, TeamSection>): void {
+    const section = sections[POSITION_TAG_SECTIONS["Director"]!.slug];
+    if (!section) return;
+
+    const rolePriority = (role: string): number => (role.endsWith("Director") ? 0 : role.endsWith("Lead") ? 1 : 2);
+    section.members.sort((a, b) => rolePriority(a.role) - rolePriority(b.role));
+}
+
 function orderSections(sections: Record<string, TeamSection>): Record<string, TeamSection> {
     const ordered: Record<string, TeamSection> = {};
     for (const slug of SECTION_ORDER) {
@@ -95,10 +103,14 @@ export async function exportTeamPage(): Promise<ExporterResult<void>> {
         const member_res = await rowToMember(row);
         if (isExporterErr(member_res)) return member_res;
 
+        if (!member_res) continue;
+
         const { member, section } = member_res;
         const team_section = (sections[section.slug] ??= { title: section.title, members: [] });
         team_section.members.push(member);
     }
+
+    sortDirectorsBeforeLeads(sections);
 
     return await saveFile({
         content: JSON.stringify(orderSections(sections), null, 2),
@@ -118,12 +130,15 @@ async function findTeamDatabase(team_page_id: PageId): Promise<ExporterResult<Da
 
 async function rowToMember(
     row: PageObjectResponse,
-): Promise<ExporterResult<{ member: TeamMember; section: SectionMeta }>> {
+): Promise<ExporterResult<{ member: TeamMember; section: SectionMeta } | undefined>> {
     const name_res = getTitle(row);
     if (isExporterErr(name_res)) return name_res;
 
     const tags_res = getMultiSelectTags(row, SUBTEAM_PROPERTY_NAME);
     if (isExporterErr(tags_res)) return tags_res;
+
+    // A member with no subteam tags isn't ready to be published yet.
+    if (tags_res.length === 0) return undefined;
 
     const grouping_res = deriveSectionAndRole(row.id, tags_res);
     if (isExporterErr(grouping_res)) return grouping_res;
@@ -148,12 +163,6 @@ function deriveSectionAndRole(
     row_id: string,
     tags: string[],
 ): ExporterResult<{ section: SectionMeta; role: string }> {
-    if (tags.length === 0)
-        return new ExporterError(
-            `Team database row at Notion ID ${row_id} has no "${SUBTEAM_PROPERTY_NAME}" tags.`,
-            ["malformed content"],
-        );
-
     const position_tags = tags.filter((tag) => tag in POSITION_TAG_SECTIONS);
     const team_tags = tags.filter((tag) => TEAM_TAGS.has(tag));
     const unrecognized_tags = tags.filter((tag) => !(tag in POSITION_TAG_SECTIONS) && !TEAM_TAGS.has(tag));
