@@ -30,7 +30,7 @@
         "clean": "rm -rf web/docs && rm -rf exporter/debug"
     },
     "dependencies": {
-        "sharp": "^0.35.3",
+        "sharp": "^0.35.4",
         "tsx": "^4.22.3"
     },
     "allowScripts": {
