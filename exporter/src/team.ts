@@ -132,16 +132,31 @@ async function rowToMember(
     row: PageObjectResponse,
 ): Promise<ExporterResult<{ member: TeamMember; section: SectionMeta } | undefined>> {
     const name_res = getTitle(row);
-    if (isExporterErr(name_res)) return name_res;
+    if (isExporterErr(name_res)) {
+        name_res.warn();
+        return undefined;
+    }
 
     const tags_res = getMultiSelectTags(row, SUBTEAM_PROPERTY_NAME);
-    if (isExporterErr(tags_res)) return tags_res;
+    if (isExporterErr(tags_res)) {
+        tags_res.warn();
+        return undefined;
+    }
 
-    // A member with no subteam tags isn't ready to be published yet.
-    if (tags_res.length === 0) return undefined;
+    // A member with no subteam tags hasn't been assigned a role yet.
+    if (tags_res.length === 0) {
+        new ExporterError(
+            `A tema database row at Notion ID ${row.id} has no "${SUBTEAM_PROPERTY_NAME}" tags, so no role could be determined. Omitting entry from the team page.`,
+            ["malformed content"],
+        ).warn();
+        return undefined;
+    }
 
     const grouping_res = deriveSectionAndRole(row.id, tags_res);
-    if (isExporterErr(grouping_res)) return grouping_res;
+    if (isExporterErr(grouping_res)) {
+        grouping_res.warn();
+        return undefined;
+    }
 
     const headshot_url_res = getOptionalFileUrl(row, HEADSHOT_PROPERTY_NAME);
     if (isExporterErr(headshot_url_res)) return headshot_url_res;
