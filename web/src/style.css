@@ -35,3 +35,9 @@ pre.astro-code {
 .page-content :is(h1, h2, h3, h4, h5, h6) {
     scroll-margin-top: 1.5rem;
 }
+
+/* Img size constraint */
+.page-content img {
+    max-width: 100%;
+    height: auto;
+}
