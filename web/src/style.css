@@ -1,3 +1,56 @@
+@font-face {
+    font-family: "Geist";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("/fonts/geist-bold.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Source Serif 4";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("/fonts/source-serif-4-regular.woff2") format("woff2");
+}
+
+:root {
+    /* Brand palette */
+    --color-ebony-clay: #1b1f41;
+    --color-orchid: #e650db;
+    --color-lime-yellow: #c9fd3a;
+    --color-citrine: #ddd200;
+    --color-periwinkle: #bbd1ff;
+    --color-northern-lights: #88bed4;
+    --color-grey-teal: #54a190;
+    --color-cornflower: #6a67ff;
+    --color-fluorescence: #00ff92;
+
+    /* Semantic roles. TODO: confirm accent/link colors with the brand guide once decided. */
+    --color-background: var(--color-ebony-clay);
+    --color-text: var(--color-periwinkle);
+    --color-accent: var(--color-cornflower);
+
+    /* Typography */
+    --font-heading: "Geist", sans-serif;
+    --font-body: "Source Serif 4", serif;
+}
+
+body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-body);
+}
+
+:is(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--font-heading);
+    font-weight: 700;
+}
+
+a {
+    color: var(--color-accent);
+}
+
 /* Tables */
 table {
     border-collapse: collapse;
@@ -10,14 +63,14 @@ table:has(th:empty) thead {
 
 table th,
 table td {
-    border: 1px solid #333333;
+    border: 1px solid color-mix(in srgb, var(--color-periwinkle) 25%, transparent);
     padding: 10px;
     text-align: left;
 }
 
 table th {
-    background-color: #f4f4f4;
-    color: #000000;
+    background-color: color-mix(in srgb, var(--color-periwinkle) 12%, var(--color-background));
+    color: var(--color-text);
 }
 
 /* Code blocks */
