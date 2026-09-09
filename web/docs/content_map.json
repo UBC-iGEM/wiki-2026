@@ -4,11 +4,6 @@
             "name": "Wet Lab",
             "entries": [
                 {
-                    "path": "Wet Lab Page 1",
-                    "type": "page",
-                    "item": "37cd65dd82be803d8954c8972d61552c"
-                },
-                {
                     "path": "Lab Notebook 2026",
                     "type": "db",
                     "item": [
@@ -65,7 +60,7 @@
                             "item": "3c2d65dd82be8073a263f8409653e257"
                         },
                         {
-                            "path": "Biosensor MIC Screening Titration",
+                            "path": "Biosensor MIC Screening Titration v1",
                             "item": "3c4d65dd82be80d6a203f71741c4cfcc"
                         },
                         {
@@ -81,8 +76,16 @@
                             "item": "3cbd65dd82be808cb0f5d4c56efdd087"
                         },
                         {
-                            "path": "Simulant Survival Titration",
+                            "path": "Simulant Survival Titration v1",
                             "item": "3cdd65dd82be80dd8d4cc534a89b9ada"
+                        },
+                        {
+                            "path": "Biosensor MIC Screening Titration v2",
+                            "item": "3d5d65dd82be803caa96e917fc4f851c"
+                        },
+                        {
+                            "path": "Simulant Survival Titration v2",
+                            "item": "3d5d65dd82be80a38592e56e36f3505d"
                         }
                     ]
                 }
@@ -107,6 +110,10 @@
                     "item": "3c0d65dd82be8013bb60fe7bd633c0a7"
                 }
             ]
+        },
+        {
+            "name": "Human Practices",
+            "entries": []
         },
         {
             "name": "Testing",

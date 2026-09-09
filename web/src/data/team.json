@@ -3,8 +3,24 @@
     "title": "Directors & Leads",
     "members": [
       {
+        "name": "Matthias Wong",
+        "role": "Director"
+      },
+      {
         "name": "Aden Chan",
         "role": "Director"
+      },
+      {
+        "name": "Sebastian Hyland",
+        "role": "Director"
+      },
+      {
+        "name": "Tracy Lei",
+        "role": "Design/Wiki Lead"
+      },
+      {
+        "name": "Jae-Yoon Kim",
+        "role": "Wet Lab Lead"
       },
       {
         "name": "Jessie Luo",
@@ -13,16 +29,96 @@
       {
         "name": "Saige Mann",
         "role": "Dry Lab Lead"
+      }
+    ]
+  },
+  "wet-lab": {
+    "title": "Wet Lab",
+    "members": [
+      {
+        "name": "Evan Wong",
+        "role": "Wet Lab"
       },
       {
-        "name": "Sebastian Hyland",
-        "role": "Director"
+        "name": "ZiQi Chen",
+        "role": "Wet Lab"
+      },
+      {
+        "name": "Arda Sayla",
+        "role": "Wet Lab"
+      },
+      {
+        "name": "Marina Chen",
+        "role": "Wet Lab"
+      }
+    ]
+  },
+  "dry-lab": {
+    "title": "Dry Lab",
+    "members": [
+      {
+        "name": "Cindy Fu",
+        "role": "Dry Lab"
+      },
+      {
+        "name": "Maximilien Filion",
+        "role": "Dry Lab"
+      },
+      {
+        "name": "Tiffany Feng",
+        "role": "Dry Lab"
+      },
+      {
+        "name": "Libby Lee",
+        "role": "Dry Lab"
+      },
+      {
+        "name": "Example",
+        "role": "Dry Lab"
+      }
+    ]
+  },
+  "human-practices": {
+    "title": "Human Practices",
+    "members": [
+      {
+        "name": "Zahra Savoji",
+        "role": "Human Practices"
+      },
+      {
+        "name": "Daniel Rostin",
+        "role": "Human Practices"
+      }
+    ]
+  },
+  "administration": {
+    "title": "Administration",
+    "members": [
+      {
+        "name": "Yoshier Hu",
+        "role": "Administration"
+      },
+      {
+        "name": "Izaak Yip",
+        "role": "Administration"
+      },
+      {
+        "name": "Gia Rishi",
+        "role": "Administration"
       }
     ]
   },
   "design/wiki": {
     "title": "Design/Wiki",
     "members": [
+      {
+        "name": "Eris Do",
+        "role": "Design/Wiki"
+      },
+      {
+        "name": "Lavenia Suherman",
+        "role": "Design/Wiki"
+      },
       {
         "name": "Rachel Weng",
         "role": "Design/Wiki",

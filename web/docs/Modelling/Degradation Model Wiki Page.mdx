@@ -3,36 +3,148 @@ type: "page"
 title: "Degradation Model Wiki Page"
 ---
 
-In order to support Wet Lab with their estimated degradation values, we developed a degradation model.  progression of paper style.
+// In order to support Wet Lab with their estimated degradation values, we developed a degradation model.  progression of paper style. //
 
 #### **Abstract**
 
-Rapid detection of antibiotic resistance requires predicting whether a resistance enzyme can degrade a target antibiotic quickly enough to be diagnostically distinguishable from a susceptible strain. To stimulate the enzymatic degradation of antibiotics within a microfluidic chip in a well-mixed environment, we developed a non-spatial ordinary differential equation  model coupling three biological processes. Each are represented by their own kinetic framework: enzyme induction, antibiotic degradation and bacterial kill/regrowth. The model integrates Hill kinetics, Michaelis-Menten kinetics, and a sigmoidal Emax framework, parameterized where possible by using published enzymatic, kinetic, and phrarmodynamic data. The model provides a visualization of three coupled state variables over time: enzyme concentration (E), antibiotic concentration (A), and bacterial population (N).
+Rapid detection of antibiotic resistance requires predicting whether a resistance enzyme can degrade a target antibiotic quickly enough to be diagnostically distinguishable from a susceptible strain. To stimulate the enzymatic degradation of antibiotics within a microfluidic chip in a well-mixed environment, we developed a non-spatial ordinary differential equation  model coupling three biological processes. Each are represented by their own kinetic framework: enzyme induction, antibiotic degradation and bacterial kill/regrowth. The links Hill kinetics, Michaelis-Menten kinetics, and a sigmoidal Emax framework, parameterized where possible by using published enzymatic, kinetic, and phrarmodynamic data. The model provides a visualization of three coupled state variables over time: enzyme concentration (E), antibiotic concentration (A), and bacterial population (N).
 The purpose of this model is to predict the time required for antibiotic concentration to fall below defined fractions of a clinically relevant starting thresholds such as (1x MIC), and provide a quantitive basis for Wet Lab in evaluating assay feasibility and guiding experimental design.
 
 #### **Introduction**
 
-#### **Background**
+Distinguishing antibiotic-resistant from antibiotic-susceptible bacterial strains within a clinically useful timeframe is a main challenge for many point-of-care diagnostics. One approach is to detect the enzymatic degradation of antibiotic by a resistance enzyme directly, rather than relying on the slower, culture-based susceptibility testing traditionally used.
+Predicting this timescale through a simulated degradation model, prior to wet-lab experimentation, can substantially optimize the process of designing and testing the experiment by informing decisions such as the expect assay duration and which enzyme-antibiotic pairs are favourable to test. Ultimately, we developed a kinetic model to simulate antibiotic degradation dynamics under enzyme activity, coupling enzyme expression, substrate degradation, and downstream bacterial response into a single dynamical system.
+The objective of this model was to build a model that could take known kinetic parameters for a given antibiotic-enzyme pair and output a predicted degradation timeline in order to better inform Wet lab’s assay development.
 
-talk about how distinguishing antibiotic-resistant vs antibiotic suspectible bacterial strains with a useful timeframe is a challenge, \*\* the need for an accurate timescale for wet lab testing, done by predicting the time computationally before wet lab experiments to saves time, get results, expected assay duration, etc etc quicker, more efficiency also.
+### **Background**
 
-#### **Build**
+TODO//
+Talk about how distinguishing antibiotic-resistant vs antibiotic susceptible bacterial strains with a useful timeframe is a challenge, \*\* the need for an accurate timescale for wet lab testing, done by predicting the time computationally before wet lab experiments to saves time, get results, expected assay duration, etc etc quicker, more efficiency also.
 
-The model was implemented in Python using scipy, matplotlib, and ipywidgets. Hosted on Good Colab, the interface allowed for real-time, slider adjustment of key parameters. We deliberately
+### **Build/Methods**
 
-#### **Test**
+#### Model Development
+
+The system utilizes three coupled, first-order ordinary differential equations tracking enzyme concentration, antibiotic concentration, and normalized bacterial population as functions of time.
+Following antibiotic exposure, the resistance system is assumed to produce an enzyme capable of degrading the antibiotic, with the rate of antibiotic degradation increasing as enzyme concentration increases. Degradation subsequently decreases the antibiotic concentration, reducing its inhibitory effect on bacterial growth.
+Thus, the system can be represented conceptually as
+
+$$
+
+
+\text{Antibiotic exposure}
+\rightarrow
+\text{Enzyme induction}
+\rightarrow
+\text{Antibiotic degradation}
+\rightarrow
+\text{Reduced antibiotic activity}
+\rightarrow
+\text{Bacterial response}
+
+$$
+
+These processes were then coupled mathematically such that the output of one process becomes an input to another. This allowed us to simulate the progression of the system rather than treating each biological process independently.
+
+#### Mathematical Models
+
+The model consists of three first-order ordinary differential equations describing change in enzyme concentration (E) , antibiotic concentration (A),  and normalized bacterial population (N) as functions of time.
+Enzyme Induction using Hill Kinetics
+
+$$
+
+\frac{dE}{dt}= \alpha \cdot \frac{A^{n_{hill}}}{K_{ind}^{n_{hill}} + A^{n_{hill}}} - \delta \cdot E
+$$
+
+The first term is a Hill activation function describing enzyme production as a sigmoidal function of antibiotic concentration. (alpha) (units) represents the maximum enzyme production rate, k\_ind  (units) represents the antibiotic concentration associated with half-maximal induction, and n\_hill describes the steepness of the induction response, and (delta) represents enzyme decay. when A = K\_ind, the activation fraction is exactly 0.5, regardless of n\_hill. v
+Antibiotic Degradation using Michaelis-Menten Kinetics
+
+$$
+
+\frac{dA}{dt} = -k_{cat} \cdot \frac{E \cdot a}{K_m + A}
+$$
+
+This is the standard Michaelis-Menten rate law for enzyme-catalyzed substrate turnover, applied to enzymatic antibiotic degradation. kcat (units) is the catalytic turnover rate of the enzyme, and K\_m is the michaelis-constant. At low substrate concentration, the degradation rate is approximately proportional to antibiotic concentration, whereas at high concentrations, the enzyme approaches saturation. Notably, enzyme concentration itself is determined by the induction equation. Consequently, antibiotic degradation is dynamically coupled to enzyme production rather than being represented by a constant degradation rate.
+Bacterial Response using Sigmoidal Emax Kinetics
+
+$$
+
+\frac{dN}{dt} = \mu \cdot N - E_{max} \cdot \frac{A^{n_{pd}}}{EC_{50}^{n_{pd}} + A^{n_{pd}}} \cdot N
+$$
+
+The downstream bacterial response was modelled using a growth term combined with a sigmoidal Emax pharmacodynamic relationship. The first term describes unconstrained exponential bacterial growth at per capita rate (mu) (min-1), and the second term is a sigmoidal emax model describing concentration dependent bacterial killing. As enzymatic degradation reduces (A), the magnitude of killing term decreases, allowing the model to connect enzymatic antibiotic degradation with the expected downstream bacterial response.
+
+#### **Computational Implementation**
+
+The system was implemented in Python using scipy, matplotlib, and ipywidgets. The ODE system was solved numerically using scipy.integrate.solve\_ivp with the fourth-order Runge-Kutta method (RK45). The initial conditions were defined as:
+
+$$
+
+E(0)=0, 
+A(0)=A_0, 
+N(0)=1
+
+$$
+
+where A\_0 represents the initial bacterial concentration and  N= 1 represents the normalized starting bacterial population.
+An interactive interface was implemented using ipywidgets, where users can independently modify parameters describing enzyme expression, enzyme decay, induction sensitivity, catalytic activity, starting antibiotic concentration, and the desired degradation threshold. The model subsequently generates three time-dependent trajectories:
+
+$$
+
+E(t), \quad A(t), \quad N(t)
+$$
+
+representing enzyme concentration, antibiotic concentration, and normalized bacterial population over time, respectively. The interface additionally calculates the time at which antibiotic concentration reaches 90%, 75%, 50%, or a user-defined percentage of its initial concentration to improve accessibility and readability of the model.
+
+### **Testing**
+
+#### Stage 1:
+
+The first stage of model development involved estimating how quickly the resistance enzyme could reduce the antibiotic concentration. We initially focused on the enzyme-antibiotic interaction and defined the primary model output as antibiotic concentration over time. A Michaelis-Menten degradation model was selected because it provides a well-established representation of enzyme-mediated substrate consumption and allows the effects of catalytic activity and substrate concentration to be investigated.
+The initial framework provided a means of estimating whether degradation could occur on the timescale needed by the planned assay.
+
+<Dbtl>
+
+<Fragment slot="design">
+
+Design: Determine the expected timescale of enzymatic antibiotic degradation
+
+</Fragment>
+
+<Fragment slot="build">
+
+Build: Implement Michaelis-Menten degradation dynamics in Python
+
+</Fragment>
+
+<Fragment slot="test">
+
+Test: Simulate antibiotic concentration over time across a range of kinetic parameters.
+
+</Fragment>
+
+<Fragment slot="learn">
+
+Learn: The predicted degradation trajectory provided a useful basis of experimental incubation periods, but did not account for changes in enzyme concentration over time.
+
+</Fragment>
+
+</Dbtl>
+
+things that didn’t work to add
+
+- K\_ind not working … it wasn’t pinned near max induction, tied induction directly to the antibiotic concentration variable already in the model  (word this better)
+- setting starting antibiotic concentration exactly equal to mic “time to cross MIC” was always 0 because the antibiotic was at the threshold already, before any simulation time passed
+
+Values:
+
+- parameter placeholders being used, with Wet lab needing to validate them (enzyme induction dynamics dependent on the specific genetic construct being used)
 
 -why this is important, background, actually explaining the coupled biological processes and how they work
 how do we plan to investgiate / solve the problem
-
-Methods
-
-- explain the actual functions (hill, michaelis-menten, sigmoidal emax)
-- the actual equation
-- where we got our values from
-- how we got our model, using python, widgets with ipywidgets, Colab
-
 Results
+![](https://static.igem.wiki/teams/6279/wiki/assets/89cd211f16c15859865352441a0d527a.avif)
+Figure 1. Degradation Model Visualization
 
 <Dbtl>
 
@@ -63,9 +175,10 @@ Bacterial Kill/Regrowth - elaborate more
 </Dbtl>
 
 siilar to paper,
-abstract, description, general problem you’re trying to solve, background info, what is the context, develop method, how do we plan to investgiate / solve the problem, then process, + methods + results, + discussion + conclusion - STANDARD PAPER
-DBTL: lets say fro method have probel that you’re trying to solve (degradation problem) need to expose antibiotic to degrad need to know how long to put in there, so put in there have two stages:
+abstract, description, general problem you’re trying to solve, background info, what is the context, develop method, how do we plan to investigate / solve the problem, then process, + methods + results, + discussion + conclusion - STANDARD PAPER
+DBTL: lets say fro method have problem that you’re trying to solve (degradation problem) need to expose antibiotic to degrade need to know how long to put in there, so put in there have two stages:
 
 1. as
 
 at the end of section put DBTL block to represent it, use it as a recap. for methods since we did try each method, have one for each ideation cycle, write it as a story
+Conclusion
