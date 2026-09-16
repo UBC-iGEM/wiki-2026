@@ -1,4 +1,5 @@
 import { PageId } from "./notion";
+import { slug } from "github-slugger";
 
 // Required setup for decorators
 export class PagePathComponent {
@@ -13,7 +14,11 @@ export class PagePathComponent {
     }
 
     toSlug(): string {
-        return this.path.trim().toLowerCase().replace(/\s+/g, "-");
+        // Astro slugs each path segment to build route ids, so match it exactly or links 404
+        return this.path
+            .split("/")
+            .map((segment) => slug(segment))
+            .join("/");
     }
 }
 
