@@ -1,0 +1,170 @@
+---
+import { ContentMap, PagePath, type JsonMap } from "@exporter/map";
+import config from "../../docs/content_map.json";
+
+const content_map = ContentMap.fromJSON(config as JsonMap);
+
+interface Props {
+    parent_db_path: string;
+    current_page_path: string;
+}
+const { current_page_path, parent_db_path } = Astro.props;
+
+const parent_db = PagePath.fromString(parent_db_path);
+const current_page = PagePath.fromString(current_page_path);
+const database_title = parent_db.name().toString();
+const current_page_title = current_page.name().toString();
+const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
+---
+
+<details class="db-dropdown">
+    <summary>
+        <span class="db-name">{database_title}</span>
+        <span class="page-name">{current_page_title}</span>
+        <span class="marker" aria-hidden="true">▾</span>
+    </summary>
+
+    <nav aria-label={`${database_title} pages`}>
+        <ul>
+            {
+                parent_db_entries.map((entry) => {
+                    const label = entry.name().toString();
+                    const is_active = current_page.equals(entry);
+
+                    return (
+                        <li>
+                            <a
+                                class={is_active ? "active" : undefined}
+                                href={`/${entry.toSlug()}`}
+                                aria-current={is_active ? "page" : undefined}
+                            >
+                                {label}
+                            </a>
+                        </li>
+                    );
+                })
+            }
+        </ul>
+    </nav>
+</details>
+
+<script>
+    // `details` only closes on a click of its own summary, so wire up the dismissal
+    // behaviour expected of a dropdown: click-away and Escape.
+    document.querySelectorAll<HTMLDetailsElement>("details.db-dropdown").forEach((dropdown) => {
+        document.addEventListener("click", (event) => {
+            if (dropdown.open && !dropdown.contains(event.target as Node)) dropdown.open = false;
+        });
+
+        // With a long database the active entry can open below the fold
+        dropdown.addEventListener("toggle", () => {
+            if (!dropdown.open) return;
+            dropdown.querySelector("a.active")?.scrollIntoView({ block: "nearest" });
+        });
+
+        dropdown.addEventListener("keydown", (event) => {
+            if (event.key !== "Escape" || !dropdown.open) return;
+            dropdown.open = false;
+            dropdown.querySelector("summary")?.focus();
+        });
+    });
+</script>
+
+<style>
+    .db-dropdown {
+        /* Shrink to the width of the summary, rather than stretching as a flex item */
+        align-self: start;
+        display: inline-block;
+        position: relative;
+    }
+
+    summary {
+        align-items: baseline;
+        border: 1px solid #dddddd;
+        cursor: pointer;
+        display: flex;
+        gap: 0.5rem;
+        list-style: none;
+        padding: 0.5rem 0.75rem;
+        user-select: none;
+    }
+
+    /* Suppress the native disclosure triangle in favour of our own marker */
+    summary::-webkit-details-marker {
+        display: none;
+    }
+
+    summary:hover {
+        background: #eeeeee;
+    }
+
+    .db-name {
+        color: #666666;
+    }
+
+    .db-name::after {
+        content: "/";
+        padding-left: 0.5rem;
+    }
+
+    .page-name {
+        font-weight: 600;
+    }
+
+    .marker {
+        margin-left: auto;
+        padding-left: 0.5rem;
+    }
+
+    .db-dropdown[open] .marker {
+        display: inline-block;
+        transform: rotate(180deg);
+    }
+
+    nav {
+        background: #ffffff;
+        border: 1px solid #dddddd;
+        left: 0;
+        max-height: min(60vh, 24rem);
+        min-width: 100%;
+        overflow-y: auto;
+        padding: 0.25rem;
+        position: absolute;
+        top: calc(100% + 0.25rem);
+        width: max-content;
+        z-index: 10;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    a {
+        color: inherit;
+        display: block;
+        padding: 0.35rem 0.5rem;
+        text-decoration: none;
+    }
+
+    a:hover,
+    a.active {
+        background: #eeeeee;
+    }
+
+    a.active {
+        font-weight: 600;
+    }
+
+    @media (max-width: 700px) {
+        .db-dropdown {
+            align-self: stretch;
+            display: block;
+        }
+
+        nav {
+            max-width: 100%;
+        }
+    }
+</style>
