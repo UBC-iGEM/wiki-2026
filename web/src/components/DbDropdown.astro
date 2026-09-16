@@ -49,32 +49,30 @@ const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
 </details>
 
 <script>
-    // `details` only closes on a click of its own summary, so wire up the dismissal
-    // behaviour expected of a dropdown: click-away and Escape.
-    document.querySelectorAll<HTMLDetailsElement>("details.db-dropdown").forEach((dropdown) => {
+    // A `details` closes only on a click of its own summary; add the dismissals a dropdown needs
+    for (const dropdown of document.querySelectorAll<HTMLDetailsElement>("details.db-dropdown")) {
+        const summary = dropdown.querySelector("summary");
+
         document.addEventListener("click", (event) => {
             if (dropdown.open && !dropdown.contains(event.target as Node)) dropdown.open = false;
         });
 
-        // With a long database the active entry can open below the fold
-        dropdown.addEventListener("toggle", () => {
-            if (!dropdown.open) return;
-            dropdown.querySelector("a.active")?.scrollIntoView({ block: "nearest" });
+        dropdown.addEventListener("keydown", (event) => {
+            if (event.key !== "Escape") return;
+            dropdown.open = false;
+            summary?.focus();
         });
 
-        dropdown.addEventListener("keydown", (event) => {
-            if (event.key !== "Escape" || !dropdown.open) return;
-            dropdown.open = false;
-            dropdown.querySelector("summary")?.focus();
+        // Reveal the current page, which a long database can push out of view
+        dropdown.addEventListener("toggle", () => {
+            if (dropdown.open) dropdown.querySelector("a.active")?.scrollIntoView({ block: "nearest" });
         });
-    });
+    }
 </script>
 
 <style>
     .db-dropdown {
-        /* Shrink to the width of the summary, rather than stretching as a flex item */
-        align-self: start;
-        display: inline-block;
+        display: block;
         position: relative;
     }
 
@@ -83,15 +81,12 @@ const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
         border: 1px solid #dddddd;
         cursor: pointer;
         display: flex;
+        flex-wrap: wrap;
         gap: 0.5rem;
+        /* Also drops the native disclosure triangle, in favour of .marker */
         list-style: none;
         padding: 0.5rem 0.75rem;
         user-select: none;
-    }
-
-    /* Suppress the native disclosure triangle in favour of our own marker */
-    summary::-webkit-details-marker {
-        display: none;
     }
 
     summary:hover {
@@ -112,24 +107,23 @@ const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
     }
 
     .marker {
+        display: inline-block;
         margin-left: auto;
         padding-left: 0.5rem;
     }
 
     .db-dropdown[open] .marker {
-        display: inline-block;
         transform: rotate(180deg);
     }
 
+    /* Anchored right: the sidebar sits at the viewport edge, so the menu grows leftwards */
     nav {
         background: #ffffff;
         border: 1px solid #dddddd;
-        left: 0;
         max-height: min(60vh, 24rem);
-        min-width: 100%;
         overflow-y: auto;
-        padding: 0.25rem;
         position: absolute;
+        right: 0;
         top: calc(100% + 0.25rem);
         width: max-content;
         z-index: 10;
@@ -157,12 +151,8 @@ const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
         font-weight: 600;
     }
 
-    @media (max-width: 700px) {
-        .db-dropdown {
-            align-self: stretch;
-            display: block;
-        }
-
+    /* Stacked full-width, the menu must not spill past the viewport edge */
+    @media (max-width: 1000px) {
         nav {
             max-width: 100%;
         }
