@@ -1,0 +1,430 @@
+---
+import { ContentMap, PagePath, type JsonMap } from "@exporter/map";
+import type { DatabaseAttrs } from "@exporter/markdown/markdown";
+import config from "../../docs/content_map.json";
+import { getCollection } from "astro:content";
+
+const content_map = ContentMap.fromJSON(config as JsonMap);
+
+interface Props {
+    parent_db_path: string;
+    current_page_path: string;
+}
+const { current_page_path, parent_db_path } = Astro.props;
+
+const parent_db = PagePath.fromString(parent_db_path);
+
+interface DayEntry {
+    label: string;
+    href: string;
+    is_current: boolean;
+}
+
+interface CalendarDay {
+    day: number;
+    label: string;
+    entries: DayEntry[];
+}
+
+interface CalendarMonth {
+    key: string;
+    label: string;
+    weeks: (CalendarDay | null)[][];
+}
+
+const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const MONTH_FORMAT = new Intl.DateTimeFormat("en-US", { month: "long", timeZone: "UTC", year: "numeric" });
+const DAY_FORMAT = new Intl.DateTimeFormat("en-US", { day: "numeric", month: "long", timeZone: "UTC" });
+
+// Dates live in each page's frontmatter, not in the content map, so join the two on the exporter's path
+const docs = await getCollection("docs");
+const date_by_path = new Map(
+    docs
+        .map((doc) => doc.data as DatabaseAttrs)
+        .filter((attrs) => attrs.type === "database" && attrs.date !== undefined)
+        .map((attrs) => [attrs.path, attrs.date!]),
+);
+
+// A single day can hold several entries, so group rather than assuming one each
+const entries_by_date = new Map<string, DayEntry[]>();
+for (const entry of content_map.queryDbEntries(parent_db)) {
+    const path = entry.toString();
+    const date = date_by_path.get(path);
+    if (date === undefined) continue;
+
+    entries_by_date.set(date, [
+        ...(entries_by_date.get(date) ?? []),
+        { label: entry.name().toString(), href: `/${entry.toSlug()}`, is_current: path === current_page_path },
+    ]);
+}
+
+const current_page_date = date_by_path.get(current_page_path);
+const month_keys = Array.from(new Set(Array.from(entries_by_date.keys(), (date) => date.slice(0, 7)))).sort();
+const active_month_key = current_page_date?.slice(0, 7) ?? month_keys.at(-1);
+const months = month_keys.map(buildMonth);
+
+function buildMonth(key: string): CalendarMonth {
+    const [year, month] = key.split("-").map(Number);
+    const first_of_month = new Date(Date.UTC(year!, month! - 1, 1));
+    const day_count = new Date(Date.UTC(year!, month!, 0)).getUTCDate();
+
+    const cells: (CalendarDay | null)[] = Array.from({ length: first_of_month.getUTCDay() }, () => null);
+    for (let day = 1; day <= day_count; day++) {
+        const date = `${key}-${String(day).padStart(2, "0")}`;
+        cells.push({
+            day,
+            label: DAY_FORMAT.format(new Date(Date.UTC(year!, month! - 1, day))),
+            entries: entries_by_date.get(date) ?? [],
+        });
+    }
+    while (cells.length % 7 !== 0) cells.push(null);
+
+    const weeks = Array.from({ length: cells.length / 7 }, (_unused, week) => cells.slice(week * 7, week * 7 + 7));
+    return { key, label: MONTH_FORMAT.format(first_of_month), weeks };
+}
+---
+
+{
+    months.length > 0 && (
+        <section class="db-calendar" aria-label={`${parent_db.name().toString()} entries by date`}>
+            {months.length > 1 && (
+                <div class="months-nav">
+                    <button type="button" class="prev" aria-label="Previous month">
+                        ‹
+                    </button>
+                    <button type="button" class="next" aria-label="Next month">
+                        ›
+                    </button>
+                </div>
+            )}
+
+            {months.map((month) => (
+                <table class:list={["month", { active: month.key === active_month_key }]}>
+                    <caption>{month.label}</caption>
+                    <thead>
+                        <tr>
+                            {WEEKDAYS.map((weekday) => (
+                                <th scope="col">
+                                    <abbr title={weekday}>{weekday.charAt(0)}</abbr>
+                                </th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {month.weeks.map((week) => (
+                            <tr>
+                                {week.map((cell) => {
+                                    if (cell === null) return <td />;
+                                    if (cell.entries.length === 0) return <td>{cell.day}</td>;
+
+                                    const is_current = cell.entries.some((entry) => entry.is_current);
+                                    const cell_classes = ["marked", { current: is_current }];
+
+                                    // A lone entry links straight from its cell; several need a menu to pick from
+                                    if (cell.entries.length === 1) {
+                                        const [only] = cell.entries;
+                                        return (
+                                            <td class:list={cell_classes}>
+                                                <a
+                                                    href={only!.href}
+                                                    aria-label={`${cell.label}: ${only!.label}`}
+                                                    aria-current={is_current ? "page" : undefined}
+                                                >
+                                                    {cell.day}
+                                                </a>
+                                            </td>
+                                        );
+                                    }
+
+                                    return (
+                                        <td class:list={cell_classes}>
+                                            <details class="day-menu">
+                                                <summary aria-label={`${cell.label}: ${cell.entries.length} entries`}>
+                                                    <span>{cell.day}</span>
+                                                    <span class="dots" aria-hidden="true">
+                                                        {cell.entries.map(() => (
+                                                            <span />
+                                                        ))}
+                                                    </span>
+                                                </summary>
+
+                                                <div class="day-panel">
+                                                    <p class="day-panel-date">{cell.label}</p>
+                                                    <ul>
+                                                        {cell.entries.map((entry) => (
+                                                            <li>
+                                                                <a
+                                                                    href={entry.href}
+                                                                    class={entry.is_current ? "active" : undefined}
+                                                                    aria-current={entry.is_current ? "page" : undefined}
+                                                                >
+                                                                    {entry.label}
+                                                                </a>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            </details>
+                                        </td>
+                                    );
+                                })}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            ))}
+        </section>
+    )
+}
+
+<script>
+    import { makeDismissable } from "../dismissable";
+
+    for (const day_menu of document.querySelectorAll<HTMLDetailsElement>("details.day-menu")) {
+        makeDismissable(day_menu);
+    }
+
+    // Only months holding entries are rendered, so stepping skips empty stretches
+    for (const calendar of document.querySelectorAll<HTMLElement>(".db-calendar")) {
+        const months = Array.from(calendar.querySelectorAll<HTMLTableElement>("table.month"));
+        const prev = calendar.querySelector<HTMLButtonElement>("button.prev");
+        const next = calendar.querySelector<HTMLButtonElement>("button.next");
+
+        let active = Math.max(
+            months.findIndex((month) => month.classList.contains("active")),
+            0,
+        );
+
+        const show = (index: number) => {
+            active = Math.min(Math.max(index, 0), months.length - 1);
+            months.forEach((month, index) => month.classList.toggle("active", index === active));
+            if (prev) prev.disabled = active === 0;
+            if (next) next.disabled = active === months.length - 1;
+        };
+
+        prev?.addEventListener("click", () => show(active - 1));
+        next?.addEventListener("click", () => show(active + 1));
+        show(active);
+    }
+</script>
+
+<style>
+    .db-calendar {
+        background: #ffffff;
+        border: 1px solid #e3e5ef;
+        border-radius: 8px;
+        font-family:
+            ui-sans-serif,
+            system-ui,
+            -apple-system,
+            "Segoe UI",
+            sans-serif;
+        padding: 0.6rem;
+        position: relative;
+    }
+
+    /* Every month is rendered; only the active one is shown, so it works without JS */
+    table.month {
+        display: none;
+    }
+
+    table.month.active {
+        border-collapse: separate;
+        border-spacing: 2px;
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    /* style.css borders every th/td for content tables; a calendar grid wants none */
+    th,
+    td {
+        background: none;
+        border: 0;
+    }
+
+    caption {
+        color: #1b1f41;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 0 0 0.4rem 0.1rem;
+        text-align: left;
+    }
+
+    th {
+        color: #9a9db4;
+        font-size: 0.6rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        padding-bottom: 0.1rem;
+        text-transform: uppercase;
+    }
+
+    abbr {
+        text-decoration: none;
+    }
+
+    td {
+        color: #b6b9cb;
+        font-size: 0.72rem;
+        height: 1.9rem;
+        padding: 0;
+        text-align: center;
+    }
+
+    td.marked {
+        color: #1b1f41;
+    }
+
+    /* Direct children only: these must not reach the links inside an open day panel.
+       The whole cell is the target, so it stays tappable in a narrow column */
+    td.marked > a,
+    td.marked > .day-menu > summary {
+        align-items: center;
+        background: #eceef6;
+        border-radius: 6px;
+        color: inherit;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: center;
+        line-height: 1;
+        list-style: none;
+        text-decoration: none;
+        transition: background 120ms ease;
+    }
+
+    td.marked > a:hover,
+    td.marked > .day-menu > summary:hover {
+        background: #dcdfee;
+    }
+
+    td.current > a,
+    td.current > .day-menu > summary {
+        background: #1b1f41;
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+    td.current > a:hover,
+    td.current > .day-menu > summary:hover {
+        background: #2b3057;
+    }
+
+    a:focus-visible,
+    summary:focus-visible {
+        outline: 2px solid #1b1f41;
+        outline-offset: 1px;
+    }
+
+    /* One dot per entry, replacing a numeric badge that read as part of the date */
+    .dots {
+        display: flex;
+        gap: 2px;
+        padding-top: 2px;
+    }
+
+    .dots span {
+        background: currentcolor;
+        border-radius: 50%;
+        height: 3px;
+        opacity: 0.75;
+        width: 3px;
+    }
+
+    .day-menu {
+        height: 100%;
+        position: relative;
+    }
+
+    .day-panel {
+        background: #ffffff;
+        border: 1px solid #e3e5ef;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(27, 31, 65, 0.16);
+        left: 50%;
+        padding: 0.45rem;
+        position: absolute;
+        top: calc(100% + 0.3rem);
+        transform: translateX(-50%);
+        width: max-content;
+        z-index: 10;
+    }
+
+    /* Nudge the panel inwards at the edges of the week, where centring would overflow */
+    td:nth-child(-n + 2) .day-panel {
+        left: 0;
+        transform: none;
+    }
+
+    td:nth-child(n + 6) .day-panel {
+        left: auto;
+        right: 0;
+        transform: none;
+    }
+
+    .day-panel-date {
+        color: #6b6f8c;
+        font-size: 0.65rem;
+        letter-spacing: 0.05em;
+        margin: 0 0 0.3rem 0.15rem;
+        text-transform: uppercase;
+    }
+
+    .day-panel ul {
+        list-style: none;
+        margin: 0;
+        max-width: 13rem;
+        padding: 0;
+    }
+
+    .day-panel a {
+        border-radius: 6px;
+        color: #1b1f41;
+        display: block;
+        font-size: 0.8rem;
+        padding: 0.35rem 0.5rem;
+        text-align: left;
+        text-decoration: none;
+        transition: background 120ms ease;
+    }
+
+    .day-panel a:hover {
+        background: #f7f8fc;
+    }
+
+    .day-panel a.active {
+        background: #eceef6;
+        font-weight: 600;
+    }
+
+    .months-nav {
+        display: flex;
+        gap: 0.15rem;
+        position: absolute;
+        right: 0.5rem;
+        top: 0.45rem;
+    }
+
+    .months-nav button {
+        background: none;
+        border: 1px solid #e3e5ef;
+        border-radius: 5px;
+        color: #6b6f8c;
+        cursor: pointer;
+        font-size: 0.75rem;
+        line-height: 1;
+        padding: 0.1rem 0.35rem;
+        transition: background 120ms ease;
+    }
+
+    .months-nav button:hover:not(:disabled) {
+        background: #f7f8fc;
+    }
+
+    .months-nav button:disabled {
+        color: #d5d7e3;
+        cursor: default;
+    }
+</style>
