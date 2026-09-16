@@ -11,10 +11,13 @@ interface Props {
 const { current_page_path, parent_db_path } = Astro.props;
 
 const parent_db = PagePath.fromString(parent_db_path);
-const current_page = PagePath.fromString(current_page_path);
 const database_title = parent_db.name().toString();
-const current_page_title = current_page.name().toString();
 const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
+
+// A Notion title may itself contain "/", which `fromString` would split into two components,
+// so find the current page by its full path rather than by re-parsing it
+const current_page = parent_db_entries.find((entry) => entry.toString() === current_page_path);
+const current_page_title = (current_page ?? PagePath.fromString(current_page_path)).name().toString();
 ---
 
 <details class="db-dropdown">
@@ -28,8 +31,7 @@ const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
         <ul>
             {
                 parent_db_entries.map((entry) => {
-                    const label = entry.name().toString();
-                    const is_active = current_page.equals(entry);
+                    const is_active = entry.toString() === current_page_path;
 
                     return (
                         <li>
@@ -38,7 +40,7 @@ const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
                                 href={`/${entry.toSlug()}`}
                                 aria-current={is_active ? "page" : undefined}
                             >
-                                {label}
+                                {entry.name().toString()}
                             </a>
                         </li>
                     );
@@ -49,19 +51,10 @@ const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
 </details>
 
 <script>
-    // A `details` closes only on a click of its own summary; add the dismissals a dropdown needs
+    import { makeDismissable } from "../dismissable";
+
     for (const dropdown of document.querySelectorAll<HTMLDetailsElement>("details.db-dropdown")) {
-        const summary = dropdown.querySelector("summary");
-
-        document.addEventListener("click", (event) => {
-            if (dropdown.open && !dropdown.contains(event.target as Node)) dropdown.open = false;
-        });
-
-        dropdown.addEventListener("keydown", (event) => {
-            if (event.key !== "Escape") return;
-            dropdown.open = false;
-            summary?.focus();
-        });
+        makeDismissable(dropdown);
 
         // Reveal the current page, which a long database can push out of view
         dropdown.addEventListener("toggle", () => {
@@ -73,43 +66,65 @@ const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
 <style>
     .db-dropdown {
         display: block;
+        font-family:
+            ui-sans-serif,
+            system-ui,
+            -apple-system,
+            "Segoe UI",
+            sans-serif;
         position: relative;
     }
 
     summary {
-        align-items: baseline;
-        border: 1px solid #dddddd;
+        align-items: center;
+        background: #ffffff;
+        border: 1px solid #e3e5ef;
+        border-radius: 8px;
+        color: #1b1f41;
         cursor: pointer;
         display: flex;
         flex-wrap: wrap;
-        gap: 0.5rem;
         /* Also drops the native disclosure triangle, in favour of .marker */
         list-style: none;
-        padding: 0.5rem 0.75rem;
+        padding: 0.5rem 0.7rem;
+        transition:
+            background 120ms ease,
+            border-color 120ms ease;
         user-select: none;
     }
 
     summary:hover {
-        background: #eeeeee;
+        background: #f7f8fc;
+        border-color: #c9cde0;
     }
 
+    summary:focus-visible {
+        outline: 2px solid #1b1f41;
+        outline-offset: 2px;
+    }
+
+    /* An eyebrow label, so the database name never competes with the page name */
     .db-name {
-        color: #666666;
-    }
-
-    .db-name::after {
-        content: "/";
-        padding-left: 0.5rem;
+        color: #6b6f8c;
+        font-size: 0.65rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        width: 100%;
     }
 
     .page-name {
+        flex: 1;
+        font-size: 0.9rem;
         font-weight: 600;
+        line-height: 1.3;
     }
 
     .marker {
+        color: #6b6f8c;
         display: inline-block;
-        margin-left: auto;
+        font-size: 0.7rem;
         padding-left: 0.5rem;
+        transition: transform 150ms ease;
     }
 
     .db-dropdown[open] .marker {
@@ -119,12 +134,15 @@ const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
     /* Anchored right: the sidebar sits at the viewport edge, so the menu grows leftwards */
     nav {
         background: #ffffff;
-        border: 1px solid #dddddd;
+        border: 1px solid #e3e5ef;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(27, 31, 65, 0.14);
         max-height: min(60vh, 24rem);
         overflow-y: auto;
+        padding: 0.3rem;
         position: absolute;
         right: 0;
-        top: calc(100% + 0.25rem);
+        top: calc(100% + 0.35rem);
         width: max-content;
         z-index: 10;
     }
@@ -136,18 +154,21 @@ const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
     }
 
     a {
-        color: inherit;
+        border-radius: 6px;
+        color: #1b1f41;
         display: block;
-        padding: 0.35rem 0.5rem;
+        font-size: 0.85rem;
+        padding: 0.4rem 0.55rem;
         text-decoration: none;
+        transition: background 120ms ease;
     }
 
-    a:hover,
-    a.active {
-        background: #eeeeee;
+    a:hover {
+        background: #f7f8fc;
     }
 
     a.active {
+        background: #eceef6;
         font-weight: 600;
     }
 
