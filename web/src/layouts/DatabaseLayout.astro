@@ -35,32 +35,18 @@ function formatDate(value: string | undefined): string | undefined {
 ---
 
 <MainLayout title={attrs.title} headings={headings}>
-    <div class="db-layout">
-        <DbDropdown parent_db_path={parent_db_path} current_page_path={current_page_path} />
-        <main class="db-content">
-            {
-                display_date && (
-                    <time class="db-date" datetime={attrs.date}>
-                        {display_date}
-                    </time>
-                )
-            }
-            <slot />
-        </main>
-    </div>
+    <DbDropdown slot="sidebar" parent_db_path={parent_db_path} current_page_path={current_page_path} />
+    {
+        display_date && (
+            <time class="db-date" datetime={attrs.date}>
+                {display_date}
+            </time>
+        )
+    }
+    <slot />
 </MainLayout>
 
 <style>
-    .db-layout {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .db-content {
-        min-width: 0;
-    }
-
     .db-date {
         color: #666666;
         display: block;
