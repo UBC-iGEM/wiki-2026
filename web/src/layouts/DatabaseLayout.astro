@@ -62,6 +62,8 @@ function formatDate(value: string | undefined): string | undefined {
 
     aside.db-sidebar {
         border: 1px solid #dddddd;
+        background-color: var(--color-periwinkle);
+        border: 1px solid var(--color-grey-teal);
         max-height: calc(100vh - 8rem);
         overflow-y: auto;
         padding: 1rem;
@@ -73,8 +75,15 @@ function formatDate(value: string | undefined): string | undefined {
         min-width: 0;
     }
 
+    .db-content :global(h2) {
+        font-family: "Geist", sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+    }
+
     .db-date {
         color: #666666;
+        color: var(--color-ebony-clay);
         display: block;
         margin-bottom: 1rem;
     }
