@@ -14,6 +14,7 @@ const parent_db = PagePath.fromString(parent_db_path);
 const current_page = PagePath.fromString(current_page_path);
 const database_title = parent_db.name().toString();
 const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
+const base_url = `${import.meta.env.BASE_URL}/`;
 ---
 
 <nav class="db-nav" aria-label={`${database_title} pages`}>
@@ -28,7 +29,7 @@ const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
                     <li>
                         <a
                             class={is_active ? "active" : undefined}
-                            href={`/${entry.toSlug()}`}
+                            href={`${base_url}${entry.toSlug()}`}
                             aria-current={is_active ? "page" : undefined}
                         >
                             {label}

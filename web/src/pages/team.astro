@@ -14,6 +14,11 @@ interface TeamSection {
 }
 
 const sections = Object.values(teamData as Record<string, TeamSection>);
+const base_url = `${import.meta.env.BASE_URL}/`;
+
+function imageUrl(image: string): string {
+    return image.startsWith("/") ? `${base_url}${image.slice(1)}` : image;
+}
 ---
 
 <MainLayout title="Team">
@@ -26,7 +31,7 @@ const sections = Object.values(teamData as Record<string, TeamSection>);
                         <div class="team-card">
                             <div class="team-photo">
                                 {member.image ? (
-                                    <img src={member.image} alt={member.name} />
+                                    <img src={imageUrl(member.image)} alt={member.name} />
                                 ) : (
                                     <div class="team-photo-placeholder" />
                                 )}

@@ -1,12 +1,14 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
+
+const base_url = `${import.meta.env.BASE_URL}/`;
 ---
 
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href={`${base_url}favicon.svg`} />
+        <link rel="icon" href={`${base_url}favicon.ico`} />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
         <title>Astro</title>
