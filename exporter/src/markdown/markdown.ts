@@ -1,6 +1,7 @@
 import { PagePath, type ContentMap } from "../map";
 import type { PageId } from "../notion";
 import { ExporterError, isExporterErr, saveFile } from "../utils";
+import { remarkStripNotionAnnotations } from "./annotations";
 import { COMPONENT_MAP as BLOCK_COMPONENT_MAP } from "./components-block";
 import { INLINE_COMPONENT_MAP } from "./components-inline";
 import { HTML_PROCESSORS } from "./html";
@@ -51,6 +52,7 @@ export async function processMarkdown({
                 routes,
                 path,
             })
+            .use(remarkStripNotionAnnotations)
             .use(remarkStringify, {
                 bullet: "-",
                 resourceLink: true,
