@@ -1,5 +1,6 @@
 import type { Root, Text } from "mdast";
-import type { Plugin } from "unified";
+import type { Options as MdASTOptions } from "mdast-util-to-markdown";
+import type { Plugin, Processor } from "unified";
 import { visit } from "unist-util-visit";
 
 /**
@@ -14,4 +15,13 @@ export const remarkStripNotionAnnotations: Plugin<[], Root> = () => (tree) => {
     visit(tree, "text", (node: Text) => {
         node.value = node.value.replace(BLOCK_ANNOTATION, "");
     });
+};
+
+/**
+ * Escape stray `<` in text so the output is valid MDX.
+ */
+export const remarkEscapeMdxText: Plugin<[], Root> = function (this: Processor) {
+    const data = this.data();
+    const extensions = (data.toMarkdownExtensions ??= []) as MdASTOptions[];
+    extensions.push({ unsafe: [{ character: "<", inConstruct: "phrasing" }] });
 };

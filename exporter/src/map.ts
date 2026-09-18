@@ -63,7 +63,9 @@ export class PagePath {
     }
 
     withExt(ext: string): string {
-        return this.toString() + `.${ext}`;
+        // Astro's glob content loader reads file paths as URLs, so # and ? are not allowed
+        const safe_path = this.toString().replace(/[#?]/g, "");
+        return safe_path + `.${ext}`;
     }
 }
 
