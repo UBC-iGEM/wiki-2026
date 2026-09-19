@@ -108,6 +108,20 @@ const show_toc = headings.length > 0;
         font-weight: 400;
     }
 
+    .page-content :global(a) {
+        color: var(--color-cornflower);
+        text-decoration: underline;
+    }
+
+    .page-content :global(a:hover) {
+        text-decoration-thickness: 2px;
+    }
+
+    .page-content :global(a:focus-visible) {
+        outline: 2px solid var(--color-cornflower);
+        outline-offset: 2px;
+    }
+
     .page-content :global(table) {
         color: var(--color-ebony-clay);
         font-family: "Source Serif 4", serif;
@@ -131,10 +145,29 @@ const show_toc = headings.length > 0;
     }
 
     .page-toc {
+        color: var(--color-ebony-clay);
+        font-family: "Source Serif 4", serif;
+        font-size: 16px;
+        font-weight: 400;
         max-height: calc(100vh - 6rem);
         overflow-y: auto;
         position: sticky;
         top: 1rem;
+    }
+
+    .page-toc :global(a) {
+        color: var(--color-ebony-clay);
+        text-decoration: none;
+    }
+
+    .page-toc :global(a:hover) {
+        color: var(--color-cornflower);
+        text-decoration: underline;
+    }
+
+    .page-toc :global(a:focus-visible) {
+        outline: 2px solid var(--color-cornflower);
+        outline-offset: 2px;
     }
 
     @media (max-width: 1000px) {
