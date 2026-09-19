@@ -11,6 +11,7 @@ interface Props {
 }
 const { title, headings = [] } = Astro.props;
 const show_toc = headings.length > 0;
+const show_sidebar = show_toc || Astro.slots.has("sidebar");
 ---
 
 <!doctype html>
@@ -21,15 +22,20 @@ const show_toc = headings.length > 0;
     </head>
     <body>
         <Navbar />
-        <div class:list={["page-layout", { "has-toc": show_toc }]}>
+        <div class:list={["page-layout", { "has-sidebar": show_sidebar }]}>
             <main class="page-content">
                 {title && <div class="page-title">{title}</div>}
                 <slot />
             </main>
             {
-                show_toc && (
-                    <aside class="page-toc">
-                        <TableOfContents headings={headings} />
+                show_sidebar && (
+                    <aside class="page-sidebar">
+                        <slot name="sidebar" />
+                        {show_toc && (
+                            <div class="page-toc">
+                                <TableOfContents headings={headings} />
+                            </div>
+                        )}
                     </aside>
                 )
             }
@@ -54,7 +60,7 @@ const show_toc = headings.length > 0;
         padding: 1rem;
     }
 
-    .page-layout.has-toc {
+    .page-layout.has-sidebar {
         align-items: start;
         display: grid;
         gap: 1.5rem;
@@ -175,6 +181,12 @@ const show_toc = headings.length > 0;
         font-weight: 400;
         max-height: calc(100vh - 6rem);
         overflow-y: auto;
+    /* Only the table of contents scrolls, so an open dropdown is never clipped */
+    .page-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-height: calc(100vh - 2rem);
         position: sticky;
         top: 1rem;
     }
@@ -192,11 +204,22 @@ const show_toc = headings.length > 0;
     .page-toc :global(a:focus-visible) {
         outline: 2px solid var(--color-cornflower);
         outline-offset: 2px;
+    .page-toc {
+        min-height: 0;
+        overflow-y: auto;
     }
 
     @media (max-width: 1000px) {
-        .page-layout.has-toc {
-            display: block;
+        .page-layout.has-sidebar {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Stacked, the sidebar would otherwise land below the whole article */
+        .page-sidebar {
+            max-height: none;
+            order: -1;
+            position: static;
         }
 
         .page-toc {

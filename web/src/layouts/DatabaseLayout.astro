@@ -2,7 +2,7 @@
 import type { MarkdownHeading } from "astro";
 import type { DatabaseAttrs } from "@exporter/markdown/markdown";
 import { PagePath } from "@exporter/map";
-import DbSidebar from "../components/DbSidebar.astro";
+import DbDropdown from "../components/DbDropdown.astro";
 import MainLayout from "./MainLayout.astro";
 
 interface Props {
@@ -35,21 +35,15 @@ function formatDate(value: string | undefined): string | undefined {
 ---
 
 <MainLayout title={attrs.title} headings={headings}>
-    <div class="db-layout">
-        <aside class="db-sidebar">
-            <DbSidebar parent_db_path={parent_db_path} current_page_path={current_page_path} />
-        </aside>
-        <main class="db-content">
-            {
-                display_date && (
-                    <time class="db-date" datetime={attrs.date}>
-                        {display_date}
-                    </time>
-                )
-            }
-            <slot />
-        </main>
-    </div>
+    <DbDropdown slot="sidebar" parent_db_path={parent_db_path} current_page_path={current_page_path} />
+    {
+        display_date && (
+            <time class="db-date" datetime={attrs.date}>
+                {display_date}
+            </time>
+        )
+    }
+    <slot />
 </MainLayout>
 
 <style>
@@ -97,16 +91,5 @@ function formatDate(value: string | undefined): string | undefined {
         color: var(--color-ebony-clay);
         display: block;
         margin-bottom: 1rem;
-    }
-
-    @media (max-width: 700px) {
-        .db-layout {
-            grid-template-columns: 1fr;
-        }
-
-        aside.db-sidebar {
-            max-height: 16rem;
-            position: static;
-        }
     }
 </style>

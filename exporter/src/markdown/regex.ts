@@ -46,6 +46,11 @@ const REGEXES: [RegExp, string][] = [
     [/%\\\{\s*([a-zA-Z]+)\s+([\s\S]*?)\\\}%/, ":$1[$2]"],
 
     /**
+     * Dedent HTML table markup to the left margin.
+     */
+    [/^[ \t]+(<\/?(?:table|thead|tbody|tfoot|colgroup|col|tr|td|th)\b[^\n]*)$/, "$1"],
+
+    /**
      * Add newline after various elements to ensure parser recognizes them as distinct nodes.
      * Supported elements:
         - Any closing HTML tag (e.g., </details>) on its own line EXCEPT </colgroup> | </tr> since this breaks HTML tables

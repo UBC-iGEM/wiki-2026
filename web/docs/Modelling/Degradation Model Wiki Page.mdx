@@ -16,10 +16,12 @@ Distinguishing antibiotic-resistant from antibiotic-susceptible bacterial strain
 Predicting this timescale through a simulated degradation model, prior to wet-lab experimentation, can substantially optimize the process of designing and testing the experiment by informing decisions such as the expect assay duration and which enzyme-antibiotic pairs are favourable to test. Ultimately, we developed a kinetic model to simulate antibiotic degradation dynamics under enzyme activity, coupling enzyme expression, substrate degradation, and downstream bacterial response into a single dynamical system.
 The objective of this model was to build a model that could take known kinetic parameters for a given antibiotic-enzyme pair and output a predicted degradation timeline in order to better inform Wet lab’s assay development.
 
-### **Background**
+### **Background (1st draft, will edit later)**
 
-TODO//
-Talk about how distinguishing antibiotic-resistant vs antibiotic susceptible bacterial strains with a useful timeframe is a challenge, \*\* the need for an accurate timescale for wet lab testing, done by predicting the time computationally before wet lab experiments to saves time, get results, expected assay duration, etc etc quicker, more efficiency also.
+Antibiotic resistance poses a challenge for rapid antimicrobial susceptibility testing because conventional testing relies on  observing bacterial growth or inhibition following antibiotic exposure (Hattab et al., 2024; Mahrous et al., 2026).\
+An alternative approach detects resistance mechanisms more directly. Because enzymatic degradation is an important mechanism of bacterial resistance, changes in antibiotic concentration over time can serve as an indicator of resistance enzyme activity. Resistance enzymes can chemically modify or hydrolyze antibiotic molecules, thereby reducing active antibiotic. Measuring this degradation provides an alternative way to assess resistance without relying on bacterial growth.
+To carryout this approach experimentally, the timescale of antibiotic degradation must be studied. There must be a measurable change produced when the antibiotic is degraded by the resistance enzyme but also maintain an assay duration suitable for rapid detection. The rate of degradation can depend on several factors, including enzyme concentration, enzyme production, catalytic activity, and the starting antibiotic concentration. Predicting how these factors influence antibiotic concentration overtime can help determine experimental incubation periods before Wet Lab experiments to improve efficiency.
+Enzyme production and antibiotic degradation can be modelled mathematically to predict how quickly antibiotic concnetration is expected to decrease under different kinetic conditions. These predictions can help Wet Lab when selecting incubation times and evaluate whether a particular enzyme-antibiotic pair is likely to produce a measurable change.
 
 ### **Build/Methods**
 
@@ -64,7 +66,7 @@ $$
 \frac{dA}{dt} = -k_{cat} \cdot \frac{E \cdot a}{K_m + A}
 $$
 
-This is the standard Michaelis-Menten rate law for enzyme-catalyzed substrate turnover, applied to enzymatic antibiotic degradation. kcat (units) is the catalytic turnover rate of the enzyme, and K\_m is the michaelis-constant. At low substrate concentration, the degradation rate is approximately proportional to antibiotic concentration, whereas at high concentrations, the enzyme approaches saturation. Notably, enzyme concentration itself is determined by the induction equation. Consequently, antibiotic degradation is dynamically coupled to enzyme production rather than being represented by a constant degradation rate.
+This is the standard Michaelis-Menten rate law for enzyme-catalyzed substrate turnover, applied to enzymatic antibiotic degradation. kcat (\*\* add units) is the catalytic turnover rate of the enzyme, and K\_m is the Michaelis constant. At low substrate concentration, the degradation rate is approximately proportional to antibiotic concentration, whereas at high concentrations, the enzyme approaches saturation. Notably, enzyme concentration itself is determined by the induction equation. Consequently, antibiotic degradation is dynamically coupled to enzyme production rather than being represented by a constant degradation rate.
 Bacterial Response using Sigmoidal Emax Kinetics
 
 $$
@@ -72,11 +74,11 @@ $$
 \frac{dN}{dt} = \mu \cdot N - E_{max} \cdot \frac{A^{n_{pd}}}{EC_{50}^{n_{pd}} + A^{n_{pd}}} \cdot N
 $$
 
-The downstream bacterial response was modelled using a growth term combined with a sigmoidal Emax pharmacodynamic relationship. The first term describes unconstrained exponential bacterial growth at per capita rate (mu) (min-1), and the second term is a sigmoidal emax model describing concentration dependent bacterial killing. As enzymatic degradation reduces (A), the magnitude of killing term decreases, allowing the model to connect enzymatic antibiotic degradation with the expected downstream bacterial response.
+The downstream bacterial response was modelled using a growth term combined with a sigmoidal Emax pharmacodynamic relationship. The first term describes unconstrained exponential bacterial growth at per capita rate (mu) (min-1), and the second term is a sigmoidal Emax model describing concentration dependent bacterial killing. As enzymatic degradation reduces (A), the magnitude of killing term decreases, allowing the model to connect enzymatic antibiotic degradation with the expected downstream bacterial response.
 
 #### **Computational Implementation**
 
-The system was implemented in Python using scipy, matplotlib, and ipywidgets. The ODE system was solved numerically using scipy.integrate.solve\_ivp with the fourth-order Runge-Kutta method (RK45). The initial conditions were defined as:
+The system was implemented in Python using scipy, matplotlib, and ipywidgets. The ODE system was solved numerically using `scipy.integrate.solve_ivp`with the fourth-order Runge-Kutta method (RK45). The initial conditions were defined as:
 
 $$
 
@@ -87,7 +89,7 @@ N(0)=1
 $$
 
 where A\_0 represents the initial bacterial concentration and  N= 1 represents the normalized starting bacterial population.
-An interactive interface was implemented using ipywidgets, where users can independently modify parameters describing enzyme expression, enzyme decay, induction sensitivity, catalytic activity, starting antibiotic concentration, and the desired degradation threshold. The model subsequently generates three time-dependent trajectories:
+An interactive interface was implemented using `ipywidgets` where users can independently modify parameters describing enzyme expression, enzyme decay, induction sensitivity, catalytic activity, starting antibiotic concentration, and the desired degradation threshold. The model subsequently generates three time-dependent trajectories:
 
 $$
 
@@ -131,7 +133,7 @@ Learn: The predicted degradation trajectory provided a useful basis of experimen
 
 </Dbtl>
 
-things that didn’t work to add
+things that didn’t work to add: add to the DBTL stuff:
 
 - K\_ind not working … it wasn’t pinned near max induction, tied induction directly to the antibiotic concentration variable already in the model  (word this better)
 - setting starting antibiotic concentration exactly equal to mic “time to cross MIC” was always 0 because the antibiotic was at the threshold already, before any simulation time passed
@@ -141,8 +143,10 @@ Values:
 - parameter placeholders being used, with Wet lab needing to validate them (enzyme induction dynamics dependent on the specific genetic construct being used)
 
 -why this is important, background, actually explaining the coupled biological processes and how they work
-how do we plan to investgiate / solve the problem
-Results
+how do we plan to investigate / solve the problem
+
+#### **Results**
+
 ![](https://static.igem.wiki/teams/6279/wiki/assets/89cd211f16c15859865352441a0d527a.avif)
 Figure 1. Degradation Model Visualization
 
@@ -174,7 +178,8 @@ Bacterial Kill/Regrowth - elaborate more
 
 </Dbtl>
 
-siilar to paper,
+Notes:
+make it similar to a paper so like:
 abstract, description, general problem you’re trying to solve, background info, what is the context, develop method, how do we plan to investigate / solve the problem, then process, + methods + results, + discussion + conclusion - STANDARD PAPER
 DBTL: lets say fro method have problem that you’re trying to solve (degradation problem) need to expose antibiotic to degrade need to know how long to put in there, so put in there have two stages:
 
@@ -182,3 +187,5 @@ DBTL: lets say fro method have problem that you’re trying to solve (degradatio
 
 at the end of section put DBTL block to represent it, use it as a recap. for methods since we did try each method, have one for each ideation cycle, write it as a story
 Conclusion
+
+####
