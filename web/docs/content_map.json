@@ -94,6 +94,10 @@
                         {
                             "path": "Plasmid Retention Assay v3",
                             "item": "3ded65dd82be8080a051d37b70718c31"
+                        },
+                        {
+                            "path": "Biosensor Challenge Assay",
+                            "item": "3e0d65dd82be805881e8fcf23e82411f"
                         }
                     ]
                 }
@@ -116,6 +120,16 @@
                     "path": "Degradation Model Wiki Page",
                     "type": "page",
                     "item": "3c0d65dd82be8013bb60fe7bd633c0a7"
+                },
+                {
+                    "path": "Computation Screening Pipeline",
+                    "type": "page",
+                    "item": "3dfd65dd82be80ecbb4acf486625c456"
+                },
+                {
+                    "path": "Promoter Library",
+                    "type": "page",
+                    "item": "3dfd65dd82be80b789fcc92bd1d8ad53"
                 }
             ]
         },
