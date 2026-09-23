@@ -1,0 +1,189 @@
+---
+import { ContentMap, PagePath, type JsonMap } from "@exporter/map";
+import config from "../../docs/content_map.json";
+
+const content_map = ContentMap.fromJSON(config as JsonMap);
+
+interface Props {
+    parent_db_path: string;
+    current_page_path: string;
+}
+
+const { current_page_path, parent_db_path } = Astro.props;
+
+const parent_db = PagePath.fromString(parent_db_path);
+const database_title = parent_db.name().toString();
+const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
+
+// A Notion title may itself contain "/", which `fromString` would split into two components,
+// so find the current page by its full path rather than by re-parsing it
+const current_page = parent_db_entries.find((entry) => entry.toString() === current_page_path);
+
+const current_page_title = (current_page ?? PagePath.fromString(current_page_path)).name().toString();
+---
+
+<details class="db-dropdown">
+    <summary>
+        <span class="db-name">{database_title}</span>
+        <span class="page-name">{current_page_title}</span>
+        <span class="marker" aria-hidden="true">▾</span>
+    </summary>
+
+    <nav aria-label={`${database_title} pages`}>
+        <ul>
+            {
+                parent_db_entries.map((entry) => {
+                    const is_active = entry.toString() === current_page_path;
+
+                    return (
+                        <li>
+                            <a
+                                class={is_active ? "active" : undefined}
+                                href={`/${entry.toSlug()}`}
+                                aria-current={is_active ? "page" : undefined}
+                            >
+                                {entry.name().toString()}
+                            </a>
+                        </li>
+                    );
+                })
+            }
+        </ul>
+    </nav>
+</details>
+
+<script>
+    import { makeDismissable } from "../dismissable";
+
+    for (const dropdown of document.querySelectorAll<HTMLDetailsElement>("details.db-dropdown")) {
+        makeDismissable(dropdown);
+
+        // Reveal the current page, which a long database can push out of view
+        dropdown.addEventListener("toggle", () => {
+            if (dropdown.open) {
+                dropdown.querySelector("a.active")?.scrollIntoView({
+                    block: "nearest",
+                });
+            }
+        });
+    }
+</script>
+
+<style>
+    .db-dropdown {
+        display: block;
+        font-family: var(--font-geist);
+        position: relative;
+    }
+
+    summary {
+        align-items: center;
+        background: var(--color-northern-lights);
+        border: 1px solid var(--color-northern-lights);
+        border-radius: 8px;
+        color: var(--color-ebony-clay);
+        cursor: pointer;
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        padding: 0.5rem 0.7rem;
+        transition:
+            background 120ms ease,
+            border-color 120ms ease;
+        user-select: none;
+    }
+
+    summary:hover {
+        background: var(--color-periwinkle);
+        border-color: var(--color-periwinkle);
+    }
+
+    summary:focus-visible {
+        outline: 2px solid var(--color-cornflower);
+        outline-offset: 2px;
+    }
+
+    .db-name {
+        color: var(--color-ebony-clay);
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        width: 100%;
+    }
+
+    .page-name {
+        color: var(--color-ebony-clay);
+        flex: 1;
+        font-size: 0.9rem;
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+    .marker {
+        color: var(--color-ebony-clay);
+        display: inline-block;
+        font-size: 0.7rem;
+        padding-left: 0.5rem;
+        transition: transform 150ms ease;
+    }
+
+    .db-dropdown[open] .marker {
+        transform: rotate(180deg);
+    }
+
+    nav {
+        background: var(--color-ebony-clay);
+        border: 1px solid var(--color-northern-lights);
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        max-height: min(60vh, 24rem);
+        overflow-y: auto;
+        padding: 0.3rem;
+        position: absolute;
+        right: 0;
+        top: calc(100% + 0.35rem);
+        width: max-content;
+        z-index: 10;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    a {
+        border-radius: 6px;
+        color: var(--color-periwinkle);
+        display: block;
+        font-size: 0.85rem;
+        padding: 0.4rem 0.55rem;
+        text-decoration: none;
+        transition:
+            background 120ms ease,
+            color 120ms ease;
+    }
+
+    a:hover {
+        background: var(--color-northern-lights);
+        color: var(--color-ebony-clay);
+    }
+
+    a:focus-visible {
+        outline: 2px solid var(--color-cornflower);
+        outline-offset: 1px;
+    }
+
+    a.active {
+        background: var(--color-periwinkle);
+        color: var(--color-ebony-clay);
+        font-weight: 700;
+    }
+
+    @media (max-width: 1000px) {
+        nav {
+            max-width: 100%;
+        }
+    }
+</style>
