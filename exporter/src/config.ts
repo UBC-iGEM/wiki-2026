@@ -4,6 +4,10 @@ import { z } from "zod";
 const CONFIG_SCHEMA = z.object({
     master_id: z.string(),
     content_dir_path: z.string(),
+    internal_link_root: z
+        .string()
+        .default("")
+        .transform((root) => root.replace(/\/+$/, "")),
     debug_dir_path: z.string(),
     team_id: z.string(),
     team_page_id: z.string(),
