@@ -1,5 +1,5 @@
 import baseConfig from "../eslint.config";
 import eslintPluginAstro from "eslint-plugin-astro";
-import { defineConfig } from "eslint/config";
+import { defineConfig, globalIgnores } from "eslint/config";
 
-export default defineConfig([...baseConfig, ...eslintPluginAstro.configs.recommended]);
+export default defineConfig([...baseConfig, globalIgnores(["dist/**"]), ...eslintPluginAstro.configs.recommended]);

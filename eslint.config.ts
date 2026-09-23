@@ -1,11 +1,9 @@
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
-import { defineConfig } from "eslint/config";
+import { defineConfig, globalIgnores } from "eslint/config";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
-    {
-        ignores: ["**/.astro/**", "**/node_modules/**"],
-    },
+    globalIgnores(["**/.astro/**", "**/node_modules/**", "web/dist/"]),
     ...tseslint.configs.recommended,
     {
         files: ["**/*.ts"],

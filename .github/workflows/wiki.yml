@@ -1,0 +1,99 @@
+name: Wiki CI/CD
+
+on:
+    pull_request:
+    push:
+        branches:
+            - main
+
+permissions:
+    contents: read
+
+jobs:
+    verify:
+        name: verify
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22.12.0
+                  cache: npm
+            - run: npm ci
+            - run: npm run check
+            - run: npm run lint
+            - run: npm run build
+            - uses: actions/upload-artifact@v4
+              with:
+                  name: astro-site
+                  path: web/dist
+                  if-no-files-found: error
+
+    deploy:
+        name: deploy
+        needs: verify
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        runs-on: ubuntu-latest
+        env:
+            IGEM_GITLAB_TOKEN: ${{ secrets.IGEM_GITLAB_TOKEN }}
+            IGEM_GITLAB_REPOSITORY: https://gitlab.igem.org/2026/ubc-vancouver.git
+        steps:
+            - uses: actions/checkout@v4
+            - name: Require GitLab deployment credential
+              shell: bash
+              run: |
+                  if [[ -z "$IGEM_GITLAB_TOKEN" ]]; then
+                    echo "::error title=Missing GitLab deployment credential::Set the IGEM_GITLAB_TOKEN repository secret to a project access token with write_repository permission before deploying main."
+                    exit 1
+                  fi
+            - uses: actions/download-artifact@v4
+              with:
+                  name: astro-site
+                  path: ${{ runner.temp }}/astro-site
+            - name: Verify the static-site artifact
+              shell: bash
+              run: test -s "$RUNNER_TEMP/astro-site/index.html"
+            - name: Update the GitLab deployment tree
+              shell: bash
+              run: |
+                  askpass="$RUNNER_TEMP/git-askpass"
+                  deployment_dir="$RUNNER_TEMP/igem-wiki"
+
+                  cat > "$askpass" <<'EOF'
+                  #!/usr/bin/env sh
+                  case "$1" in
+                    *Username*) printf '%s\n' 'oauth2' ;;
+                    *Password*) printf '%s\n' "$IGEM_GITLAB_TOKEN" ;;
+                  esac
+                  EOF
+                  chmod 700 "$askpass"
+                  trap 'rm -f "$askpass"' EXIT
+
+                  export GIT_ASKPASS="$askpass"
+                  export GIT_TERMINAL_PROMPT=0
+                  git clone "$IGEM_GITLAB_REPOSITORY" "$deployment_dir"
+
+                  cd "$deployment_dir"
+                  git rm -r --ignore-unmatch .
+                  mkdir public
+                  cp -R "$RUNNER_TEMP/astro-site/." public/
+                  cp "$GITHUB_WORKSPACE/.gitlab-ci.yml" .gitlab-ci.yml
+                  test -s public/index.html
+
+                  git add --all
+                  invalid_paths="$(git ls-files | awk '$0 != ".gitlab-ci.yml" && $0 !~ /^public\//')"
+                  if [[ -n "$invalid_paths" ]]; then
+                    echo "Unexpected deployment files:"
+                    echo "$invalid_paths"
+                    exit 1
+                  fi
+
+                  if git diff --cached --quiet; then
+                    echo "Deployment tree is unchanged."
+                    exit 0
+                  fi
+
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git commit -m "deploy: ${GITHUB_SHA}"
+                  git push origin HEAD:main

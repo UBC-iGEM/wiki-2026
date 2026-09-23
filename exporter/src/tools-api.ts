@@ -149,12 +149,7 @@ class ToolsClient {
             uid,
             extension_hint: original_file ? final_extension : undefined,
         });
-        if (isExporterErr(download_res))
-            return new ExporterError(
-                `Failed to retrieve data from url "${url}" while attempting to upload asset on page "${path}" with UID ${uid}.`,
-                ["igem tools server", "notion server"],
-                download_res,
-            );
+        if (isExporterErr(download_res)) return download_res;
 
         const { file_path: temp_file_path, cleanup } = download_res;
 

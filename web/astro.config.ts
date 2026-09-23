@@ -9,6 +9,7 @@ import remarkMath from "remark-math";
 
 // https://astro.build/config
 export default defineConfig({
+    base: "/ubc-vancouver",
     markdown: {
         processor: unified({
             remarkPlugins: [remarkMath, remarkBreaks],
