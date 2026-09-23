@@ -14,23 +14,17 @@ date: "2026-08-22"
 </Callout>
 
 Previous biosensor titrations tested narrow antibiotic concentration range and did not establish the bound at which RecA and CpxP produce detectable fluorescence.
-
-- The purpose of this experiment is to identify the lower and upper bounds of detectable biosensor response to inform a more narrow range for the Biofactorial biosensor titration experiment
+The purpose of this experiment is to identify the lower and upper bounds of detectable biosensor response to inform a more narrow range for the Biofactorial biosensor titration experiment
 
 ## Variables
 
-Independent:  Seeding Density (1 concentrations, OD = 0.4), Type of antibiotic (4 of them), Antibiotic Concentration (6 concentrations), Gene (Cpxp, recA), Time (0–2h)
-Dependent: Fluorescence intensity
-Find our cutoff for concentrations (what is the ideal Fluorescence/OD value for us? which values would work?)
-Seeding density: → based around OD 0.4
-OD 0.4 was determined to work (OD 0.2 was determined not to. optimize OD from prev expreiments but not a huge jump in optimization.
-Antibiotic concentration: → make a large range for ALL Abs.
-→ encourage a wide range of Ab concentrations: previous experiments only did THREE values. Each showed relatively similar results ( except for recA + aminoglycosides, in which concentrations did mattter). if Ab concentration does matter, we need a much larger range of Abs to observe a difference.
-time: → just do intervals over x period of time
-previous experiments showed convergence at abt 1 hour (mostly), but we can put it on for longer \~3 hours at most?
+- Independent:  Seeding Density (1 concentrations, OD = 0.4), Type of antibiotic (4 of them), Antibiotic Concentration (6 concentrations), Gene (Cpxp, recA), Time (0–2h)
+- Dependent: Fluorescence intensity
 
 # Background
 
+Previously, we used bacterial cultures grown to an OD of 0.4. However, we failed to account for the dilution of the cultures once plated with antibiotic solution, diluting the final OD values to 0.2. As such, we will grow our cultures to 0.8 for a final dilution of OD 0.4.
+Additionally, we previously only tested 3 concentrations per antibiotic. Each showed relatively similar results except for recA exposed to aminoglycosides, in which concentrations did matter. If antibiotic concentration does matter, we need a much larger range of Abs to observe a difference.
 Our sensors did not display good sensitivity to antibiotic stimulation. We need to perform a more detailed biosensor output optimization experiment to determine the optimal conditions for sensor sensitivity.
 Previous Concentrations:
 
@@ -204,11 +198,25 @@ Fluorescent measurements found here: [https://docs.google.com/spreadsheets/d/13t
 - Note on amoxicillin raw data: plate is rotated 180 degrees. rotate 180 to analyze.
 
 ![](https://static.igem.wiki/teams/6279/wiki/assets/8fc6d73c3e705785af93bfc87b87959f.avif)
+**Figure 1**. MIC response of kanamycin for RecA and CpxP.
 
 ![](https://static.igem.wiki/teams/6279/wiki/assets/f8c0f6307c4e51558fb3e9bb1063aef0.avif)
+**Figure 2**. MIC response of cephalexin for RecA and CpxP.
 
 ![](https://static.igem.wiki/teams/6279/wiki/assets/6e1b0f22536f5579949154c1657153dd.avif)
+**Figure 3**. MIC response of gentamicin for RecA and CpxP.
 
 ![](https://static.igem.wiki/teams/6279/wiki/assets/114505dcd9b95e42ae5a795775433995.avif)
+**Figure 4**. MIC response of amoxicillin for RecA and CpxP.
 
 ## Summary
+
+To determine the
+Some MIC ranges are identified, though high overlap suggests that results may be due to error or chance. We will repeat this experiment to acquire a larger sample size, giving us confidence in our selection of MIC range before scaling up to biofactorial.
+
+For RecA, we identified preliminary ranges that produce an fluorescence intensity peak above 1:
+
+- Gentamicin: 16-64ug/ml
+- Kanamycin: 160-320ug/ml
+- Amoxicillin: 1ug/ml or 16-32ug/ml
+- Cephalexin: 16ug/ml-32ug/ml

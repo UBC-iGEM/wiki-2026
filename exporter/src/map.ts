@@ -1,4 +1,5 @@
 import { PageId } from "./notion";
+import { slug } from "github-slugger";
 
 // Required setup for decorators
 export class PagePathComponent {
@@ -13,7 +14,11 @@ export class PagePathComponent {
     }
 
     toSlug(): string {
-        return this.path.trim().toLowerCase().replace(/\s+/g, "-");
+        // Astro slugs each path segment to build route ids, so match it exactly or links 404
+        return this.path
+            .split("/")
+            .map((segment) => slug(segment))
+            .join("/");
     }
 }
 
@@ -58,7 +63,9 @@ export class PagePath {
     }
 
     withExt(ext: string): string {
-        return this.toString() + `.${ext}`;
+        // Astro's glob content loader reads file paths as URLs, so # and ? are not allowed
+        const safe_path = this.toString().replace(/[#?]/g, "");
+        return safe_path + `.${ext}`;
     }
 }
 

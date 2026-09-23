@@ -13,23 +13,29 @@ date: "2026-08-30"
 	**What is the maximum amount of antibiotic we can use as an input for our patient samples?**
 </Callout>
 
-Independent: antibiotic concentration
-Readout: OD value after 24 hours of antibioitc exposure
-Objective: To find the optimal antibiotic concentration for each strain that maximises the number of colonies on the agar plate to use for future validations
+## Variables
+
+- Independent: antibiotic concentration
+- Readout: OD value after 24 hours of antibioitc exposure
+- Objective: To find the optimal antibiotic concentration for each strain that maximises the number of colonies on the agar plate to use for future validations
 
 # Experiment:
 
 ## Materials:
 
 - Standard 96-well microplate (flat-bottom, sterile)
-- LB broth (or Mueller-Hinton broth)
-- Gentamicin, Kanamycin, and Beta-lactam (Amoxicillin, Cephalexin) stock solutions
-- Culture tubes
-- Multichannel pipette + trough
-- Sealing film for microplate
-- Square Petri dishes with LB-agar (for MBC plating)
-- Plate reader (OD600 capable)
-- PBS or 0.9% NaCl (saline) for dilutions
+- Multichannel pipette + reservoir
+- 0.2 µm sterile filter and syringe
+- Gentamicin (Sigma Aldrich, #G1264-50MG)
+- Kanamycin (BioShop, #KAN201)
+- Amoxicillin (Sigma Aldrich, #A8523-1G)
+- Cephalexin (AmBeed, #A320894)
+- MilliQ water
+- LB+Cm-agar dishes
+- 3 Patient simulant strains (from [Patient Simulant (KanR, GmR) Cloning](/ubc-vancouver/wet-lab/lab-notebook-2026/patient-simulant-kanr-gmr-cloning) and [Patient Simulant (B-Lact., CmR backbone) Cloning](/ubc-vancouver/wet-lab/lab-notebook-2026/patient-simulant-b-lact-cmr-backbone-cloning) )
+- LB-Cm broth (17 mg/ml)
+- LB broth
+- Varioskan plate reader
 
 ## Procedure:
 
@@ -61,13 +67,13 @@ Objective: To find the optimal antibiotic concentration for each strain that max
 2. **Inoculating the plate**: Using a multichannel pipette, add 50 µL of the diluted standardized inoculum to every well in columns 1–11. Do not add inoculum to column 12 (it must stay sterile). Complete this step within 15 minutes of preparing the inoculum in Step 3.
 3. Seal and incubate: cover the plate with a sealing film, then a lid. Incubate at 37°C overnight.
 
-|   |   |            |           |          |        |        |        |        |         |         |         |    |
-| - | - | ---------- | --------- | -------- | ------ | ------ | ------ | ------ | ------- | ------- | ------- | -- |
-|   | 1 | 2          | 3         | 4        | 5      | 6      | 7      | 8      | 9       | 10      | 11      | 12 |
-|   |   | 0.125ug/ml | 0.25ug/ml | 0.5ug/ml | 1ug/ml | 2ug/ml | 4ug/ml | 8ug/ml | 16ug/ml | 32ug/ml | 64ug/ml |    |
-|   |   |            |           |          |        |        |        |        |         |         |         |    |
-|   |   |            |           |          |        |        |        |        |         |         |         |    |
-|   |   |            |           |          |        |        |        |        |         |         |         |    |
+|   |          |              |            |           |          |          |          |          |          |          |          |          |
+| - | -------- | ------------ | ---------- | --------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |
+|   | 1        | 2            | 3          | 4         | 5        | 6        | 7        | 8        | 9        | 10       | 11       | 12       |
+| A | 0ug/ml   | 0.0625 ug/mL | 0.125ug/ml | 0.25ug/ml | 0.5ug/ml | 1ug/ml   | 2ug/ml   | 4ug/ml   | 8ug/ml   | 16ug/ml  | 32ug/ml  | blank LB |
+| B | 0ug/ml   | 0.0625 ug/mL | 0.125ug/ml | 0.25ug/ml | 0.5ug/ml | 1ug/ml   | 2ug/ml   | 4ug/ml   | 8ug/ml   | 16ug/ml  | 32ug/ml  | blank LB |
+| C | 0ug/ml   | 0.0625 ug/mL | 0.125ug/ml | 0.25ug/ml | 0.5ug/ml | 1ug/ml   | 2ug/ml   | 4ug/ml   | 8ug/ml   | 16ug/ml  | 32ug/ml  | blank LB |
+| D | blank LB | blank LB     | blank LB   | blank LB  | blank LB | blank LB | blank LB | blank LB | blank LB | blank LB | blank LB | blank LB |
 
 ## Day 3: Read the Plate and Determine MIC
 
@@ -113,7 +119,7 @@ Objective: To find the optimal antibiotic concentration for each strain that max
 | C     | 0.601253  | 0.430087  | 0.4426    | 0.436012  | 0.421412  | 0.423716  | 0.424838  | 0.421077  | 0.409386  | 0.398957  | 0.360142 | 0.0446047 |
 | D     | 0.0400821 | 0.0397697 | 0.0517853 | 0.0417506 | 0.0413398 | 0.0402241 | 0.0472178 | 0.0436367 | 0.0398189 | 0.0440294 | 0.202342 | 0.0539542 |
 
-### Gentamycin
+### Gentamicin
 
 |       |          |          |          |          |          |          |          |          |          |           |           |           |
 | ----- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | --------- | --------- | --------- |
@@ -125,5 +131,5 @@ Objective: To find the optimal antibiotic concentration for each strain that max
 
 # Summary
 
-- Gentamicin at 16-32 ug/ml allows for simulant survival
-- Kanamycin, Cephalexin, and Amoxicillin should be titrated again at concentrations above 64 ug/ml
+- Gentamicin at<span discussion-urls="discussion\://3cdd65dd-82be-80dd-8d4c-c534a89b9ada/3d0d65dd-82be-806e-b9d2-e06c89c237fc/3ded65dd-82be-8086-baea-001cb38138a4"> 16-32 ug</span>/ml allows for simulant survival
+- Kanamycin, Cephalexin, and Amoxicillin should be titrated again at concentrations above 32 ug/ml

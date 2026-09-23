@@ -1,0 +1,97 @@
+---
+type: "database"
+title: "Plasmid Retention Assay v2"
+path: "Wet Lab/Lab Notebook 2026/Plasmid Retention Assay v2"
+date: "2026-09-08"
+---
+
+Background
+
+## Objective
+
+Primary: Quantify plasmid retention over time in our biosensors when held without Cm selection at room temperature <Callout icon="🗣" color="green_bg">
+For what duration of time can be keep the biosensors in media without antibiotics at room temperature? </Callout>
+
+Repeat of [Plasmid Retention Assay v1](/ubc-vancouver/wet-lab/lab-notebook-2026/plasmid-retention-assay-v1) to determine the retention of reporter plasmids in the absence of chloramphenicol, using higher dilutions to avoid lawn of growth and create isolated colonies to quantify differences in plasmid retention cultured LB and LB-Cm media.
+
+## Variables
+
+- Independent: Time
+- Dependent: Plasmid Retention Fraction ($CFU_{LBCM}/CFU_{LB}$)
+- Dependent: sfGFP Florescence normalized to OD600
+
+# Experiment
+
+## Materials and Reagents
+
+- LB-Cm (17 mg/L)
+- LB
+- LB Plates
+- Cuvettes
+- Dilution tubes
+
+## Strains
+
+| Name | Purpose          |
+| ---- | ---------------- |
+| RecA | Directly testing |
+| CpxP | Directly testing |
+| WT   | Control          |
+
+## Procedure
+
+### Day 0 & 1 - Strain Prep
+
+1. From glycerol stock, streak a place per strain, leave overnight to grow.
+2. Inoculate 3 colonies of each strain into separate 3mL LB-Cm (LB for Control strain) and grow overnight (37C, 200rpm)
+
+### Day 2 & 3 - Experimentation
+
+1. Measure starting OD600, diluting to a linear range if needed
+2. Pellet \~1mL and wash once in Cm-free LB
+3. Inoculate each strain to a starting OD600 of 0.05, then transfer 5mL to a culture tube. You should have 6 tube types.
+
+|             | RecA | CpxP | Control (EPI300) |
+| ----------- | ---- | ---- | ---------------- |
+| LB Media    | RLX  | CLX  | ELX              |
+| LB-Cm Media | RLC  | CLC  | ELC              |
+
+1. Culture tubes at 37C @ 200rpm
+2. For each timepoint (0hr, 1 hr, 2 hr) per tube
+   1. Vortex the tube and aspirate
+   2. Record the OD600 of the solution
+   3. Dilute the solution in the cuvette to an OD of 0.1. If the recorded OD is lower than 0.1 for the earlier timepoints, skip this step.
+   4. Mix 100uL of the solution in the cuvette with 900uL of LB-Cm media. Perform a 6 step 1:10 serial dilution. (-7, -8, -9)
+   5. Divide a plate into 4 sectors, labelling them -7 to -9. To each, add 3 x 2uL drops of the corresponding dilution to the plate.
+   6. Allow the spots the fully absorb, then invert and store in 37C overnight
+
+## Results
+
+Table 1. OD values of biosensor or Epi300 strains.
+
+|        |                   |
+| ------ | ----------------- |
+| Strain | OD600(after wash) |
+| RLX    | 0.45              |
+| RLC    | 0.45              |
+| CLX    | 0.45              |
+| CLC    | 0.45              |
+| ELX    | 0.45              |
+| ELC    | 0.45              |
+
+We only plated bacteria for timepoints: 0, 1hr, and 2hr
+
+![](https://static.igem.wiki/teams/6279/wiki/assets/fb244c40198b51e9a92e5d017ebc489c.avif)
+**Figure 1**. Cultures grown in LB-Cm over 3 time intervals, plated on LB-Cm agar plates and incubated for \~18 hours at 37˚C.
+
+![](https://static.igem.wiki/teams/6279/wiki/assets/400c90f7e601558ea5b8c36a4833e6c4.avif)
+**Figure 2.** Cultures grown in LB over 3 time intervals, plated on LB-Cm agar plates and incubated for \~18 hours at 37˚C.
+
+## Summary
+
+- As expected, the WT Epi300 strain did not grow in either condition.
+- We were able to achieve single isolated colonies with the 10^-7, 10^-8, and 10^-9 dilutions , as observed in the RLC and CLC conditions.
+- Growth is not observed in the RLX and CLX conditions, with the exception of what we suspect is contamination in the 10^-9 quadrants in CLX.
+- These results contradict the qualitative findings obtained in [Plasmid Retention Assay v1](/ubc-vancouver/wet-lab/lab-notebook-2026/plasmid-retention-assay-v1). This may be attributed to contamination of media or inadequate dilution, leading to the lawn of growth.
+- Based on these results, the biosensor strains do not retain their plasmids in the absence of chloramphenicol selection marker. As such, it is not advisable to wash our strains in Cm-free LB for subsequent experiments.
+- It may be recommended to perform a third plasmid retention assay to confirm these results, compared to that of [Plasmid Retention Assay v1](/ubc-vancouver/wet-lab/lab-notebook-2026/plasmid-retention-assay-v1) using 4 dilution ranges: -5, -6, -7, -8

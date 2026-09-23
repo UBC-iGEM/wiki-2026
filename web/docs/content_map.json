@@ -36,19 +36,19 @@
                             "item": "3a0d65dd82be8006a207f9238485ada8"
                         },
                         {
-                            "path": "Biosensor GFP sensitivity assay v.1 ",
+                            "path": "Biosensor GFP sensitivity assay v1 ",
                             "item": "3a0d65dd82be800abdd8da381591996b"
                         },
                         {
-                            "path": "Biosensor GFP sensitivity assay v.2",
+                            "path": "Biosensor GFP sensitivity assay v2",
                             "item": "3add65dd82be8059898adbe453d45c26"
                         },
                         {
-                            "path": "WT Biosensor MIC Titration v.1",
+                            "path": "WT Biosensor MIC Titration v1",
                             "item": "3b9d65dd82be8061aa93e33cb822c14f"
                         },
                         {
-                            "path": "WT Biosensor MIC Titration v.2",
+                            "path": "WT Biosensor MIC Titration v2",
                             "item": "3c1d65dd82be803daff2fdc7973c9097"
                         },
                         {
@@ -68,7 +68,7 @@
                             "item": "3c4d65dd82be806a8633cb40bbf08923"
                         },
                         {
-                            "path": "Plasmid Retention Assay",
+                            "path": "Plasmid Retention Assay v1",
                             "item": "3c5d65dd82be806da03ff26fff96ed54"
                         },
                         {
@@ -86,6 +86,18 @@
                         {
                             "path": "Simulant Survival Titration v2",
                             "item": "3d5d65dd82be80a38592e56e36f3505d"
+                        },
+                        {
+                            "path": "Plasmid Retention Assay v2",
+                            "item": "3d6d65dd82be80fc9f19eb0dedc0d19b"
+                        },
+                        {
+                            "path": "Plasmid Retention Assay v3",
+                            "item": "3ded65dd82be8080a051d37b70718c31"
+                        },
+                        {
+                            "path": "Biosensor Challenge Assay",
+                            "item": "3e0d65dd82be805881e8fcf23e82411f"
                         }
                     ]
                 }
@@ -108,12 +120,63 @@
                     "path": "Degradation Model Wiki Page",
                     "type": "page",
                     "item": "3c0d65dd82be8013bb60fe7bd633c0a7"
+                },
+                {
+                    "path": "Computation Screening Pipeline",
+                    "type": "page",
+                    "item": "3dfd65dd82be80ecbb4acf486625c456"
+                },
+                {
+                    "path": "Promoter Library",
+                    "type": "page",
+                    "item": "3dfd65dd82be80b789fcc92bd1d8ad53"
                 }
             ]
         },
         {
             "name": "Human Practices",
-            "entries": []
+            "entries": [
+                {
+                    "path": "Introduction",
+                    "type": "page",
+                    "item": "3d7d65dd82be80cbbb5cd6fb4854c487"
+                },
+                {
+                    "path": "Stage 1: Literature Review",
+                    "type": "page",
+                    "item": "3d7d65dd82be804abcd2faccce039b76"
+                },
+                {
+                    "path": "Stage 2: integrated Human Practices (iHP)",
+                    "type": "page",
+                    "item": "3d7d65dd82be80829c5dd498e9c45e80"
+                },
+                {
+                    "path": "Next Steps… → The Dialogue: What are the Barriers?",
+                    "type": "page",
+                    "item": "3d7d65dd82be80b68a42e85af71a804d"
+                },
+                {
+                    "path": "1. Education: Raising Awareness about AMR",
+                    "type": "page",
+                    "item": "3d7d65dd82be803b9fafe4c1726654e2"
+                },
+                {
+                    "path": "2. Tangible Impact #1: Addressing the Need for a Community ",
+                    "type": "page",
+                    "item": "3d7d65dd82be803a87eac9f733f78214"
+                },
+                {
+                    "path": "3. Tangible Impact #2 - Education of Patients and Families",
+                    "type": "page",
+                    "item": "3d7d65dd82be803faa47e7d1cc948180"
+                },
+                {
+                    "path": "Concluding Thoughts",
+                    "type": "page",
+                    "item": "3d7d65dd82be8078a43bfd438b8af0ff"
+                }
+            ]
         },
         {
             "name": "Testing",

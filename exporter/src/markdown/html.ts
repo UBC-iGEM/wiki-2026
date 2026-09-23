@@ -18,6 +18,18 @@ function parseTables({ ctx, parsed_node }: HtmlProcessorInput): ProcessorOutput 
     const has_header = table_elem.getAttribute("header-row") === "true";
     const html_rows = table_elem.querySelectorAll("tr");
 
+    if (html_rows.length === 0) {
+        const empty_table: Table = {
+            type: "table",
+            children: [],
+        };
+        ctx.parent.children[ctx.index] = empty_table;
+
+        // Skip children of the origin node
+        // Traverse the new `Table` element
+        return [SKIP, ctx.index];
+    }
+
     const rows = html_rows.map((html_row) => {
         const html_cells = html_row.querySelectorAll("td");
 

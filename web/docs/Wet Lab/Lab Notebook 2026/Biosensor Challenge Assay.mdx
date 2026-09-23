@@ -1,0 +1,203 @@
+---
+type: "database"
+title: "Biosensor Challenge Assay"
+path: "Wet Lab/Lab Notebook 2026/Biosensor Challenge Assay"
+date: "2026-09-17"
+---
+
+# Background
+
+## Objective
+
+<Callout icon="🗣" color="green_bg">
+	What is the maximum antibiotic concentration which the biosensors can tolerate?
+</Callout>
+
+We will repeat repurpose the assay developed in [WT Biosensor MIC Titration v1](/ubc-vancouver/wet-lab/lab-notebook-2026/wt-biosensor-mic-titration-v1) to determine an MIC value for the biosensors across all 4 antibiotics.
+
+## Variables
+
+Independent:  Antibiotic Concentration
+Dependent: OD
+
+# Background
+
+To obtain better estimates for the MIC titration of our biosensors, we will perform a benchtop titration using WT EPI300.
+
+# Experiment
+
+## Materials and Reagents
+
+- 2x clear flat bottom 96-well plate
+- Syringe filters + syringes
+- Cuvettes
+- Eppendorf Tubes
+- Falcon Tubes (5mL, 1mL)
+- [mention-page](https://app.notion.com/p/3b8d65dd82be80088e47c76f6e28cdbf)
+- [mention-page](https://app.notion.com/p/3b8d65dd82be80f8b34aff8fac006796)
+- [mention-page](https://app.notion.com/p/3b8d65dd82be8005a5d5e9e6541edc3c)
+- [mention-page](https://app.notion.com/p/3b8d65dd82be80fba1a2e96e0d0d7587)
+- LB Miller Powder (chemicals station, big tub on the floor)
+- Sterile Water
+- WT EPI300 Glycerol Stocks (-80C)
+
+## **Lab Equipment**
+
+- Spectrophotometer
+- Plate Reader (Varioskan)
+- 37C Shaking incubator
+- MilliQ Dispenser
+
+## Procedure
+
+### Day 1  - Prep Cultures + AB stocks + Media & Water
+
+<span underline="true">**Prepare LB-Cm Media**</span>
+
+1. Prep 500mL LB Cm-Miller according to this procedure [mention-page](https://app.notion.com/p/3bad65dd82be80ec92d0ead085a8ee12)
+
+<span underline="true">**Prepare Sterile Water**</span>
+
+1. Fill 500mL bottle with MilliQ water, loosely cap and place autoclave tape
+2. Run with LB Media in autoclave on LIQUID20 [mention-page](https://app.notion.com/p/1fcd65dd82be806b9959f3336e7bafb0)
+
+<span underline="true">**Culture Prep**</span>
+
+1. Inoculate 2 culture tubes with RecA and CpxP respectively in \~5-7mL of Lb Cm Media
+2. Place culture tube in 37C room, 200-250rpm, over night
+
+***
+
+### Day 2 - Plate Preparation
+
+<span underline="true">**Prepare Gentamicin and Tobramycin Stocks**</span>
+
+1. Read potency on antibiotics. Calculate amount needed to create a 1 mg/mL master stock of 15 mL
+2. Dissolve in water, vortex, and filter
+3. Aliquot 3mL into 5mL tubes, label with date and identity
+4. Store in -20C
+
+<Callout icon="🥼" color="orange_bg">
+	For [mention-page](https\://app.notion.com/p/3b8d65dd82be80088e47c76f6e28cdbf) the target weight for 1mg/mL in 15mL is\:
+	$15 mL \cdot \frac{1mg}{1mL} \cdot \frac{1mg}{0.6mg} = 25mg$
+	Actual weight was 23.5 mg → 14.1 mg active, 14.1 mL MilliQ H2O added
+	For [mention-page](https\://app.notion.com/p/3b8d65dd82be80f8b34aff8fac006796) the target weight for 1mg/mL in 15mL is\:
+	$15 mL \cdot \frac{1mg}{1mL} \cdot \frac{1mg}{0.972mg} = 15.42mg$
+	Actual\: 27.9 mg → 27.1 mg active, 27.1 mL MilliQ H2O added
+
+</Callout>
+
+<span underline="true">**Prepare Amoxicillin Stock**</span>
+
+1. Read potency on antibiotic. Calculate amount needed to create a 1 mg/mL master stock of 15 mL
+2. Dissolve in water, vortex, and filter
+3. Aliquot 3mL into 5mL tubes, label with date and identity
+4. Store in -20C
+
+<Callout icon="🥼" color="orange_bg">
+	For [mention-page](https\://app.notion.com/p/3b8d65dd82be8005a5d5e9e6541edc3c) the target weight for 1mg/mL in 15mL is\:
+	$15 mL \cdot \frac{1mg}{1mL} \cdot \frac{1mg}{0.9mg} = 16.67mg$
+	Actual\: 17.1 mg → 15.39 mg active, 15.39 mL MilliQ H2O added
+
+</Callout>
+
+<span underline="true">**Working Stock Preparation**</span>
+
+1. Into Eppendorf tubes, prepare the highest concentration of the antibiotics according to the following dilutions.
+   1. These are 2x concentrations
+
+| Antibiotic  | Target (ug/mL) | Master Vol (uL) | LB Vol (uL) |
+| ----------- | -------------- | --------------- | ----------- |
+| Gentamicin  | 32             | 32              | 968         |
+| Tobramycin  | 32             | 32              | 968         |
+| Amoxicillin | 64             | 64              | 936         |
+
+1. Vortex each tube
+
+<span underline="true">**Plate Preparation**</span>
+The following plate layouts will be used
+Table 1 - Antibiotic Plate Map
+
+| Antibiotic         | Plate # | Rows |
+| ------------------ | ------- | ---- |
+| Gentamicin (RecA)  | 1       | B-D  |
+| Tobramycin (RecA)  | 1       | E-G  |
+| Amoxicillin (RecA) | 2       | B-D  |
+| Gentamicin (CpxP)  | 2       | E-G  |
+| Tobramycin (CpxP)  | 3       | B-D  |
+| Amoxicillin (CpxP) | 3       | E-G  |
+
+Table 2 - Antibiotic Dilution Concentrations
+
+| In ug/mL    | 1  | 2  | 3 | 4 | 5 | 6   | 7    | 8     | 9      |
+| ----------- | -- | -- | - | - | - | --- | ---- | ----- | ------ |
+| Gentamicin  | 16 | 8  | 4 | 2 | 1 | 0.5 | 0.25 | 0.125 | 0.0625 |
+| Tobramycin  | 16 | 8  | 4 | 2 | 1 | 0.5 | 0.25 | 0.125 | 0.0625 |
+| Amoxicillin | 32 | 16 | 8 | 4 | 2 | 1   | 0.5  | 0.25  | 0.125  |
+
+Table 3 - Single Plate Layout
+
+|   | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
+| - | - | - | - | - | - | - | - | - | - | -- | -- | -- |
+| A | M | M | M | M | M | M | M | M | M | M  | M  | M  |
+| B | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | G  | M  |
+| C | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | G  | M  |
+| D | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | G  | M  |
+| E | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | G  | M  |
+| F | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | G  | M  |
+| G | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | S  | M  |
+| H | M | M | M | M | M | M | M | M | M | M  | M  | M  |
+
+`M` Water Moat         `G` Growth Control         `S` Sterility Control.         `1-9` Antibiotic
+
+- The water moat is to create an evaporation buffer
+- Growth control is no antibiotic to compare against
+- Sterility control is the media blank
+
+1. For each moat well, dispense 200uL sterile water
+2. Dispense 100uL LB into all interior wells except column 2 (cols 3-11, rows B-G)
+3. Dispense an additional 100uL LB to the sterility well (G11)
+4. Dispense 200uL of the working stock into column 2
+5. Mix throughly (4-5 up-downs), then pipette 100uL into the next column to the right
+6. Repeat step 4 until you reach column 10, discard 100uL from column 10
+   1. You should have 100uL in each well, with 2x the concentration of anbiotic
+7. Repeat steps 4-6 for all rows
+8. When you are done with a plate, remember to place the lid back on
+
+<span underline="true" discussion-urls="discussion\://3e0d65dd-82be-8058-81e8-fcf23e82411f/3e0d65dd-82be-80c3-9859-fa176cae7713/3e1d65dd-82be-8002-a6c8-001cf883f889">**Inoculum Preparation**</span>
+
+1. <span discussion-urls="discussion\://3e0d65dd-82be-8058-81e8-fcf23e82411f/3e0d65dd-82be-8050-b7d0-c447608b84d7/3e1d65dd-82be-8002-a6c8-001cf883f889">Obtain the overnight culture and mix throughly</span>
+2. <span discussion-urls="discussion\://3e0d65dd-82be-8058-81e8-fcf23e82411f/3e0d65dd-82be-80a8-9330-d4fe5690bf39/3e1d65dd-82be-8002-a6c8-001cf883f889">In a 1cm cuvette, add 100uL of the culture and 1900 uL of LB and read OD 600</span>
+   1. <span discussion-urls="discussion\://3e0d65dd-82be-8058-81e8-fcf23e82411f/3e0d65dd-82be-806b-a77b-c4f5b17e4d0f/3e1d65dd-82be-8002-a6c8-001cf883f889">Use plain LB media as a blank</span>
+3. <span discussion-urls="discussion\://3e0d65dd-82be-8058-81e8-fcf23e82411f/3e0d65dd-82be-809f-8ba7-de97b9effd04/3e1d65dd-82be-8002-a6c8-001cf883f889">Adjust the suspension with LB to a target OD600 of 0.1</span>
+4. <span discussion-urls="discussion\://3e0d65dd-82be-8058-81e8-fcf23e82411f/3e0d65dd-82be-8086-9a4d-ffc93cdb5f8b/3e1d65dd-82be-8002-a6c8-001cf883f889">In a 15mL tube, add 190uL of the OD=0.1 suspension and 14.81 mL LB to create an approximately 1 \* 10^6 CFU/mL suspension</span>
+5. Invert the tube to mix
+
+<span underline="true">**Plate Addition**</span>
+
+1. Except for the sterility control well, add 100uL of the prepared inoculum to all interior (non-moat) wells
+
+***
+
+### Day 3 - Read Results
+
+<span underline="true">**Varioskan Read**</span>
+
+1. With a multichannel, mix all interior wells throughly
+2. Read all interior wells for OD600 for both plates
+
+***
+
+# Results
+
+![](https://static.igem.wiki/teams/6279/wiki/assets/3adbb779ad5e5441be346f4f4e588a83.avif)
+
+- A provisional range of around 4-8 ug/mL for all antibiotics
+
+***
+
+# Handoff/Next Steps
+
+- This experiment should be repeated for Cephalexin and Tobramycin if possible
+- There appears to be a correlation between OD and the plate row, for both plates, which may be caused by the time of the inoculation
+- These values can be used to determine ranges for the Biosensor Titration
