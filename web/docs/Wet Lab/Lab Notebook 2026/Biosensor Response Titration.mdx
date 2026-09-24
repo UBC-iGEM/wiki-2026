@@ -1,0 +1,128 @@
+---
+type: "database"
+title: "Biosensor Response Titration"
+path: "Wet Lab/Lab Notebook 2026/Biosensor Response Titration"
+date: "2026-09-21"
+---
+
+# Background
+
+## Objective
+
+<Callout icon="🗣" color="green_bg">
+	What is the response of the two biosensor strains to differing concentrations of antibiotics below its MIC?
+</Callout>
+
+From [Biosensor Challenge Assay](/wet-lab/lab-notebook-2026/biosensor-challenge-assay), we determine that the MIC of the two biosensor strains, CpxP and RecA lies between 4 µg/mL to 8 µg/mL for Tobramycin, Amoxicillin, and Gentamicin. In this experiment, we will aim to establish a dose-response curve between fluorescence and sub-inhibitory antibiotic concentrations. We will be using a set OD of 0.1 per well as the challenge assay MIC was determined with this OD.
+
+# Experiment
+
+## Materials and Reagents
+
+- Gentamicin (Sigma Aldrich, #G1264-50MG)
+- Tobramycin
+- Amoxicillin (Sigma Aldrich, #A8523-1G)
+- Cephalexin (AmBeed, #A320894)
+- MilliQ Water
+- 0.2 uM sterile filter
+- LB-Cm media (17 mg/ml)
+- RecA and CpxP biosensor strains (from [Transformation of CpxP/RecA into Epi300](/wet-lab/lab-notebook-2026/transformation-of-cpxp/reca-into-epi300))
+- 96-well plates, flat bottom
+- Varioskan microplate reader
+
+# Procedure
+
+## Day 1 - Culture Inoculations
+
+Inoculate two culture tubes of approximately \~7mL of LB-Cm media with RecA and CpxP respectively. Leave overnight at 37C, shaking @ 200rpm.
+
+## Day 2 - Plating and Readout
+
+### Antibiotic Reconstitution
+
+1. Reconstitute all three antibiotics to 100ug/mL, correcting for potency.
+   1. Amoxicillin: 900 µg / mg
+   2. Gentamicin: 600 µg / mg
+   3. Tobramycin: 972 µg / mg
+2. Sterile filter all antibiotics
+
+### Working Stock Preparation
+
+1. Into seperate Eppendorf tubes, mix 80 µL of the 100 µg/mL each antibiotic stock with 920 µL of LB-Cm media to make 1 mL of working stock.
+
+   ### Plate Preparation
+
+The following plate layouts will be used
+Table 1 - Antibiotic Plate Map
+
+| Antibiotic         | Plate # | Rows |
+| ------------------ | ------- | ---- |
+| Gentamicin (RecA)  | 1       | B-D  |
+| Gentamicin (CpxP)  | 1       | E-G  |
+| Amoxicillin (RecA) | 2       | B-D  |
+| Amoxicillin (CpxP) | 2       | E-G  |
+| Tobramycin (RecA)  | 3       | B-D  |
+| Tobramycin (CpxP)  | 3       | E-G  |
+
+Table 2 - Antibiotic Dilution Concentrations
+
+| In ug/mL | 1 | 2 | 3 | 4 | 5   | 6    | 7     | 8      | 9       |
+| -------- | - | - | - | - | --- | ---- | ----- | ------ | ------- |
+| All      | 8 | 4 | 2 | 1 | 0.5 | 0.25 | 0.125 | 0.0625 | 0.03125 |
+
+Table 3 - Single Plate Layout
+
+|   | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
+| - | - | - | - | - | - | - | - | - | - | -- | -- | -- |
+| A | M | M | M | M | M | M | M | M | M | M  | M  | M  |
+| B | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | G  | M  |
+| C | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | G  | M  |
+| D | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | G  | M  |
+| E | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | G  | M  |
+| F | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | G  | M  |
+| G | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | B  | M  |
+| H | M | M | M | M | M | M | M | M | M | M  | M  | M  |
+
+`M` Water Moat         `G` Control         `B` Media Blank        `1-9` Antibiotic
+
+- The water moat is to create an evaporation buffer
+- Control is no antibiotic to compare against
+
+***
+
+1. For each moat well, dispense 200uL sterile water
+2. Dispense 100uL LB-Cm into all interior wells except column 2 (cols 3-11, rows B-G)
+3. Dispense an additional 100uL LB-Cm to the sterility well (G11)
+4. Dispense 200uL of the working stock into column 2
+5. Mix throughly (4-5 up-downs), then pipette 100uL into the next column to the right
+6. Repeat step 4 until you reach column 10, discard 100uL from column 10
+   1. You should have 100uL in each well, with 2x the concentration of antibiotic
+7. Repeat steps 4-6 for all rows
+8. When you are done with a plate, remember to place the lid back on
+
+### Inoculum Preparation
+
+1. Obtain the overnight culture and mix throughly
+2. In a 1cm cuvette, 900 uL of LB and read OD 600
+   1. Use plain LB media as a blank
+3. Adjust the suspension with LB to a target OD600 of 0.2
+4. Invert the tube to mix
+
+### Plate Addition
+
+1. Except for the media blank and moat wells, add 100uL of the prepared inoculum to all interior (non-moat) wells
+
+### Reads
+
+1. Read the OD and fluorescence of the plates immediately. After reading, return the plates to a 37C incubator.
+2. Repeat this reading at 30min, 1hr, 2hrs, 4hrs and 8hrs
+   1. Started 16:54
+   2. Next readings: 17:24, 17:54, 18:54, 20:54, 01:02
+
+# Results
+
+|   |   |   |   |
+| - | - | - | - |
+|   |   |   |   |
+|   |   |   |   |
+|   |   |   |   |

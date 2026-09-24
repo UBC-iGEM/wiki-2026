@@ -1,0 +1,154 @@
+---
+type: "database"
+title: "Simulant Degradation Assay"
+path: "Wet Lab/Lab Notebook 2026/Simulant Degradation Assay"
+date: "2026-09-22"
+---
+
+# Background
+
+We will expose 5 ug/ml of each antibiotic (gentamicin, kanamycin, or amoxicillin) to their appropriate patient simulant strain for either 6 or 12 hours. The concentration was selected based on the results of [Biosensor Challenge Assay](/wet-lab/lab-notebook-2026/biosensor-challenge-assay), which identified a MIC range of 4—8 ug/ml for the biosensor strain. This sets the maximum threshold of undegraded antibiotic that can be exposed to our biosensor, thereby setting the maximum limit of antibiotic input that can be exposed to our patient simulant strains.
+
+## Objective
+
+<Callout icon="🗣" color="green_bg">
+	**To what degree do our patient simulant strains degrade their corresponding antibiotics after 6 or 12 hours of exposure?**
+</Callout>
+
+# Experiment:
+
+## Materials:
+
+- Standard 96-well microplate (flat-bottom, sterile)
+- Multichannel pipette + reservoir
+- 0.2 µm sterile filter and syringe
+- Gentamicin (Sigma Aldrich, #G1264-50MG)
+- Kanamycin (BioShop, #KAN201)
+- Amoxicillin (Sigma Aldrich, #A8523-1G)
+- MilliQ water
+- 3 Patient simulant strains (from [Patient Simulant (KanR, GmR) Cloning](/wet-lab/lab-notebook-2026/patient-simulant-kanr-gmr-cloning) and [Patient Simulant (B-Lact., CmR backbone) Cloning](/wet-lab/lab-notebook-2026/patient-simulant-b-lact-cmr-backbone-cloning) )
+- LB-Cm broth (17 mg/ml)
+- Varioskan plate reader
+
+## Procedure:
+
+## Day 1 (22/09/2026 ) - Preparation of Patient Simulant Cultures
+
+1. Using glycerol stocks of each strain, inoculate 8 mL of LB-Cm media.
+2. Incubate at 37 ºC, shaking at 250 rpm (starting \~9 pm)
+   - GmR simulant
+   - KanR simulant
+   - Beta-lactamase simulant
+
+## Day 2 (23/09/2026 ) - Antibiotic degradation using patient simulant cultures
+
+We will expose our antibiotics to degradation conditions, incubating for 2 different durations:
+
+- 12-hour incubation (treat at 8am)
+- 6-hour incubation (treat at 2pm)
+
+**12-hour antibiotic degradation period: <mention-user url="user\://23e4a3d1-6df7-4045-9377-7d2abd3c1dca"/>**
+
+- Read OD of each culture (\~12hr incubation)
+  - Blank with LB-Cm
+  - Record the OD for each strain
+- Take 2ml of culture. Treat with 6 ug/ml of each antibioitc
+  - GmR culture + gentamicin (e.g. 120ul of 100ug/ml stock into 1.88ml of culture)
+  - KanR culture + kanamycin (e.g. 120ul of 100ug/ml stock into 1.88ml of culture)
+  - Beta-lactamase culture + amoxicillin (e.g. 120ul of 100ug/ml stock into 1.88ml of culture)
+- Incubate at 37˚C, shaking at 250 rpm for \~12 hours (until 8:30pm)
+
+<Callout icon="🥼" color="gray_bg">
+	B-Lac\: 0.545
+	GmR\: 0.631
+	KanR\: 0.582
+	<span discussion-urls="discussion\://3e3d65dd-82be-8056-820a-d481ad76fb4f/3e4d65dd-82be-804a-992d-c8665a4d60bd/3e4d65dd-82be-809e-afcc-001c785d2ad6">We do not have kanamycin, used tobramycin for KanR </span>
+	Small 5mL tubes placed on top shaker in 37C room
+</Callout>
+
+**6-hour antibiotic degradation period: <mention-user url="user\://140d872b-594c-8105-b34c-000211f7a413"/>**
+
+- Read OD of each culture (\~18hr incubation)
+  - Blank with LB-Cm
+  - Record the OD for each strain
+    - B-Lac: 0.76
+    - GmR: 0.89
+    - KanR: 0.81
+- Dilute OD of each strain to match that of the 8am readings (serves as a control for the effect of bacterial density on degradation)
+  - B-Lac: 0.55 (1.45ml culture, 550ul LB-Cm)
+  - GmR: 0.63 (1.42ml culture, 580ul LB-Cm)
+  - KanR: 0.58 (1.43ml culture, 570ul LB-Cm)
+- Take 2ml of OD-corrected cultures. Treat with 6 ug/ml of each antibioitc
+  - GmR culture + gentamicin (e.g. 120ul of 100ug/ml stock into 1.88ml of culture)
+  - KanR culture + kanamycin (e.g. 120ul of 100ug/ml stock into 1.88ml of culture)
+  - Beta-lactamase culture + amoxicillin (e.g. 120ul of 100ug/ml stock into 1.88ml of culture)
+- Incubate at 37˚C, shaking at 250 rpm for \~6 hours
+
+## Day 2 (23/09/2026 ) - Assay Plating
+
+**Harvest antibioitc-containing supernatant** (start at 8pm)
+
+- Spin down at 4000 rpm for 10 mins
+- Collect supernatant into a fresh tube. Be careful not to disturb the cell pellet, leaving behind 100ul of supertant if necessary. There should be \~1.5ml for each of 6 tubes.
+  - 12-hour gentamicin supernatant
+  - 12-hour kanamycin supernatant
+  - 12-hour amoxicillin supernatant
+  - 6-hour gentamicin supernatant
+  - 6-hour kanamycin supernatant
+  - 6-hour amoxicillin supernatant
+
+**Prepare biosensor cultures**
+
+- Measure OD of each biosensor strain
+  - RecA: 0.525
+  - CpxP: 0.503
+- Dilute biosensor cultures to an OD of 0.1 using LB-Cm
+  - RecA: 1.9ml culture + 8.1ml LB-Cm
+  - CpxP: 2ml culture + 8ml PB-Cm
+
+**Plate the assay**
+
+- Plate a total of 200 ul/well according to the plate layout below.
+  - **Biosensor antibiotic treatment groups** (2 biosensor strains x 3 treatments x 2 timepoints x 3 wells = 36 wells)
+    - 100ul OD-corrected biosensor culture
+    - 100ul antibiotic supernatant
+  - **Biosensor no-antibiotic control groups** (2 strains x 3 wells = 6 wells)
+    - 100ul OD-corrected biosensor culture
+    - 100ul LB-Cm
+  - **Media controls**
+    - LB-Cm blank: 200ul LB-Cm
+    - supernatant blank: 100ul LB-Cm + 100ul supernatant
+
+|   |   |                  |                   |                    |   |                   |                    |                     |   |             |    |    |
+| - | - | ---------------- | ----------------- | ------------------ | - | ----------------- | ------------------ | ------------------- | - | ----------- | -- | -- |
+|   | 1 | 2                | 3                 | 4                  | 5 | 6                 | 7                  | 8                   | 9 | 10          | 11 | 12 |
+| A |   | CpxP + 6h Gm     | CpxP + 6h Kan     | CpxP + 6h Amox     |   | CpxP + 12h Gm     | CpxP + 12h Kan     | CpxP + 12h Amox     |   | CpxP        |    |    |
+| B |   | CpxP + 6h Gm     | CpxP + 6h Kan     | CpxP + 6h Amox     |   | CpxP + 12h Gm     | CpxP + 12h Kan     | CpxP + 12h Amox     |   | CpxP        |    |    |
+| C |   | CpxP + 6h Gm     | CpxP + 6h Kan     | CpxP + 6h Amox     |   | CpxP + 12h Gm     | CpxP + 12h Kan     | CpxP + 12h Amox     |   | CpxP        |    |    |
+| D |   | RecA + 6h Gm     | RecA + 6h Kan     | RecA + 6h Amox     |   | RecA + 12h Gm     | RecA + 12h Kan     | RecA + 12h Amox     |   | RecA        |    |    |
+| E |   | RecA + 6h Gm     | RecA + 6h Kan     | RecA + 6h Amox     |   | RecA + 12h Gm     | RecA + 12h Kan     | RecA + 12h Amox     |   | RecA        |    |    |
+| F |   | RecA + 6h Gm     | RecA + 6h Kan     | RecA + 6h Amox     |   | RecA + 12h Gm     | RecA + 12h Kan     | RecA + 12h Amox     |   | RecA        |    |    |
+| G |   | 6h Gm sup. blank | 6h Kan sup. blank | 6h Amox sup. blank |   | 12h Gm sup. blank | 12h Kan sup. blank | 12h Amox sup. blank |   | LB-Cm blank |    |    |
+| H |   | 6h Gm sup. blank | 6h Kan sup. blank | 6h Amox sup. blank |   | 12h Gm sup. blank | 12h Kan sup. blank | 12h Amox sup. blank |   | LB-Cm blank |    |    |
+
+<br/>Plate conditions
+
+- CpxP treatment (x triplicate): Gm supernatant, Kan supernatant, Amox supernatant = 9
+- RecA treatment (x triplicate): Gm supernatant, Kan supernatant, Amox supernatant = 9
+- No-antibiotic controls (x triplicate): RecA, CpxP = 6
+- Supernatant blank (x duplicate): Gm supernatant, Kan supernatant, Amox supernatant = 6
+- LB-Cm blank (x duplicate)
+
+Wells per degradation incubation duration (6 or 12 hr)  = 36 wells x 2 durations
+Total wells = 72
+
+## Day 3 (24/09/2026 ) - Readout
+
+**Measure OD and fluorescence after 24 hrs of incubation**
+
+- OD remains low (near 0.1) = no antibiotic degradation after 6 and/or 12 hrs
+- OD slightly increases = some antibiotic degradation after 6 and/or 12 hrs
+- OD increases and/or increases similarly to unstimulated control = antibiotic degradation occurs after 6 and/or 12 hrs
+- Measure fluorescence at:
+  - Ex: 488 nm
+  - Em: 510 nm

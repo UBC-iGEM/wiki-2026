@@ -98,6 +98,22 @@
                         {
                             "path": "Biosensor Challenge Assay",
                             "item": "3e0d65dd82be805881e8fcf23e82411f"
+                        },
+                        {
+                            "path": "Biosensor Response Titration",
+                            "item": "3e3d65dd82be80159434d418645c9a8f"
+                        },
+                        {
+                            "path": "Simulant Survival Titration v3",
+                            "item": "3e3d65dd82be80369604d501e31ba302"
+                        },
+                        {
+                            "path": "Simulant Degradation Assay",
+                            "item": "3e3d65dd82be8056820ad481ad76fb4f"
+                        },
+                        {
+                            "path": "Antibiotic Thaw Test",
+                            "item": "3e3d65dd82be8058892fe009ae9eaa84"
                         }
                     ]
                 }
@@ -175,6 +191,36 @@
                     "path": "Concluding Thoughts",
                     "type": "page",
                     "item": "3d7d65dd82be8078a43bfd438b8af0ff"
+                }
+            ]
+        },
+        {
+            "name": "Administration",
+            "entries": [
+                {
+                    "path": "Venture Values",
+                    "type": "page",
+                    "item": "359d65dd82be815cbffac8cbbcb5df8c"
+                },
+                {
+                    "path": "Market Research ",
+                    "type": "page",
+                    "item": "359d65dd82be81c183f8e601cdb3fe76"
+                },
+                {
+                    "path": "Strategic Planning",
+                    "type": "page",
+                    "item": "359d65dd82be818db881f422ebd52276"
+                },
+                {
+                    "path": "Business Development",
+                    "type": "page",
+                    "item": "359d65dd82be810da11ac4d817969632"
+                },
+                {
+                    "path": "Long Term Growth",
+                    "type": "page",
+                    "item": "359d65dd82be8151b34bf6b8b5f7ca59"
                 }
             ]
         },
