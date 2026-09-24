@@ -15,6 +15,7 @@ const { current_page_path, parent_db_path } = Astro.props;
 const parent_db = PagePath.fromString(parent_db_path);
 
 interface DayEntry {
+    date: string;
     label: string;
     href: string;
     is_current: boolean;
@@ -46,38 +47,50 @@ const date_by_path = new Map(
 );
 
 // A single day can hold several entries, so group rather than assuming one each
-const entries_by_date = new Map<string, DayEntry[]>();
-for (const entry of content_map.queryDbEntries(parent_db)) {
-    const path = entry.toString();
-    const date = date_by_path.get(path);
-    if (date === undefined) continue;
+const entries_by_date = Map.groupBy(
+    content_map.queryDbEntries(parent_db).flatMap((entry) => {
+        const path = entry.toString();
+        const date = date_by_path.get(path);
+        // An undated entry has no place on a calendar
+        if (date === undefined) return [];
 
-    entries_by_date.set(date, [
-        ...(entries_by_date.get(date) ?? []),
-        { label: entry.name().toString(), href: `/${entry.toSlug()}`, is_current: path === current_page_path },
-    ]);
-}
+        return [
+            {
+                date,
+                label: entry.name().toString(),
+                href: `/${entry.toSlug()}`,
+                is_current: path === current_page_path,
+            },
+        ];
+    }),
+    (entry) => entry.date,
+);
 
 const current_page_date = date_by_path.get(current_page_path);
-const month_keys = Array.from(new Set(Array.from(entries_by_date.keys(), (date) => date.slice(0, 7)))).sort();
+const month_keys = Array.from(new Set(entries_by_date.keys().map((date) => date.slice(0, 7)))).sort();
 const active_month_key = current_page_date?.slice(0, 7) ?? month_keys.at(-1);
 const months = month_keys.map(buildMonth);
 
 function buildMonth(key: string): CalendarMonth {
-    const [year, month] = key.split("-").map(Number);
-    const first_of_month = new Date(Date.UTC(year!, month! - 1, 1));
-    const day_count = new Date(Date.UTC(year!, month!, 0)).getUTCDate();
+    const [year, month] = key.split("-").map(Number) as [number, number];
+    const first_of_month = new Date(Date.UTC(year, month - 1, 1));
+    const leading_days = first_of_month.getUTCDay();
+    const day_count = new Date(Date.UTC(year, month, 0)).getUTCDate();
 
-    const cells: (CalendarDay | null)[] = Array.from({ length: first_of_month.getUTCDay() }, () => null);
-    for (let day = 1; day <= day_count; day++) {
-        const date = `${key}-${String(day).padStart(2, "0")}`;
-        cells.push({
-            day,
-            label: DAY_FORMAT.format(new Date(Date.UTC(year!, month! - 1, day))),
-            entries: entries_by_date.get(date) ?? [],
-        });
-    }
-    while (cells.length % 7 !== 0) cells.push(null);
+    // Whole weeks, so the days either side of the month are empty cells
+    const cells: (CalendarDay | null)[] = Array.from(
+        { length: Math.ceil((leading_days + day_count) / 7) * 7 },
+        (_unused, cell) => {
+            const day = cell - leading_days + 1;
+            if (day < 1 || day > day_count) return null;
+
+            return {
+                day,
+                label: DAY_FORMAT.format(new Date(Date.UTC(year, month - 1, day))),
+                entries: entries_by_date.get(`${key}-${String(day).padStart(2, "0")}`) ?? [],
+            };
+        },
+    );
 
     const weeks = Array.from({ length: cells.length / 7 }, (_unused, week) => cells.slice(week * 7, week * 7 + 7));
     return { key, label: MONTH_FORMAT.format(first_of_month), weeks };
