@@ -2,6 +2,7 @@
 import type { MarkdownHeading } from "astro";
 import type { DatabaseAttrs } from "@exporter/markdown/markdown";
 import { PagePath } from "@exporter/map";
+import DbCalendar from "../components/DbCalendar.astro";
 import DbDropdown from "../components/DbDropdown.astro";
 import MainLayout from "./MainLayout.astro";
 
@@ -37,6 +38,7 @@ function formatDate(value: string | undefined): string | undefined {
 ---
 
 <MainLayout title={attrs.title} headings={headings}>
+    <DbCalendar slot="sidebar" parent_db_path={parent_db_path} current_page_path={current_page_path} />
     <DbDropdown slot="sidebar" parent_db_path={parent_db_path} current_page_path={current_page_path} />
 
     {
