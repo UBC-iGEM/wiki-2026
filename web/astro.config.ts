@@ -1,4 +1,5 @@
 // @ts-check
+import { CONFIG } from "../exporter/src/config";
 import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
 import { defineConfig } from "astro/config";
@@ -9,7 +10,7 @@ import remarkMath from "remark-math";
 
 // https://astro.build/config
 export default defineConfig({
-    base: "/ubc-vancouver",
+    base: CONFIG.internal_link_root,
     markdown: {
         processor: unified({
             remarkPlugins: [remarkMath, remarkBreaks],

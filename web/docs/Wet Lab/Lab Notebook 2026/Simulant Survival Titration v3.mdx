@@ -1,8 +1,8 @@
 ---
 type: "database"
-title: "Simulant Survival Titration v2"
-path: "Wet Lab/Lab Notebook 2026/Simulant Survival Titration v2"
-date: "2026-09-09"
+title: "Simulant Survival Titration v3"
+path: "Wet Lab/Lab Notebook 2026/Simulant Survival Titration v3"
+date: "2026-09-21"
 ---
 
 # Background
@@ -31,7 +31,6 @@ We will repeat the experiment performed in [Simulant Survival Titration v1](/ubc
 - Gentamicin (Sigma Aldrich, #G1264-50MG)
 - Kanamycin (BioShop, #KAN201)
 - Amoxicillin (Sigma Aldrich, #A8523-1G)
-- Cephalexin (AmBeed, #A320894)
 - MilliQ water
 - LB+Cm-agar dishes
 - 3 Patient simulant strains (from [Patient Simulant (KanR, GmR) Cloning](/ubc-vancouver/wet-lab/lab-notebook-2026/patient-simulant-kanr-gmr-cloning) and [Patient Simulant (B-Lact., CmR backbone) Cloning](/ubc-vancouver/wet-lab/lab-notebook-2026/patient-simulant-b-lact-cmr-backbone-cloning) )
@@ -48,7 +47,6 @@ We will repeat the experiment performed in [Simulant Survival Titration v1](/ubc
    1. LB-Gm = Gm resistant strain in LB-Cm
    2. LB-Kn = Kan resistant strain in LB-Cm
    3. LB-Amox = beta lactam resistant strain in LB-Cm
-   4. LB-Cephalexin = beta lactam resistant strain in LB-Cm
 3. **Prep of antibiotic stock**: Dissolve antibiotic in broth at 2× the highest concentration to be tested. Check concentration range on literature MIC values for your strain, spanning at least several dilutions below and above that value.
 
 ## Day 2
@@ -56,10 +54,9 @@ We will repeat the experiment performed in [Simulant Survival Titration v1](/ubc
 1. **Measuring OD600 of starting culture:** Use a spectrophotometer or plate reader to measure the OD600 of the culture. If OD600 is above 0.1, dilute with fresh broth. If it's between 0.09–0.1, proceed. If below 0.09, incubate 15–30 more minutes and re-check.
 2. **Wash cultures**: To wash out the Cm from the LB-Cm cultures, centrifuge each strain at 4000 rpm for 10 mins. Resuspended each pellet in LB to maintain an OD of 0.1.
 3. **Make the diluted antibiotic media**: Create a total of 10ml by diluting antibiotics in Cm-free LB.
-   1. Ceph:
-   2. Amox:
-   3. Gen:
-   4. Kan:
+   1. Amox
+   2. Gen
+   3. Kan
 4. **Steps 4-6 will be performed using a multichannel pipette, in triplicate**. Using the layout below, add 200 µL of LB broth to column 1. Add 100 µL of LB broth to columns 3-12, leaving column 2 empty.
 
 |             |                                                              |
@@ -73,17 +70,17 @@ We will repeat the experiment performed in [Simulant Survival Titration v1](/ubc
 2. **Inoculating the plate**: Using a multichannel pipette, add 100 µL of the diluted standardized inoculum to every well in columns 2–12. Do not add inoculum to column 1 (blank control).
 3. Seal and incubate: cover the plate with a sealing film, then a lid. Incubate at 37°C overnight.
 
-|   |       |          |          |          |          |         |         |           |           |            |          |        |
-| - | ----- | -------- | -------- | -------- | -------- | ------- | ------- | --------- | --------- | ---------- | -------- | ------ |
-|   | 1     | 2        | 3        | 4        | 5        | 6       | 7       | 8         | 9         | 10         | 11       | 12     |
-| A | blank | 800ug/ml | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.125ug/ml | 1.6ug/ml | 0ug/ml |
-| B | blank | 800ug/ml | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.125ug/ml | 1.6ug/ml | 0ug/ml |
-| C | blank | 800ug/ml | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.125ug/ml | 1.6ug/ml | 0ug/ml |
-| D |       |          |          |          |          |         |         |           |           |            |          |        |
-| E | blank | 800ug/ml | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.125ug/ml | 1.6ug/ml | 0ug/ml |
-| F | blank | 800ug/ml | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.125ug/ml | 1.6ug/ml | 0ug/ml |
-| G | blank | 800ug/ml | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.125ug/ml | 1.6ug/ml | 0ug/ml |
-| H |       |          |          |          |          |         |         |           |           |            |          |        |
+|   |       |          |          |           |           |             |             |           |           |           |           |        |
+| - | ----- | -------- | -------- | --------- | --------- | ----------- | ----------- | --------- | --------- | --------- | --------- | ------ |
+|   | 1     | 2        | 3        | 4         | 5         | 6           | 7           | 8         | 9         | 10        | 11        | 12     |
+| A | blank | 500ug/ml | 250ug/ml | 125 ug/ml | 62.5ug/ml | 31.25 ug/ml | 15.63 ug/ml | 7.81ug/ml | 3.90ug/ml | 1.95ug/ml | 0.98ug/ml | 0ug/ml |
+| B | blank | 500ug/ml | 250ug/ml | 125ug/ml  | 62.5ug/ml | 31.25ug/ml  | 15.63ug/ml  | 7.81ug/ml | 3.90ug/ml | 1.95ug/ml | 0.98ug/ml | 0ug/ml |
+| C | blank | 500ug/ml | 250ug/ml | 125ug/ml  | 62.5ug/ml | 31.25ug/ml  | 15.63ug/ml  | 7.81ug/ml | 3.90ug/ml | 1.95ug/ml | 0.98ug/ml | 0ug/ml |
+| D |       |          |          |           |           |             |             |           |           |           |           |        |
+| E | blank | 500ug/ml | 250ug/ml | 125ug/ml  | 62.5ug/ml | 31.25ug/ml  | 15.63ug/ml  | 7.81ug/ml | 3.90ug/ml | 1.95ug/ml | 0.98ug/ml | 0ug/ml |
+| F | blank | 500ug/ml | 250ug/ml | 125ug/ml  | 62.5ug/ml | 31.25ug/ml  | 15.63ug/ml  | 7.81ug/ml | 3.90ug/ml | 1.95ug/ml | 0.98ug/ml | 0ug/ml |
+| G | blank | 500ug/ml | 250ug/ml | 125ug/ml  | 62.5ug/ml | 31.25ug/ml  | 15.63ug/ml  | 7.81ug/ml | 3.90ug/ml | 1.95ug/ml | 0.98ug/ml | 0ug/ml |
+| H |       |          |          |           |           |             |             |           |           |           |           |        |
 
 ## Day 3: Read the Plate and Determine MIC
 
@@ -91,37 +88,22 @@ We will repeat the experiment performed in [Simulant Survival Titration v1](/ubc
 2. **Read OD**: Load the plate into a plate reader and record the OD600 value for every well, including the growth control and sterility control.
 3. **Data analysis**: Subtract the sterility control OD600 (background) from each well. Plot OD600 versus antibiotic concentration (log scale on the x-axis) for each strain. Determine the MIC as the lowest concentration where no visible turbidity/growth occurs — this can be done visually or by fitting the curve with a Gompertz model for a more precise value.
 
-# Results
+## Results
 
-- OD values were 0.45 for all strains
-- We washed the bacteria and diluted to OD of 0.1.
-  - 2.2ml of cultre in 7.8ml of LB
-- We adjusted the 2x concentrations because solutions were diluted in 2ml of LB instead of 1ml
-  - Gen: 800ug/ml —> final concentration of 400ug/ml in column 2
-  - Kan: 800ug/ml —> final concentration of 400ug/ml in column 2
-  - Ceph: 700ug/ml —> final concentration of 350ug/ml in column 2
-  - Amox: 600ug/ml —>  final concentration of 300ug/ml in column 2
+OD of strains after \~23 hours of incubation in 8ml LB-Cm at 37˚C, 250 rpm
+beta-lactamase strain: 1.34
 
-|   |       |          |          |          |         |         |           |           |           |          |          |        |
-| - | ----- | -------- | -------- | -------- | ------- | ------- | --------- | --------- | --------- | -------- | -------- | ------ |
-|   | 1     | 2        | 3        | 4        | 5       | 6       | 7         | 8         | 9         | 10       | 11       | 12     |
-| A | blank | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.13ug/ml | 1.6ug/ml | 0.8ug/ml | 0ug/ml |
-| B | blank | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.13ug/ml | 1.6ug/ml | 0.8ug/ml | 0ug/ml |
-| C | blank | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.13ug/ml | 1.6ug/ml | 0.8ug/ml | 0ug/ml |
-| D |       |          |          |          |         |         |           |           |           |          |          |        |
-| E | blank | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.13ug/ml | 1.6ug/ml | 0.8ug/ml | 0ug/ml |
-| F | blank | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.13ug/ml | 1.6ug/ml | 0.8ug/ml | 0ug/ml |
-| G | blank | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.13ug/ml | 1.6ug/ml | 0.8ug/ml | 0ug/ml |
-| H |       |          |          |          |         |         |           |           |           |          |          |        |
+- diluted to 0.75
+- diluted to 0.1 in 5ml total (667ul + 4.33ml LB-Cm)
 
-![](https://static.igem.wiki/teams/6279/wiki/assets/fc4fc54be6675f3db4dd4ee4d5c5f4d4.avif)
-**Figure 1**. Plate layout for cephalexin (A-C) and gentamicin (E-G) titrations.
+GmR strain: 1.256
 
-![](https://static.igem.wiki/teams/6279/wiki/assets/2a54126ac6a359a9bfdbd77e5632433f.avif)
-**Figure 2**. Plate layout for amoxicillin (A-C) and kanamycin (E-G) titrations.
+- diluted to 0.71
+- diluted to 0.1 in 5ml total (700ul + 4.30ml LB-Cm)
 
-# Summary
+KanR strain: 1.332
 
-This experiment did not identify a MIC range for any of the 4 antibiotics. Additionally, we were not able to recapitulate the MIC range for gentamicin  from [Simulant Survival Titration v1](/ubc-vancouver/wet-lab/lab-notebook-2026/simulant-survival-titration-v1).
+- diluted to 0.74
+- diluted to 0.1 in 5ml total (675ul + 4.32ml LB-Cm)
 
-For troubleshooting, we will examine the solubility of antibiotic powders in water and pipetting error.
+## Summary
