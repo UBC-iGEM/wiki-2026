@@ -9,6 +9,7 @@ interface Props {
     attrs: DatabaseAttrs;
     headings?: MarkdownHeading[];
 }
+
 const { attrs, headings } = Astro.props;
 
 const current_page_path = attrs.path;
@@ -23,6 +24,7 @@ function formatDate(value: string | undefined): string | undefined {
 
     const [year, month, day] = match.slice(1).map(Number);
     const date = new Date(Date.UTC(year!, month! - 1, day!));
+
     if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month! - 1 || date.getUTCDate() !== day) return;
 
     return new Intl.DateTimeFormat("en-US", {
@@ -36,6 +38,7 @@ function formatDate(value: string | undefined): string | undefined {
 
 <MainLayout title={attrs.title} headings={headings}>
     <DbDropdown slot="sidebar" parent_db_path={parent_db_path} current_page_path={current_page_path} />
+
     {
         display_date && (
             <time class="db-date" datetime={attrs.date}>
@@ -43,13 +46,17 @@ function formatDate(value: string | undefined): string | undefined {
             </time>
         )
     }
+
     <slot />
 </MainLayout>
 
 <style>
     .db-date {
-        color: #666666;
+        color: var(--color-periwinkle);
         display: block;
+        font-family: var(--font-source-serif-4);
+        font-size: 16px;
+        line-height: 1.5;
         margin-bottom: 1rem;
     }
 </style>

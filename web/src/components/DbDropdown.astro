@@ -8,6 +8,7 @@ interface Props {
     parent_db_path: string;
     current_page_path: string;
 }
+
 const { current_page_path, parent_db_path } = Astro.props;
 
 const parent_db = PagePath.fromString(parent_db_path);
@@ -17,6 +18,7 @@ const parent_db_entries = Array.from(content_map.queryDbEntries(parent_db));
 // A Notion title may itself contain "/", which `fromString` would split into two components,
 // so find the current page by its full path rather than by re-parsing it
 const current_page = parent_db_entries.find((entry) => entry.toString() === current_page_path);
+
 const current_page_title = (current_page ?? PagePath.fromString(current_page_path)).name().toString();
 ---
 
@@ -58,7 +60,11 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
 
         // Reveal the current page, which a long database can push out of view
         dropdown.addEventListener("toggle", () => {
-            if (dropdown.open) dropdown.querySelector("a.active")?.scrollIntoView({ block: "nearest" });
+            if (dropdown.open) {
+                dropdown.querySelector("a.active")?.scrollIntoView({
+                    block: "nearest",
+                });
+            }
         });
     }
 </script>
@@ -66,25 +72,19 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
 <style>
     .db-dropdown {
         display: block;
-        font-family:
-            ui-sans-serif,
-            system-ui,
-            -apple-system,
-            "Segoe UI",
-            sans-serif;
+        font-family: var(--font-geist);
         position: relative;
     }
 
     summary {
         align-items: center;
-        background: #ffffff;
-        border: 1px solid #e3e5ef;
+        background: var(--color-northern-lights);
+        border: 1px solid var(--color-northern-lights);
         border-radius: 8px;
-        color: #1b1f41;
+        color: var(--color-ebony-clay);
         cursor: pointer;
         display: flex;
         flex-wrap: wrap;
-        /* Also drops the native disclosure triangle, in favour of .marker */
         list-style: none;
         padding: 0.5rem 0.7rem;
         transition:
@@ -94,33 +94,34 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
     }
 
     summary:hover {
-        background: #f7f8fc;
-        border-color: #c9cde0;
+        background: var(--color-periwinkle);
+        border-color: var(--color-periwinkle);
     }
 
     summary:focus-visible {
-        outline: 2px solid #1b1f41;
+        outline: 2px solid var(--color-cornflower);
         outline-offset: 2px;
     }
 
-    /* An eyebrow label, so the database name never competes with the page name */
     .db-name {
-        color: #6b6f8c;
+        color: var(--color-ebony-clay);
         font-size: 0.65rem;
+        font-weight: 700;
         letter-spacing: 0.06em;
         text-transform: uppercase;
         width: 100%;
     }
 
     .page-name {
+        color: var(--color-ebony-clay);
         flex: 1;
         font-size: 0.9rem;
-        font-weight: 600;
+        font-weight: 700;
         line-height: 1.3;
     }
 
     .marker {
-        color: #6b6f8c;
+        color: var(--color-ebony-clay);
         display: inline-block;
         font-size: 0.7rem;
         padding-left: 0.5rem;
@@ -131,12 +132,11 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
         transform: rotate(180deg);
     }
 
-    /* Anchored right: the sidebar sits at the viewport edge, so the menu grows leftwards */
     nav {
-        background: #ffffff;
-        border: 1px solid #e3e5ef;
+        background: var(--color-ebony-clay);
+        border: 1px solid var(--color-northern-lights);
         border-radius: 8px;
-        box-shadow: 0 8px 24px rgba(27, 31, 65, 0.14);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
         max-height: min(60vh, 24rem);
         overflow-y: auto;
         padding: 0.3rem;
@@ -155,24 +155,32 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
 
     a {
         border-radius: 6px;
-        color: #1b1f41;
+        color: var(--color-periwinkle);
         display: block;
         font-size: 0.85rem;
         padding: 0.4rem 0.55rem;
         text-decoration: none;
-        transition: background 120ms ease;
+        transition:
+            background 120ms ease,
+            color 120ms ease;
     }
 
     a:hover {
-        background: #f7f8fc;
+        background: var(--color-northern-lights);
+        color: var(--color-ebony-clay);
+    }
+
+    a:focus-visible {
+        outline: 2px solid var(--color-cornflower);
+        outline-offset: 1px;
     }
 
     a.active {
-        background: #eceef6;
-        font-weight: 600;
+        background: var(--color-periwinkle);
+        color: var(--color-ebony-clay);
+        font-weight: 700;
     }
 
-    /* Stacked full-width, the menu must not spill past the viewport edge */
     @media (max-width: 1000px) {
         nav {
             max-width: 100%;
