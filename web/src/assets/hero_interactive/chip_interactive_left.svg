@@ -1,0 +1,54 @@
+<svg width="233" height="532" viewBox="0 0 233 532" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="116" cy="38" r="38" fill="#6A67FF"/>
+<circle cx="116" cy="494" r="38" fill="#6A67FF"/>
+<line x1="117.5" y1="76" x2="117.5" y2="122" stroke="#6A67FF" stroke-width="3"/>
+<line x1="116.5" y1="410" x2="116.5" y2="456" stroke="#6A67FF" stroke-width="3"/>
+<mask id="mask0_172_2971" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="116" y="122" width="117" height="39">
+<path d="M212.857 123.5C222.727 123.5 230.728 131.501 230.729 141.371C230.729 151.241 222.727 159.243 212.857 159.243H117.5V123.5H212.857Z" stroke="#D9D9D9" stroke-width="3"/>
+</mask>
+<g mask="url(#mask0_172_2971)">
+<rect x="14.1855" y="123.5" width="216.543" height="35.7429" rx="17.8714" stroke="#6A67FF" stroke-width="3"/>
+</g>
+<mask id="mask1_172_2971" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="158" width="117" height="39">
+<path d="M19.3711 159.5C9.50122 159.5 1.50018 167.501 1.5 177.371C1.5 187.241 9.50111 195.243 19.3711 195.243H114.729V159.5H19.3711Z" stroke="#D9D9D9" stroke-width="3"/>
+</mask>
+<g mask="url(#mask1_172_2971)">
+<rect x="-1.5" y="1.5" width="216.543" height="35.7429" rx="17.8714" transform="matrix(-1 0 0 1 216.543 158)" stroke="#6A67FF" stroke-width="3"/>
+</g>
+<mask id="mask2_172_2971" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="116" y="194" width="117" height="39">
+<path d="M212.857 195.5C222.727 195.5 230.728 203.501 230.729 213.371C230.729 223.241 222.727 231.243 212.857 231.243H117.5V195.5H212.857Z" stroke="#D9D9D9" stroke-width="3"/>
+</mask>
+<g mask="url(#mask2_172_2971)">
+<rect x="14.1855" y="195.5" width="216.543" height="35.7429" rx="17.8714" stroke="#6A67FF" stroke-width="3"/>
+</g>
+<mask id="mask3_172_2971" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="230" width="117" height="39">
+<path d="M19.3711 231.5C9.50122 231.5 1.50018 239.501 1.5 249.371C1.5 259.241 9.50111 267.243 19.3711 267.243H114.729V231.5H19.3711Z" stroke="#D9D9D9" stroke-width="3"/>
+</mask>
+<g mask="url(#mask3_172_2971)">
+<rect x="-1.5" y="1.5" width="216.543" height="35.7429" rx="17.8714" transform="matrix(-1 0 0 1 216.543 230)" stroke="#6A67FF" stroke-width="3"/>
+</g>
+<mask id="mask4_172_2971" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="116" y="266" width="117" height="39">
+<path d="M212.857 267.5C222.727 267.5 230.728 275.501 230.729 285.371C230.729 295.241 222.727 303.243 212.857 303.243H117.5V267.5H212.857Z" stroke="#D9D9D9" stroke-width="3"/>
+</mask>
+<g mask="url(#mask4_172_2971)">
+<rect x="14.1855" y="267.5" width="216.543" height="35.7429" rx="17.8714" stroke="#6A67FF" stroke-width="3"/>
+</g>
+<mask id="mask5_172_2971" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="302" width="117" height="39">
+<path d="M19.3711 303.5C9.50122 303.5 1.50018 311.501 1.5 321.371C1.5 331.241 9.50111 339.243 19.3711 339.243H114.729V303.5H19.3711Z" stroke="#D9D9D9" stroke-width="3"/>
+</mask>
+<g mask="url(#mask5_172_2971)">
+<rect x="-1.5" y="1.5" width="216.543" height="35.7429" rx="17.8714" transform="matrix(-1 0 0 1 216.543 302)" stroke="#6A67FF" stroke-width="3"/>
+</g>
+<mask id="mask6_172_2971" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="116" y="338" width="117" height="39">
+<path d="M212.857 339.5C222.727 339.5 230.728 347.501 230.729 357.371C230.729 367.241 222.727 375.243 212.857 375.243H117.5V339.5H212.857Z" stroke="#D9D9D9" stroke-width="3"/>
+</mask>
+<g mask="url(#mask6_172_2971)">
+<rect x="14.1855" y="339.5" width="216.543" height="35.7429" rx="17.8714" stroke="#6A67FF" stroke-width="3"/>
+</g>
+<mask id="mask7_172_2971" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="374" width="117" height="39">
+<path d="M19.3711 375.5C9.50122 375.5 1.50018 383.501 1.5 393.371C1.5 403.241 9.50111 411.243 19.3711 411.243H114.729V375.5H19.3711Z" stroke="#D9D9D9" stroke-width="3"/>
+</mask>
+<g mask="url(#mask7_172_2971)">
+<rect x="-1.5" y="1.5" width="216.543" height="35.7429" rx="17.8714" transform="matrix(-1 0 0 1 216.543 374)" stroke="#6A67FF" stroke-width="3"/>
+</g>
+</svg>

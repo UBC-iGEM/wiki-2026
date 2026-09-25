@@ -1,5 +1,8 @@
 ---
-import MainLayout from "../layouts/MainLayout.astro";
+import "../style.css";
+import Navbar from "../components/Navbar.astro";
+import HeroChipIntro from "../components/HeroChipIntro.astro";
+import InteractiveSection from "../components/InteractiveSection.astro";
 ---
 
 <html lang="en">
@@ -9,9 +12,24 @@ import MainLayout from "../layouts/MainLayout.astro";
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
-        <title>Astro</title>
+        <title>UBC iGEM Wiki</title>
     </head>
     <body>
-        <MainLayout title="Homepage"> This is the WIP version of the UBC iGEM 2026 wiki. </MainLayout>
+        <Navbar />
+        <main class="home-hero">
+            <HeroChipIntro />
+        </main>
+        <InteractiveSection />
     </body>
 </html>
+
+<style>
+    .home-hero {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        min-height: calc(100vh - 4rem);
+        padding: 2rem;
+    }
+    
+</style>
