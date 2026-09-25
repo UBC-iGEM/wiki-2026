@@ -1,0 +1,183 @@
+---
+import chip1Svg from "../assets/hero/home-page-chip-1.svg?raw";
+import chip2Svg from "../assets/hero/home-page-chip-2.svg?raw";
+import chip3Svg from "../assets/hero/home-page-chip-3.svg?raw";
+import connectorLineSvg from "../assets/hero/home-start-line.svg?raw";
+import fastTextFadeSvg from "../assets/hero/FAST-text-fade.svg?raw";
+import fastTextSvg from "../assets/hero/FAST-text.svg?raw";
+import initLineSvg from "../assets/hero/init_line.svg?raw";
+import lineFullSvg from "../assets/hero/chip_line_full.svg?raw";
+import dotSvg from "../assets/hero/dot.svg?raw";
+---
+
+<div class="chip-stage">
+    <div class="chip chip-1" set:html={chip1Svg} />
+    <div class="chip chip-2" set:html={chip2Svg} />
+    <div class="chip chip-3" set:html={chip3Svg} />
+    <div class="connector-line" set:html={connectorLineSvg} />
+    <div class="fast-text-fade" set:html={fastTextFadeSvg} />
+    <div class="fast-text" set:html={fastTextSvg} />
+    <div class="init-line" set:html={initLineSvg} />
+    <div class="line-full" set:html={lineFullSvg} />
+    <div class="motion-dot" set:html={dotSvg} />
+</div>
+
+<script>
+    import { gsap } from "gsap";
+    import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+    import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(DrawSVGPlugin, MotionPathPlugin, ScrollTrigger);
+
+    const hero = document.querySelector(".home-hero");
+    if (!hero) throw new Error("'.home-hero' not found");
+    const shiftLeft = hero.clientWidth / 4;
+
+    // Scoped to just the two top-to-bottom draw-in reveals below (init-line,
+    // then line-full) - doesn't touch any other timing in this timeline.
+    const drawInSlowdown = 1;
+    const drawInDuration = 1.2 * drawInSlowdown;
+    // line-full is ~3x init-line's height (1341 vs 447.5) - same duration
+    // to cover 3x the distance reads as 3x faster, so scale it to match
+    // init-line's apparent reveal speed instead of a flat duration.
+    const lineFullDrawInDuration = drawInDuration * (1341 / 447.5);
+
+    gsap
+        .timeline()
+        .addLabel("chip-intro")
+        .to(".chip-1", { opacity: 1, duration: 0.9 })
+        .to(".chip-2", { opacity: 1, duration: 0.1 }, "+=0.2")
+        .to(".chip-3", { opacity: 1, duration: 0.2 }, "+=0.2")
+        .to(".chip-1, .chip-2", { opacity: 0, duration: 0.3 }, "+=0.1")
+        .to(".chip-stage", { x: -shiftLeft, duration: 0.6, ease: "power2.inOut" }, "+=0.2")
+        .addLabel("text-intro", "+=0.2")
+        .to(".connector-line, .fast-text-fade", { opacity: 1, duration: 0.6 }, "text-intro")
+        .to(".fast-text, .motion-dot", { opacity: 1, duration: 0.6 }, "text-intro+=0.4")
+        .addLabel("line-intro", "+=0.3")
+        .to(".init-line", { opacity: 1, duration: 0.01 }, "line-intro")
+        .fromTo(".init-line path", { drawSVG: "0%" }, { drawSVG: "100%", duration: drawInDuration }, "<")
+        .to(".line-full", { opacity: 1, duration: 0.01 })
+        .fromTo(".line-full", { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: lineFullDrawInDuration }, "<");
+
+    // POC: a dot chases the line as the user scrolls, via MotionPathPlugin
+    // walking real path geometry. Added Hidden guide line to the chip asset for smooth movement.
+    const dot = document.querySelector<HTMLElement>(".motion-dot");
+    const initLinePath = document.querySelector(".init-line path");
+    const guideLines = document.querySelectorAll<SVGLineElement>(".line-full g line");
+    const guidePaths = guideLines.length > 0 ? MotionPathPlugin.convertToPath(guideLines) : [];
+    const linePaths = [initLinePath, ...guidePaths].filter((el): el is SVGGeometryElement => el instanceof SVGGeometryElement);
+
+    if (dot && linePaths.length > 0) {
+        const dotTimeline = gsap.timeline({ paused: true });
+        for (const path of linePaths) {
+            dotTimeline.to(dot, {
+                duration: path.getTotalLength(),
+                ease: "none",
+                motionPath: { align: path, alignOrigin: [0.5, 0.5], path },
+            });
+        }
+
+        // Slowed down the motion path timeline so the user can actually see it towards end
+        const scrollDistanceFactor = 0.32;
+        ScrollTrigger.create({
+            animation: dotTimeline,
+            end: `+=${dotTimeline.duration() * scrollDistanceFactor}`,
+            scrub: true,
+            start: "top top",
+            trigger: ".chip-stage",
+        });
+    }
+</script>
+
+<style>
+    /* --chip-w drives every measurement below; the ratios come from the
+       source SVGs' own viewBoxes (chip: 594x585, connector: 172x58,
+       text: 543x382) so everything scales together. */
+    .chip-stage {
+        --chip-w: min(598px, 90vw);
+        /* Reserves real normal-flow height for the chip's full visual
+           extent, all the way down through line-full's bottom edge
+           (top 1.54777 + height 1341/594 = 3.80535, in chip-w units) -
+           everything below the chip image itself is position:absolute
+           and wouldn't otherwise push a following section down at all. */
+        min-height: calc(var(--chip-w) * 3.80535);
+        position: relative;
+        width: var(--chip-w);
+    }
+
+    .chip-stage :global(svg) {
+        display: block;
+        height: 100%;
+        width: 100%;
+    }
+
+    /* Explicit chip-w-based sizing (not height/width: 100%) so chip-stage's
+       min-height above (needed to reserve layout space for the line below)
+       doesn't stretch these to fill that much taller box. */
+    .chip {
+        height: calc(var(--chip-w) * 585 / 594);
+        left: 0;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        width: var(--chip-w);
+    }
+
+    .connector-line {
+        height: calc(var(--chip-w) * 58 / 594);
+        left: calc(var(--chip-w) * 0.8134);
+        opacity: 0;
+        position: absolute;
+        top: calc(var(--chip-w) * 0.2146);
+        width: calc(var(--chip-w) * 172 / 594);
+    }
+
+    .fast-text-fade,
+    .fast-text {
+        height: auto;
+        left: calc(var(--chip-w) * 1.084);
+        opacity: 0;
+        position: absolute;
+        top: calc(var(--chip-w) * 0.2146);
+        width: calc(var(--chip-w) * 543 / 594);
+    }
+
+    /* Anchored so its start point (811.5, 2 of its own 974x447.5 viewBox) */
+    .init-line {
+        height: calc(var(--chip-w) * 447.5 / 594);
+        left: calc(var(--chip-w) * 0.1951);
+        opacity: 0;
+        position: absolute;
+        top: calc(var(--chip-w) * 0.7944);
+        width: calc(var(--chip-w) * 974 / 594);
+    }
+
+    /* Same width (974) as init-line, from the same frame - stacked directly
+       below it: same left, top = init-line's own top + height. */
+    .line-full {
+        height: calc(var(--chip-w) * 1341 / 594);
+        left: calc(var(--chip-w) * 0.1951);
+        opacity: 0;
+        position: absolute;
+        top: calc(var(--chip-w) * 1.54777);
+        width: calc(var(--chip-w) * 974 / 594);
+    }
+
+    /* The dot's motion-path guide lines baked into chip_line_full.svg -
+       ships at opacity 0.01 (near-invisible) in the source asset; forced
+       fully transparent here since it's pure motion logic, not visual. */
+    .line-full :global(g) {
+        opacity: 0;
+    }
+
+    /* TEMP: chip asset */
+    .motion-dot {
+        height: calc(var(--chip-w) * 12.82 / 594);
+        left: 0;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        width: calc(var(--chip-w) * 12.82 / 594);
+    }
+</style>
