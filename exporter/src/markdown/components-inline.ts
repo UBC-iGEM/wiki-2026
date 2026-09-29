@@ -1,3 +1,4 @@
+import { CONFIG } from "../config";
 import { PagePathComponent } from "../map";
 import { ExporterError, isExporterErr } from "../utils";
 import type { ComponentOutput } from "./components-block";
@@ -116,7 +117,7 @@ function link({ node, ctx }: ComponentInput): ComponentOutput {
         if (at_index === -1) return malformed(`an "@" separator was not identified`);
 
         return generateNewLink(
-            `/${ctx.path.toSlug()}`,
+            `${CONFIG.internal_link_root}/${ctx.path.toSlug()}`,
             text.slice(at_index),
             text.slice(0, at_index).trim() || undefined,
         );

@@ -114,6 +114,18 @@
                         {
                             "path": "Antibiotic Thaw Test",
                             "item": "3e3d65dd82be8058892fe009ae9eaa84"
+                        },
+                        {
+                            "path": "Biosensor Response Titration v2",
+                            "item": "3ead65dd82be809f8876d245d777e6c7"
+                        },
+                        {
+                            "path": "Simulant Degradation Assay v2",
+                            "item": "3ead65dd82be80a692f1c26f88e901da"
+                        },
+                        {
+                            "path": "Antibiotic Thaw Test v2",
+                            "item": "3ead65dd82be80e59cb8c9f077f28eec"
                         }
                     ]
                 }
@@ -218,7 +230,7 @@
                     "item": "359d65dd82be810da11ac4d817969632"
                 },
                 {
-                    "path": "Long Term Growth",
+                    "path": "Long Term Growt",
                     "type": "page",
                     "item": "359d65dd82be8151b34bf6b8b5f7ca59"
                 }

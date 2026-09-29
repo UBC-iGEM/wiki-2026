@@ -1,4 +1,5 @@
 // @ts-check
+import { CONFIG } from "../exporter/src/config";
 import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
 import { defineConfig, fontProviders } from "astro/config";
@@ -9,6 +10,7 @@ import remarkMath from "remark-math";
 
 // https://astro.build/config
 export default defineConfig({
+    base: CONFIG.internal_link_root,
     fonts: [
         {
             provider: fontProviders.fontsource(),
@@ -25,7 +27,6 @@ export default defineConfig({
             styles: ["normal"],
         },
     ],
-
     markdown: {
         processor: unified({
             remarkPlugins: [remarkMath, remarkBreaks],

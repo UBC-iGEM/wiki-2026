@@ -43,7 +43,6 @@ const POSITION_TAG_SECTIONS: Record<string, SectionMeta> = {
     "Principal Investigator": { slug: "principal-investigators", title: "Principal Investigators" },
 };
 
-
 // Team tags identify which subteam a regular member belongs to.
 const TEAM_TAGS = new Set(["Wet Lab", "Dry Lab", "Human Practices", "Administration", "Design/Wiki"]);
 
@@ -119,7 +118,7 @@ export async function exportTeamPage(): Promise<ExporterResult<void>> {
     });
 }
 
-// Here we use "team_page_id" as the team/attribution database's own ID 
+// Here we use "team_page_id" as the team/attribution database's own ID
 async function findTeamDatabase(team_page_id: PageId): Promise<ExporterResult<DatabaseId>> {
     const database = new DatabaseId(team_page_id.toString());
     const name_res = await database.getName();
@@ -174,10 +173,7 @@ async function rowToMember(
     };
 }
 
-function deriveSectionAndRole(
-    row_id: string,
-    tags: string[],
-): ExporterResult<{ section: SectionMeta; role: string }> {
+function deriveSectionAndRole(row_id: string, tags: string[]): ExporterResult<{ section: SectionMeta; role: string }> {
     const position_tags = tags.filter((tag) => tag in POSITION_TAG_SECTIONS);
     const team_tags = tags.filter((tag) => TEAM_TAGS.has(tag));
     const unrecognized_tags = tags.filter((tag) => !(tag in POSITION_TAG_SECTIONS) && !TEAM_TAGS.has(tag));
@@ -224,9 +220,7 @@ function getTitle(row: PageObjectResponse): ExporterResult<string> {
         .join("")
         .trim();
     if (!name)
-        return new ExporterError(`Team database row at Notion ID ${row.id} has an empty name.`, [
-            "malformed content",
-        ]);
+        return new ExporterError(`Team database row at Notion ID ${row.id} has an empty name.`, ["malformed content"]);
 
     return name;
 }

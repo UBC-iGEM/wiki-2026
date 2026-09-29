@@ -1,6 +1,7 @@
 {
   "master_id": "364d65dd82be80f0aed8fcb8bfaf9353",
   "content_dir_path": "web/docs",
+  "internal_link_root": "/ubc-vancouver",
   "debug_dir_path": "exporter/debug",
   "team_id": "6279",
   "team_page_id": "3b3d65dd82be806fa73be6bc8dda89e4",

@@ -1,3 +1,4 @@
+import { CONFIG } from "../config";
 import { PageId, type PageProperty } from "../notion";
 import { ExporterError, isExporterErr, type ExporterResult } from "../utils";
 import type { ProcessorInput, ProcessorOutput } from "./markdown";
@@ -55,7 +56,7 @@ function normalizePageLink({ node, ctx }: ProcessorInput<Link>): ProcessorOutput
         return CONTINUE;
     }
 
-    const path_slug = `/${page_path.toSlug()}`;
+    const path_slug = `${CONFIG.internal_link_root}/${page_path.toSlug()}`;
 
     const children =
         // A mention link?
