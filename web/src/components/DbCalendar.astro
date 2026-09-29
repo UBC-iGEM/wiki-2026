@@ -13,6 +13,7 @@ interface Props {
 const { current_page_path, parent_db_path } = Astro.props;
 
 const parent_db = PagePath.fromString(parent_db_path);
+const base_url = `${import.meta.env.BASE_URL}/`;
 
 interface DayEntry {
     date: string;
@@ -58,7 +59,7 @@ const entries_by_date = Map.groupBy(
             {
                 date,
                 label: entry.name().toString(),
-                href: `/${entry.toSlug()}`,
+                href: `${base_url}${entry.toSlug()}`,
                 is_current: path === current_page_path,
             },
         ];

@@ -255,7 +255,7 @@ The enzyme trajectory represents how enzyme concentration changes over time afte
 ***
 
 **Antibiotic Degradation**
-Antibiotic concentration decreases over time as it is degraded by the resistance enzyme. The rate of degradation depends on the amount
+Antibiotic concentration decreases over time as it is degraded by the resistance enzyme. The rate of degradation depends on the amount of enzyme present and the kinetic parameters. As enzyme concentration increases, antibiotic degradation occurs quicker.
 
 ***
 
@@ -264,8 +264,10 @@ When antibiotic concentration is high, bacterial killing is stronger. As the ant
 
 #### **Parameterization**
 
+This model combines kinetic parameters, starting conditions, and user-defined values. Values were taken from published literature for the specific enzyme-antibiotic pair being modelled. Other parameters were estimated and should be experimentally validated depending on the system being tested.
+The interactive model allows these values to be changed so that different experimental conditions can be compared.
 **Discussion**
-
+The degradation model was developed to estimate how long it may take for a resistance enzyme to produce a measurable decrease in antibiotic concentration. This model follow how changes in one part of the system can affect others. The main use of the model is to guide Wet Lab experiments. Predicted degradation times can aid Wet Lab to estimate incubation times prior to experimental testing.
 **Limitations**
 The model is a simplified representation of the biological system and bacterial response. It does not account for every variable that may influence results experimentally.
 The model uses estimations and values taken from literature that may have been measured under different experimental conditions. In addition, there are other parameters that may still need to be validated experimentally.

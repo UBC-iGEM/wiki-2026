@@ -50,6 +50,15 @@ export default defineConfig({
             ],
         }),
     },
-
     integrations: [mdx()],
+    vite: {
+        build: {
+            rollupOptions: {
+                output: {
+                    assetFileNames: "_astro/[hash][extname]",
+                    chunkFileNames: "_astro/[hash].js",
+                },
+            },
+        },
+    },
 });
