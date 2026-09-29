@@ -130,7 +130,7 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
                 case "html":
                     return processAllAndWarnErrors(HTML_PROCESSORS, {
                         node: undefined,
-                        parsed_node: HTMLParse.parse(node.value),
+                        parsed_node: HTMLParse.parse(node.value, { voidTag: { closingSlash: true } }),
                         ctx,
                     });
                 case "link":

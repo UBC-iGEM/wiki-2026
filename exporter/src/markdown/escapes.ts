@@ -23,5 +23,11 @@ export const remarkStripNotionAnnotations: Plugin<[], Root> = () => (tree) => {
 export const remarkEscapeMdxText: Plugin<[], Root> = function (this: Processor) {
     const data = this.data();
     const extensions = (data.toMarkdownExtensions ??= []) as MdASTOptions[];
-    extensions.push({ unsafe: [{ character: "<", inConstruct: "phrasing" }] });
+    extensions.push({
+        unsafe: [
+            { character: "<", inConstruct: "phrasing" },
+            { character: "{", inConstruct: "phrasing" },
+            { character: "}", inConstruct: "phrasing" },
+        ],
+    });
 };

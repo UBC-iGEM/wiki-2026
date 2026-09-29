@@ -11,6 +11,7 @@ import {
 } from "./utils";
 import {
     Client,
+    LogLevel,
     type BlockObjectResponse,
     type ListBlockChildrenParameters,
     type PageObjectResponse,
@@ -37,7 +38,7 @@ function notion(): Client {
             ["exporter configuration", "notion server"],
         ).logAndQuit();
 
-    const client_res = $unsafeSync(() => new Client({ auth: key }));
+    const client_res = $unsafeSync(() => new Client({ auth: key, logLevel: LogLevel.ERROR }));
     if (isErr(client_res))
         new ExporterError(
             "Failed to construct a client to connect to the Notion server.",

@@ -57,8 +57,8 @@ $$
 \frac{dE}{dt}= \alpha \cdot \frac{A^{n_{hill}}}{K_{ind}^{n_{hill}} + A^{n_{hill}}} - \delta \cdot E
 $$
 
-The first term is a Hill activation function describing enzyme production as a sigmoidal function of antibiotic concentration. (\alpha) represents the maximum enzyme production rate, (K\_{ind}) represents the antibiotic concentration associated with half-maximal induction, (n\_{hill}) describes the steepness of the induction response, and (\delta) represents enzyme decay.
-When (A = K\_{ind}), the activation fraction is exactly 0.5, regardless of (n\_{hill}).
+The first term is a Hill activation function describing enzyme production as a sigmoidal function of antibiotic concentration. (\alpha) represents the maximum enzyme production rate, (K\_\{ind\}) represents the antibiotic concentration associated with half-maximal induction, (n\_\{hill\}) describes the steepness of the induction response, and (\delta) represents enzyme decay.
+When (A = K\_\{ind\}), the activation fraction is exactly 0.5, regardless of (n\_\{hill\}).
 **Antibiotic Degradation using Michaelis-Menten Kinetics**
 
 $$
@@ -66,7 +66,7 @@ $$
 \frac{dA}{dt} = -k_{cat} \cdot \frac{E \cdot A}{K_m + A}
 $$
 
-This is the standard Michaelis-Menten rate law for enzyme-catalyzed substrate turnover, applied to enzymatic antibiotic degradation. (k\_{cat}) has units of inverse time and represents the catalytic turnover rate of the enzyme, and (K\_m) is the Michaelis constant with the same concentration unit as (A).
+This is the standard Michaelis-Menten rate law for enzyme-catalyzed substrate turnover, applied to enzymatic antibiotic degradation. ($k_{cat}$) has units of inverse time and represents the catalytic turnover rate of the enzyme, and ($K_m$) is the Michaelis constant with the same concentration unit as (A).
 At low substrate concentration, the degradation rate is approximately proportional to antibiotic concentration, whereas at high concentrations, the enzyme approaches saturation.
 Notably, enzyme concentration itself is determined by the induction equation. Consequently, antibiotic degradation is dynamically coupled to enzyme production rather than being represented by a constant degradation rate.
 **Bacterial Response using Sigmoidal Emax Kinetics**
@@ -76,7 +76,7 @@ $$
 \frac{dN}{dt} = \mu \cdot N - E_{max} \cdot \frac{A^{n_{pd}}}{EC_{50}^{n_{pd}} + A^{n_{pd}}} \cdot N
 $$
 
-The downstream bacterial response was modelled using a growth term combined with a sigmoidal Emax pharmacodynamic relationship. The first term describes unconstrained exponential bacterial growth at per capita rate (\mu) (time(^{-1})), and the second term is a sigmoidal Emax model describing concentration-dependent bacterial killing.
+The downstream bacterial response was modelled using a growth term combined with a sigmoidal Emax pharmacodynamic relationship. The first term describes unconstrained exponential bacterial growth at per capita rate ($\mu$) ($time(^{-1})$), and the second term is a sigmoidal Emax model describing concentration-dependent bacterial killing.
 As enzymatic degradation reduces (A), the magnitude of the killing term decreases, allowing the model to connect enzymatic antibiotic degradation with the expected downstream bacterial response.
 If the bacterial growth term subsequently becomes greater than the antibiotic-mediated killing term, the normalized bacterial population can begin to recover.
 
@@ -93,7 +93,7 @@ N(0)=1
 
 $$
 
-where (A\_0) represents the initial antibiotic concentration and (N=1)n represents the normalized starting bacterial population.
+where ($A_0$) represents the initial antibiotic concentration and (N=1)n represents the normalized starting bacterial population.
 An interactive interface was implemented using `ipywidgets` where users can independently modify parameters describing enzyme expression, enzyme decay, induction sensitivity, catalytic activity, starting antibiotic concentration, and the desired degradation threshold. The model subsequently generates three time-dependent trajectories:
 
 $$
@@ -130,7 +130,7 @@ Build: Implement Michaelis-Menten degradation dynamics in Python
 
 <Fragment slot="test">
 
-Test: Simulate antibiotic concentration over time across a range of kinetic parameters, including (k\_{cat}), (K\_m), enzyme concentration, and starting antibiotic concentration.
+Test: Simulate antibiotic concentration over time across a range of kinetic parameters, including ($k_{cat}$), ($K_m$), enzyme concentration, and starting antibiotic concentration.
 
 </Fragment>
 
@@ -153,10 +153,10 @@ $$
 
 Antibiotic concentration influences enzyme production and enzyme concentration determines antibiotic degradation rate.
 **Induction Sensitivity**
-While testing the model, it was observed at that changing (K\_{ind}) sometimes had very little effect on enzyme induction. This occurred when the antibiotic concentration was much higher than (K\_{ind}), meaning that the Hill induction term was already close to its maximum.
-As a result, it was concluded that the effect of (K\_{ind}) depends on how its value compares to the antibiotic concentration. When antibiotic concentration is much greater than (K\_{ind}), changes in (K\_{ind}) have little effect on induction. However, as antibiotic concentration decreases and approaches (K\_{ind}), the induction response becomes more sensitive to these values.
+While testing the model, it was observed at that changing ($K_{ind}$) sometimes had very little effect on enzyme induction. This occurred when the antibiotic concentration was much higher than ($K_{ind}$), meaning that the Hill induction term was already close to its maximum.
+As a result, it was concluded that the effect of ($K_{ind}$) depends on how its value compares to the antibiotic concentration. When antibiotic concentration is much greater than ($K_{ind}$), changes in ($K_{ind}$) have little effect on induction. However, as antibiotic concentration decreases and approaches ($K_{ind}$), the induction response becomes more sensitive to these values.
 **Defining a Useful Degradation Threshold**
-Another issue that arose during model development was how to define when enough antibiotic degradation had occurred. Initially, the model was designed to calculate how long it took for the antibiotic concentration to fall below the MIC. However, if the starting antibiotic concentration was already set to (1\times MIC), the MIC threshold was considered reached at the beginning of the simulation.
+Another issue that arose during model development was how to define when enough antibiotic degradation had occurred. Initially, the model was designed to calculate how long it took for the antibiotic concentration to fall below the MIC. However, if the starting antibiotic concentration was already set to ($1\times MIC$), the MIC threshold was considered reached at the beginning of the simulation.
 If:
 
 $$
@@ -179,7 +179,7 @@ $$
 0.90A_0,\quad 0.75A_0,\quad 0.50A_0 
 $$
 
-These values represent 10%, 25%, and 50% degradation, respectively. This provides a more useful way to compare how quickly different enzyme-antibiotic combinations degrade the antibiotic. MIC can still be included as a biologically relevant reference, but it is not used as the main degradation threshold when the stimulation starts at (1\times MIC).
+These values represent 10%, 25%, and 50% degradation, respectively. This provides a more useful way to compare how quickly different enzyme-antibiotic combinations degrade the antibiotic. MIC can still be included as a biologically relevant reference, but it is not used as the main degradation threshold when the stimulation starts at ($1\times MIC$).
 
 <Dbtl>
 
@@ -203,20 +203,21 @@ Test: Change different induction parameters and observe how they affect enzyme p
 
 <Fragment slot="learn">
 
-Learn: (K\_{ind}) had little effect when antibiotic concentration was already high enough for enzyme induction to be close to its maximum. Furthermore, using MIC as the degradation threshold was not useful when the simulation started as (1\times MIC), therefore percentage degradation was used instead.
+Learn: ($K_{ind}$) had little effect when antibiotic concentration was already high enough for enzyme induction to be close to its maximum. Furthermore, using MIC as the degradation threshold was not useful when the simulation started as ($1\times MIC$), therefore percentage degradation was used instead.
 
 </Fragment>
 
 </Dbtl>
 
 **Stage 3: Connecting Antibiotic Degradation to Bacterial Response**
-To determine how changes in antibiotic concentration could affect the bacterial population, a bacterial response component was added to the model. This part of the model accounts for both normal bacterial grow
+To determine how changes in antibiotic concentration could affect the bacterial population, a bacterial response component was added to the model. This part of the model accounts for both normal bacterial growth and bacterial killing caused by the antibiotic.
+When antibiotic concentration is high, the killing effect is stronger. When the antibiotic is degraded and is concentration decreases, the amount of bacterial killing also decreases. If the antibiotic concentration becomes low enough, the bacterial population can begin to recover. Adding this part of the model connects antibiotic degradation to effect on bacterial growth.
 
 <Dbtl>
 
 <Fragment slot="design">
 
-Design: Connect antibiotic degradation to its effect on bacterial growth.
+Design: Determine how antibiotic degradation can affect bacterial growth.
 
 </Fragment>
 
@@ -234,7 +235,7 @@ Test: Simulate enzyme concentration, antibiotic concentration, and bacterial pop
 
 <Fragment slot="learn">
 
-Learn: As antibiotic concentration decreases through degradation, the predicted killing effect also decreases. If bacterial growth becomes greater than antibiotic-mediated killing, the bacterial population can begin to recover.
+Learn: As antibiotic concentration decreases through degradation, the antibiotic-mediated killing also decreases. If bacterial growth becomes greater than antibiotic-mediated killing, the bacterial population can begin to recover.
 
 </Fragment>
 
@@ -249,22 +250,26 @@ The complete model visualizes three coupled biological processes: enzyme inducti
 ***
 
 **Enzyme Induction**
-The enzyme trajectory represents the
+The enzyme trajectory represents how enzyme concentration changes over time after antibiotic exposure. Enzyme production depends on the antibiotic concentration through the Hill function. The enzyme decay decreases the amount of enzyme present over time, however, as antibiotic concentration changes, the amount of enzyme being produced can also change.
 
 ***
 
 **Antibiotic Degradation**
+Antibiotic concentration decreases over time as it is degraded by the resistance enzyme. The rate of degradation depends on the amount
 
 ***
 
 **Bacterial Kill/Regrowth**
+When antibiotic concentration is high, bacterial killing is stronger. As the antibiotic is degraded, the killing effect decreases.
 
 #### **Parameterization**
 
 **Discussion**
 
 **Limitations**
-
+The model is a simplified representation of the biological system and bacterial response. It does not account for every variable that may influence results experimentally.
+The model uses estimations and values taken from literature that may have been measured under different experimental conditions. In addition, there are other parameters that may still need to be validated experimentally.
 **Future Work**
-
+Future work will focus on improving the model using experimental data from Wet Lab. The measured degradation rates and enzyme concentrations can help replace estimated values and improve the accuracy of the predictions. Furthermore, observed results from experimental data can be compared against the predicted degradation timelines to determine how well the model represents the system.
 **Conclusion**
+A kinetic degradation model was developed to predict how enzyme concentration, antibiotic concentration, and bacterial population change over time. The model is intended to act as a starting point to  estimate the time required for a selected amount of antibiotic degradation to occur and help guide Wet Lab with experimental design.
