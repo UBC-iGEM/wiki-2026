@@ -21,38 +21,87 @@ const static_links = content_map.static_links;
 ---
 
 <nav class="primary" aria-label="Primary navigation">
-    <ul class="top-level">
+    <button class="chip menu-toggle" type="button" aria-expanded="false" aria-controls="nav-sections">
+        <span>&#9776; Menu</span>
+    </button>
+
+    <ul class="top-level" id="nav-sections">
         {
             nav_items.map(({ label, children }) => (
-                <li class="nav-group">
-                    <span class="folder-label">{label}</span>
+                <li>
+                    <details class="nav-group">
+                        <summary class="chip">
+                            <span>{label}</span>
+                        </summary>
 
-                    <ul class="submenu">
-                        {children.map(({ label, href }) => (
-                            <li>
-                                <a href={href}>{label}</a>
-                            </li>
-                        ))}
-                    </ul>
+                        <ul class="submenu">
+                            {children.map(({ label, href }) => (
+                                <li>
+                                    <a href={href}>{label}</a>
+                                </li>
+                            ))}
+                        </ul>
+                    </details>
                 </li>
             ))
         }
         {
             static_links.map(({ label, href }) => (
-                <li class="nav-link">
-                    <a href={href.startsWith("/") ? `${base_url}${href.slice(1)}` : href}>{label}</a>
+                <li>
+                    <a class="chip" href={href.startsWith("/") ? `${base_url}${href.slice(1)}` : href}>
+                        <span>{label}</span>
+                    </a>
                 </li>
             ))
         }
     </ul>
 </nav>
 
+<script>
+    import { makeDismissable } from "../dismissable";
+
+    const nav = document.querySelector<HTMLElement>("nav.primary");
+    const toggle = nav?.querySelector<HTMLButtonElement>(".menu-toggle");
+
+    // The whole bar collapses on a narrow screen, where CSS hides the toggle otherwise
+    if (nav && toggle) {
+        const setOpen = (open: boolean) => {
+            nav.toggleAttribute("data-open", open);
+            toggle.setAttribute("aria-expanded", String(open));
+        };
+
+        toggle.addEventListener("click", () => setOpen(!nav.hasAttribute("data-open")));
+
+        document.addEventListener("click", (event) => {
+            if (!nav.contains(event.target as Node)) setOpen(false);
+        });
+
+        nav.addEventListener("keydown", (event) => {
+            if (event.key !== "Escape") return;
+            setOpen(false);
+            toggle.focus();
+        });
+    }
+
+    const groups = Array.from(document.querySelectorAll<HTMLDetailsElement>("details.nav-group"));
+
+    for (const group of groups) {
+        makeDismissable(group);
+
+        // Two open menus would overlap, so opening one closes the rest
+        group.addEventListener("toggle", () => {
+            if (!group.open) return;
+            for (const other of groups) if (other !== group) other.open = false;
+        });
+    }
+</script>
+
 <style>
     nav.primary {
+        background: var(--color-ebony-clay);
         box-sizing: border-box;
-        background-color: #f5f5f5;
-        padding: 0.5rem 4rem 0.5rem;
-        border-radius: 8px;
+        font-family: var(--font-geist);
+        padding: 1rem 2rem;
     }
 
     nav.primary ul {
@@ -63,31 +112,142 @@ const static_links = content_map.static_links;
 
     .top-level {
         display: flex;
+        flex-wrap: wrap;
+        gap: 1.25rem;
         justify-content: flex-end;
-        gap: 3rem;
     }
 
     .nav-group {
         position: relative;
     }
 
-    .submenu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: max-content;
-    }
-
-    .nav-group:hover > .submenu {
+    /* The chips are parallelograms, so the skew is undone on the label to keep the text upright */
+    .chip {
+        background: var(--color-cornflower);
+        box-sizing: border-box;
+        color: var(--color-periwinkle);
+        cursor: pointer;
         display: block;
-        background-color: #f5f5f5;
-        padding: 5px 10px;
-        border-radius: 5px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        list-style: none;
+        padding: 0.5rem 1.25rem;
+        text-align: center;
+        text-decoration: none;
+        transform: skewX(-20deg);
+        transition:
+            background 120ms ease,
+            color 120ms ease,
+            padding 160ms ease;
+        user-select: none;
     }
 
-    .nav-link a {
-        color: inherit;
+    .chip > span {
+        display: block;
+        transform: skewX(20deg);
+    }
+
+    .menu-toggle {
+        border: 0;
+        display: none;
+        font-family: inherit;
+        width: 100%;
+    }
+
+    /* The mock widens the chip in play and leaves the others alone */
+    .chip:hover,
+    .nav-group[open] > .chip {
+        background: var(--color-lime-yellow);
+        color: var(--color-ebony-clay);
+        padding-inline: 3rem;
+    }
+
+    .chip:focus-visible {
+        outline: 2px solid var(--color-lime-yellow);
+        outline-offset: 3px;
+    }
+
+    /* Hangs from the chip's left edge, unskewed so the menu itself stays square */
+    .submenu {
+        /* The mock's panel green, which is not one of the nine brand colours */
+        background: #1d3631;
+        border: 1px solid var(--color-lime-yellow);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        max-height: min(60vh, 24rem);
+        min-width: 100%;
+        overflow-y: auto;
+        padding: 0.4rem;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        width: max-content;
+        z-index: 10;
+    }
+
+    .submenu a {
+        color: var(--color-lime-yellow);
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 0.35rem 0.6rem 0.35rem 1.4rem;
+        position: relative;
         text-decoration: none;
+    }
+
+    /* The mock marks the page under the cursor with a caret rather than a highlight */
+    .submenu a::before {
+        content: "\25b6";
+        left: 0.5rem;
+        opacity: 0;
+        position: absolute;
+    }
+
+    .submenu a:hover::before,
+    .submenu a:focus-visible::before {
+        opacity: 1;
+    }
+
+    .submenu a:focus-visible {
+        outline: 2px solid var(--color-lime-yellow);
+        outline-offset: -2px;
+    }
+
+    /* The layout stacks its sidebar at this width too, so the bar collapses with it */
+    @media (max-width: 1000px) {
+        nav.primary {
+            padding: 0.75rem 1rem;
+        }
+
+        .menu-toggle {
+            display: block;
+        }
+
+        /* Behind the toggle, so the sections stop owning the top of every page */
+        .top-level {
+            display: none;
+            flex-direction: column;
+            gap: 0.6rem;
+            justify-content: flex-start;
+            margin-top: 0.6rem;
+        }
+
+        nav.primary[data-open] .top-level {
+            display: flex;
+        }
+
+        /* Full width already, so there is nothing for the chip in play to grow into */
+        .chip,
+        .chip:hover,
+        .nav-group[open] > .chip {
+            padding-inline: 1rem;
+        }
+
+        /* In flow rather than floating, so an open menu pushes the chips below it down */
+        .submenu {
+            box-shadow: none;
+            max-height: none;
+            position: static;
+            width: auto;
+        }
     }
 </style>
