@@ -24,6 +24,21 @@ table th {
 pre.astro-code {
     padding: 15px;
     border-radius: 10px;
+    overflow-x: auto;
+}
+
+/* A long equation scrolls in place rather than widening the page */
+.katex-display,
+.katex {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+/* Inline maths needs a block box of its own before it can scroll */
+.katex {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 /* Notion injects underlines as <span underline="true"> */

@@ -13,21 +13,27 @@ const min_depth = headings.reduce((min, h) => Math.min(min, h.depth), 6);
 ---
 
 <nav class="toc" aria-label="Table of contents">
-    <p class="toc-title">On this page</p>
-    <ul>
-        {
-            headings.map((heading) => (
-                <li style={`padding-left: ${(heading.depth - min_depth) * 0.75}rem`}>
-                    <a href={`#${heading.slug}`} data-toc-slug={heading.slug}>
-                        {heading.text}
-                    </a>
-                </li>
-            ))
-        }
-    </ul>
+    <details open>
+        <summary>On this page</summary>
+        <ul>
+            {
+                headings.map((heading) => (
+                    <li style={`padding-left: ${(heading.depth - min_depth) * 0.75}rem`}>
+                        <a href={`#${heading.slug}`} data-toc-slug={heading.slug}>
+                            {heading.text}
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </details>
 </nav>
 
 <script>
+    // Stacked above the article, an open list pushes the page itself out of view
+    const toc = document.querySelector<HTMLDetailsElement>("nav.toc details");
+    if (toc) toc.open = !window.matchMedia("(max-width: 1000px)").matches;
+
     const links = Array.from(document.querySelectorAll<HTMLAnchorElement>("nav.toc a[data-toc-slug]"));
 
     if (links.length > 0) {
@@ -98,10 +104,16 @@ const min_depth = headings.reduce((min, h) => Math.min(min, h.depth), 6);
         font-size: 0.85rem;
     }
 
-    .toc-title {
-        color: #666666;
+    summary {
+        cursor: pointer;
         font-weight: 700;
-        margin: 0 0 0.5rem;
+        margin-bottom: 0.5rem;
+        user-select: none;
+    }
+
+    summary:focus-visible {
+        outline: 2px solid var(--color-cornflower);
+        outline-offset: 2px;
     }
 
     ul {
@@ -112,7 +124,6 @@ const min_depth = headings.reduce((min, h) => Math.min(min, h.depth), 6);
 
     a {
         border-left: 2px solid transparent;
-        color: #555555;
         display: block;
         padding: 0.25rem 0.5rem;
         text-decoration: none;
@@ -120,11 +131,21 @@ const min_depth = headings.reduce((min, h) => Math.min(min, h.depth), 6);
 
     a:hover,
     a.active {
-        color: #000000;
+        color: var(--color-northern-lights);
     }
 
     a.active {
-        border-left-color: #000000;
+        border-left-color: var(--color-northern-lights);
         font-weight: 600;
+    }
+
+    /* Beside the article there is room for the whole list, so only a narrow screen
+       has anything to gain from collapsing it */
+    @media (min-width: 1001px) {
+        summary {
+            cursor: default;
+            list-style: none;
+            pointer-events: none;
+        }
     }
 </style>
