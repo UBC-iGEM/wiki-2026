@@ -35,6 +35,7 @@ export const COMPONENT_MAP: Record<string, (input: ComponentInput) => ComponentO
     dbtl,
     carousel,
     model3d,
+    ihp,
     skip,
 };
 
@@ -97,9 +98,9 @@ function figure({ node, ctx }: ComponentInput): ComponentOutput {
     if (images.length === 0)
         return new ExporterError(
             `Figure component on page "${ctx.path}" could not be understood: it does not start with images.` +
-                ExporterError.componentDocSuggestion(
-                    "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#395d65dd82be80849d9eff853d8453a2",
-                ),
+            ExporterError.componentDocSuggestion(
+                "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#395d65dd82be80849d9eff853d8453a2",
+            ),
             ["malformed content"],
         );
 
@@ -157,9 +158,9 @@ function dbtl({ node, ctx }: ComponentInput): ComponentOutput {
     if (sections.length !== 4)
         return new ExporterError(
             `DBTL component on page "${ctx.path}" could not be understood: it does not have 4 sections delimited by dividers.` +
-                ExporterError.componentDocSuggestion(
-                    "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#395d65dd82be805ea14ed9af6aaeff99",
-                ),
+            ExporterError.componentDocSuggestion(
+                "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#395d65dd82be805ea14ed9af6aaeff99",
+            ),
             ["malformed content"],
         );
 
@@ -190,8 +191,8 @@ function model3d({ node, ctx }: ComponentInput): ComponentOutput {
         file_node?.type === "html"
             ? file_node
             : file_node?.type === "paragraph" && file_node.children[0]?.type === "html"
-              ? file_node.children[0]
-              : undefined;
+                ? file_node.children[0]
+                : undefined;
     if (!file_html) return malformedModel3d(ctx.path.toString(), "it does not start with an uploaded file");
 
     const inline_content =
@@ -255,9 +256,9 @@ function model3d({ node, ctx }: ComponentInput): ComponentOutput {
 function malformedModel3d(path: string, problem: string): ExporterError {
     return new ExporterError(
         `Model3D component on page "${path}" could not be understood: ${problem}.` +
-            ExporterError.componentDocSuggestion(
-                "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link",
-            ),
+        ExporterError.componentDocSuggestion(
+            "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link",
+        ),
         ["malformed content"],
     );
 }
@@ -309,9 +310,9 @@ function carousel({ node, ctx }: ComponentInput): ComponentOutput {
         if (!first || first.type !== "paragraph")
             return new ExporterError(
                 `Carousel component on page "${ctx.path}" could not be understood: slide ${i + 1} does not start with an image.` +
-                    ExporterError.componentDocSuggestion(
-                        "https://www.notion.so/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?v=390d65dd82be80879bd4000c8f0deedc&source=copy_link#3add65dd82be8004a504cb122ae5ca7b",
-                    ),
+                ExporterError.componentDocSuggestion(
+                    "https://www.notion.so/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?v=390d65dd82be80879bd4000c8f0deedc&source=copy_link#3add65dd82be8004a504cb122ae5ca7b",
+                ),
                 ["malformed content"],
             );
 
@@ -323,9 +324,9 @@ function carousel({ node, ctx }: ComponentInput): ComponentOutput {
         if (first.children[0]?.type !== "image")
             return new ExporterError(
                 `Carousel component on page "${ctx.path}" could not be understood: slide ${i + 1} does not start with an image.` +
-                    ExporterError.componentDocSuggestion(
-                        "https://www.notion.so/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?v=390d65dd82be80879bd4000c8f0deedc&source=copy_link#3add65dd82be8004a504cb122ae5ca7b",
-                    ),
+                ExporterError.componentDocSuggestion(
+                    "https://www.notion.so/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?v=390d65dd82be80879bd4000c8f0deedc&source=copy_link#3add65dd82be8004a504cb122ae5ca7b",
+                ),
                 ["malformed content"],
             );
 
@@ -350,6 +351,163 @@ function carousel({ node, ctx }: ComponentInput): ComponentOutput {
         slots: { descriptions },
     });
 }
+// ====================
+// IHP COMPONENT
+// ====================
+
+export interface IhpAttrs {
+    image: {
+        url: string;
+        alt: string;
+    };
+    name: string;
+    bio: string;
+}
+
+export const IHP_SLOTS = ["content"] as const;
+
+type IhpSlots = SlotRecord<typeof IHP_SLOTS>;
+
+function ihp({ node, ctx }: ComponentInput): ComponentOutput {
+    const children = [...node.children];
+
+    // --------------------------------
+    // IMAGE
+    // --------------------------------
+
+    const image_paragraph = children.shift();
+
+    if (!image_paragraph || image_paragraph.type !== "paragraph") {
+        return malformedIhp(
+            ctx.path.toString(),
+            "it does not start with an image",
+        );
+    }
+
+    // Ignore whitespace before the image.
+    while (
+        image_paragraph.children[0]?.type === "text" &&
+        image_paragraph.children[0].value.trim() === ""
+    ) {
+        image_paragraph.children.shift();
+    }
+
+    if (image_paragraph.children[0]?.type !== "image") {
+        return malformedIhp(
+            ctx.path.toString(),
+            "it does not start with an image",
+        );
+    }
+
+    const image = image_paragraph.children[0];
+
+    // --------------------------------
+    // NAME + BIO
+    // --------------------------------
+
+    const info_list = children.shift();
+
+    if (
+        !info_list ||
+        info_list.type !== "list" ||
+        info_list.ordered ||
+        info_list.children.length !== 2
+    ) {
+        return malformedIhp(
+            ctx.path.toString(),
+            "the image must be followed by a two-item bulleted list containing the name and bio",
+        );
+    }
+
+    const name_item = info_list.children[0];
+    const bio_item = info_list.children[1];
+
+    const name_paragraph = name_item?.children[0];
+    const bio_paragraph = bio_item?.children[0];
+
+    if (
+        !name_paragraph ||
+        name_paragraph.type !== "paragraph" ||
+        !bio_paragraph ||
+        bio_paragraph.type !== "paragraph"
+    ) {
+        return malformedIhp(
+            ctx.path.toString(),
+            "the name and bio must both be text",
+        );
+    }
+
+    const name = name_paragraph.children
+        .filter((child) => child.type === "text")
+        .map((child) => child.value)
+        .join("")
+        .trim();
+
+    const bio = bio_paragraph.children
+        .filter((child) => child.type === "text")
+        .map((child) => child.value)
+        .join("")
+        .trim();
+
+    if (name === "" || bio === "") {
+        return malformedIhp(
+            ctx.path.toString(),
+            "the name and bio cannot be empty",
+        );
+    }
+
+    // --------------------------------
+    // DIVIDER
+    // --------------------------------
+
+    const divider = children.shift();
+
+    if (!divider || divider.type !== "thematicBreak") {
+        return malformedIhp(
+            ctx.path.toString(),
+            "the name and bio must be followed by a divider",
+        );
+    }
+
+    // --------------------------------
+    // INTERVIEW DESCRIPTION
+    // --------------------------------
+
+    if (children.length === 0) {
+        return malformedIhp(
+            ctx.path.toString(),
+            "it does not contain an interview description after the divider",
+        );
+    }
+
+    return generateComponent<IhpAttrs, IhpSlots>({
+        node,
+        ctx,
+        tag: "IHP",
+        attrs: {
+            image: {
+                url: image.url,
+                alt: image.alt || "",
+            },
+            name,
+            bio,
+        },
+        slots: {
+            content: children,
+        },
+    });
+}
+
+function malformedIhp(path: string, problem: string): ExporterError {
+    return new ExporterError(
+        `iHP component on page "${path}" could not be understood: ${problem}.` +
+        ExporterError.componentDocSuggestion(
+            "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link",
+        ),
+        ["malformed content"],
+    );
+}
+
 
 // ====================
 // CALLOUT COMPONENT
