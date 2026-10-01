@@ -48,43 +48,40 @@ We will test this at 8ug/ml since it is the upper limit of the biosensor MIC ran
 
 We will expose our antibiotics to degradation conditions, incubating for 2 different durations:
 
-- 12-hour incubation (treat at 8am)
-- 6-hour incubation (treat at 2pm)
+- 12-hour incubation (treat at 11am)
+- 6-hour incubation (treat at 3pm)
 
-**12-hour antibiotic degradation period**
+**10-hour antibiotic degradation period**
 
-- Read OD of each culture (\~12hr incubation)
+- Read OD of each culture (\~20hr incubation)
   - Blank with LB-Cm
   - Record the OD for each strain
-- Take 2ml of culture. Treat with 8 ug/ml or 16 ug/ml of each antibiotic → 6 tubes total
-  - GmR culture + gentamicin (e.g. 160ul of 100ug/ml stock + 1.84ml of culture)
-  - KanR culture + tobramycin (e.g. 160ul of 100ug/ml stock + 1.84ml of culture)
-  - Beta-lactamase culture + amoxicillin (e.g. 160ul of 100ug/ml stock + 1.84ml of culture)
+- Take 2ml of culture. Treat with 8 ug/ml or 16 ug/ml of each antibiotic. You will have a total of 6 tubes.
+  - GmR culture + gentamicin (e.g. 160ul of 100ug/ml stock + 1.84ml of culture; 320ul of 100ug/ml stock + 1.68ml of culture; 320ul of 100ug/ml stock + 1.68ml culture)
+  - KanR culture + tobramycin (e.g. 160ul of 100ug/ml stock + 1.84ml of culture; 320ul of 100ug/ml stock + 1.68ml of culture)
+  - Beta-lactamase culture + amoxicillin (e.g. 160ul of 100ug/ml stock + 1.84ml of culture; 320ul of 100ug/ml stock + 1.68ml of culture)
 - Incubate at 37˚C, shaking at 250 rpm for \~12 hours (until 8:30pm)
 
 <Callout icon="🥼" color="gray_bg">
-	B-Lac\: 
-	GmR\: 
-	KanR\: 
+	B-Lac\: 0.610.61
+	GmR\: 0.660.66
+	KanR\: 0.620.61
 	Small 5mL tubes placed on top shaker in 37C room
 </Callout>
 
 **6-hour antibiotic degradation period**
 
-- Read OD of each culture (\~18hr incubation)
+- Read OD of each culture (23hr incubation)
   - Blank with LB-Cm
   - Record the OD for each strain
     - B-Lac:
     - GmR:
     - KanR:
-- Dilute OD of each strain to match that of the 8am readings (serves as a control for the effect of bacterial density on degradation)
-  - B-Lac: 0.55 (1.45ml culture, 550ul LB-Cm)
-  - GmR: 0.63 (1.42ml culture, 580ul LB-Cm)
-  - KanR: 0.58 (1.43ml culture, 570ul LB-Cm)
-- Take 2ml of culture. Treat with 8 ug/ml or 16 ug/ml of each antibiotic → 6 tubes total
-  - GmR culture + gentamicin (e.g. 160ul of 100ug/ml stock + 1.84ml of culture)
-  - KanR culture + tobramycin (e.g. 160ul of 100ug/ml stock + 1.84ml of culture)
-  - Beta-lactamase culture + amoxicillin (e.g. 160ul of 100ug/ml stock + 1.84ml of culture)
+- Dilute OD to 0.1
+- Take 2ml of culture. Treat with 8 ug/ml or 16 ug/ml of each antibiotic. You will have a total of 6 tubes.
+  - GmR culture + gentamicin (e.g. 160ul of 100ug/ml stock + 1.84ml of culture; 320ul of 100ug/ml stock + 1.68ml of culture; 320ul of 100ug/ml stock + 1.68ml culture)
+  - KanR culture + tobramycin (e.g. 160ul of 100ug/ml stock + 1.84ml of culture; 320ul of 100ug/ml stock + 1.68ml of culture)
+  - Beta-lactamase culture + amoxicillin (e.g. 160ul of 100ug/ml stock + 1.84ml of culture; 320ul of 100ug/ml stock + 1.68ml of culture)
 - Incubate at 37˚C, shaking at 250 rpm for \~6 hours
 
 ## Day 2 (30/09/2026) - Assay Plating
@@ -123,20 +120,38 @@ We will expose our antibiotics to degradation conditions, incubating for 2 diffe
     - LB-Cm blank: 200ul LB-Cm
     - supernatant blank: 100ul LB-Cm + 100ul supernatant
 
+Layout for Plate #1-2
+
+- Plate #1 = initial antibiotic concentration of **8 ug/ml**; supernatant from simulant strains treated at an initial OD of 0.1 for 6 or 10 hrs
+- Plate #2 = initial antibiotic concentration of **16 ug/ml**; supernatant from simulant strains treated at an initial OD of 0.1 for 6 or 10 hrs
+
 |   |   |                  |                   |                    |   |                   |                    |                     |   |             |    |    |
 | - | - | ---------------- | ----------------- | ------------------ | - | ----------------- | ------------------ | ------------------- | - | ----------- | -- | -- |
 |   | 1 | 2                | 3                 | 4                  | 5 | 6                 | 7                  | 8                   | 9 | 10          | 11 | 12 |
-| A |   | CpxP + 6h Gm     | CpxP + 6h Kan     | CpxP + 6h Amox     |   | CpxP + 12h Gm     | CpxP + 12h Kan     | CpxP + 12h Amox     |   | CpxP        |    |    |
-| B |   | CpxP + 6h Gm     | CpxP + 6h Kan     | CpxP + 6h Amox     |   | CpxP + 12h Gm     | CpxP + 12h Kan     | CpxP + 12h Amox     |   | CpxP        |    |    |
-| C |   | CpxP + 6h Gm     | CpxP + 6h Kan     | CpxP + 6h Amox     |   | CpxP + 12h Gm     | CpxP + 12h Kan     | CpxP + 12h Amox     |   | CpxP        |    |    |
-| D |   | RecA + 6h Gm     | RecA + 6h Kan     | RecA + 6h Amox     |   | RecA + 12h Gm     | RecA + 12h Kan     | RecA + 12h Amox     |   | RecA        |    |    |
-| E |   | RecA + 6h Gm     | RecA + 6h Kan     | RecA + 6h Amox     |   | RecA + 12h Gm     | RecA + 12h Kan     | RecA + 12h Amox     |   | RecA        |    |    |
-| F |   | RecA + 6h Gm     | RecA + 6h Kan     | RecA + 6h Amox     |   | RecA + 12h Gm     | RecA + 12h Kan     | RecA + 12h Amox     |   | RecA        |    |    |
-| G |   | 6h Gm sup. blank | 6h Kan sup. blank | 6h Amox sup. blank |   | 12h Gm sup. blank | 12h Kan sup. blank | 12h Amox sup. blank |   | LB-Cm blank |    |    |
-| H |   | 6h Gm sup. blank | 6h Kan sup. blank | 6h Amox sup. blank |   | 12h Gm sup. blank | 12h Kan sup. blank | 12h Amox sup. blank |   | LB-Cm blank |    |    |
+| A |   | CpxP + 6h Gm     | CpxP + 6h Kan     | CpxP + 6h Amox     |   | CpxP + 10h Gm     | CpxP + 10h Kan     | CpxP + 10h Amox     |   | CpxP        |    |    |
+| B |   | CpxP + 6h Gm     | CpxP + 6h Kan     | CpxP + 6h Amox     |   | CpxP + 10h Gm     | CpxP + 10h Kan     | CpxP + 10h Amox     |   | CpxP        |    |    |
+| C |   | CpxP + 6h Gm     | CpxP + 6h Kan     | CpxP + 6h Amox     |   | CpxP + 10h Gm     | CpxP + 10h Kan     | CpxP + 10h Amox     |   | CpxP        |    |    |
+| D |   | RecA + 6h Gm     | RecA + 6h Kan     | RecA + 6h Amox     |   | RecA + 10h Gm     | RecA + 10h Kan     | RecA + 10h Amox     |   | RecA        |    |    |
+| E |   | RecA + 6h Gm     | RecA + 6h Kan     | RecA + 6h Amox     |   | RecA + 10h Gm     | RecA + 10h Kan     | RecA + 10h Amox     |   | RecA        |    |    |
+| F |   | RecA + 6h Gm     | RecA + 6h Kan     | RecA + 6h Amox     |   | RecA + 10h Gm     | RecA + 10h Kan     | RecA + 10h Amox     |   | RecA        |    |    |
+| G |   | 6h Gm sup. blank | 6h Kan sup. blank | 6h Amox sup. blank |   | 10h Gm sup. blank | 10h Kan sup. blank | 10h Amox sup. blank |   | LB-Cm blank |    |    |
+| H |   | 6h Gm sup. blank | 6h Kan sup. blank | 6h Amox sup. blank |   | 10h Gm sup. blank | 10h Kan sup. blank | 10h Amox sup. blank |   | LB-Cm blank |    |    |
 
-plate 1 = 8 ug/ml
-plate 2 = 16 ug/ml
+Layout for Plate #3
+
+- Plate #3 = initial antibiotic concentrations of 8ug/ml or 16ug/ml; supernatant from simulant strains treated at an initial OD of \~0.6 for 6 hours
+
+|   |   |                      |                       |                        |   |                       |                        |                         |   |             |    |    |
+| - | - | -------------------- | --------------------- | ---------------------- | - | --------------------- | ---------------------- | ----------------------- | - | ----------- | -- | -- |
+|   | 1 | 2                    | 3                     | 4                      | 5 | 6                     | 7                      | 8                       | 9 | 10          | 11 | 12 |
+| A |   | CpxP + 8ug/ml Gm     | CpxP + 8ug/ml Kan     | CpxP + 8ug/ml Amox     |   | CpxP + 16ug/ml Gm     | CpxP + 16ug/ml Kan     | CpxP + 16ug/ml Amox     |   | CpxP        |    |    |
+| B |   | CpxP + 8ug/ml Gm     | CpxP + 8ug/ml Kan     | CpxP + 8ug/ml Amox     |   | CpxP + 16ug/ml Gm     | CpxP + 16ug/ml Kan     | CpxP + 16ug/ml Amox     |   | CpxP        |    |    |
+| C |   | CpxP + 8ug/ml Gm     | CpxP + 8ug/ml Kan     | CpxP + 8ug/ml Amox     |   | CpxP + 16ug/ml Gm     | CpxP + 16ug/ml Kan     | CpxP + 16ug/ml Amox     |   | CpxP        |    |    |
+| D |   | RecA + 8ug/ml Gm     | RecA + 8ug/ml Kan     | RecA + 8ug/ml Amox     |   | RecA + 16ug/ml Gm     | RecA + 16ug/ml Kan     | RecA + 16ug/ml Amox     |   | RecA        |    |    |
+| E |   | RecA + 8ug/ml Gm     | RecA + 8ug/ml Kan     | RecA + 8ug/ml Amox     |   | RecA + 16ug/ml Gm     | RecA + 16ug/ml Kan     | RecA + 16ug/ml Amox     |   | RecA        |    |    |
+| F |   | RecA + 8ug/ml Gm     | RecA + 8ug/ml Kan     | RecA + 8ug/ml Amox     |   | RecA + 16ug/ml Gm     | RecA + 16ug/ml Kan     | RecA + 16ug/ml Amox     |   | RecA        |    |    |
+| G |   | 8ug/ml Gm sup. blank | 8ug/ml Kan sup. blank | 8ug/ml Amox sup. blank |   | 16ug/ml Gm sup. blank | 16ug/ml Kan sup. blank | 16ug/ml Amox sup. blank |   | LB-Cm blank |    |    |
+| H |   | 8ug/ml Gm sup. blank | 8ug/ml Kan sup. blank | 8ug/ml Amox sup. blank |   | 16ug/ml Gm sup. blank | 16ug/ml Kan sup. blank | 16ug/ml Amox sup. blank |   | LB-Cm blank |    |    |
 
 ## Day 3 (01/10/2026 ) - Readout
 

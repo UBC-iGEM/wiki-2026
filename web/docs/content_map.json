@@ -135,9 +135,34 @@
             "name": "Hardware",
             "entries": [
                 {
-                    "path": "Hardware Page 1",
+                    "path": "Microfluidic Chip",
                     "type": "page",
                     "item": "37cd65dd82be80829626fb3218a9a21f"
+                },
+                {
+                    "path": "Introduction & Overview of the Bioreactor",
+                    "type": "page",
+                    "item": "3ecd65dd82be806697aad2837827dac9"
+                },
+                {
+                    "path": "Building the Bioreactor",
+                    "type": "page",
+                    "item": "3ecd65dd82be80dd8317ef70851e61e5"
+                },
+                {
+                    "path": "Impact of the Bioreactor",
+                    "type": "page",
+                    "item": "3ecd65dd82be8031bbbdd1b391c5e9fe"
+                },
+                {
+                    "path": "Next Steps for the Bioreactor",
+                    "type": "page",
+                    "item": "3ecd65dd82be807b8830db951318f237"
+                },
+                {
+                    "path": "Lab Notebook",
+                    "type": "page",
+                    "item": "3ecd65dd82be80d1b702c82130b0682e"
                 }
             ]
         },
@@ -230,7 +255,7 @@
                     "item": "359d65dd82be810da11ac4d817969632"
                 },
                 {
-                    "path": "Long Term Growt",
+                    "path": "Long Term Growth",
                     "type": "page",
                     "item": "359d65dd82be8151b34bf6b8b5f7ca59"
                 }

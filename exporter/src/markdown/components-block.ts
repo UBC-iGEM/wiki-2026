@@ -6,6 +6,7 @@ import type { BlockContent, DefinitionContent, Html, Image, Paragraph, ThematicB
 import type { ContainerDirective } from "mdast-util-directive";
 import HTMLParse from "node-html-parser";
 import { SKIP } from "unist-util-visit";
+import { v5 as uuidv5 } from "uuid";
 
 /**
  * Support for block components.
@@ -202,21 +203,27 @@ function model3d({ node, ctx }: ComponentInput): ComponentOutput {
 
     const parsed_file = HTMLParse.parse(file_html.value).querySelector("file");
     const file_url = parsed_file?.getAttribute("src")?.replaceAll("\\:", ":");
-    if (!file_url?.startsWith("file://"))
-        return malformedModel3d(ctx.path.toString(), "its file source is not a Notion-uploaded file");
+    if (!file_url) return malformedModel3d(ctx.path.toString(), "it does not contain a file");
 
-    interface ModelFileData {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        permissionRecord?: { id?: unknown };
+    let file_id: Id;
+    if (file_url.startsWith("file://")) {
+        // This is a file uploaded to Notion
+        // The URL contains metadata, including the Notion block id
+        interface ModelFileData {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            permissionRecord?: { id?: unknown };
+        }
+        const file_data_res: Result<ModelFileData> = $unsafeSync(
+            JSON.parse,
+            decodeURIComponent(file_url.replace("file://", "")),
+        );
+        if (isErr(file_data_res) || typeof file_data_res.permissionRecord?.id !== "string")
+            return malformedModel3d(ctx.path.toString(), "it has an invalid uploaded file URL");
+        file_id = new Id(file_data_res.permissionRecord.id);
+    } else {
+        // This is a linked file; the AWS URLs returned by Notion often have changing query parameters
+        file_id = new Id(uuidv5(file_url.split("?")[0]!, uuidv5.DNS));
     }
-    const file_data_res: Result<ModelFileData> = $unsafeSync(
-        JSON.parse,
-        decodeURIComponent(file_url.replace("file://", "")),
-    );
-    if (isErr(file_data_res) || typeof file_data_res.permissionRecord?.id !== "string")
-        return malformedModel3d(ctx.path.toString(), "it has an invalid uploaded file URL");
-
-    const file_id = new Id(file_data_res.permissionRecord.id);
 
     const result = generateComponent<Model3dAttrs, Model3dSlots>({
         node,
@@ -228,20 +235,28 @@ function model3d({ node, ctx }: ComponentInput): ComponentOutput {
     const opening_node = ctx.parent.children[ctx.index] as Html;
 
     const callback = async (): Promise<ExporterResult<void>> => {
-        const block_res = await new BlockId(file_id.toString()).get();
-        if (isExporterErr(block_res)) return block_res;
-        if (block_res.type !== "file" || block_res.file.type !== "file")
-            return malformedModel3d(ctx.path.toString(), `Notion block ${file_id} is not an uploaded file`);
-        if (!/\.gl(?:b|tf)$/i.test(block_res.file.name))
+        let data_url = file_url;
+        let file_name = decodeURIComponent(file_url.split("?")[0]!.split("/").pop()!);
+
+        if (file_url.startsWith("file://")) {
+            const block_res = await new BlockId(file_id.toString()).get();
+            if (isExporterErr(block_res)) return block_res;
+            if (block_res.type !== "file" || block_res.file.type !== "file")
+                return malformedModel3d(ctx.path.toString(), `Notion block ${file_id} is not an uploaded file`);
+            data_url = block_res.file.file.url;
+            file_name = block_res.file.name;
+        }
+
+        if (!/\.gl(?:b|tf)$/i.test(file_name))
             return malformedModel3d(ctx.path.toString(), "its uploaded file is not a .glb or .gltf model");
 
         const tools_res = await getToolsClient();
         if (isExporterErr(tools_res)) return tools_res;
         const upload_res = await tools_res.upload({
             uid: file_id.toString(),
-            url: block_res.file.file.url,
+            url: data_url,
             path: ctx.path,
-            original_file: { file_name: block_res.file.name },
+            original_file: { file_name },
         });
         if (isExporterErr(upload_res)) return upload_res;
 

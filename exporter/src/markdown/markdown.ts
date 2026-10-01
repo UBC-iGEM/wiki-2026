@@ -183,13 +183,16 @@ function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
                     `Block component type ${component_type} on page "${path}" could not be understood. It is either misspelt or not yet implemented. See all block component options ${ExporterError.link({ with_label: "here", to: "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#395d65dd82be80ac838ef0a1375455cf" })}.`,
                     ["malformed content"],
                 ).warn();
-                return;
+                // Drop the component; its raw contents may not be valid MDX
+                parent.children.splice(index, 1);
+                return index;
             }
 
             const res = transform({ node, ctx });
             if (isExporterErr(res)) {
                 res.warn();
-                return;
+                parent.children.splice(index, 1);
+                return index;
             }
 
             return res;

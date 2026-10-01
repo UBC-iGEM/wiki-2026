@@ -1,0 +1,30 @@
+---
+type: "page"
+title: "Next Steps for the Bioreactor"
+---
+
+While the current bioreactor design is functional and capable of supporting reliable bacterial growth, there are a few features that could be improved for future iterations. The next stage of development is to move from a collection of individual components toward a more integrated and automated system.
+
+## Integrated Electronics
+
+The current bioreactor uses several independently connected sensors, pumps, and electronic components, resulting in a large number of wires and separate circuits that must be assembled and debugged individually. A future iteration could integrate these systems onto a custom printed circuit board (PCB), with a microcontroller incorporated directly onto the board to control and specify each component. A Raspberry Pi could also be added as a higher-level computer for data storage, visualization, or a user interface, although it would not necessarily replace the microcontroller responsible for real-time control. Integrating the electronics in this way would reduce loose wiring, simplify troubleshooting, and make the system easier to assemble and reproduce.
+
+## Automated Monitoring and Feedback Control
+
+Temperature, pH, and optical density are currently measured as separate processes, requiring the operator to monitor the system and respond manually when conditions change. These sensors could instead be connected to a central controller that continuously records their measurements and alerts the operator when a parameter moves outside an acceptable range. A further improvement would introduce feedback control, where the bioreactor automatically responds to these changes. For example, temperature measurements could control a heater, while pH measurements could activate small pumps that add acid or base when required. Feedback control is commonly used in bioreactors to maintain conditions around a desired set point rather than relying on periodic manual adjustments. This would reduce operator involvement while maintaining more consistent growth conditions throughout an experiment.
+
+## Automated Optical Density Sampling
+
+Optical density measurements currently require a small culture sample to be manually withdrawn through tubing using a syringe before it can be measured by the custom OD sensor. This process could be automated by incorporating a small peristaltic or syringe pump into the sampling line. At predetermined intervals, the controller could draw a fixed volume of culture through the OD measurement chamber, collect the reading, record the result, and then prepare the system for the next measurement. Automated bioreactor sampling systems have been shown to reduce hands-on work, enable measurements at consistent intervals, and improve repeatability compared with manual sampling. For this bioreactor, automated sampling would allow a complete growth curve to be recorded with much less operator involvement.
+
+## Improved Materials and Manufacturing
+
+Fused deposition modelling (FDM) was well suited to the early stages of the project because components could be manufactured quickly and modified between iterations. However, the current PLA components are better suited to prototyping than repeated long-term use. Larger structural components could instead be printed from a tougher and more temperature-resistant material such as PETG or ASA. ASA offers particularly strong temperature resistance and durability, although it is more difficult to manufacture reliably than PLA and generally requires an enclosed printer. Components exposed more directly to the culture, tubing, cleaning solutions, or repeated handling could instead be manufactured from metal using processes such as waterjet cutting, milling, or turning where appropriate. Moving toward more durable materials would increase the lifetime of the system and reduce the likelihood of components deforming, cracking, or requiring frequent replacement.
+
+## Improved Sterility and Sampling Design
+
+As the system becomes increasingly automated, maintaining a closed and clean culture environment becomes more important. Repeated manual sampling introduces additional connections and handling steps where contamination can occur. Future versions could use permanently connected sampling tubing, sealed fittings, and dedicated sample pathways that minimize the need to open or disconnect the system during an experiment. Automated sampling has the additional advantage of reducing repeated manual handling and can improve aseptic operation. These changes would make experiments more consistent while also reducing the amount of attention required from the operator.
+
+## Dissolved Oxygen Monitoring
+
+A further improvement could be the addition of a dissolved oxygen sensor. While the current sparger supplies air to the culture, the system does not directly measure how much oxygen remains available to the bacteria. For aerobic organisms such as *E. coli*, oxygen availability can change as the bacterial population grows, meaning a constant airflow does not necessarily produce constant culture conditions. Adding dissolved oxygen monitoring would provide another measurement of the culture environment and could eventually be linked to the aeration system, allowing airflow or agitation to increase when oxygen levels decrease. This would move the system closer to the monitoring and control capabilities of conventional laboratory bioreactors while maintaining its smaller and simpler design.
