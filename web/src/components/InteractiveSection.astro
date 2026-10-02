@@ -1,0 +1,298 @@
+---
+import chip_interactive_left from "../assets/hero_interactive/chip_interactive_left.svg?raw";
+import chip_interactive_right from "../assets/hero_interactive/chip_interactive_right.svg?raw";
+import green_tube from "../assets/hero_interactive/green_tube.svg?raw";
+import pink_tube from "../assets/hero_interactive/pink_tube.svg?raw";
+import empty_tube from "../assets/hero_interactive/empty_tube.svg?raw";
+import chip_light_up from "../assets/hero_interactive/chip_light_up.svg?raw";
+---
+
+<section class="interactive-section">
+    <div class="case-row">
+        <div class="case">
+            <h3 class="case-heading">Case 1<br />Susceptible</h3>
+            <div class="overlay-stack">
+                <div class="chip-visual chip-visual--left" set:html={chip_interactive_left} />
+                <div class="chip-visual chip-visual--left-lit" aria-hidden="true" set:html={chip_light_up} />
+            </div>
+            <h3 class="case-caption case-caption--left">Fluorescence</h3>
+        </div>
+
+        <div class="overlay-stack">
+            <button
+                class="tube-visual tube-visual--green"
+                type="button"
+                aria-label="Run test on Case 1 sample"
+                set:html={green_tube}
+            />
+            <div class="tube-visual tube-visual--empty-left" aria-hidden="true" set:html={empty_tube} />
+        </div>
+
+        <h4 class="prompt-text">Click on patient samples to conduct the test</h4>
+
+        <div class="overlay-stack">
+            <button
+                class="tube-visual tube-visual--pink"
+                type="button"
+                aria-label="Run test on Case 2 sample"
+                set:html={pink_tube}
+            />
+            <div class="tube-visual tube-visual--empty-right" aria-hidden="true" set:html={empty_tube} />
+        </div>
+
+        <div class="case">
+            <h3 class="case-heading">Case 2<br />Resistant</h3>
+            <div class="chip-visual chip-visual--right" set:html={chip_interactive_right} />
+            <h3 class="case-caption case-caption--right">No Fluorescence</h3>
+        </div>
+    </div>
+</section>
+
+<script>
+    import { gsap } from "gsap";
+
+    // Positioned tube relative to the chips via offset calculation
+    function tubeTargetRelativeToChip(chipSelector: string, tubeSelector: string) {
+        const chip = document.querySelector<HTMLElement>(chipSelector);
+        const tube = document.querySelector<HTMLElement>(tubeSelector);
+        if (!chip || !tube) return { x: 0, y: 0 };
+
+        const chipRect = chip.getBoundingClientRect();
+        const tubeRect = tube.getBoundingClientRect();
+
+        const pinX = chipRect.left + chipRect.width * (116 / 233);
+        const pinY = chipRect.top + chipRect.height * (38 / 532);
+
+        const rimX = tubeRect.left + tubeRect.width * 0.5;
+        const rimY = tubeRect.top;
+
+        return { x: pinX - rimX, y: pinY - rimY };
+    }
+
+    // Liquid travelling down chip effect. Creates mask from the chip's shape.
+    function buildLiquidFlow(chipSelector: string, color: string, id: string) {
+        const chip = document.querySelector<SVGSVGElement>(`${chipSelector} svg`);
+        if (!chip) return null;
+
+        const { width, height } = chip.viewBox.baseVal;
+        const svgNS = "http://www.w3.org/2000/svg";
+
+        const mask = document.createElementNS(svgNS, "mask");
+        mask.setAttribute("id", `${id}-mask`);
+        mask.setAttribute("maskUnits", "userSpaceOnUse");
+        mask.setAttribute("x", "-1000");
+        mask.setAttribute("y", "-1000");
+        mask.setAttribute("width", "3000");
+        mask.setAttribute("height", "3000");
+        mask.setAttribute("style", "mask-type:alpha");
+
+        Array.from(chip.children).forEach((child) => {
+            if (child.tagName === "mask") return;
+            mask.appendChild(child.cloneNode(true));
+        });
+
+        const gradient = document.createElementNS(svgNS, "linearGradient");
+        gradient.setAttribute("id", `${id}-gradient`);
+        gradient.setAttribute("x1", "0");
+        gradient.setAttribute("y1", "0");
+        gradient.setAttribute("x2", "0");
+        gradient.setAttribute("y2", "1");
+        gradient.innerHTML = `
+            <stop offset="0%" stop-color="${color}" stop-opacity="0" />
+            <stop offset="35%" stop-color="${color}" stop-opacity="1" />
+            <stop offset="65%" stop-color="${color}" stop-opacity="1" />
+            <stop offset="100%" stop-color="${color}" stop-opacity="0" />
+        `;
+
+        const bandHeight = height * 0.4;
+        const rect = document.createElementNS(svgNS, "rect");
+        rect.setAttribute("x", "0");
+        rect.setAttribute("y", String(-bandHeight));
+        rect.setAttribute("width", String(width));
+        rect.setAttribute("height", String(bandHeight));
+        rect.setAttribute("fill", `url(#${id}-gradient)`);
+        rect.setAttribute("mask", `url(#${id}-mask)`);
+
+        chip.append(gradient, mask, rect);
+
+        return { rect, targetY: height };
+    }
+
+    function setupCaseInteraction({
+        tubeSelector,
+        chipSelector,
+        emptySelector,
+        rotation,
+        color,
+        id,
+        litChipSelector,
+        captionSelector,
+    }: {
+        tubeSelector: string;
+        chipSelector: string;
+        emptySelector: string;
+        rotation: number;
+        color: string;
+        id: string;
+        litChipSelector?: string;
+        captionSelector?: string;
+    }) {
+        const tube = document.querySelector<HTMLButtonElement>(tubeSelector);
+        const emptyTube = document.querySelector<HTMLElement>(emptySelector);
+        const liquid = buildLiquidFlow(chipSelector, color, id);
+
+        const timeline = gsap.timeline({ paused: true }).to(tubeSelector, {
+            duration: 1,
+            ease: "power2.inOut",
+            rotation,
+            transformOrigin: "50% 0%",
+            x: () => tubeTargetRelativeToChip(chipSelector, tubeSelector).x,
+            y: () => tubeTargetRelativeToChip(chipSelector, tubeSelector).y,
+        });
+
+        if (liquid) {
+            const crossfadeDuration = 0.6;
+
+            timeline
+                .to(liquid.rect, {
+                    duration: 3,
+                    ease: "power1.inOut",
+                    attr: { y: liquid.targetY },
+                })
+                // Marks when the liquid finishes traveling the full channel
+                .addLabel("liquidEnd")
+                // Bring empty tube back to origianal position
+                .set(
+                    emptyTube,
+                    {
+                        transformOrigin: "50% 0%",
+                        rotation: () => Number(gsap.getProperty(tubeSelector, "rotation")),
+                        x: () => Number(gsap.getProperty(tubeSelector, "x")),
+                        y: () => Number(gsap.getProperty(tubeSelector, "y")),
+                    },
+                    "<",
+                )
+                .addLabel("crossfade", "<")
+                .to(tubeSelector, { duration: crossfadeDuration, ease: "power1.inOut", opacity: 0 }, "crossfade")
+                .to(emptyTube, { duration: crossfadeDuration, ease: "power1.inOut", opacity: 1 }, "crossfade")
+                .to(
+                    emptyTube,
+                    {
+                        duration: 1,
+                        ease: "power2.inOut",
+                        rotation: 0,
+                        x: 0,
+                        y: 0,
+                    },
+                    `crossfade+=${crossfadeDuration}`,
+                );
+
+            if (litChipSelector) {
+                timeline
+                    .to(chipSelector, { duration: 1, ease: "power1.inOut", opacity: 0 }, "liquidEnd")
+                    .to(litChipSelector, { duration: 1, ease: "power1.inOut", opacity: 1 }, "liquidEnd");
+            }
+
+            if (captionSelector) {
+                timeline.to(captionSelector, { duration: 1, ease: "power1.inOut", opacity: 1 }, "liquidEnd");
+            }
+        }
+
+        tube?.addEventListener("click", () => timeline.play());
+    }
+
+    setupCaseInteraction({
+        tubeSelector: ".tube-visual--green",
+        chipSelector: ".chip-visual--left",
+        emptySelector: ".tube-visual--empty-left",
+        rotation: -116,
+        color: "#5CA18F",
+        id: "liquid-left",
+        litChipSelector: ".chip-visual--left-lit",
+        captionSelector: ".case-caption--left",
+    });
+
+    // Mirror of the left tube
+    setupCaseInteraction({
+        tubeSelector: ".tube-visual--pink",
+        chipSelector: ".chip-visual--right",
+        emptySelector: ".tube-visual--empty-right",
+        rotation: 116,
+        color: "#E650DB",
+        id: "liquid-right",
+        captionSelector: ".case-caption--right",
+    });
+</script>
+
+<style>
+    .interactive-section {
+        padding: 4rem 2rem;
+    }
+
+    .case-row {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem 3rem;
+        justify-content: center;
+        margin: 0 auto;
+        max-width: 90rem;
+    }
+
+    .case {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .case-heading {
+        line-height: 1.3;
+        text-align: center;
+    }
+
+    .prompt-text {
+        max-width: 14rem;
+        text-align: center;
+    }
+
+    .chip-visual {
+        width: 14.5rem;
+    }
+
+    .overlay-stack {
+        display: grid;
+    }
+
+    .overlay-stack > * {
+        grid-area: 1 / 1;
+    }
+
+    .tube-visual {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        width: 2.75rem;
+    }
+
+    .tube-visual--empty-left,
+    .tube-visual--empty-right,
+    .chip-visual--left-lit {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .case-caption {
+        line-height: 1.3;
+        opacity: 0;
+        text-align: center;
+    }
+
+    .chip-visual :global(svg),
+    .tube-visual :global(svg) {
+        display: block;
+        height: auto;
+        width: 100%;
+    }
+</style>
