@@ -98,6 +98,8 @@ const static_links = content_map.static_links;
 
 <style>
     nav.primary {
+        --chip-height: 2.25rem;
+        --chip-skew: 20deg;
         background: var(--color-ebony-clay);
         box-sizing: border-box;
         font-family: var(--font-geist);
@@ -130,11 +132,12 @@ const static_links = content_map.static_links;
         display: block;
         font-size: 0.9rem;
         font-weight: 700;
+        line-height: calc(var(--chip-height) - 1rem);
         list-style: none;
         padding: 0.5rem 1.25rem;
         text-align: center;
         text-decoration: none;
-        transform: skewX(-20deg);
+        transform: skewX(calc(-1 * var(--chip-skew)));
         transition:
             background 120ms ease,
             color 120ms ease,
@@ -144,7 +147,7 @@ const static_links = content_map.static_links;
 
     .chip > span {
         display: block;
-        transform: skewX(20deg);
+        transform: skewX(var(--chip-skew));
     }
 
     .menu-toggle {
@@ -162,12 +165,18 @@ const static_links = content_map.static_links;
         padding-inline: 3rem;
     }
 
+    /* Above its submenu, whose shadow would otherwise darken the chip's lower edge */
+    .nav-group[open] > .chip {
+        position: relative;
+        z-index: 11;
+    }
+
     .chip:focus-visible {
         outline: 2px solid var(--color-lime-yellow);
         outline-offset: 3px;
     }
 
-    /* Hangs from the chip's left edge, unskewed so the menu itself stays square */
+    /* Hangs from the bottom-right corner of the chip */
     .submenu {
         /* The mock's panel green, which is not one of the nine brand colours */
         background: #1d3631;
@@ -178,8 +187,8 @@ const static_links = content_map.static_links;
         overflow-y: auto;
         padding: 0.4rem;
         position: absolute;
-        right: 0;
-        top: 100%;
+        right: calc(var(--chip-height) / 2 * tan(var(--chip-skew)));
+        top: calc(100% - 1px);
         width: max-content;
         z-index: 10;
     }
@@ -189,17 +198,16 @@ const static_links = content_map.static_links;
         display: block;
         font-size: 0.8rem;
         font-weight: 700;
-        padding: 0.35rem 0.6rem 0.35rem 1.4rem;
-        position: relative;
+        padding: 0.35rem 0.6rem;
+        text-align: right;
         text-decoration: none;
     }
 
-    /* The mock marks the page under the cursor with a caret rather than a highlight */
+    /* The mock marks the page under the cursor with a caret; it sits inline so it stays beside the right-aligned label */
     .submenu a::before {
         content: "\25b6";
-        left: 0.5rem;
+        margin-right: 0.5rem;
         opacity: 0;
-        position: absolute;
     }
 
     .submenu a:hover::before,
