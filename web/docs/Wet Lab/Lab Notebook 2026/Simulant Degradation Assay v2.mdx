@@ -7,8 +7,8 @@ date: "2026-09-30"
 
 # Background
 
-We will expose 8 ug/ml or 16 ug/ml of each antibiotic (gentamicin, kanamycin, or amoxicillin) to their appropriate patient simulant strain for either 6 or 12 hours. The concentration was selected based on the results of [Biosensor Challenge Assay](/ubc-vancouver/wet-lab/lab-notebook-2026/biosensor-challenge-assay), which identified a MIC range of 4—8 ug/ml for the biosensor strain. This sets the maximum threshold of undegraded antibiotic that can be exposed to our biosensor, thereby setting the maximum limit of antibiotic input that can be exposed to our patient simulant strains.
-We will test this at 8ug/ml since it is the upper limit of the biosensor MIC range, and 16ug/ml since it is 2-fold the upper limit of the biosensor MIC range.
+In the previous experiemnt ([Simulant Degradation Assay v1](/ubc-vancouver/wet-lab/lab-notebook-2026/simulant-degradation-assay-v1)), we found that our supernatants contained residual bacteria from the pellets. Thus, this was a confounding variable in our analysis, requiring us to repeat this experiment with the additional of a filtration step before plating the assay.
+For this experiment, we will test this at 8ug/ml since it is the upper limit of the biosensor MIC range, and 16ug/ml since it is 2-fold the upper limit of the biosensor MIC range.
 
 ## Objective
 
@@ -101,11 +101,7 @@ We will expose our antibiotics to degradation conditions, incubating for 2 diffe
 **Prepare biosensor cultures**
 
 - Measure OD of each biosensor strain
-  - RecA:
-  - CpxP:
 - Dilute biosensor cultures to an OD of 0.1 using LB-Cm
-  - RecA: 1.9ml culture + 8.1ml LB-Cm
-  - CpxP: 2ml culture + 8ml PB-Cm
 
 **Plate the assay**
 
@@ -139,29 +135,50 @@ Layout for Plate #1-2
 
 Layout for Plate #3
 
-- Plate #3 = initial antibiotic concentrations of 8ug/ml or 16ug/ml; supernatant from simulant strains treated at an initial OD of \~0.6 for 6 hours
+- Plate #3 = initial antibiotic concentrations of 8ug/ml or 16ug/ml; supernatant from simulant strains treated at an initial OD of \~0.5 for 6 hours
 
-|   |   |                      |                       |                        |   |                       |                        |                         |   |             |    |    |
-| - | - | -------------------- | --------------------- | ---------------------- | - | --------------------- | ---------------------- | ----------------------- | - | ----------- | -- | -- |
-|   | 1 | 2                    | 3                     | 4                      | 5 | 6                     | 7                      | 8                       | 9 | 10          | 11 | 12 |
-| A |   | CpxP + 8ug/ml Gm     | CpxP + 8ug/ml Kan     | CpxP + 8ug/ml Amox     |   | CpxP + 16ug/ml Gm     | CpxP + 16ug/ml Kan     | CpxP + 16ug/ml Amox     |   | CpxP        |    |    |
-| B |   | CpxP + 8ug/ml Gm     | CpxP + 8ug/ml Kan     | CpxP + 8ug/ml Amox     |   | CpxP + 16ug/ml Gm     | CpxP + 16ug/ml Kan     | CpxP + 16ug/ml Amox     |   | CpxP        |    |    |
-| C |   | CpxP + 8ug/ml Gm     | CpxP + 8ug/ml Kan     | CpxP + 8ug/ml Amox     |   | CpxP + 16ug/ml Gm     | CpxP + 16ug/ml Kan     | CpxP + 16ug/ml Amox     |   | CpxP        |    |    |
-| D |   | RecA + 8ug/ml Gm     | RecA + 8ug/ml Kan     | RecA + 8ug/ml Amox     |   | RecA + 16ug/ml Gm     | RecA + 16ug/ml Kan     | RecA + 16ug/ml Amox     |   | RecA        |    |    |
-| E |   | RecA + 8ug/ml Gm     | RecA + 8ug/ml Kan     | RecA + 8ug/ml Amox     |   | RecA + 16ug/ml Gm     | RecA + 16ug/ml Kan     | RecA + 16ug/ml Amox     |   | RecA        |    |    |
-| F |   | RecA + 8ug/ml Gm     | RecA + 8ug/ml Kan     | RecA + 8ug/ml Amox     |   | RecA + 16ug/ml Gm     | RecA + 16ug/ml Kan     | RecA + 16ug/ml Amox     |   | RecA        |    |    |
-| G |   | 8ug/ml Gm sup. blank | 8ug/ml Kan sup. blank | 8ug/ml Amox sup. blank |   | 16ug/ml Gm sup. blank | 16ug/ml Kan sup. blank | 16ug/ml Amox sup. blank |   | LB-Cm blank |    |    |
-| H |   | 8ug/ml Gm sup. blank | 8ug/ml Kan sup. blank | 8ug/ml Amox sup. blank |   | 16ug/ml Gm sup. blank | 16ug/ml Kan sup. blank | 16ug/ml Amox sup. blank |   | LB-Cm blank |    |    |
+|   |   |                       |                        |                         |   |                      |                       |                        |   |             |    |    |
+| - | - | --------------------- | ---------------------- | ----------------------- | - | -------------------- | --------------------- | ---------------------- | - | ----------- | -- | -- |
+|   | 1 | 2                     | 3                      | 4                       | 5 | 6                    | 7                     | 8                      | 9 | 10          | 11 | 12 |
+| A |   | CpxP + 16ug/ml Gm     | CpxP + 16ug/ml Kan     | CpxP + 16ug/ml Amox     |   | CpxP + 8ug/ml Gm     | CpxP + 8ug/ml Kan     | CpxP + 8ug/ml Amox     |   | CpxP        |    |    |
+| B |   | CpxP + 16ug/ml Gm     | CpxP + 16ug/ml Kan     | CpxP + 16ug/ml Amox     |   | CpxP + 8ug/ml Gm     | CpxP + 8ug/ml Kan     | CpxP + 8ug/ml Amox     |   | CpxP        |    |    |
+| C |   | CpxP + 16ug/ml Gm     | CpxP + 16ug/ml Kan     | CpxP + 16ug/ml Amox     |   | CpxP + 8ug/ml Gm     | CpxP + 8ug/ml Kan     | CpxP + 8ug/ml Amox     |   | CpxP        |    |    |
+| D |   | RecA + 16ug/ml Gm     | RecA + 16ug/ml Kan     | RecA + 16ug/ml Amox     |   | RecA + 8ug/ml Gm     | RecA + 8ug/ml Kan     | RecA + 8ug/ml Amox     |   | RecA        |    |    |
+| E |   | RecA + 16ug/ml Gm     | RecA + 16ug/ml Kan     | RecA + 16ug/ml Amox     |   | RecA + 8ug/ml Gm     | RecA + 8ug/ml Kan     | RecA + 8ug/ml Amox     |   | RecA        |    |    |
+| F |   | RecA + 16ug/ml Gm     | RecA + 16ug/ml Kan     | RecA + 16ug/ml Amox     |   | RecA + 8ug/ml Gm     | RecA + 8ug/ml Kan     | RecA + 8ug/ml Amox     |   | RecA        |    |    |
+| G |   | 16ug/ml Gm sup. blank | 16ug/ml Kan sup. blank | 16ug/ml Amox sup. blank |   | 8ug/ml Gm sup. blank | 8ug/ml Kan sup. blank | 8ug/ml Amox sup. blank |   | LB-Cm blank |    |    |
+| H |   | 16ug/ml Gm sup. blank | 16ug/ml Kan sup. blank | 16ug/ml Amox sup. blank |   | 8ug/ml Gm sup. blank | 8ug/ml Kan sup. blank | 8ug/ml Amox sup. blank |   | LB-Cm blank |    |    |
 
 ## Day 3 (01/10/2026 ) - Readout
 
 **Measure OD and fluorescence after 24 hrs of incubation**
 
-- OD remains low (near 0.1) = no antibiotic degradation after 6 and/or 12 hrs
-- OD slightly increases = some antibiotic degradation after 6 and/or 12 hrs
-- OD increases and/or increases similarly to unstimulated control = antibiotic degradation occurs after 6 and/or 12 hrs
-- Measure fluorescence at:
-  - Ex: 488 nm
-  - Em: 510 nm
+- Measure OD at 600 nm.
+  - OD remains low (near 0.1) = no antibiotic degradation after 6 and/or 12 hrs
+  - OD slightly increases = some antibiotic degradation after 6 and/or 12 hrs
+  - OD increases and/or increases similarly to unstimulated control = antibiotic degradation occurs after 6 and/or 12 hrs
+- Measure fluorescence at the following settings:
+  - Excitation: 488 nm
+  - Emission: 510 nm
 
 ## Results
+
+OD and fluorescence readouts: [https://docs.google.com/spreadsheets/d/1JP\_dlDQYxCp0EpB\_XSyUMOEfi8daJZj9iQOh3aiijKE/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1JP_dlDQYxCp0EpB_XSyUMOEfi8daJZj9iQOh3aiijKE/edit?usp=sharing)
+
+As expected, all blank controls had comparably low OD values, meaning that the LB-Cm media was not contaminated and supernatant filtration  successfully isolated the antibioitc-containing media while excluding excess bacteria from the pellet.
+
+## Summary
+
+This experiment tested the capacity of our patient simulant strains to degrade antibiotics. Our aim was to determine the degree of antibioitc degradation by exposing our biosensors to supernatants harvested from the following cultures:
+
+- Patient simulant (initial OD of 0.1) exposed to MIC limit (8 ug/ml) for either 6hr or 10hr
+- Patient simulant (initial OD of 0.1) exposed to 2-fold MIC limit (16 ug/ml) for 6hr or 10hr
+- Patient simulant (initial OD of 0.5) exposed to MIC limit (8 ug/ml) or 2-fold MIC limit (16 ug/ml) for 6hr
+
+For this iteration of the experiment, we included the following controls:
+
+- **Degradation positive control:** biosensor cultured with no antibioitc
+- **Contamination control**: LB-Cm media blank
+- **Filtration control**: supernatant blank
+
+The results demonstrated contamination-free growth and successful filtration. However, we are missing a negative control condition, where we expose the biosensor strains to the full amount of antibiotic (8 or 16 ug/ml). This would serve as a reference point for us to determine if no degradation occurred. While we can use previous experiments as a reference point (e.g., [Biosensor Challenge Assay](/ubc-vancouver/wet-lab/lab-notebook-2026/biosensor-challenge-assay)), it would be best practice to include this control for future iterations for the most accurate comparison.

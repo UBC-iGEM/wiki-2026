@@ -36,6 +36,7 @@ export const COMPONENT_MAP: Record<string, (input: ComponentInput) => ComponentO
     dbtl,
     carousel,
     model3d,
+    ihp,
     skip,
 };
 
@@ -364,6 +365,136 @@ function carousel({ node, ctx }: ComponentInput): ComponentOutput {
         attrs: { slides },
         slots: { descriptions },
     });
+}
+// ====================
+// IHP COMPONENT
+// ====================
+
+export interface IHPAttrs {
+    image: {
+        url: string;
+        alt: string;
+    };
+    name: string;
+    bio: string;
+}
+
+export const IHP_SLOTS = ["content"] as const;
+
+type IHPSlots = SlotRecord<typeof IHP_SLOTS>;
+
+function ihp({ node, ctx }: ComponentInput): ComponentOutput {
+    const children = [...node.children];
+
+    // --------------------------------
+    // IMAGE
+    // --------------------------------
+
+    const image_paragraph = children.shift();
+
+    if (!image_paragraph || image_paragraph.type !== "paragraph") {
+        return malformedIHP(ctx.path.toString(), "it does not start with an image");
+    }
+
+    // Ignore whitespace before the image.
+    while (image_paragraph.children[0]?.type === "text" && image_paragraph.children[0].value.trim() === "") {
+        image_paragraph.children.shift();
+    }
+
+    if (image_paragraph.children[0]?.type !== "image") {
+        return malformedIHP(ctx.path.toString(), "it does not start with an image");
+    }
+
+    const image = image_paragraph.children[0];
+
+    // --------------------------------
+    // NAME + BIO
+    // --------------------------------
+
+    const info_list = children.shift();
+
+    if (!info_list || info_list.type !== "list" || info_list.ordered || info_list.children.length !== 2) {
+        return malformedIHP(
+            ctx.path.toString(),
+            "the image must be followed by a two-item bulleted list containing the name and bio",
+        );
+    }
+
+    const name_item = info_list.children[0];
+    const bio_item = info_list.children[1];
+
+    const name_paragraph = name_item?.children[0];
+    const bio_paragraph = bio_item?.children[0];
+
+    if (
+        !name_paragraph ||
+        name_paragraph.type !== "paragraph" ||
+        !bio_paragraph ||
+        bio_paragraph.type !== "paragraph"
+    ) {
+        return malformedIHP(ctx.path.toString(), "the name and bio must both be text");
+    }
+
+    const name = name_paragraph.children
+        .filter((child) => child.type === "text")
+        .map((child) => child.value)
+        .join("")
+        .trim();
+
+    const bio = bio_paragraph.children
+        .filter((child) => child.type === "text")
+        .map((child) => child.value)
+        .join("")
+        .trim();
+
+    if (name === "" || bio === "") {
+        return malformedIHP(ctx.path.toString(), "the name and bio cannot be empty");
+    }
+
+    // --------------------------------
+    // DIVIDER
+    // --------------------------------
+
+    const divider = children.shift();
+
+    if (!divider || divider.type !== "thematicBreak") {
+        return malformedIHP(ctx.path.toString(), "the name and bio must be followed by a divider");
+    }
+
+    // --------------------------------
+    // INTERVIEW DESCRIPTION
+    // --------------------------------
+
+    if (children.length === 0) {
+        return malformedIHP(ctx.path.toString(), "it does not contain an interview description after the divider");
+    }
+
+    return generateComponent<IHPAttrs, IHPSlots>({
+        node,
+        ctx,
+        tag: "IHP",
+        attrs: {
+            image: {
+                url: image.url,
+                alt: image.alt || "",
+            },
+            name,
+            bio,
+        },
+        slots: {
+            content: children,
+        },
+    });
+}
+
+function malformedIHP(path: string, problem: string): ExporterError {
+    return new ExporterError(
+        `iHP component on page "${path}" could not be understood: ${problem}.` +
+            ExporterError.componentDocSuggestion(
+                "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link",
+            ),
+        ["malformed content"],
+    );
 }
 
 // ====================

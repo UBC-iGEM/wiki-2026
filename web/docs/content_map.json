@@ -4,6 +4,26 @@
             "name": "Wet Lab",
             "entries": [
                 {
+                    "path": "Conceptualization",
+                    "type": "page",
+                    "item": "3e5d65dd82be80478856da17079ffb1c"
+                },
+                {
+                    "path": "Results",
+                    "type": "page",
+                    "item": "3ecd65dd82be8081bb4ce8c55cf21a03"
+                },
+                {
+                    "path": "Engineering (DBTL)",
+                    "type": "page",
+                    "item": "3e5d65dd82be80b1a707f371063052e1"
+                },
+                {
+                    "path": "Parts Collection",
+                    "type": "page",
+                    "item": "3ecd65dd82be809090dde212edf509aa"
+                },
+                {
                     "path": "Lab Notebook 2026",
                     "type": "db",
                     "item": [
@@ -108,7 +128,7 @@
                             "item": "3e3d65dd82be80369604d501e31ba302"
                         },
                         {
-                            "path": "Simulant Degradation Assay",
+                            "path": "Simulant Degradation Assay v1",
                             "item": "3e3d65dd82be8056820ad481ad76fb4f"
                         },
                         {
@@ -128,6 +148,11 @@
                             "item": "3ead65dd82be80e59cb8c9f077f28eec"
                         }
                     ]
+                },
+                {
+                    "path": "Protocols",
+                    "type": "page",
+                    "item": "3ecd65dd82be80a3b774fec46deb00b1"
                 }
             ]
         },

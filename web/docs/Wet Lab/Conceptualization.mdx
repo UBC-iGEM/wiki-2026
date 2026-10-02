@@ -1,0 +1,53 @@
+---
+type: "page"
+title: "Conceptualization"
+---
+
+**Antibiotic Classes** <mention-user url="user\://152d872b-594c-8199-adca-0002bd93b1c4"/>
+
+- <mention-user url="user\://152d872b-594c-8199-adca-0002bd93b1c4"/> refer to [mention-page](https://app.notion.com/p/30fd65dd82be804d9463debde63682e4), [mention-page](https://app.notion.com/p/30fd65dd82be8009b43dcb91d67c3a1e)
+- Classes that are clinically relevant to UTIs
+  - [mention-page](https://app.notion.com/p/360d65dd82be808fb166dce8e469a2da)
+  - [mention-page](https://app.notion.com/p/388d65dd82be8022b0eff8799c80ca62)
+  - Aminoglycosides: [mention-page](https://app.notion.com/p/30fd65dd82be804fb671ffd4f468fb0b)
+  - Beta lactams: [mention-page](https://app.notion.com/p/30fd65dd82be80f28d73def5e9f19f41) [mention-page](https://app.notion.com/p/329d65dd82be80ef906dcc31d2053028)
+- Broad overview
+
+Our project FAST (Fluorescence Antibiotic Susceptibility Test) aims to provide a simpler, faster and more modular way to determine antibiotic resistance from patient samples. As the wet lab team, we have engineered E. coli that links antibiotic-induced stress responses to fluorescent readout by constructing a plasmid system with superfolder green fluorescent protein and two stress-responsive promoters.
+Choosing an effective antibiotic depends on knowing whether the bacteria causing an infection are susceptible to it. Our initial literature review explored several antibiotic classes, including beta-lactams, aminoglycosides, fluoroquinolones, macrolides, glycopeptides, oxazolidinones, and polymyxins. These classes interfere with different aspects of bacterial physiology for example, Beta-lactams disrupt cell wall synthesis, aminoglycosides and macrolides interfere with translation, fluoroquinolones target enzymes involved in DNA replication; and polymyxins disrupt the bacterial envelope. These differences provided a starting point for identifying stress-responsive promoters that could report antibiotic activity.
+As our project focused more around urinary tract infections (UTIs), we narrowed our focus to beta-lactams and aminoglycosides. We selected these classes for their clinical relevance and their enzymatic resistance mechanisms that could be investigated using FAST.
+
+#### **Clinical relevance to urinary tract infections**
+
+Our literature review focused on antibiotics effective against Gram-negative bacteria, particularly E. coli as we developed our UTI application. Discussions with the Hancock Lab also helped us to establish urine sampling as a practical starting point for our wet lab work.
+β-lactams and aminoglycosides have complementary areas in terms of its clinical use. Beta-lactams are widely used in bacterial infection treatment but resistance by beta-lactamases in many pathogens can compromise their activity. Aminoglycosides act on a different target and can remain useful against some beta-lactam-resistant organisms depending on their susceptibility profile. Their role is particularly relevant in selected complicated or resistant urinary infections, although toxicity limits their use. Resistance to one class does not establish susceptibility to the other making antibiotic-specific testing essential.
+For our initial antibiotic selection, we selected amoxicillin and cephalexin to represent beta-lactams, and gentamicin and tobramycin to represent aminoglycosides. Together, these antibiotics allow us to investigate how different mechanisms of action translate into responses in our reporter strains.
+
+#### Aminoglycosides
+
+Aminoglycosides act on the bacterial ribosome, disrupting accurate protein synthesis. Our project selected **gentamicin** and **tobramycin** as representatives of this class.
+Although aminoglycosides received a lower priority during our early literature review, they became part of the project’s focus as our UTI application developed. They offer a second antibiotic class with a different cellular target and relevant enzymatic resistance mechanisms.
+Aminoglycoside-modifying enzymes can reduce antibiotic activity through acetylation, phosphorylation, or adenylation. Unlike beta-lactam hydrolysis, these mechanisms chemically modify the antibiotic rather than necessarily breaking it down. The resulting loss of activity depends on the particular antibiotic and enzyme involved.
+
+#### β-lactams
+
+β-lactams share a four-membered β-lactam ring and include penicillins, cephalosporins, carbapenems, and monobactams. Their activity depends on binding to penicillin-binding proteins (PBPs), including the transpeptidases responsible for cross-linking peptidoglycan. By acylating these enzymes, β-lactams interfere with the formation of a stable cell wall, which can lead to loss of viability and cell lysis. Our selected representatives, amoxicillin and cephalexin, belong to the penicillin and cephalosporin subclasses, respectively.
+Our review identified several routes to beta-lactam resistance: antibiotic inactivation by beta-lactamases, changes in PBPs, reduced permeability, and efflux. Of these, **β-lactamase-mediated inactivation** is particularly relevant to FAST. β-lactamases hydrolyse the antibiotic’s beta-lactam ring, reducing its ability to inhibit its target. This gives us a potential correlation between resistance in the sample bacteria and a change in the antibiotic activity detected by our biosensor.
+The cellular effects of β-lactams also informed our choice of reporter. Disruption of peptidoglycan synthesis can activate envelope stress responses, including the Cpx pathway in *E. coli*. This connection led us to select the *cpxP* promoter as a candidate for converting antibiotic-induced envelope stress into fluorescence.
+
+**How are stress pathways connected to antibiotic classes?**
+stress responses are associated with broad range of antibiotics within a class
+
+- CpxP <mention-user url="user\://140d872b-594c-815c-abb1-0002bf6f5066"/> refer to [mention-page](https://app.notion.com/p/360d65dd82be808fb166dce8e469a2da)
+
+Antibiotic exposure can trigger bacterial stress responses when antibiotics disrupt essential cellular processes. The CpxP envelope stress response is a bacterial stress-response pathway that is activated when the integrity of the cell envelope is disrupted. This makes it a particularly relevant stress response when detecting the effects of β-lactam antibiotics, which act by binding to to and inactivating enzymes required for bacterial cell wall synthesis.
+When envelope stress is sensed, the Cpx defense system is activated in Gram-negative bacteria through the CpxA/CpxR two-component system. **CpxA** is a sensor kinase in the membrane and **CpxR** is a response regulator in the cytoplasm. Under normal, unstressed conditions, CpxP (a small perplasmic protein) interacts with CpxA and helps keep the pathway in an inactive state, preventing unneeded responses. During envelope stress, CpxP is degraded, allowing CpxA to autophosphorylate and transfer a phosphate group to the response regulator CpxR. Phosphorylated CpxR then activates downstream stress-response genes, including *cpxP*.
+We leverage this bacterial response to construct a **CpxP-sfGFP stress reporter**. The reporter contains the \*cpxP \*promoter (pCpxP) upstream of the **superfolder GFP (sfGFP)** gene. When β-lactam exposure causes envelope stress and activates the Cpx pathway, increased *cpxP* promoter activity results in sfGFP production and a measurable increase in fluorescence.
+This construct provides an indirect method of detecting the bacterial response to <span discussion-urls="discussion\://3e5d65dd-82be-8047-8856-da17079ffb1c/3e9d65dd-82be-80a7-a9ff-fe6c22ad08c7/3ecd65dd-82be-80df-90c2-001c537af7fc">β-lactam antibiotics</span>. Rather than detecting the antibiotic molecule itself, our reporter measures the cellular stress resulting from antibiotic exposure. Because β-lactams disrupt cell-wall synthesis, they can trigger the envelope stress response and consequently activate the CpxP-sfGFP reporter.
+Our CpxP reporter is therefore intended to provide a rapid readout of β-lactam susceptibility as part of our point-of-care UTI diagnostic platform.
+![](https://static.igem.wiki/teams/6279/wiki/assets/cd4fd5e2e57758b4828a01ffc30fc324.avif)
+![CpxP Pathway (https://journals.asm.org/doi/10.1128/jb.181.17.5263-5272.1999)](https://static.igem.wiki/teams/6279/wiki/assets/e28510197b475990a33f5d3daf5088c8.avif)
+
+- RecA <mention-user url="user\://140d872b-594c-81c0-94fc-0002ca2730d0"/> refer to [mention-page](https://app.notion.com/p/360d65dd82be808fb166dce8e469a2da)
+
+RecA-GFP reporter
