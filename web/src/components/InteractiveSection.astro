@@ -19,14 +19,24 @@ import chip_light_up from "../assets/hero_interactive/chip_light_up.svg?raw";
         </div>
 
         <div class="overlay-stack">
-            <button class="tube-visual tube-visual--green" type="button" aria-label="Run test on Case 1 sample" set:html={green_tube} />
+            <button
+                class="tube-visual tube-visual--green"
+                type="button"
+                aria-label="Run test on Case 1 sample"
+                set:html={green_tube}
+            />
             <div class="tube-visual tube-visual--empty-left" aria-hidden="true" set:html={empty_tube} />
         </div>
 
         <h4 class="prompt-text">Click on patient samples to conduct the test</h4>
 
         <div class="overlay-stack">
-            <button class="tube-visual tube-visual--pink" type="button" aria-label="Run test on Case 2 sample" set:html={pink_tube} />
+            <button
+                class="tube-visual tube-visual--pink"
+                type="button"
+                aria-label="Run test on Case 2 sample"
+                set:html={pink_tube}
+            />
             <div class="tube-visual tube-visual--empty-right" aria-hidden="true" set:html={empty_tube} />
         </div>
 

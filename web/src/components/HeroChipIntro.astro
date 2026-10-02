@@ -43,8 +43,7 @@ import dotSvg from "../assets/hero/dot.svg?raw";
     // init-line's apparent reveal speed instead of a flat duration.
     const lineFullDrawInDuration = drawInDuration * (1341 / 447.5);
 
-    gsap
-        .timeline()
+    gsap.timeline()
         .addLabel("chip-intro")
         .to(".chip-1", { opacity: 1, duration: 0.9 })
         .to(".chip-2", { opacity: 1, duration: 0.1 }, "+=0.2")
@@ -58,7 +57,12 @@ import dotSvg from "../assets/hero/dot.svg?raw";
         .to(".init-line", { opacity: 1, duration: 0.01 }, "line-intro")
         .fromTo(".init-line path", { drawSVG: "0%" }, { drawSVG: "100%", duration: drawInDuration }, "<")
         .to(".line-full", { opacity: 1, duration: 0.01 })
-        .fromTo(".line-full", { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: lineFullDrawInDuration }, "<");
+        .fromTo(
+            ".line-full",
+            { clipPath: "inset(0% 0% 100% 0%)" },
+            { clipPath: "inset(0% 0% 0% 0%)", duration: lineFullDrawInDuration },
+            "<",
+        );
 
     // POC: a dot chases the line as the user scrolls, via MotionPathPlugin
     // walking real path geometry. Added Hidden guide line to the chip asset for smooth movement.
@@ -66,7 +70,9 @@ import dotSvg from "../assets/hero/dot.svg?raw";
     const initLinePath = document.querySelector(".init-line path");
     const guideLines = document.querySelectorAll<SVGLineElement>(".line-full g line");
     const guidePaths = guideLines.length > 0 ? MotionPathPlugin.convertToPath(guideLines) : [];
-    const linePaths = [initLinePath, ...guidePaths].filter((el): el is SVGGeometryElement => el instanceof SVGGeometryElement);
+    const linePaths = [initLinePath, ...guidePaths].filter(
+        (el): el is SVGGeometryElement => el instanceof SVGGeometryElement,
+    );
 
     if (dot && linePaths.length > 0) {
         const dotTimeline = gsap.timeline({ paused: true });
