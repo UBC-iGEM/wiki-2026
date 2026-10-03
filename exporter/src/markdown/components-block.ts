@@ -502,7 +502,7 @@ function malformedIhp(path: string, problem: string): ExporterError {
     return new ExporterError(
         `iHP component on page "${path}" could not be understood: ${problem}.` +
         ExporterError.componentDocSuggestion(
-            "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link",
+            "https://app.notion.com/p/ubcigem/Wiki-Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#3edd65dd82be80e4bf00e818b654a00d",
         ),
         ["malformed content"],
     );
