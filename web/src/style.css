@@ -44,3 +44,21 @@ pre.astro-code {
     height: auto;
     object-fit: contain;
 }
+
+/* Bibliography */
+.csl-bib-body {
+    margin-top: 1.5rem;
+}
+
+.csl-entry {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.csl-left-margin {
+    margin-right: 0.5rem;
+}
+
+.csl-entry a {
+    overflow-wrap: anywhere;
+}
