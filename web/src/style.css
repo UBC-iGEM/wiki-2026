@@ -39,5 +39,8 @@ pre.astro-code {
 /* Img size constraint */
 .page-content img {
     max-width: 100%;
+    max-height: 600px;
+    width: auto;
     height: auto;
+    object-fit: contain;
 }
