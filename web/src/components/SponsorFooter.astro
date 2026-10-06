@@ -1,0 +1,198 @@
+---
+interface Sponsor {
+    name: string;
+    logo_url: string;
+}
+
+// Add the confirmed 2026 sponsors here, in display order. Use final hosted logo
+// URLs (or base-prefixed public asset URLs). No exporter changes are needed.
+const sponsors: Sponsor[] = [];
+const preview = import.meta.env.DEV && sponsors.length === 0;
+const entries: Sponsor[] = preview
+    ? Array.from({ length: 6 }, (_, index) => ({ name: `Sponsor ${index + 1}`, logo_url: "" }))
+    : sponsors;
+---
+
+{
+    entries.length > 0 && (
+        <footer class="sponsor-footer" aria-label="Sponsors">
+            <div class="sponsor-heading">
+                <h2>{preview ? "Sponsors · preview" : "Our sponsors"}</h2>
+            </div>
+            <div class="sponsor-viewport">
+                <div class="sponsor-track">
+                    {[false, true].map((duplicate) => (
+                        <ul class="sponsor-group" aria-hidden={duplicate ? "true" : undefined}>
+                            {entries.map((sponsor) => (
+                                <li class="sponsor-item">
+                                    {sponsor.logo_url ? (
+                                        <img
+                                            src={sponsor.logo_url}
+                                            alt={duplicate ? "" : sponsor.name}
+                                            width="200"
+                                            height="80"
+                                        />
+                                    ) : (
+                                        <span class="sponsor-placeholder">
+                                            {sponsor.name}
+                                            <small>Logo placeholder</small>
+                                        </span>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    ))}
+                </div>
+            </div>
+        </footer>
+    )
+}
+
+<script>
+    document.querySelectorAll<HTMLElement>(".sponsor-footer").forEach((footer) => {
+        footer.dataset.ready = "true";
+    });
+</script>
+
+<style>
+    .sponsor-footer {
+        --sponsor-gap: 2rem;
+        background: var(--color-ebony-clay);
+        border-top: 1px solid var(--color-northern-lights);
+        color: var(--color-periwinkle);
+        font-family: var(--font-geist), sans-serif;
+        padding-block: 1.5rem 2rem;
+    }
+
+    .sponsor-heading {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: space-between;
+        padding: 0 1rem 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.125rem;
+        margin: 0;
+    }
+
+    .sponsor-viewport {
+        container-type: inline-size;
+        overflow: hidden;
+    }
+
+    .sponsor-track {
+        display: flex;
+        width: max-content;
+    }
+
+    .sponsor-group {
+        align-items: center;
+        box-sizing: border-box;
+        display: flex;
+        flex-shrink: 0;
+        gap: var(--sponsor-gap);
+        justify-content: space-around;
+        list-style: none;
+        margin: 0;
+        min-width: 100cqw;
+        padding: 0 var(--sponsor-gap) 0 0;
+    }
+
+    .sponsor-item {
+        flex: 0 0 200px;
+        width: 200px;
+    }
+
+    img,
+    .sponsor-placeholder {
+        box-sizing: border-box;
+        display: block;
+        height: 80px;
+        width: 100%;
+    }
+
+    img {
+        object-fit: contain;
+    }
+
+    .sponsor-placeholder {
+        align-content: center;
+        border: 1px dashed var(--color-northern-lights);
+        border-radius: 0.5rem;
+        text-align: center;
+    }
+
+    small {
+        display: block;
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+    }
+
+    .sponsor-footer[data-ready] .sponsor-track {
+        animation: sponsor-scroll 40s linear infinite;
+    }
+
+    .sponsor-footer:hover .sponsor-track,
+    .sponsor-footer:focus-within .sponsor-track {
+        animation-play-state: paused;
+    }
+
+    @keyframes sponsor-scroll {
+        to {
+            transform: translateX(-50%);
+        }
+    }
+
+    /* Without JS, keep every sponsor visible and avoid unpausable motion. */
+    .sponsor-footer:not([data-ready]) .sponsor-track {
+        width: 100%;
+    }
+
+    .sponsor-footer:not([data-ready]) .sponsor-group {
+        flex-wrap: wrap;
+        min-width: 0;
+        padding-inline: 1rem;
+        width: 100%;
+    }
+
+    .sponsor-footer:not([data-ready]) .sponsor-group[aria-hidden="true"] {
+        display: none;
+    }
+
+    @media (max-width: 600px) {
+        .sponsor-footer {
+            --sponsor-gap: 1rem;
+        }
+
+        .sponsor-item {
+            flex-basis: 140px;
+            width: 140px;
+        }
+
+        img,
+        .sponsor-placeholder {
+            height: 56px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .sponsor-footer[data-ready] .sponsor-track {
+            animation: none;
+            width: 100%;
+        }
+
+        .sponsor-group {
+            flex-wrap: wrap;
+            min-width: 0;
+            padding-inline: 1rem;
+            width: 100%;
+        }
+
+        .sponsor-group[aria-hidden="true"] {
+            display: none;
+        }
+    }
+</style>

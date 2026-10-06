@@ -6,6 +6,7 @@ import type { MarkdownHeading } from "astro";
 import { Font } from "astro:assets";
 
 import Navbar from "../components/Navbar.astro";
+import SponsorFooter from "../components/SponsorFooter.astro";
 import TableOfContents from "../components/TableOfContents.astro";
 
 interface Props {
@@ -57,6 +58,7 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
                 )
             }
         </div>
+        <SponsorFooter />
     </body>
 </html>
 
