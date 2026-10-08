@@ -1,8 +1,9 @@
 import { BlockId, Id } from "../notion";
 import { getToolsClient } from "../tools-api";
 import { $unsafeSync, ExporterError, isErr, isExporterErr, type ExporterResult, type Result } from "../utils";
+import { fetchNotebookCode, parseColabFileId } from "./colab";
 import { type ProcessorInput, type ProcessorOutput } from "./markdown";
-import type { BlockContent, DefinitionContent, Html, Image, Paragraph, ThematicBreak } from "mdast";
+import type { BlockContent, Code, DefinitionContent, Html, Image, Paragraph, ThematicBreak } from "mdast";
 import type { ContainerDirective } from "mdast-util-directive";
 import HTMLParse from "node-html-parser";
 import { SKIP } from "unist-util-visit";
@@ -36,6 +37,7 @@ export const COMPONENT_MAP: Record<string, (input: ComponentInput) => ComponentO
     dbtl,
     carousel,
     model3d,
+    jupyter,
     ihp,
     skip,
 };
@@ -570,4 +572,69 @@ function componentOpeningTag(tag: string, attrs: Record<string, any>): string {
     if (attr_string !== "") attr_string = " " + attr_string;
 
     return `<${tag}${attr_string}>`;
+}
+
+// ====================
+// JUPYTER COMPONENT
+// ====================
+
+export interface JupyterAttrs {
+    /** The notebook on Colab, where a reader can actually run it. */
+    url: string;
+    cell_count: number;
+}
+export const JUPYTER_SLOTS = ["code", "content"] as const;
+type JupyterSlots = SlotRecord<typeof JUPYTER_SLOTS>;
+
+function jupyter({ node, ctx }: ComponentInput): ComponentOutput {
+    const [link_node, ...content] = node.children;
+    const url = link_node?.type === "paragraph" ? nodeText(link_node) : undefined;
+    const file_id = url === undefined ? undefined : parseColabFileId(url);
+    if (!file_id) return malformedJupyter(ctx.path.toString(), "it does not start with a Colab notebook link");
+
+    // Filled in below, once the notebook has been fetched
+    const code_node: Code = { type: "code", lang: "python", value: "" };
+
+    const result = generateComponent<JupyterAttrs, JupyterSlots>({
+        node,
+        ctx,
+        tag: "Jupyter",
+        attrs: { url: url!.trim(), cell_count: 0 },
+        slots: { code: [code_node], content },
+    });
+    const opening_node = ctx.parent.children[ctx.index] as Html;
+
+    ctx.callbacks.push(async (): Promise<ExporterResult<void>> => {
+        const notebook = await fetchNotebookCode(file_id);
+        if (isExporterErr(notebook)) return notebook;
+
+        code_node.value = notebook.code;
+        opening_node.value = componentOpeningTag("Jupyter", {
+            url: url!.trim(),
+            cell_count: notebook.cell_count,
+        });
+    });
+
+    return result;
+}
+
+function malformedJupyter(path: string, problem: string): ExporterError {
+    return new ExporterError(
+        `Jupyter component on page "${path}" could not be understood: ${problem}.` +
+            ExporterError.componentDocSuggestion(
+                "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link",
+            ),
+        ["malformed content"],
+    );
+}
+
+/** The link may arrive as text or as a link node, so read whichever the paragraph holds. */
+function nodeText(node: Paragraph): string {
+    return node.children
+        .map((child) => {
+            if (child.type === "text" || child.type === "inlineCode") return child.value;
+            if (child.type === "link") return child.url;
+            return "";
+        })
+        .join("");
 }

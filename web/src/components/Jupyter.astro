@@ -1,0 +1,86 @@
+---
+import { JUPYTER_SLOTS, type JupyterAttrs } from "@exporter/markdown/components-block";
+
+type Props = JupyterAttrs;
+
+const { url, cell_count } = Astro.props;
+JUPYTER_SLOTS satisfies readonly ["code", "content"];
+---
+
+<figure class="jupyter">
+    <details>
+        <summary>Notebook source ({cell_count} {cell_count === 1 ? "cell" : "cells"})</summary>
+
+        <div class="scroller">
+            <slot name="code" />
+        </div>
+    </details>
+
+    <figcaption>
+        <a class="colab" href={url} target="_blank" rel="noopener noreferrer">Open and run in Colab</a>
+        <slot name="content" />
+    </figcaption>
+</figure>
+
+<style>
+    .jupyter {
+        margin: 1.5rem 0;
+    }
+
+    summary {
+        color: var(--color-periwinkle);
+        cursor: pointer;
+        font-family: var(--font-geist);
+        font-size: 0.85rem;
+        font-weight: 700;
+        padding: 0.3rem 0;
+        user-select: none;
+    }
+
+    summary:focus-visible {
+        outline: 2px solid var(--color-cornflower);
+        outline-offset: 2px;
+    }
+
+    /* A whole notebook would otherwise run off the bottom of the page */
+    .scroller {
+        border: 1px solid var(--color-northern-lights);
+        border-radius: 8px;
+        max-height: 30rem;
+        overflow: auto;
+    }
+
+    .scroller :global(pre) {
+        margin: 0;
+    }
+
+    figcaption {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 0.5rem;
+    }
+
+    .colab {
+        background: var(--color-cornflower);
+        border-radius: 6px;
+        color: var(--color-periwinkle);
+        font-family: var(--font-geist);
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 0.4rem 0.9rem;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .colab:hover {
+        background: var(--color-lime-yellow);
+        color: var(--color-ebony-clay);
+    }
+
+    .colab:focus-visible {
+        outline: 2px solid var(--color-lime-yellow);
+        outline-offset: 2px;
+    }
+</style>
