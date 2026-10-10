@@ -26,6 +26,11 @@ type PageWithProperties = Extract<
 >;
 export type PageProperty = PageWithProperties["properties"][string];
 
+/**
+ * A Notion block with its children attached.
+ */
+export type NotionBlock = BlockObjectResponse & { children: NotionBlock[] };
+
 function notion(): Client {
     if (NOTION_CLIENT) {
         return NOTION_CLIENT;
@@ -118,19 +123,8 @@ export class PageId extends Id implements Named {
         return { item: this, path: new PagePathComponent(path_res) };
     }
 
-    async getMarkdown(): Promise<ExporterResult<string>> {
-        const page_res = await $withRetries($unsafe, notion().pages.retrieveMarkdown, {
-            page_id: this.toString(),
-            include_transcript: true,
-        });
-        if (isErr(page_res))
-            return new ExporterError(
-                `Failed to fetch page at Notion ID ${this} as markdown.`,
-                ["notion server"],
-                page_res,
-            );
-
-        return page_res.markdown;
+    async getBlocks(): Promise<ExporterResult<NotionBlock[]>> {
+        return new BlockId(this.toString()).getTree();
     }
 }
 
@@ -272,6 +266,64 @@ export class BlockId extends Id {
             );
 
         return res as BlockObjectResponse;
+    }
+
+    /**
+     * Finds the page containing this block.
+     */
+    async getParentPage(): Promise<ExporterResult<PageId>> {
+        let block_id = this.toString();
+
+        // Continue recursing until parent page found
+        recursion_loop: while (true) {
+            const res = await new BlockId(block_id).get();
+            if (isExporterErr(res)) return res;
+
+            // A page nested in a page is itself a block
+            if (res.type === "child_page") return new PageId(res.id);
+
+            switch (res.parent.type) {
+                case "page_id":
+                    return new PageId(res.parent.page_id);
+                case "block_id":
+                    // Keep walking upward
+                    block_id = res.parent.block_id;
+                    continue recursion_loop;
+                default:
+                    break recursion_loop;
+            }
+        }
+
+        return new ExporterError(`Block at Notion ID ${this} is not inside a page.`, ["notion server"]);
+    }
+
+    /**
+     * Fetches all children of this block.
+     * Child pages and databases are NOT descended into; synced blocks are resolved as content.
+     */
+    async getTree(): Promise<ExporterResult<NotionBlock[]>> {
+        const children = await this.getChildren();
+        if (isExporterErr(children)) return children;
+
+        /** Fail-fast on inner errors */
+        return $unsafeExporterPromises(async () =>
+            Promise.all(
+                children.map(async (block): Promise<NotionBlock> => {
+                    if (!block.has_children || block.type === "child_page" || block.type === "child_database")
+                        // no children
+                        return { ...block, children: [] };
+
+                    const source_id =
+                        block.type === "synced_block" && block.synced_block.synced_from
+                            ? block.synced_block.synced_from.block_id
+                            : block.id;
+                    const subtree = await new BlockId(source_id).getTree(); // go deeper
+                    if (isExporterErr(subtree)) throw subtree;
+
+                    return { ...block, children: subtree };
+                }),
+            ),
+        );
     }
 
     async getChildren(): Promise<ExporterResult<BlockObjectResponse[]>> {

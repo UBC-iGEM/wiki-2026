@@ -1,0 +1,235 @@
+import { PageId } from "../notion";
+import { ExporterError, isExporterErr } from "../utils";
+import type { ConvertContext } from "./blocks";
+import { pageMention, resolveHref } from "./link";
+import { jsxText } from "./mdx";
+import type { RichTextItemResponse } from "@notionhq/client";
+import type { PhrasingContent, Text } from "mdast";
+
+/**
+ * How line breaks are represented:
+ * - `break`: a Markdown line break
+ * - `jsx`: a `<br />` element, for places where a hard break is invalid (e.g. table cells)
+ * - `space`: a plain space, for places that cannot hold a line break (e.g. headings)
+ */
+export type NewlineMode = "break" | "jsx" | "space";
+
+interface TextProperties {
+    href: string | null;
+    bold: boolean;
+    italic: boolean;
+    strikethrough: boolean;
+    underline: boolean;
+}
+
+/**
+ * A piece of text and its properties.
+ */
+interface Leaf {
+    node: PhrasingContent | "newline";
+    props: TextProperties;
+}
+
+export function asPlainText(items: RichTextItemResponse[]): string {
+    return items.map((item) => item.plain_text).join("");
+}
+
+/**
+ * Converts Notion rich text into phrasing content. Text is kept literally (Markdown syntax typed into Notion is escaped).
+ */
+export async function convertRichText(
+    items: RichTextItemResponse[],
+    ctx: ConvertContext,
+    newline: NewlineMode = "break",
+): Promise<PhrasingContent[]> {
+    const leaves = (await Promise.all(items.map((item) => itemLeaves(item, ctx)))).flat();
+    trimLeaves(leaves);
+
+    const newline_node: PhrasingContent =
+        newline === "break" ? { type: "break" } : newline === "jsx" ? jsxText("br") : { type: "text", value: " " };
+    const resolved = leaves.map((leaf) => ({ ...leaf, node: leaf.node === "newline" ? newline_node : leaf.node }));
+
+    return applyProperties(resolved, 0);
+}
+
+async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Promise<Leaf[]> {
+    const props: TextProperties = {
+        href: null,
+        bold: item.annotations.bold,
+        italic: item.annotations.italic,
+        strikethrough: item.annotations.strikethrough,
+        underline: item.annotations.underline,
+    };
+
+    switch (item.type) {
+        case "text": {
+            if (/%\\?\{[\s\S]*\}%/.test(item.text.content))
+                new ExporterError(
+                    `Text on page "${ctx.path}" contains an inline component ("${item.text.content.trim()}"). Inline components are no longer supported, and the text is shown as written. Link to a block instead.`,
+                    ["malformed content"],
+                ).warn();
+
+            if (item.href) {
+                const href_res = await resolveHref(item.href, ctx);
+                if (isExporterErr(href_res)) {
+                    href_res.warn();
+                } else {
+                    props.href = href_res;
+                }
+            }
+
+            if (item.annotations.code)
+                return [{ node: { type: "inlineCode", value: item.text.content.replaceAll("\n", " ") }, props: props }];
+
+            return item.text.content
+                .split("\n")
+                .flatMap((line, i): Leaf[] => [
+                    ...(i > 0 ? [{ node: "newline" as const, props }] : []),
+                    ...(line ? [{ node: { type: "text" as const, value: line }, props }] : []),
+                ]);
+        }
+        case "equation":
+            return [{ node: { type: "inlineMath", value: item.equation.expression }, props }];
+        case "mention": {
+            const mention = item.mention;
+            if (mention.type !== "page") {
+                new ExporterError(
+                    `A ${mention.type} mention ("${item.plain_text}") on page "${ctx.path}" is unsupported and was removed.`,
+                    ["malformed content"],
+                ).warn();
+                return [];
+            }
+
+            const node = await pageMention(new PageId(mention.page.id), ctx);
+            if (isExporterErr(node)) {
+                node.warn();
+                return [];
+            }
+            return [{ node, props: props }];
+        }
+    }
+}
+
+/**
+ * Removes leading and trailing whitespace/line break leaves.
+ */
+function trimLeaves(leaves: Leaf[]): void {
+    const trimEnd = (index: () => number, trim: (s: string) => string): void => {
+        while (leaves.length > 0) {
+            const i = index();
+            const leaf = leaves[i]!;
+            if (leaf.node !== "newline") {
+                if (leaf.node.type !== "text") return;
+                leaf.node = { ...leaf.node, value: trim(leaf.node.value) };
+                if (leaf.node.value !== "") return;
+            }
+            leaves.splice(i, 1);
+        }
+    };
+
+    trimEnd(
+        () => 0,
+        (s) => s.trimStart(),
+    );
+    trimEnd(
+        () => leaves.length - 1,
+        (s) => s.trimEnd(),
+    );
+}
+
+interface TextProperty {
+    /** Leaves with identical keys are wrapped together; `null` means the leaf is unstyled. */
+    key(marks: TextProperties): string | null;
+    /** Wrap `children` in a MDAST styling node. */
+    wrap(marks: TextProperties, children: PhrasingContent[]): PhrasingContent;
+    /** Whether whitespace must be moved out of the mark for it to stringify cleanly. */
+    hoist_whitespace: boolean;
+}
+
+const PROP_GENERATORS: TextProperty[] = [
+    {
+        key: (m) => m.href,
+        wrap: (m, children) => ({ type: "link", url: m.href!, children }),
+        hoist_whitespace: false,
+    },
+    {
+        key: (m) => (m.bold ? "" : null),
+        wrap: (_, children) => ({ type: "strong", children }),
+        hoist_whitespace: true,
+    },
+    {
+        key: (m) => (m.italic ? "" : null),
+        wrap: (_, children) => ({ type: "emphasis", children }),
+        hoist_whitespace: true,
+    },
+    {
+        key: (m) => (m.strikethrough ? "" : null),
+        wrap: (_, children) => ({ type: "delete", children }),
+        hoist_whitespace: true,
+    },
+    {
+        key: (m) => (m.underline ? "" : null),
+        wrap: (_, children) => jsxText("u", {}, children),
+        hoist_whitespace: false,
+    },
+];
+
+function applyProperties(leaves: { node: PhrasingContent; props: TextProperties }[], level: number): PhrasingContent[] {
+    // The current property being applied
+    const prop = PROP_GENERATORS[level];
+    if (!prop) return leaves.map((leaf) => leaf.node);
+
+    const output: PhrasingContent[] = [];
+    let start = 0;
+    while (start < leaves.length) {
+        const key = prop.key(leaves[start]!.props);
+        let end = start + 1;
+        // Side-by-side regions with an identical property should join
+        while (end < leaves.length && prop.key(leaves[end]!.props) === key) end++;
+
+        const run = leaves.slice(start, end);
+        // Try to apply the next property
+        const children = applyProperties(run, level + 1);
+        if (key === null) output.push(...children);
+        else if (prop.hoist_whitespace)
+            output.push(...wrapHoistingWhitespace(children, (c) => prop.wrap(run[0]!.props, c)));
+        else output.push(prop.wrap(run[0]!.props, children));
+
+        start = end;
+    }
+
+    return output;
+}
+
+/**
+ * Emphasis cannot start or end with whitespace in Markdown, so move it outside the wrapping node.
+ */
+function wrapHoistingWhitespace(
+    children: PhrasingContent[],
+    wrap: (children: PhrasingContent[]) => PhrasingContent,
+): PhrasingContent[] {
+    const inner = [...children];
+    let leading = "";
+    let trailing = "";
+
+    const first = inner[0];
+    if (first?.type === "text") {
+        const trimmed = first.value.trimStart();
+        leading = first.value.slice(0, first.value.length - trimmed.length);
+        if (trimmed) inner[0] = { type: "text", value: trimmed };
+        else inner.shift();
+    }
+
+    const last = inner.at(-1);
+    if (last?.type === "text") {
+        const trimmed = last.value.trimEnd();
+        trailing = last.value.slice(trimmed.length);
+        if (trimmed) inner[inner.length - 1] = { type: "text", value: trimmed };
+        else inner.pop();
+    }
+
+    const text = (value: string): Text[] => (value ? [{ type: "text", value }] : []);
+    if (inner.length === 0) return text(leading + trailing);
+
+    return [...text(leading), wrap(inner), ...text(trailing)];
+}

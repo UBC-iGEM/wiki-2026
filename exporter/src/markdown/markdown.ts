@@ -1,23 +1,12 @@
-import { PagePath, type ContentMap } from "../map";
 import type { PageId } from "../notion";
-import { ExporterError, isExporterErr, saveFile } from "../utils";
-import { COMPONENT_MAP as BLOCK_COMPONENT_MAP } from "./components-block";
-import { INLINE_COMPONENT_MAP } from "./components-inline";
-import { remarkEscapeMdxText, remarkStripNotionAnnotations } from "./escapes";
-import { HTML_PROCESSORS } from "./html";
-import { IMAGE_PROCESSORS } from "./image";
-import { LINK_PROCESSORS } from "./link";
-import { processRegex } from "./regex";
-import type { Parent, Root } from "mdast";
-import HTMLParse from "node-html-parser";
-import rehypeCitation from "rehype-citation";
-import remarkDirective from "remark-directive";
+import { isExporterErr, saveFile } from "../utils";
+import { convertBlocks, type ConvertContext } from "./blocks";
+import type { Root } from "mdast";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
-import remarkParse from "remark-parse";
+import remarkMdx from "remark-mdx";
 import remarkStringify from "remark-stringify";
 import { unified } from "unified";
-import { visit, type Action, type ActionTuple, type VisitorResult } from "unist-util-visit";
 
 export interface PageAttrs {
     type: "page";
@@ -33,33 +22,23 @@ export interface DatabaseAttrs {
 
 export type MarkdownHeader = PageAttrs | DatabaseAttrs;
 
-export async function processMarkdown({
-    id,
-    md,
-    path,
-    routes,
-}: {
-    id: PageId;
-    md: string;
-    path: PagePath;
-    routes: ContentMap;
-}): Promise<void> {
-    const preprocessed_markdown = processRegex(md);
+const mdStringifier = unified()
+    .use(remarkMdx)
+    .use(remarkGfm)
+    .use(remarkMath)
+    .use(remarkStringify, { bullet: "-", resourceLink: true });
 
-    const processed_markdown = (
-        await remarkProcessingPipeline()
-            .use(processMAst, {
-                routes,
-                path,
-            })
-            .use(remarkStripNotionAnnotations)
-            .use(remarkEscapeMdxText)
-            .use(remarkStringify, {
-                bullet: "-",
-                resourceLink: true,
-            })
-            .process(preprocessed_markdown)
-    ).toString();
+/**
+ * Converts a page's Notion blocks to MDX and saves it.
+ */
+export async function exportPageMarkdown({ id, ctx }: { id: PageId; ctx: ConvertContext }): Promise<void> {
+    const { path } = ctx;
+
+    const blocks_res = await id.getBlocks();
+    if (isExporterErr(blocks_res)) return blocks_res.warn();
+
+    const tree: Root = { type: "root", children: await convertBlocks(blocks_res, ctx) };
+    const processed_markdown = mdStringifier.stringify(tree);
 
     const type = path.components().length === 3 ? "database" : "page";
     const title = path.name().toString();
@@ -79,168 +58,14 @@ ${page_header}
 
 ${processed_markdown}
 `.trim();
-    const save_path = path.withExt("mdx");
 
-    const raw_result = await saveFile({ content: md, path: save_path, debug_path: "raw" });
+    const raw_result = await saveFile({
+        content: JSON.stringify(blocks_res, null, 2),
+        path: path.withExt("json"),
+        debug_path: "raw",
+    });
     if (isExporterErr(raw_result)) raw_result.warn();
 
-    const regex_result = await saveFile({ content: preprocessed_markdown, path: save_path, debug_path: "regex" });
-    if (isExporterErr(regex_result)) regex_result.warn();
-
-    const result = await saveFile({ content: page, path: save_path });
+    const result = await saveFile({ content: page, path: path.withExt("mdx") });
     if (isExporterErr(result)) result.warn();
-}
-
-type ProcessorCallback = () => Promise<void | ExporterError>;
-
-export interface ProcessorContext {
-    index: number;
-    parent: Parent;
-    routes: ContentMap;
-    path: PagePath;
-    callbacks: ProcessorCallback[];
-}
-
-export const remarkProcessingPipeline = unified()
-    .use(remarkParse)
-    .use(remarkDirective)
-    .use(remarkMath)
-    .use(rehypeCitation)
-    .use(remarkGfm);
-
-/**
- * A remark plugin that walks the Markdown AST and dispatches various processors on different node types
- */
-function processMAst({ routes, path }: { routes: ContentMap; path: PagePath }) {
-    return async function (tree: Root): Promise<void> {
-        const callbacks: ProcessorCallback[] = [];
-
-        // Initial pass: handle all content cleanup and modifications
-        visit(tree, (node, index, parent) => {
-            if (index === undefined || !parent) return;
-            const ctx: ProcessorContext = {
-                index,
-                parent,
-                routes,
-                path,
-                callbacks,
-            };
-
-            switch (node.type) {
-                case "html":
-                    return processAllAndWarnErrors(HTML_PROCESSORS, {
-                        node: undefined,
-                        parsed_node: HTMLParse.parse(node.value, { voidTag: { closingSlash: true } }),
-                        ctx,
-                    });
-                case "link":
-                    return processAllAndWarnErrors(LINK_PROCESSORS, { node, ctx });
-                case "image":
-                    return processAllAndWarnErrors(IMAGE_PROCESSORS, { node, ctx });
-                case "textDirective": {
-                    const inline_component_type = node.name.toLowerCase();
-                    const transform = INLINE_COMPONENT_MAP[inline_component_type];
-                    if (!transform) {
-                        new ExporterError(
-                            `Inline component type ${inline_component_type} on page "${path}" could not be understood. It is either misspelt or not yet implemented. See all inline component options ${ExporterError.link({ with_label: "here", to: "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#395d65dd82be805ea268e80e32b7bf19" })}.`,
-                            ["malformed content"],
-                        ).warn();
-                        return;
-                    }
-
-                    const res = transform({ node, ctx });
-                    if (isExporterErr(res)) {
-                        res.warn();
-                        return;
-                    }
-
-                    return res;
-                }
-            }
-        });
-
-        const results = await Promise.all(callbacks.map(async (callback) => await callback()));
-        for (const result of results) {
-            if (result) result.warn();
-        }
-        callbacks.length = 0;
-
-        visit(tree, "containerDirective", (node, index, parent) => {
-            if (index === undefined || !parent) return;
-
-            const ctx: ProcessorContext = {
-                index,
-                parent,
-                routes,
-                path,
-                callbacks,
-            };
-
-            const component_type = node.name.toLowerCase();
-            const transform = BLOCK_COMPONENT_MAP[component_type];
-            if (!transform) {
-                new ExporterError(
-                    `Block component type ${component_type} on page "${path}" could not be understood. It is either misspelt or not yet implemented. See all block component options ${ExporterError.link({ with_label: "here", to: "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#395d65dd82be80ac838ef0a1375455cf" })}.`,
-                    ["malformed content"],
-                ).warn();
-                // Drop the component; its raw contents may not be valid MDX
-                parent.children.splice(index, 1);
-                return index;
-            }
-
-            const res = transform({ node, ctx });
-            if (isExporterErr(res)) {
-                res.warn();
-                parent.children.splice(index, 1);
-                return index;
-            }
-
-            return res;
-        });
-
-        const component_results = await Promise.all(callbacks.map(async (callback) => await callback()));
-        for (const result of component_results) {
-            if (result) result.warn();
-        }
-    };
-}
-
-/**
- * Processor functions can either return:
- * @returns  `undefined`: no processing to be done
- * @returns `Action`: processing succeeded and should finish with this action
- * @returns `ExporterError`: processing failed
- */
-export type ProcessorOutput = undefined | Action | ActionTuple | ExporterError;
-
-export interface ProcessorInput<T> {
-    node: T;
-    ctx: ProcessorContext;
-}
-
-type Processor<T> = (input: T) => ProcessorOutput;
-export function processAll<T>(processors: Processor<T>[], input: T): ProcessorOutput {
-    for (const processor of processors) {
-        const res = processor(input);
-
-        if (isExporterErr(res)) {
-            // Stop all processing on this node
-            return res;
-        }
-
-        if (res !== undefined) {
-            return res;
-        }
-    }
-}
-
-export function processAllAndWarnErrors<T>(processors: Processor<T>[], input: T): VisitorResult {
-    const res = processAll(processors, input);
-
-    if (isExporterErr(res)) {
-        res.warn();
-        return undefined;
-    }
-
-    return res;
 }

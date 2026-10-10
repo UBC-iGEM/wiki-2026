@@ -1,4 +1,5 @@
-import { PageId } from "./notion";
+import { CONFIG } from "./config";
+import { Id, PageId } from "./notion";
 import { slug } from "github-slugger";
 
 // Required setup for decorators
@@ -44,6 +45,14 @@ export class PagePath {
 
     toSlug(): string {
         return this.items.map((item) => item.toSlug()).join("/");
+    }
+
+    /**
+     * Wiki URL of this path, optionally targeting a specific anchor.
+     */
+    toURL(block?: Id): string {
+        const url = `${CONFIG.internal_link_root}/${this.toSlug()}`;
+        return block ? `${url}#${block}` : url;
     }
 
     equals(other: PagePath): boolean {

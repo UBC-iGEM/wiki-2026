@@ -1,5 +1,5 @@
-import { AggregateMap, ContentMap, PagePathComponent, type MapPath } from "./map";
-import { processMarkdown } from "./markdown/markdown";
+import { AggregateMap, ContentMap, PagePathComponent } from "./map";
+import { exportPageMarkdown } from "./markdown/markdown";
 import { PageId, DatabaseId, BlockId } from "./notion";
 import { $unsafeExporterPromises, ExporterError, isExporterErr, type ExporterResult } from "./utils";
 
@@ -127,21 +127,9 @@ async function getAggregateEntries({ agg_id }: { agg_id: PageId }): Promise<Expo
 }
 
 export async function exportAllPages({ content_map }: { content_map: ContentMap }): Promise<void> {
-    await Promise.all(content_map.pages().map((page) => exportPage({ page, content_map })));
-}
-
-async function exportPage({
-    page: { item, path },
-    content_map: routes,
-}: {
-    page: MapPath<PageId>;
-    content_map: ContentMap;
-}): Promise<void> {
-    const markdown_res = await item.getMarkdown();
-    if (isExporterErr(markdown_res)) {
-        markdown_res.warn();
-        return;
-    }
-
-    await processMarkdown({ id: item, md: markdown_res, path, routes });
+    await Promise.all(
+        content_map.pages().map(async ({ item, path }) => {
+            await exportPageMarkdown({ id: item, ctx: { path, routes: content_map } });
+        }),
+    );
 }

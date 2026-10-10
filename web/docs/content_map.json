@@ -6,7 +6,7 @@
                 {
                     "path": "Conceptualization",
                     "type": "page",
-                    "item": "3e5d65dd82be80478856da17079ffb1c"
+                    "item": "3f3d65dd82be80bd9debd83f0bb47b7b"
                 },
                 {
                     "path": "Results",
@@ -14,7 +14,7 @@
                     "item": "3ecd65dd82be8081bb4ce8c55cf21a03"
                 },
                 {
-                    "path": "Engineering (DBTL)",
+                    "path": "Engineering",
                     "type": "page",
                     "item": "3e5d65dd82be80b1a707f371063052e1"
                 },
@@ -120,7 +120,7 @@
                             "item": "3e0d65dd82be805881e8fcf23e82411f"
                         },
                         {
-                            "path": "Biosensor Response Titration",
+                            "path": "Biosensor Response Titration v1",
                             "item": "3e3d65dd82be80159434d418645c9a8f"
                         },
                         {
@@ -132,7 +132,7 @@
                             "item": "3e3d65dd82be8056820ad481ad76fb4f"
                         },
                         {
-                            "path": "Antibiotic Thaw Test",
+                            "path": "Antibiotic Thaw Test v1",
                             "item": "3e3d65dd82be8058892fe009ae9eaa84"
                         },
                         {
@@ -165,24 +165,9 @@
                     "item": "37cd65dd82be80829626fb3218a9a21f"
                 },
                 {
-                    "path": "Introduction & Overview of the Bioreactor",
+                    "path": "Bioreactor",
                     "type": "page",
-                    "item": "3ecd65dd82be806697aad2837827dac9"
-                },
-                {
-                    "path": "Building the Bioreactor",
-                    "type": "page",
-                    "item": "3ecd65dd82be80dd8317ef70851e61e5"
-                },
-                {
-                    "path": "Impact of the Bioreactor",
-                    "type": "page",
-                    "item": "3ecd65dd82be8031bbbdd1b391c5e9fe"
-                },
-                {
-                    "path": "Next Steps for the Bioreactor",
-                    "type": "page",
-                    "item": "3ecd65dd82be807b8830db951318f237"
+                    "item": "3f0d65dd82be80fbaed7df89ab37ed23"
                 },
                 {
                     "path": "Lab Notebook",
@@ -220,37 +205,37 @@
                     "item": "3d7d65dd82be80cbbb5cd6fb4854c487"
                 },
                 {
-                    "path": "Stage 1: Literature Review",
+                    "path": "Investigation 1: Literature Review",
                     "type": "page",
                     "item": "3d7d65dd82be804abcd2faccce039b76"
                 },
                 {
-                    "path": "Stage 2: integrated Human Practices (iHP)",
+                    "path": "Investigation 2: integrated Human Practices (iHP)",
                     "type": "page",
                     "item": "3d7d65dd82be80829c5dd498e9c45e80"
                 },
                 {
-                    "path": "Next Steps… → The Dialogue: What are the Barriers?",
+                    "path": "The Dialogue: What are the Barriers?",
                     "type": "page",
                     "item": "3d7d65dd82be80b68a42e85af71a804d"
                 },
                 {
-                    "path": "1. Education: Raising Awareness about AMR",
-                    "type": "page",
-                    "item": "3d7d65dd82be803b9fafe4c1726654e2"
-                },
-                {
-                    "path": "2. Tangible Impact #1: Addressing the Need for a Community ",
+                    "path": "Barrier 1: Companionship Support",
                     "type": "page",
                     "item": "3d7d65dd82be803a87eac9f733f78214"
                 },
                 {
-                    "path": "3. Tangible Impact #2 - Education of Patients and Families",
+                    "path": "Barrier 2: Informational Support ",
                     "type": "page",
                     "item": "3d7d65dd82be803faa47e7d1cc948180"
                 },
                 {
-                    "path": "Concluding Thoughts",
+                    "path": "Demystifying AMR for the General Public",
+                    "type": "page",
+                    "item": "3d7d65dd82be803b9fafe4c1726654e2"
+                },
+                {
+                    "path": "Our Journey",
                     "type": "page",
                     "item": "3d7d65dd82be8078a43bfd438b8af0ff"
                 }
@@ -307,6 +292,11 @@
                             "item": "362d65dd82be80758ebbe85f95b74c33"
                         }
                     ]
+                },
+                {
+                    "path": "hi",
+                    "type": "page",
+                    "item": "3f3d65dd82be80bb87bec926aba92089"
                 }
             ]
         }

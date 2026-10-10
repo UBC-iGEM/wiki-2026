@@ -1,0 +1,126 @@
+---
+type: "page"
+title: "Bioreactor"
+---
+
+# <a id="3f0d65dd82be80adb95cf1fb11123097" />Introduction & Overview of the Bioreactor
+
+<a id="3f0d65dd82be8013b7c9c45b65fea97b" />Bioreactors provide a controlled environment for growing microorganisms by maintaining the conditions needed for consistent growth. As one of UBC iGEM 2026’s hardware projects, we developed a compact bioreactor to culture E. coli for biosensor development in antibiotic susceptibility testing.
+
+<a id="3f0d65dd82be804fac57d7f214df889a" />More about what a bioreactor is ()
+
+<details>
+  <summary>
+    ## <a id="3f0d65dd82be8052b407e9132156ecbf" />The Need for Bioreactors ()
+  </summary>
+</details>
+
+<details>
+  <summary>
+    ## <a id="3f0d65dd82be80b9b69ce42379b3fb66" />Identifying Needs
+  </summary>
+</details>
+
+<details>
+  <summary>
+    ## <a id="3f0d65dd82be804a9c2ec6ef3e456461" />Translating Needs to Requirements
+  </summary>
+</details>
+
+# <a id="3f0d65dd82be80f2a2ebf4267c283938" />Building the Bioreactor
+
+<a id="3f0d65dd82be80f6b2cbd6ea32c2288c" />The bioreactor itself was developed through several design iterations, with each version addressing limitations identified during assembly, testing, and use.
+
+<details>
+  <summary>
+    ## <a id="3f0d65dd82be802895fdf220194c6332" />Concept Generation
+  </summary>
+
+  ### <a id="3f0d65dd82be80ad97ade1dc85460176" />Concept Sketches
+
+  ### <a id="3f0d65dd82be80099df1d6502485640f" />Concept CAD
+
+  ### <a id="3f0d65dd82be8099b910d75d41023f01" />Final Design
+</details>
+
+<details>
+  <summary>
+    ## <a id="3f0d65dd82be80079833f4eabe80eb2b" />Iteration 1
+  </summary>
+</details>
+
+<details>
+  <summary>
+    ## <a id="3f0d65dd82be80beb517cedfe4b9429c" />Iteration 2
+  </summary>
+</details>
+
+<details>
+  <summary>
+    ## <a id="3f0d65dd82be8023bf5fca70980e42f3" />Iteration 3
+  </summary>
+</details>
+
+<details>
+  <summary>
+    ## <a id="3f0d65dd82be804c80d7cc53d190decd" />Validation of Each Iteration
+  </summary>
+</details>
+
+# <a id="3f0d65dd82be80a69b95e0f641dba110" />Impact of the Bioreactor
+
+<a id="3f0d65dd82be808cbab4dffc98786ef9" />The completed bioreactor demonstrates that a small-scale system built from relatively simple and accessible components can support *E. coli* growth comparable to conventional benchtop equipment.
+
+<br id="3f0d65dd82be80ac8a2ee21fb6fa28ea" />
+
+<a id="3f0d65dd82be8071849cd6f11806723d" />Growth curves recorded from validation were compared against those produced from standard laboratory methods, giving a practical way to evaluate whether this simplified design could match, or better yet, exceed the expected bacterial growth behaviour. Beyond its engineering success within UBC iGEM 2026’s project scope, the nature of an open-source design marks it as a starting point for smaller teaching laboratories and research groups, or even medical centers in resource-limited environments that want to adapt and expand on this point-of-care device. The main objective of developing the bioreactor is not to replace high-end laboratory equipment, but to showcase that many functions required for bacterial culture can be recreated on a much smaller scale and at a lower cost.
+
+<details>
+  <summary>
+    ## <a id="3f0d65dd82be80c68508d78b73f509f3" />Instruction for Use
+  </summary>
+</details>
+
+<details>
+  <summary>
+    ## <a id="3f0d65dd82be80999588f93d7ea51fb9" />Bill of Materials (BOM)
+  </summary>
+</details>
+
+# <a id="3f0d65dd82be80a99bf0ea06cce646d7" />Next Steps for the Bioreactor
+
+<a id="3f0d65dd82be8066aba5e6bfe6424685" />While the current bioreactor design is functional and capable of supporting reliable bacterial growth, there are a few features that could be improved for future iterations. The next stage of development is to move from a collection of individual components toward a more integrated and automated system.
+
+<details>
+  <summary>
+    ## <a id="3f0d65dd82be80958451d5cd5f753ef7" />Design Improvements
+  </summary>
+
+  ### <a id="3f0d65dd82be802790bad2d66bf8a3ff" />Integrated Electronics
+
+  <a id="3f0d65dd82be80cb9c06fd955c822fee" />The current bioreactor uses several independently connected sensors, pumps, and electronic components, resulting in a large number of wires and separate circuits that must be assembled and debugged individually. Future iterations could integrate these systems onto a custom printed circuit board (PCB), with a microcontroller incorporated directly onto the board to control and communicate with each component. Alternatively, a Raspberry Pi could be added for data storage, visualization, and a more user-friendly interface. However, this would not necessarily replace the role of the microcontroller in monitoring and controlling real-time systems, and would instead act as an additional feature. Overall, integrating the electronics in this manner would reduce the hazards associated with loose wiring and simplify troubleshooting, making the system more reproducible and reliable.
+
+  ### <a id="3f0d65dd82be807887d1d5340046fe7b" />Automated Monitoring and Feedback Control
+
+  <a id="3f0d65dd82be800ebe4ecd4730b71163" />Temperature and pH are currently measured as separate processes, requiring the operator to monitor the system and manually respond when conditions change. These sensors could instead be connected to a central controller that continuously records their measurements and alerts the operator when a parameter shifts outside an acceptable range. A further improvement could introduce feedback control, where the bioreactor automatically responds to these changes. For instance, temperature measurements could control a heating unit, while pH measurements could activate small solution pumps that add acid or base when required. *Feedback control is commonly used in bioreactors to maintain conditions around a desired set point rather than relying on periodic manual adjustments. This is especially critical if the sample bacteria are extremely sensitive to certain environmental parameters.* Not only does this reduce operator involvement, but it maintains a more consistent and steady growth condition throughout the duration of a test.
+
+  <a id="3f0d65dd82be80238c86d80458b4aecc" />*need to cite*
+
+  ### <a id="3f0d65dd82be8099b972e25ab8ff443f" />Automated Optical Density Sampling
+
+  <a id="3f0d65dd82be8058924ee14ee597988a" />Optical density (OD) measurements currently require a small culture sample to be manually withdrawn through tubing using a syringe before it can be measured by the custom OD sensor. This process could be automated by incorporating a small peristaltic or syringe pump into the sampling line. At pre-set intervals, the controller could draw a fixed volume of culture through the OD measurement chamber, collect the reading, record the result, return the sample, and then prepare the system for the next measurement. *Automated bioreactor sampling systems have been shown to reduce hands-on work, enable measurements at consistent intervals, and improve repeatability compared with manual sampling.* Additionally, this method of sampling maintains a closed system for the bacteria, thus reducing contamination while ensuring biosafety for the operator by adhering to aseptic practices. For this bioreactor, automated sampling would allow a complete growth curve to be recorded with much less operator involvement.
+
+  <a id="3f0d65dd82be8069a064eb75799ab343" />*need to cite*
+
+  ### <a id="3f0d65dd82be807aa768ca2486d5bcc0" />Improved Sterility and Sampling Design
+
+  <a id="3f0d65dd82be80e0a9c5c8b3f007a9a7" />As the system becomes increasingly automated, maintaining a closed and clean culture environment becomes more important. Repeated manual sampling introduces additional connections and handling steps where contamination can occur. Not only does this risk cross-contamination of culturing bacteria, but it also poses a biosafety risk if the operator does not follow proper protocol. Future versions could use permanently connected sampling tubing, sealed fittings, and dedicated sample pathways that minimize the need to open or disconnect the system during an experiment. Examples of this include the use of Luer-Lock syringes and corresponding attachments to tubing — components designed to keep material inside airtight and sterile from the outside environment. Reducing the number of open connections would help maintain sterility throughout experimentation while also making the sampling process safer and more repeatable.
+
+  ### <a id="3f0d65dd82be8060a918d4d2014119cd" />Improved Materials and Manufacturing
+
+  <a id="3f0d65dd82be80dba9e3d169f4bfb038" />Fused deposition modelling (FDM) was well suited for the early stages of rapid prototyping, due to the fast manufacturing time and low costs for raw material. However, polylactic acid (PLA) based components are more suited for prototyping than repeated long-term use, due to PLA’s weak mechanical structure and lack of durability to heat and environmental stressors. Larger structural components could instead be printed from a tougher and more temperature-resistant material such as polyethylene terephthalate glycol (PETG) or acrylonitrile butadiene styrene (ASA). PETG offers improved temperature and chemical resistance compared with PLA while remaining relatively accessible and easy to manufacture, making it a practical upgrade for many of the current components. Components exposed more directly to the culture, tubing, cleaning solutions, or repeated handling could instead be subtractively manufactured from metals such as aluminum 6061 or even stainless steel for high corrosion resistance. Moving toward more durable materials would increase the lifetime of the system and reduce the likelihood of components deforming, cracking, or requiring frequent replacement.
+</details>
+
+# <a id="3f0d65dd82be8051b917ecc25f84217a" />References
+
+<br id="3f0d65dd82be804a8debc1b76d9a0607" />

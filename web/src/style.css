@@ -41,9 +41,9 @@ pre.astro-code {
     vertical-align: middle;
 }
 
-/* Notion injects underlines as <span underline="true"> */
-[underline="true"] {
-    text-decoration: underline;
+/* Toggle headings sit inside <summary>, so keep them beside the disclosure marker */
+.page-content summary > :is(h1, h2, h3, h4, h5, h6) {
+    display: inline;
 }
 
 /* Scrolling to a TOC heading should leave a gap above */

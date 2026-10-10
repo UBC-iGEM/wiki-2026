@@ -1,91 +1,85 @@
-import { CONFIG } from "../config";
-import { PageId, type PageProperty } from "../notion";
+import { Id, PageId, type PageProperty } from "../notion";
 import { ExporterError, isExporterErr, type ExporterResult } from "../utils";
-import type { ProcessorInput, ProcessorOutput } from "./markdown";
-import type { Html, Link } from "mdast";
-import { CONTINUE } from "unist-util-visit";
-
-export const LINK_PROCESSORS = [normalizePageLink];
+import type { ConvertContext } from "./blocks";
+import { asPlainText } from "./rich-text";
+import type { PhrasingContent } from "mdast";
 
 /**
- * If a link points to a `www.notion.so` domain, replace it with a link to that page's location in the wiki
+ * Converts a page mention into either an intra-wiki link or a citation.
  */
-function normalizePageLink({ node, ctx }: ProcessorInput<Link>): ProcessorOutput {
-    const url = node.url;
-    if (!node.url.includes("app.notion.com")) return;
+export async function pageMention(page: PageId, ctx: ConvertContext): Promise<ExporterResult<PhrasingContent>> {
+    const page_path = ctx.routes.get(page);
+    if (page_path)
+        return {
+            type: "link",
+            url: page_path.toURL(),
+            children: [{ type: "text", value: page_path.name().toString() }],
+        };
 
-    // Extract Notion page ID from URL
-    const page_id = url.match(/(?<=app.notion.com\/p\/)[a-f0-9]{32}/)?.[0];
-    if (!page_id)
+    const is_citation_res = await page.getProperty("Citation Key");
+    const is_citation = isExporterErr(is_citation_res) ? false : is_citation_res;
+    if (!is_citation)
         return new ExporterError(
-            `Mention element on page "${ctx.path}" could not be understood; it does not link to a valid Notion ID. Its URL is ${node.url}.`,
-            ["notion server", "bug?"],
+            `Mention element on page "${ctx.path}" does not link to a known wiki page or literature entry.`,
+            ["malformed content"],
         );
 
-    const page = new PageId(page_id);
-    const page_path = ctx.routes.get(page);
-    if (!page_path) {
-        const original_node = node;
-        const callback = async (): Promise<ExporterResult<void>> => {
-            const property_res = await page.getProperty("Citation Key");
-            if (isExporterErr(property_res)) return property_res;
+    const citation_key_res = getCitationKey(is_citation, page);
+    if (isExporterErr(citation_key_res)) return citation_key_res;
 
-            if (!property_res)
-                return new ExporterError(
-                    `Mention element on page "${ctx.path}" does not link to a known wiki page or literature entry.`,
-                    ["malformed content"],
-                );
-
-            const citation_key_res = getCitationKey(property_res, page_id);
-            if (isExporterErr(citation_key_res)) return citation_key_res;
-
-            const node_index = ctx.parent.children.findIndex((child) => child === original_node);
-            if (node_index === -1)
-                return new ExporterError(
-                    `Mention element on page "${ctx.path}" at Notion ID ${page_id} could not be replaced with a citation.`,
-                    ["bug?"],
-                );
-
-            const citation_node: Html = {
-                type: "html",
-                value: `[@${citation_key_res}]`,
-            };
-            ctx.parent.children[node_index] = citation_node;
-        };
-        ctx.callbacks.push(callback);
-        return CONTINUE;
-    }
-
-    const path_slug = `${CONFIG.internal_link_root}/${page_path.toSlug()}`;
-
-    const children =
-        // A mention link?
-        node.children.length === 1 && node.children[0]!.type === "text" && node.children[0]!.value.includes("mention")
-            ? // Replace children with page name
-              [{ type: "text" as const, value: page_path.components().at(-1)!.toString() }]
-            : // Retain children
-              node.children;
-
-    const new_link: Link = {
-        type: "link",
-        url: path_slug,
-        children,
-    };
-    ctx.parent.children[ctx.index] = new_link;
-
-    return CONTINUE;
+    // Resolved into a citation by `rehype-citation` when the wiki is built
+    return { type: "text", value: `[@${citation_key_res}]` };
 }
 
-function getCitationKey(property: PageProperty, page_id: string): ExporterResult<string> {
+/**
+ * If a URL points to Notion, replace it with the URL of that page (and block) on the wiki.
+ * Other URLs are returned unchanged.
+ */
+export async function resolveHref(href: string, ctx: ConvertContext): Promise<ExporterResult<string>> {
+    const target = parseNotionUrl(href);
+    if (!target) return href;
+
+    const page_path = target.page ? ctx.routes.get(target.page) : undefined;
+    if (page_path) return page_path.toURL(target.block);
+
+    return new ExporterError(
+        `Link on page "${ctx.path}" to ${href} does not point to a known wiki page; the link was removed.`,
+        ["malformed content"],
+    );
+}
+
+function parseNotionUrl(href: string): { page?: PageId; block?: Id } | undefined {
+    const NOTION_HOST = /(^|\.)notion\.(so|site|com)$/i;
+
+    let url: URL;
+    try {
+        // Notion emits relative links (`/p/<id>`) for its own pages
+        url = new URL(href, "https://app.notion.com");
+    } catch {
+        return undefined;
+    }
+    if (!NOTION_HOST.test(url.hostname)) return undefined;
+
+    // Paths end in an ID, either bare or after a title slug, and with or without dashes
+    const page_id = url.pathname.replaceAll("-", "").match(/([0-9a-f]{32})\/?$/i)?.[1];
+    const block_id = url.hash.replaceAll("-", "").match(/^#([0-9a-f]{32})$/i)?.[1];
+
+    return {
+        page: page_id ? new PageId(page_id) : undefined,
+        block: block_id ? new Id(block_id) : undefined,
+    };
+}
+
+function getCitationKey(property: PageProperty, page: PageId): ExporterResult<string> {
     if (property.type !== "rich_text")
         return new ExporterError(
-            `Literature entry at Notion ID ${page_id} has a "Citation Key" property, but it is of type "${property.type}" instead of rich text.`,
+            `Literature entry at Notion ID ${page} has a "Citation Key" property, but it is of type "${property.type}" instead of rich text.`,
             ["bug?", "notion server"],
         );
 
-    const citation_key = property.rich_text.map((text) => text.plain_text).join("");
+    const citation_key = asPlainText(property.rich_text);
     if (!citation_key.trim())
-        return new ExporterError(`Page at Notion ID ${page_id} has an empty "Citation Key" property.`, [
+        return new ExporterError(`Page at Notion ID ${page} has an empty "Citation Key" property.`, [
             "bug?",
             "notion server",
         ]);
