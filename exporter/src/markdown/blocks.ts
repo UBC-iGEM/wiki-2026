@@ -287,6 +287,21 @@ async function convertBlock(block: NotionBlock, parent_ctx: ConvertContext): Pro
             }
             return [{ type: "paragraph", children: [anchorText(anchor), link] }];
         }
+        case "link_preview": {
+            return [
+                {
+                    type: "paragraph",
+                    children: [
+                        anchorText(anchor),
+                        {
+                            type: "link",
+                            url: block.link_preview.url,
+                            children: [{ type: "text", value: block.link_preview.url }],
+                        },
+                    ],
+                },
+            ];
+        }
         default:
             new ExporterError(`Block of type ${block.type} is unsupported and was discarded.`, [
                 "malformed content",
