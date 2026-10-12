@@ -1,6 +1,6 @@
 import type { NotionBlock } from "../notion";
 import { ExporterError, isExporterErr, type ExporterResult } from "../utils";
-import { convertItems, type ConvertContext, type Item } from "./blocks";
+import { blockContext, convertItems, type ConvertContext, type Item } from "./blocks";
 import { jsxFlow, type FlowContent, type JsxAttrs } from "./mdx";
 import { mediaFileName, uploadMedia } from "./media";
 import { asPlainText } from "./rich-text";
@@ -56,8 +56,8 @@ async function figure({ items, ctx }: ComponentInput): ComponentOutput {
 
     if (image_blocks.length === 0)
         return new ExporterError(
-            `Figure component on page "${ctx.path}" could not be understood: it does not start with images.` +
-                ExporterError.componentDocSuggestion(
+            `Figure component could not be understood: it does not start with images.` +
+                componentDocSuggestion(
                     "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#395d65dd82be80849d9eff853d8453a2",
                 ),
             ["malformed content"],
@@ -85,8 +85,8 @@ async function dbtl({ items, ctx }: ComponentInput): ComponentOutput {
 
     if (sections.length !== 4)
         return new ExporterError(
-            `DBTL component on page "${ctx.path}" could not be understood: it does not have 4 sections delimited by dividers.` +
-                ExporterError.componentDocSuggestion(
+            `DBTL component could not be understood: it does not have 4 sections separated by dividers.` +
+                componentDocSuggestion(
                     "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#395d65dd82be805ea14ed9af6aaeff99",
                 ),
             ["malformed content"],
@@ -115,12 +115,12 @@ type Model3dSlots = SlotRecord<typeof MODEL3D_SLOTS>;
 
 async function model3d({ items, ctx }: ComponentInput): ComponentOutput {
     const [file_block, ...following_content] = trimBlank(items);
-    if (file_block?.type !== "file") return malformedModel3d(ctx, "it does not start with an uploaded file");
+    if (file_block?.type !== "file") return malformedModel3d("it does not start with an uploaded file");
 
     if (!/\.gl(?:b|tf)$/i.test(mediaFileName(file_block)))
-        return malformedModel3d(ctx, "its uploaded file is not a .glb or .gltf model");
+        return malformedModel3d("its uploaded file is not a .glb or .gltf model");
 
-    const url = await uploadMedia(file_block, ctx, { keep_original_file: true });
+    const url = await uploadMedia(file_block, { keep_original_file: true });
     if (isExporterErr(url)) return url;
 
     return generateComponent<Model3dAttrs, Model3dSlots>({
@@ -130,10 +130,10 @@ async function model3d({ items, ctx }: ComponentInput): ComponentOutput {
     });
 }
 
-function malformedModel3d(ctx: ConvertContext, problem: string): ExporterError {
+function malformedModel3d(problem: string): ExporterError {
     return new ExporterError(
-        `Model3D component on page "${ctx.path}" could not be understood: ${problem}.` +
-            ExporterError.componentDocSuggestion(
+        `Model3D component could not be understood: ${problem}.` +
+            componentDocSuggestion(
                 "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link",
             ),
         ["malformed content"],
@@ -157,8 +157,8 @@ async function carousel({ items, ctx }: ComponentInput): ComponentOutput {
     const malformed_slide = sections.findIndex((section) => section[0]?.type !== "image");
     if (malformed_slide !== -1)
         return new ExporterError(
-            `Carousel component on page "${ctx.path}" could not be understood: slide ${malformed_slide + 1} does not start with an image.` +
-                ExporterError.componentDocSuggestion(
+            `Carousel component could not be understood: slide ${malformed_slide + 1} does not start with an image.` +
+                componentDocSuggestion(
                     "https://www.notion.so/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?v=390d65dd82be80879bd4000c8f0deedc&source=copy_link#3add65dd82be8004a504cb122ae5ca7b",
                 ),
             ["malformed content"],
@@ -205,22 +205,22 @@ async function ihp({ items, ctx }: ComponentInput): ComponentOutput {
     // An image, a two-item bulleted list with the name and bio, a divider, then the interview description
     const [image_block, name_block, bio_block, divider, ...content] = trimBlank(items);
 
-    if (image_block?.type !== "image") return malformedIHP(ctx, "it does not start with an image");
+    if (image_block?.type !== "image") return malformedIHP("it does not start with an image");
 
     if (name_block?.type !== "bulleted_list_item" || bio_block?.type !== "bulleted_list_item")
-        return malformedIHP(ctx, "the image must be followed by a two-item bulleted list containing the name and bio");
+        return malformedIHP("the image must be followed by a two-item bulleted list containing the name and bio");
 
     const name = asPlainText(name_block.bulleted_list_item.rich_text).trim();
     const bio = asPlainText(bio_block.bulleted_list_item.rich_text).trim();
-    if (name === "" || bio === "") return malformedIHP(ctx, "the name and bio cannot be empty");
+    if (name === "" || bio === "") return malformedIHP("the name and bio cannot be empty");
 
-    if (divider?.type !== "divider") return malformedIHP(ctx, "the name and bio must be followed by a divider");
+    if (divider?.type !== "divider") return malformedIHP("the name and bio must be followed by a divider");
 
     if (trimBlank(content).length === 0)
-        return malformedIHP(ctx, "it does not contain an interview description after the divider");
+        return malformedIHP("it does not contain an interview description after the divider");
 
     const image = await imageAttr(image_block, ctx);
-    if (!image) return malformedIHP(ctx, "its image could not be uploaded");
+    if (!image) return malformedIHP("its image could not be uploaded");
 
     return generateComponent<IHPAttrs, IHPSlots>({
         tag: "IHP",
@@ -229,10 +229,10 @@ async function ihp({ items, ctx }: ComponentInput): ComponentOutput {
     });
 }
 
-function malformedIHP(ctx: ConvertContext, problem: string): ExporterError {
+function malformedIHP(problem: string): ExporterError {
     return new ExporterError(
-        `iHP component on page "${ctx.path}" could not be understood: ${problem}.` +
-            ExporterError.componentDocSuggestion(
+        `iHP component could not be understood: ${problem}.` +
+            componentDocSuggestion(
                 "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link",
             ),
         ["malformed content"],
@@ -265,9 +265,10 @@ type ImageBlock = Extract<NotionBlock, { type: "image" }>;
  * Uploads an image for use as a component attribute. Captions are used as alt text.
  */
 async function imageAttr(block: ImageBlock, ctx: ConvertContext): Promise<{ url: string; alt: string } | null> {
-    const url = await uploadMedia(block, ctx);
+    const image_ctx = blockContext(ctx, block);
+    const url = await uploadMedia(block);
     if (isExporterErr(url)) {
-        url.warn();
+        url.warn(image_ctx);
         return null;
     }
 
@@ -298,6 +299,10 @@ function splitOnDividers(items: Item[]): Item[][] {
         else sections.at(-1)!.push(item);
     }
     return sections;
+}
+
+export function componentDocSuggestion(link: string): string {
+    return ` See ${ExporterError.link({ with_label: "this documentation", to: link })} for details.`;
 }
 
 type SlotRecord<Slots extends readonly string[]> = Record<Slots[number], FlowContent[]>;

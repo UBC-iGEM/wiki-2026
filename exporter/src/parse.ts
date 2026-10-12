@@ -129,7 +129,7 @@ async function getAggregateEntries({ agg_id }: { agg_id: PageId }): Promise<Expo
 export async function exportAllPages({ content_map }: { content_map: ContentMap }): Promise<void> {
     await Promise.all(
         content_map.pages().map(async ({ item, path }) => {
-            await exportPageMarkdown({ id: item, ctx: { path, routes: content_map } });
+            await exportPageMarkdown({ path, page: item, routes: content_map });
         }),
     );
 }

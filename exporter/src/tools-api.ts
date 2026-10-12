@@ -1,5 +1,4 @@
 import { CONFIG } from "./config";
-import type { PagePath } from "./map";
 import { convertToAvif, downloadToTempFile } from "./media";
 import { $unsafe, ExporterError, isErr, isExporterErr, type ExporterResult, type Result } from "./utils";
 import axios, { type AxiosInstance } from "axios";
@@ -101,12 +100,10 @@ class ToolsClient {
     public async upload({
         uid,
         url,
-        path,
         original_file,
     }: {
         uid: string;
         url: string;
-        path: PagePath;
         original_file?: { file_name: string };
     }): Promise<ExporterResult<UploadResult>> {
         const folder_name = ASSETS_FOLDER;
@@ -116,7 +113,7 @@ class ToolsClient {
             : "avif";
         if (original_file && !final_extension)
             return new ExporterError(
-                `Failed to upload asset on page "${path}" with UID ${uid}: the original filename has no extension.`,
+                `Failed to upload asset with UID ${uid}: the original filename has no extension.`,
                 ["malformed content"],
             );
 
@@ -126,11 +123,7 @@ class ToolsClient {
             : "image/avif";
         const expected_public_url = `https://static.igem.wiki/teams/${this.team_id}/wiki/${folder_name}/${final_filename}`;
 
-        const already_uploaded = await this.alreadyUploaded({
-            folder_name,
-            uid,
-            path,
-        });
+        const already_uploaded = await this.alreadyUploaded({ folder_name, uid });
 
         if (isExporterErr(already_uploaded)) return already_uploaded;
 
@@ -153,6 +146,7 @@ class ToolsClient {
 
         const { file_path: temp_file_path, cleanup } = download_res;
 
+        // Remove the temporary files however the upload ends
         try {
             let upload_file_path = temp_file_path;
             if (!original_file) {
@@ -160,21 +154,19 @@ class ToolsClient {
                 const convert_res = await convertToAvif(temp_file_path, avif_temp_file_path);
                 if (isExporterErr(convert_res)) return convert_res;
 
-                const avif_temp_file_stat = await stat(avif_temp_file_path);
+                const avif_temp_file_stat = await $unsafe(async () => await stat(avif_temp_file_path));
+                if (isErr(avif_temp_file_stat))
+                    return new ExporterError(
+                        `Failed to read the converted image for asset with UID ${uid}.`,
+                        ["bug?"],
+                        avif_temp_file_stat,
+                    );
 
-                if (avif_temp_file_stat.size > MAX_UPLOAD_BYTES) {
-                    new ExporterError(
-                        `Skipped asset on page "${path}": compressed AVIF is ${avif_temp_file_stat.size} bytes, which is larger than the ${MAX_UPLOAD_BYTES} byte limit even after compression.`,
+                if (avif_temp_file_stat.size > MAX_UPLOAD_BYTES)
+                    return new ExporterError(
+                        `Image was not uploaded: compressed AVIF is ${avif_temp_file_stat.size} bytes, which is larger than the ${MAX_UPLOAD_BYTES} byte limit.`,
                         ["igem tools server"],
-                    ).warn();
-
-                    return {
-                        file_name: final_filename,
-                        key: "",
-                        location: "",
-                        content_type,
-                    };
-                }
+                    );
 
                 upload_file_path = avif_temp_file_path;
             }
@@ -202,11 +194,7 @@ class ToolsClient {
                 );
             });
             if (isErr(post_res))
-                return new ExporterError(
-                    `Failed to upload asset on page "${path}" with UID ${uid}.`,
-                    ["igem tools server"],
-                    post_res,
-                );
+                return new ExporterError(`Failed to upload asset with UID ${uid}.`, ["igem tools server"], post_res);
 
             const job_data = post_res.data?.data;
             const upload_key = job_data?.uploadKey; // e.g., "teams/6279/wiki/assets/test-img.avif"
@@ -225,12 +213,6 @@ class ToolsClient {
                 location: public_url,
                 content_type,
             };
-        } catch (error) {
-            return new ExporterError(
-                `Failed to retrieve data from url "${url}" while attempting to upload asset on page "${path}" with UID ${uid}.`,
-                ["igem tools server", "notion server"],
-                error instanceof Error ? error : new Error(String(error)),
-            );
         } finally {
             await cleanup();
         }
@@ -239,16 +221,11 @@ class ToolsClient {
     public async alreadyUploaded({
         folder_name,
         uid,
-        path,
     }: {
         folder_name: string;
         uid: string;
-        path: PagePath;
     }): Promise<ExporterResult<boolean>> {
-        const uploaded_uids = await this.getUploadedAssetUids({
-            folder_name,
-            path,
-        });
+        const uploaded_uids = await this.getUploadedAssetUids({ folder_name });
 
         if (isExporterErr(uploaded_uids)) return uploaded_uids;
 
@@ -271,13 +248,7 @@ class ToolsClient {
     }
 
     // Make GET request to igem api endpoint to retrieve list of files in a directory
-    private async getUploadedAssetUids({
-        folder_name,
-        path,
-    }: {
-        folder_name: string;
-        path: PagePath;
-    }): Promise<ExporterResult<Set<string>>> {
+    private async getUploadedAssetUids({ folder_name }: { folder_name: string }): Promise<ExporterResult<Set<string>>> {
         if (this.uploaded_asset_uuids_promise) {
             return this.uploaded_asset_uuids_promise;
         }
@@ -293,7 +264,7 @@ class ToolsClient {
 
             if (isErr(response))
                 return new ExporterError(
-                    `Failed to retrieve uploaded asset list for folder "${folder_name}" while exporting page "${path}".`,
+                    `Failed to retrieve the list of already uploaded assets for folder "${folder_name}".`,
                     ["igem tools server"],
                     response,
                 );

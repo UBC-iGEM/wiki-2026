@@ -1,4 +1,3 @@
-import type { PageId } from "../notion";
 import { isExporterErr, saveFile } from "../utils";
 import { convertBlocks, type ConvertContext } from "./blocks";
 import type { Root } from "mdast";
@@ -31,11 +30,11 @@ const mdStringifier = unified()
 /**
  * Converts a page's Notion blocks to MDX and saves it.
  */
-export async function exportPageMarkdown({ id, ctx }: { id: PageId; ctx: ConvertContext }): Promise<void> {
-    const { path } = ctx;
+export async function exportPageMarkdown(ctx: ConvertContext): Promise<void> {
+    const { path, page: id } = ctx;
 
     const blocks_res = await id.getBlocks();
-    if (isExporterErr(blocks_res)) return blocks_res.warn();
+    if (isExporterErr(blocks_res)) return blocks_res.warn(ctx);
 
     const tree: Root = { type: "root", children: await convertBlocks(blocks_res, ctx) };
     const processed_markdown = mdStringifier.stringify(tree);
@@ -64,8 +63,8 @@ ${processed_markdown}
         path: path.withExt("json"),
         debug_path: "raw",
     });
-    if (isExporterErr(raw_result)) raw_result.warn();
+    if (isExporterErr(raw_result)) raw_result.warn(ctx);
 
     const result = await saveFile({ content: page, path: path.withExt("mdx") });
-    if (isExporterErr(result)) result.warn();
+    if (isExporterErr(result)) result.warn(ctx);
 }

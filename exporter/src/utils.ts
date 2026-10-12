@@ -1,57 +1,165 @@
 import { CONFIG } from "./config";
+import type { ContentMap, PagePath } from "./map";
+import type { Id, PageId } from "./notion";
+import archy from "archy";
 import { existsSync } from "node:fs";
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 
 // ERROR HANDLING
 
-export class ExporterError {
-    bold_red = "\x1b[1;31m";
-    bold_yellow = "\x1b[1;33m";
-    reset = "\x1b[0m";
+type ErrorTag =
+    | "malformed content"
+    | "notion server"
+    | "igem tools server"
+    | "wiki server"
+    | "zotero server"
+    | "bug?"
+    | "exporter configuration";
 
+/**
+ * Information on where a warning occurred.
+ */
+export interface WarningContext {
+    path: PagePath;
+    page: PageId;
+    block?: Id;
+}
+
+const BOLD = "\x1b[1m";
+const BOLD_RED = "\x1b[1;31m";
+const YELLOW = "\x1b[33m";
+const RESET = "\x1b[0m";
+
+export class ExporterError {
     constructor(
         private message: string,
-        private tags: (
-            | "malformed content"
-            | "notion server"
-            | "igem tools server"
-            | "wiki server"
-            | "zotero server"
-            | "bug?"
-            | "exporter configuration"
-        )[],
+        private tags: ErrorTag[],
         private source_error?: Error,
     ) {}
 
-    private display(type: "recoverable" | "unrecoverable"): string {
-        const trace = this.source_error ? `\nOriginal error:\n${this.source_error}` : "";
-        return `
-=== ERROR REPORT ===
-${this.bold_red}${this.message}${this.reset}
-Type: ${type}. ${type === "recoverable" ? "The exporter can continue." : "The exporter must abort."}
-Tags: ${this.tags.join(", ")}${trace}
-====================
-`;
-    }
-
+    /**
+     * Aborts the export, then prints all warnings collected so far.
+     */
     public logAndQuit(): never {
-        console.error(this.display("unrecoverable"));
+        const trace = this.source_error ? `\nOriginal error:\n${this.source_error}` : "";
+        console.error(`
+=== FATAL ERROR ===
+${BOLD_RED}${this.message}${RESET}
+The exporter must abort.
+Tags: ${this.tags.join(", ")}${trace}
+===================
+`);
+        printWarnings();
         process.exit(1);
     }
 
-    public warn(): void {
-        console.error(this.display("recoverable"));
+    /**
+     * Records a recoverable error. All warnings are printed as a page tree when the export ends.
+     */
+    public warn(ctx?: WarningContext): void {
+        WARNINGS.push({ error: this, ctx });
+    }
+
+    /**
+     * One entry in the warning tree.
+     */
+    public summary(ctx?: WarningContext): string {
+        const block_link =
+            ctx?.block !== undefined
+                ? ` → ${ExporterError.link({ with_label: "open block", to: notionUrl(ctx.page, ctx.block) })}`
+                : "";
+        const trace = this.source_error ? `\n  ${String(this.source_error).replaceAll("\n", "\n  ")}` : "";
+        return `${YELLOW}[${this.tags.join(", ")}]${RESET} ${this.message}${block_link}${trace}`;
     }
 
     public static link({ with_label: label, to: url }: { with_label: string; to: string }): string {
         return `\x1b]8;;${url}\x1b\\${label}\x1b]8;;\x1b\\`;
     }
-
-    public static componentDocSuggestion(link: string): string {
-        return ` This component should follow the format defined ${ExporterError.link({ with_label: "here", to: link })}.`;
-    }
 }
+
+function notionUrl(page: PageId, block?: Id): string {
+    const url = `https://app.notion.com/p/${page}`;
+    return block ? `${url}#${block}` : url;
+}
+
+// WARNING REGISTRY
+
+const WARNINGS: { error: ExporterError; ctx?: WarningContext }[] = [];
+let WARNING_ROUTES: ContentMap | undefined;
+
+/**
+ * Sets the content map, used to order the warning tree and count pages.
+ */
+export function setWarningRoutes(routes: ContentMap): void {
+    WARNING_ROUTES = routes;
+}
+
+/**
+ * Prints all collected warnings as a tree of the pages they occurred on.
+ */
+export function printWarnings(): void {
+    if (WARNINGS.length === 0) return;
+
+    interface Node {
+        label: string;
+        children: Map<string, Node>;
+        warnings: string[];
+    }
+    const newNode = (label: string): Node => ({ label, children: new Map(), warnings: [] });
+    const root = newNode("");
+
+    const general_errors = WARNINGS.filter(({ ctx }) => !ctx);
+    if (general_errors.length > 0)
+        root.children.set("", {
+            ...newNode(`${BOLD}General errors${RESET}`),
+            warnings: general_errors.map(({ error }) => error.summary()),
+        });
+
+    // Pages appear in content map order
+    const route_order = WARNING_ROUTES ? [...WARNING_ROUTES.pages()].map(({ path }) => path.toString()) : [];
+    const page_warnings = WARNINGS.filter(({ ctx }) => ctx).sort(
+        (a, b) => orderOf(route_order, a.ctx!.path.toString()) - orderOf(route_order, b.ctx!.path.toString()),
+    );
+
+    for (const { error, ctx } of page_warnings) {
+        const components = ctx!.path.components().map((component) => component.toString());
+        let node = root;
+        components.forEach((name, i) => {
+            const is_page = i === components.length - 1;
+            let child = node.children.get(name);
+            if (!child) {
+                child = newNode(
+                    is_page
+                        ? `${BOLD}${ExporterError.link({ with_label: name, to: notionUrl(ctx!.page) })}${RESET}`
+                        : name,
+                );
+                node.children.set(name, child);
+            }
+            node = child;
+        });
+        node.warnings.push(error.summary(ctx));
+    }
+
+    const toArchy = (node: Node): archy.Data => ({
+        label: node.label,
+        nodes: [...node.warnings.map((warning) => `• ${warning}`), ...[...node.children.values()].map(toArchy)],
+    });
+
+    const page_count = new Set(page_warnings.map(({ ctx }) => ctx!.path.toString())).size;
+    const total = WARNING_ROUTES ? ` of ${route_order.length}` : "";
+    const plural = (n: number, word: string): string => `${n} ${word}${n === 1 ? "" : "s"}`;
+    const heading = `${BOLD}${plural(WARNINGS.length, "warning")} on ${page_count}${total} ${page_count === 1 && !total ? "page" : "pages"}${RESET}`;
+
+    console.error(`\n${heading}\n${[...root.children.values()].map((node) => archy(toArchy(node))).join("")}`);
+}
+
+function orderOf(order: string[], key: string): number {
+    const index = order.indexOf(key);
+    return index === -1 ? order.length : index;
+}
+
+// ERROR HANDLING
 
 export type Result<T> = T | Error;
 

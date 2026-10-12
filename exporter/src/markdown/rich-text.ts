@@ -65,14 +65,14 @@ async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Prom
         case "text": {
             if (/%\\?\{[\s\S]*\}%/.test(item.text.content))
                 new ExporterError(
-                    `Text on page "${ctx.path}" contains an inline component ("${item.text.content.trim()}"). Inline components are no longer supported, and the text is shown as written. Link to a block instead.`,
+                    `Text contains an inline component ("${item.text.content.trim()}"), which is no longer supported.`,
                     ["malformed content"],
-                ).warn();
+                ).warn(ctx);
 
             if (item.href) {
                 const href_res = await resolveHref(item.href, ctx);
                 if (isExporterErr(href_res)) {
-                    href_res.warn();
+                    href_res.warn(ctx);
                 } else {
                     props.href = href_res;
                 }
@@ -92,22 +92,62 @@ async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Prom
             return [{ node: { type: "inlineMath", value: item.equation.expression }, props }];
         case "mention": {
             const mention = item.mention;
-            if (mention.type !== "page") {
-                new ExporterError(
-                    `A ${mention.type} mention ("${item.plain_text}") on page "${ctx.path}" is unsupported and was removed.`,
-                    ["malformed content"],
-                ).warn();
-                return [];
-            }
 
-            const node = await pageMention(new PageId(mention.page.id), ctx);
-            if (isExporterErr(node)) {
-                node.warn();
-                return [];
+            let node: PhrasingContent;
+            switch (mention.type) {
+                case "link_mention":
+                    node = {
+                        type: "link",
+                        url: mention.link_mention.href,
+                        children: [{ type: "text", value: mention.link_mention.title ?? mention.link_mention.href }],
+                    };
+                    break;
+                case "link_preview":
+                    node = {
+                        type: "link",
+                        url: mention.link_preview.url,
+                        children: [{ type: "text", value: mention.link_preview.url }],
+                    };
+                    break;
+                case "page": {
+                    const page_node_res = await pageMention(new PageId(mention.page.id), ctx);
+                    if (isExporterErr(page_node_res)) {
+                        page_node_res.warn(ctx);
+                        return [];
+                    }
+                    node = page_node_res;
+                    break;
+                }
+                case "date": {
+                    const { start, end } = mention.date;
+                    node = {
+                        type: "text",
+                        value: end ? `${formatDate(start)} to ${formatDate(end)}` : formatDate(start),
+                    };
+                    break;
+                }
+                default:
+                    new ExporterError(
+                        `A ${mention.type} mention ("${item.plain_text}") is unsupported and was removed.`,
+                        ["malformed content"],
+                    ).warn(ctx);
+                    return [];
             }
-            return [{ node, props: props }];
+            return [{ node, props }];
         }
     }
+}
+
+/**
+ * Formats a Notion date (`YYYY-MM-DD`, optionally with a time) as `DD/MM/YYYY` or `DD/MM/YYYY at HH:mm`.
+ */
+function formatDate(date: string): string {
+    const match = date.match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/);
+    if (!match) return date;
+
+    const [, year, month, day, hour, minute] = match;
+    const formatted = `${day}/${month}/${year}`;
+    return hour ? `${formatted} at ${hour}:${minute}` : formatted;
 }
 
 /**

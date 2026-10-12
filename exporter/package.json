@@ -3,6 +3,7 @@
     "type": "module",
     "private": true,
     "devDependencies": {
+        "@types/archy": "^0.0.36",
         "@types/axios": "^0.9.36",
         "@types/form-data": "^2.2.1",
         "@types/heic-convert": "^2.1.1",
@@ -15,6 +16,7 @@
     },
     "dependencies": {
         "@notionhq/client": "^5.21.0",
+        "archy": "^1.0.0",
         "axios-cookiejar-support": "^7.0.0",
         "github-slugger": "^2.0.0",
         "heic-convert": "^2.1.0",

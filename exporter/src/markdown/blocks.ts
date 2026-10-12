@@ -1,17 +1,23 @@
-import type { ContentMap, PagePath } from "../map";
-import { Id, type NotionBlock } from "../notion";
-import { ExporterError, isExporterErr } from "../utils";
-import { COMPONENT_MAP } from "./components";
+import type { ContentMap } from "../map";
+import { Id, PageId, type NotionBlock } from "../notion";
+import { ExporterError, isExporterErr, type WarningContext } from "../utils";
+import { COMPONENT_MAP, componentDocSuggestion } from "./components";
+import { pageMention } from "./link";
 import { anchorFlow, anchorText, jsxFlow, jsxInlineBlock, type FlowContent } from "./mdx";
 import { uploadMedia } from "./media";
 import { convertRichText, asPlainText } from "./rich-text";
 import type { RichTextItemResponse } from "@notionhq/client";
 import type { Heading, List, ListItem, Paragraph, PhrasingContent, Table, TableRow } from "mdast";
 
-export interface ConvertContext {
-    /** The page being exported */
-    path: PagePath;
+export interface ConvertContext extends WarningContext {
     routes: ContentMap;
+}
+
+/**
+ * The context for converting `block`, so warnings point at it.
+ */
+export function blockContext(ctx: ConvertContext, block: { id: string }): ConvertContext {
+    return { ...ctx, block: new Id(block.id) };
 }
 
 /**
@@ -83,7 +89,7 @@ function parseItems(
 
         if (marker?.type === "end") {
             if (open !== null) return { items, closed: true };
-            warnMarker(ctx, "an END block has no matching START block");
+            warnMarker(blockContext(ctx, block), "an END block has no matching START");
             continue;
         }
 
@@ -93,7 +99,7 @@ function parseItems(
                 items.push({ type: "component", name: marker.name, start: block, items: inner.items });
             } else {
                 // Keep the content, as if the marker were absent
-                warnMarker(ctx, `a START ${marker.name} block has no matching END block`);
+                warnMarker(blockContext(ctx, block), `a START ${marker.name} block has no matching END`);
                 items.push(...inner.items);
             }
             continue;
@@ -127,10 +133,9 @@ function groupItems(items: Item[]): ItemGroup[] {
 
 function warnMarker(ctx: ConvertContext, problem: string): void {
     new ExporterError(
-        `Component start/end markers on page "${ctx.path}" could not be understood: ${problem}. The marker was ignored.` +
-            ExporterError.componentDocSuggestion(COMPONENT_DOCS),
+        `Component not understood: ${problem}. The marker was ignored.` + componentDocSuggestion(COMPONENT_DOCS),
         ["malformed content"],
-    ).warn();
+    ).warn(ctx);
 }
 
 async function convertGroup(group: ItemGroup, ctx: ConvertContext): Promise<FlowContent[]> {
@@ -139,18 +144,20 @@ async function convertGroup(group: ItemGroup, ctx: ConvertContext): Promise<Flow
     const item = group.item;
     if (item.type !== "component") return convertBlock(item, ctx);
 
+    // Problems with the component as a whole point at its START marker
+    const component_ctx = blockContext(ctx, item.start);
     const parseComponent = COMPONENT_MAP[item.name];
     if (!parseComponent) {
         new ExporterError(
-            `Block component type "${item.name}" on page "${ctx.path}" could not be understood. It is either misspelt or not yet implemented. See all block component options ${ExporterError.link({ with_label: "here", to: COMPONENT_DOCS })}.`,
+            `Block component type "${item.name}" could not be understood; see all options ${ExporterError.link({ with_label: "here", to: COMPONENT_DOCS })}.`,
             ["malformed content"],
-        ).warn();
+        ).warn(component_ctx);
         return [];
     }
 
-    const res = await parseComponent({ items: item.items, ctx });
+    const res = await parseComponent({ items: item.items, ctx: component_ctx });
     if (isExporterErr(res)) {
-        res.warn();
+        res.warn(component_ctx);
         return [];
     }
 
@@ -160,8 +167,9 @@ async function convertGroup(group: ItemGroup, ctx: ConvertContext): Promise<Flow
 /**
  * Converts a block's own content and its children.
  */
-async function convertBlock(block: NotionBlock, ctx: ConvertContext): Promise<FlowContent[]> {
-    const anchor = new Id(block.id);
+async function convertBlock(block: NotionBlock, parent_ctx: ConvertContext): Promise<FlowContent[]> {
+    const ctx = blockContext(parent_ctx, block);
+    const anchor = ctx.block!;
     const children = (): Promise<FlowContent[]> => convertBlocks(block.children, ctx);
 
     const textParagraphNode = async (rich_text: RichTextItemResponse[]): Promise<Paragraph> => ({
@@ -248,9 +256,9 @@ async function convertBlock(block: NotionBlock, ctx: ConvertContext): Promise<Fl
         case "divider":
             return [anchorFlow(anchor), { type: "thematicBreak" }];
         case "image": {
-            const url = await uploadMedia(block, ctx);
+            const url = await uploadMedia(block);
             if (isExporterErr(url)) {
-                url.warn();
+                url.warn(ctx);
                 return [];
             }
 
@@ -262,10 +270,27 @@ async function convertBlock(block: NotionBlock, ctx: ConvertContext): Promise<Fl
             return [anchorFlow(anchor), await convertTable(block, ctx)];
         case "synced_block":
             return [anchorFlow(anchor), ...(await children())];
+        case "link_to_page": {
+            const target = block.link_to_page;
+            if (target.type !== "page_id") {
+                new ExporterError(
+                    `A link to a ${target.type === "database_id" ? "database" : "comment"} is unsupported and was removed.`,
+                    ["malformed content"],
+                ).warn(ctx);
+                return [];
+            }
+
+            const link = await pageMention(new PageId(target.page_id), ctx);
+            if (isExporterErr(link)) {
+                link.warn(ctx);
+                return [];
+            }
+            return [{ type: "paragraph", children: [anchorText(anchor), link] }];
+        }
         default:
-            new ExporterError(`Block of type ${block.type} on page "${ctx.path}" is unsupported and was discarded.`, [
+            new ExporterError(`Block of type ${block.type} is unsupported and was discarded.`, [
                 "malformed content",
-            ]).warn();
+            ]).warn(ctx);
             return [];
     }
 }
@@ -273,6 +298,7 @@ async function convertBlock(block: NotionBlock, ctx: ConvertContext): Promise<Fl
 async function convertList(kind: ListKind, blocks: NotionBlock[], ctx: ConvertContext): Promise<List> {
     const items = await Promise.all(
         blocks.map(async (block): Promise<ListItem> => {
+            const item_ctx = blockContext(ctx, block);
             const data =
                 block.type === "numbered_list_item"
                     ? block.numbered_list_item
@@ -281,15 +307,15 @@ async function convertList(kind: ListKind, blocks: NotionBlock[], ctx: ConvertCo
                       : block.type === "bulleted_list_item"
                         ? block.bulleted_list_item
                         : undefined;
-            const text: PhrasingContent[] = data ? await convertRichText(data.rich_text, ctx) : [];
+            const text: PhrasingContent[] = data ? await convertRichText(data.rich_text, item_ctx) : [];
 
             return {
                 type: "listItem",
                 spread: false,
                 checked: block.type === "to_do" ? block.to_do.checked : undefined,
                 children: [
-                    { type: "paragraph", children: [anchorText(new Id(block.id)), ...text] },
-                    ...(await convertBlocks(block.children, ctx)),
+                    { type: "paragraph", children: [anchorText(item_ctx.block!), ...text] },
+                    ...(await convertBlocks(block.children, item_ctx)),
                 ],
             };
         }),
@@ -306,13 +332,14 @@ async function convertTable(block: Extract<NotionBlock, { type: "table" }>, ctx:
         block.children.map(async (row): Promise<TableRow> => {
             if (row.type !== "table_row") return { type: "tableRow", children: [] };
 
-            const cells = await Promise.all(row.table_row.cells.map((cell) => convertRichText(cell, ctx, "jsx")));
+            const row_ctx = blockContext(ctx, row);
+            const cells = await Promise.all(row.table_row.cells.map((cell) => convertRichText(cell, row_ctx, "jsx")));
             return {
                 type: "tableRow",
                 children: cells.map((children, i) => ({
                     type: "tableCell",
                     // Rows get an anchor in their first cell
-                    children: i === 0 ? [anchorText(new Id(row.id)), ...children] : children,
+                    children: i === 0 ? [anchorText(row_ctx.block!), ...children] : children,
                 })),
             };
         }),

@@ -5,7 +5,7 @@ import { asPlainText } from "./rich-text";
 import type { PhrasingContent } from "mdast";
 
 /**
- * Converts a page mention into either an intra-wiki link or a citation.
+ * Converts a page mention or link into either an intra-wiki link or a citation.
  */
 export async function pageMention(page: PageId, ctx: ConvertContext): Promise<ExporterResult<PhrasingContent>> {
     const page_path = ctx.routes.get(page);
@@ -19,10 +19,9 @@ export async function pageMention(page: PageId, ctx: ConvertContext): Promise<Ex
     const is_citation_res = await page.getProperty("Citation Key");
     const is_citation = isExporterErr(is_citation_res) ? false : is_citation_res;
     if (!is_citation)
-        return new ExporterError(
-            `Mention element on page "${ctx.path}" does not link to a known wiki page or literature entry.`,
-            ["malformed content"],
-        );
+        return new ExporterError(`A link to a page that is neither a wiki page nor a literature entry was removed.`, [
+            "malformed content",
+        ]);
 
     const citation_key_res = getCitationKey(is_citation, page);
     if (isExporterErr(citation_key_res)) return citation_key_res;
@@ -42,10 +41,9 @@ export async function resolveHref(href: string, ctx: ConvertContext): Promise<Ex
     const page_path = target.page ? ctx.routes.get(target.page) : undefined;
     if (page_path) return page_path.toURL(target.block);
 
-    return new ExporterError(
-        `Link on page "${ctx.path}" to ${href} does not point to a known wiki page; the link was removed.`,
-        ["malformed content"],
-    );
+    return new ExporterError(`Link to ${href} does not point to a known wiki page; the link was removed.`, [
+        "malformed content",
+    ]);
 }
 
 function parseNotionUrl(href: string): { page?: PageId; block?: Id } | undefined {

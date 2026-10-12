@@ -1,7 +1,6 @@
 import { Id, type NotionBlock } from "../notion";
 import { getToolsClient } from "../tools-api";
 import { isExporterErr, type ExporterResult } from "../utils";
-import type { ConvertContext } from "./blocks";
 import { v5 as uuidv5 } from "uuid";
 
 type MediaBlock = Extract<NotionBlock, { type: "image" | "file" }>;
@@ -13,7 +12,6 @@ type MediaBlock = Extract<NotionBlock, { type: "image" | "file" }>;
  */
 export async function uploadMedia(
     block: MediaBlock,
-    ctx: ConvertContext,
     { keep_original_file = false }: { keep_original_file?: boolean } = {},
 ): Promise<ExporterResult<string>> {
     const media = block.type === "image" ? block.image : block.file;
@@ -32,7 +30,6 @@ export async function uploadMedia(
     const upload_res = await client_res.upload({
         uid: uid.toString(),
         url,
-        path: ctx.path,
         original_file: keep_original_file ? { file_name: mediaFileName(block) } : undefined,
     });
     if (isExporterErr(upload_res)) return upload_res;
