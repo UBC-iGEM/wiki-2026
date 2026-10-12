@@ -8,17 +8,37 @@ import {
     isErr,
     isExporterErr,
     type ExporterResult,
+    type Result,
 } from "./utils";
 import {
     Client,
     LogLevel,
     type BlockObjectResponse,
+    type GetDatabaseResponse,
+    type GetPageResponse,
     type ListBlockChildrenParameters,
     type PageObjectResponse,
     type QueryDataSourceParameters,
 } from "@notionhq/client";
 
 let NOTION_CLIENT: Client | null = null;
+
+/**
+ * Pages and databases already requested during this run, keyed by ID.
+ * Promises are stored, so concurrent lookups of the same object share one request.
+ */
+const PAGE_CACHE = new Map<string, Promise<Result<GetPageResponse>>>();
+const DATABASE_CACHE = new Map<string, Promise<Result<GetDatabaseResponse>>>();
+
+function cached<T>(cache: Map<string, Promise<T>>, id: Id, fetch: () => Promise<T>): Promise<T> {
+    const key = id.toString();
+    let res = cache.get(key);
+    if (!res) {
+        res = fetch();
+        cache.set(key, res);
+    }
+    return res;
+}
 
 type PageWithProperties = Extract<
     Awaited<ReturnType<Client["pages"]["retrieve"]>>,
@@ -81,7 +101,7 @@ export class PageId extends Id implements Named {
     }
 
     async getName(): Promise<ExporterResult<string>> {
-        const page_res = await $withRetries($unsafe, notion().pages.retrieve, { page_id: this.toString() });
+        const page_res = await this.retrieve();
         if (isErr(page_res))
             return new ExporterError(`Failed to retrieve page at Notion ID ${this}.`, ["notion server"], page_res);
 
@@ -98,7 +118,7 @@ export class PageId extends Id implements Named {
     }
 
     async getProperty(name: string): Promise<ExporterResult<PageProperty | undefined>> {
-        const page_res = await $withRetries($unsafe, notion().pages.retrieve, { page_id: this.toString() });
+        const page_res = await this.retrieve();
         if (isErr(page_res))
             return new ExporterError(`Failed to retrieve page at Notion ID ${this}.`, ["notion server"], page_res);
 
@@ -107,6 +127,12 @@ export class PageId extends Id implements Named {
         }
 
         return page_res.properties[name];
+    }
+
+    private retrieve(): Promise<Result<GetPageResponse>> {
+        return cached(PAGE_CACHE, this, () =>
+            $withRetries($unsafe, notion().pages.retrieve, { page_id: this.toString() }),
+        );
     }
 
     async getDate(): Promise<string | undefined> {
@@ -134,7 +160,7 @@ export class DatabaseId extends Id implements Named {
     }
 
     async getName(): Promise<ExporterResult<string>> {
-        const db_res = await $withRetries($unsafe, notion().databases.retrieve, { database_id: this.toString() });
+        const db_res = await this.retrieve();
         if (isErr(db_res))
             return new ExporterError(`Failed to retrieve database at Notion ID ${this}.`, ["notion server"], db_res);
 
@@ -144,6 +170,12 @@ export class DatabaseId extends Id implements Named {
 
         const title_plain_text = db_res.title.map((t) => t.plain_text).join("");
         return title_plain_text;
+    }
+
+    private retrieve(): Promise<Result<GetDatabaseResponse>> {
+        return cached(DATABASE_CACHE, this, () =>
+            $withRetries($unsafe, notion().databases.retrieve, { database_id: this.toString() }),
+        );
     }
 
     async paths(): Promise<ExporterResult<MapItem<PageId | DatabaseMap>>> {
@@ -170,7 +202,7 @@ export class DatabaseId extends Id implements Named {
     }
 
     async getEntries(): Promise<ExporterResult<PageId[]>> {
-        const db_res = await $withRetries($unsafe, notion().databases.retrieve, { database_id: this.toString() });
+        const db_res = await this.retrieve();
         if (isErr(db_res))
             return new ExporterError(`Failed to retrieve database at Notion ID ${this}.`, ["notion server"], db_res);
         if (!("data_sources" in db_res)) {
@@ -198,6 +230,11 @@ export class DatabaseId extends Id implements Named {
                     );
 
                 page_ids.push(...res.results.map((r) => r.id));
+                // Queries return each entry's full page, so cache them
+                for (const entry of res.results) {
+                    if (entry.object === "page" && "properties" in entry)
+                        PAGE_CACHE.set(new Id(entry.id).toString(), Promise.resolve(entry));
+                }
                 cursor = res.has_more ? (res.next_cursor ?? undefined) : undefined;
             } while (cursor);
         }
@@ -207,7 +244,7 @@ export class DatabaseId extends Id implements Named {
 
     // for special pages like the Team page, which is a database, not a collection of pages
     async getRows(): Promise<ExporterResult<PageObjectResponse[]>> {
-        const db_res = await $withRetries($unsafe, notion().databases.retrieve, { database_id: this.toString() });
+        const db_res = await this.retrieve();
         if (isErr(db_res))
             return new ExporterError(`Failed to retrieve database at Notion ID ${this}.`, ["notion server"], db_res);
         if (!("data_sources" in db_res)) {
