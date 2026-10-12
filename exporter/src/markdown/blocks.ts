@@ -274,7 +274,7 @@ async function convertBlock(block: NotionBlock, parent_ctx: ConvertContext): Pro
             const target = block.link_to_page;
             if (target.type !== "page_id") {
                 new ExporterError(
-                    `A link to a ${target.type === "database_id" ? "database" : "comment"} is unsupported and was removed.`,
+                    `A link to a ${target.type === "database_id" ? "database" : "comment"} is unsupported and was ignored.`,
                     ["malformed content"],
                 ).warn(ctx);
                 return [];

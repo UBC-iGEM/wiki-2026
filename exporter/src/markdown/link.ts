@@ -19,7 +19,7 @@ export async function pageMention(page: PageId, ctx: ConvertContext): Promise<Ex
     const is_citation_res = await page.getProperty("Citation Key");
     const is_citation = isExporterErr(is_citation_res) ? false : is_citation_res;
     if (!is_citation)
-        return new ExporterError(`A link to a page that is neither a wiki page nor a literature entry was removed.`, [
+        return new ExporterError(`A link to a page that is neither a wiki page nor a literature entry was ignored.`, [
             "malformed content",
         ]);
 
@@ -41,7 +41,7 @@ export async function resolveHref(href: string, ctx: ConvertContext): Promise<Ex
     const page_path = target.page ? ctx.routes.get(target.page) : undefined;
     if (page_path) return page_path.toURL(target.block);
 
-    return new ExporterError(`Link to ${href} does not point to a known wiki page; the link was removed.`, [
+    return new ExporterError(`Link to ${href} does not point to a known wiki page; the link was ignored.`, [
         "malformed content",
     ]);
 }

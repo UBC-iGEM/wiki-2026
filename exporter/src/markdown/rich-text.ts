@@ -128,7 +128,7 @@ async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Prom
                 }
                 default:
                     new ExporterError(
-                        `A ${mention.type} mention ("${item.plain_text}") is unsupported and was removed.`,
+                        `A ${mention.type} mention ("${item.plain_text}") is unsupported and was ignored.`,
                         ["malformed content"],
                     ).warn(ctx);
                     return [];

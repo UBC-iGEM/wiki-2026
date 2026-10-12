@@ -21,7 +21,34 @@ import {
     type QueryDataSourceParameters,
 } from "@notionhq/client";
 
-let NOTION_CLIENT: Client | null = null;
+class NotionClientArmy {
+    clients: Client[];
+    next_to_retrieve: number = 0;
+
+    constructor() {
+        const keys = Object.entries(process.env).filter(([k, v]) => k.startsWith("NOTION_API_KEY") && v);
+        this.clients = keys.map(([, v]) => {
+            const client_res = $unsafeSync(() => new Client({ auth: v, logLevel: LogLevel.ERROR }));
+            if (isErr(client_res))
+                new ExporterError(
+                    "Failed to construct a client to connect to the Notion server.",
+                    ["notion server"],
+                    client_res,
+                ).logAndQuit();
+            return client_res as Client;
+        });
+        if (this.clients.length === 0)
+            new ExporterError(
+                "The exporter has not been configured with the necessary credentials; no NOTION_API_KEY variables are set.",
+                ["exporter configuration", "notion server"],
+            ).logAndQuit();
+    }
+
+    getClient = (): Client => this.clients[this.next_to_retrieve++ % this.clients.length]!;
+}
+
+let NOTION_CLIENTS: NotionClientArmy | null = null;
+const notion = (): Client => (NOTION_CLIENTS ??= new NotionClientArmy()).getClient();
 
 /**
  * Pages and databases already requested during this run, keyed by ID.
@@ -50,30 +77,6 @@ export type PageProperty = PageWithProperties["properties"][string];
  * A Notion block with its children attached.
  */
 export type NotionBlock = BlockObjectResponse & { children: NotionBlock[] };
-
-function notion(): Client {
-    if (NOTION_CLIENT) {
-        return NOTION_CLIENT;
-    }
-
-    const key = process.env.NOTION_API_KEY;
-    if (!key)
-        new ExporterError(
-            "The environment variable NOTION_API_KEY is unset. The exporter has not been configured with the necessary credentials.",
-            ["exporter configuration", "notion server"],
-        ).logAndQuit();
-
-    const client_res = $unsafeSync(() => new Client({ auth: key, logLevel: LogLevel.ERROR }));
-    if (isErr(client_res))
-        new ExporterError(
-            "Failed to construct a client to connect to the Notion server.",
-            ["notion server"],
-            client_res,
-        ).logAndQuit();
-
-    NOTION_CLIENT = client_res as Client;
-    return NOTION_CLIENT;
-}
 
 export class Id {
     constructor(private id: string) {
