@@ -150,29 +150,25 @@ $$
 
 <a id="3e9d65dd82be80f28b43cf7b3a781d36" />This limitation motivated the second stage of model development.
 
-<a id="3d6d65dd82be80fba520e661f184a291" />%% START DBTL
+<a id="3d6d65dd82be80fba520e661f184a291" />
 
-<a id="3d6d65dd82be807db77ef2fcab1bd18b" />Design: Determine the expected timescale of enzymatic antibiotic degradation and whether degradation could occur within a practical assay duration.
+<Dbtl>
+  <Fragment slot="design">
+    <a id="3d6d65dd82be807db77ef2fcab1bd18b" />Design: Determine the expected timescale of enzymatic antibiotic degradation and whether degradation could occur within a practical assay duration.
+  </Fragment>
 
-<a id="3d6d65dd82be80e09bd4f387deff5f2f" />
+  <Fragment slot="build">
+    <a id="3d6d65dd82be80578e3ec87755f3c75f" />Build: Implement Michaelis-Menten degradation dynamics in Python
+  </Fragment>
 
-***
+  <Fragment slot="test">
+    <a id="3d6d65dd82be801a968ded9eadcb7031" />Test: Simulate antibiotic concentration over time across a range of kinetic parameters, including ($k_{cat}$), ($K_m$), enzyme concentration, and starting antibiotic concentration.
+  </Fragment>
 
-<a id="3d6d65dd82be80578e3ec87755f3c75f" />Build: Implement Michaelis-Menten degradation dynamics in Python
-
-<a id="3d6d65dd82be8091802fd0dcb56c3552" />
-
-***
-
-<a id="3d6d65dd82be801a968ded9eadcb7031" />Test: Simulate antibiotic concentration over time across a range of kinetic parameters, including ($k_{cat}$), ($K_m$), enzyme concentration, and starting antibiotic concentration.
-
-<a id="3d6d65dd82be80e386a2c8d087d5bd34" />
-
-***
-
-<a id="3d6d65dd82be808d8707ccd613ab97d2" />Learn: The predicted degradation trajectory provided a useful basis of selecting experimental incubation periods, but did not account for changes in enzyme concentration over time. Enzyme induction therefore needed to be incorporated into the model.
-
-<a id="3d6d65dd82be80c8ba83c16d31e364db" />%% END
+  <Fragment slot="learn">
+    <a id="3d6d65dd82be808d8707ccd613ab97d2" />Learn: The predicted degradation trajectory provided a useful basis of selecting experimental incubation periods, but did not account for changes in enzyme concentration over time. Enzyme induction therefore needed to be incorporated into the model.
+  </Fragment>
+</Dbtl>
 
 <a id="3e9d65dd82be8043a60fd516752156a3" />**Stage 2: Coupling Enzyme Induction to Antibiotic Degradation**
 
@@ -226,29 +222,25 @@ $$
 
 <a id="3ead65dd82be80edb6dbc29865534def" />These values represent 10%, 25%, and 50% degradation, respectively. This provides a more useful way to compare how quickly different enzyme-antibiotic combinations degrade the antibiotic. MIC can still be included as a biologically relevant reference, but it is not used as the main degradation threshold when the stimulation starts at ($1\times MIC$).
 
-<a id="3cfd65dd82be8059b676d6320d157d71" />%% START DBTL
+<a id="3cfd65dd82be8059b676d6320d157d71" />
 
-<a id="3ead65dd82be80e284a7d0d17c9fa97d" />Design: Improve the model by allowing the amount of resistance enzyme to change over time after antibiotic exposure.
+<Dbtl>
+  <Fragment slot="design">
+    <a id="3ead65dd82be80e284a7d0d17c9fa97d" />Design: Improve the model by allowing the amount of resistance enzyme to change over time after antibiotic exposure.
+  </Fragment>
 
-<a id="3ead65dd82be802f986cde8460821f73" />
+  <Fragment slot="build">
+    <a id="3ead65dd82be80c89383fd50e175c132" />Build: Add a Hill equation for enzyme induction and connect it to the Michaelis-Menten equation used for antibiotic degradation.
+  </Fragment>
 
-***
+  <Fragment slot="test">
+    <a id="3ead65dd82be8077b413f53f453a9c98" />Test: Change different induction parameters and observe how they affect enzyme production and antibiotic degradation.
+  </Fragment>
 
-<a id="3ead65dd82be80c89383fd50e175c132" />Build: Add a Hill equation for enzyme induction and connect it to the Michaelis-Menten equation used for antibiotic degradation.
-
-<a id="3ead65dd82be8067a42deb379512c879" />
-
-***
-
-<a id="3ead65dd82be8077b413f53f453a9c98" />Test: Change different induction parameters and observe how they affect enzyme production and antibiotic degradation.
-
-<a id="3ead65dd82be80848567c38bec701da1" />
-
-***
-
-<a id="3ead65dd82be80cc9428fc8f457c84cd" />Learn: ($K_{ind}$) had little effect when antibiotic concentration was already high enough for enzyme induction to be close to its maximum. Furthermore, using MIC as the degradation threshold was not useful when the simulation started as ($1\times MIC$), therefore percentage degradation was used instead.
-
-<a id="3ead65dd82be80cba1a1fed40e1322ed" />%% END
+  <Fragment slot="learn">
+    <a id="3ead65dd82be80cc9428fc8f457c84cd" />Learn: ($K_{ind}$) had little effect when antibiotic concentration was already high enough for enzyme induction to be close to its maximum. Furthermore, using MIC as the degradation threshold was not useful when the simulation started as ($1\times MIC$), therefore percentage degradation was used instead.
+  </Fragment>
+</Dbtl>
 
 <a id="3ead65dd82be802fb241c324dbdfca5f" />**Stage 3: Connecting Antibiotic Degradation to Bacterial Response**
 
@@ -256,29 +248,25 @@ $$
 
 <a id="3ead65dd82be8000a181c01651d1a3e7" />When antibiotic concentration is high, the killing effect is stronger. When the antibiotic is degraded and is concentration decreases, the amount of bacterial killing also decreases. If the antibiotic concentration becomes low enough, the bacterial population can begin to recover. Adding this part of the model connects antibiotic degradation to effect on bacterial growth.
 
-<a id="3ead65dd82be807b8e3aef168c2edcd2" />%% START DBTL
+<a id="3ead65dd82be807b8e3aef168c2edcd2" />
 
-<a id="3ead65dd82be80d9a11dcf784da82914" />Design: Determine how antibiotic degradation can affect bacterial growth.
+<Dbtl>
+  <Fragment slot="design">
+    <a id="3ead65dd82be80d9a11dcf784da82914" />Design: Determine how antibiotic degradation can affect bacterial growth.
+  </Fragment>
 
-<a id="3ead65dd82be80cb8526d81cfc1207d8" />
+  <Fragment slot="build">
+    <a id="3ead65dd82be80939e8dfdfceeaae957" />Build: Add a sigmoidal Emax model that combines bacterial growth and antibiotic-mediated killing.
+  </Fragment>
 
-***
+  <Fragment slot="test">
+    <a id="3ead65dd82be80318f46ca7e20352cc2" />Test: Simulate enzyme concentration, antibiotic concentration, and bacterial population simultaneously.
+  </Fragment>
 
-<a id="3ead65dd82be80939e8dfdfceeaae957" />Build: Add a sigmoidal Emax model that combines bacterial growth and antibiotic-mediated killing.
-
-<a id="3ead65dd82be8001a758d9e05dd34194" />
-
-***
-
-<a id="3ead65dd82be80318f46ca7e20352cc2" />Test: Simulate enzyme concentration, antibiotic concentration, and bacterial population simultaneously.
-
-<a id="3ead65dd82be800a9315c6bd4911d906" />
-
-***
-
-<a id="3ead65dd82be8083afa6cdb47cfaa389" />Learn: As antibiotic concentration decreases through degradation, the antibiotic-mediated killing also decreases. If bacterial growth becomes greater than antibiotic-mediated killing, the bacterial population can begin to recover.
-
-<a id="3ead65dd82be80f9b8e0f1ad8a201ad2" />%% END
+  <Fragment slot="learn">
+    <a id="3ead65dd82be8083afa6cdb47cfaa389" />Learn: As antibiotic concentration decreases through degradation, the antibiotic-mediated killing also decreases. If bacterial growth becomes greater than antibiotic-mediated killing, the bacterial population can begin to recover.
+  </Fragment>
+</Dbtl>
 
 #### <a id="3c7d65dd82be80078eb4d0ea22298e4f" />**Results**
 

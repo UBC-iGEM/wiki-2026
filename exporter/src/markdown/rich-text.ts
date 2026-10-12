@@ -1,7 +1,7 @@
 import { PageId } from "../notion";
 import { ExporterError, isExporterErr } from "../utils";
 import type { ConvertContext } from "./blocks";
-import { pageMention, resolveHref } from "./link";
+import { pageMention, parseNotionUrl, resolveHref } from "./link";
 import { jsxText } from "./mdx";
 import type { RichTextItemResponse } from "@notionhq/client";
 import type { PhrasingContent, Text } from "mdast";
@@ -64,29 +64,36 @@ async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Prom
     switch (item.type) {
         case "text": {
             if (/%\\?\{[\s\S]*\}%/.test(item.text.content))
-                new ExporterError(
-                    `Text contains an inline component ("${item.text.content.trim()}"), which is no longer supported.`,
-                    ["malformed content"],
-                ).warn(ctx);
+                new ExporterError(`Text contains an inline component, which is no longer supported.`, [
+                    "malformed content",
+                ]).warn(ctx);
 
+            let citation: Leaf[] = [];
             if (item.href) {
                 const href_res = await resolveHref(item.href, ctx);
                 if (isExporterErr(href_res)) {
                     href_res.warn(ctx);
                 } else {
-                    props.href = href_res;
+                    props.href = href_res.url;
+                    if (href_res.citation) citation = [hiddenCitation(href_res.citation)];
                 }
             }
 
             if (item.annotations.code)
-                return [{ node: { type: "inlineCode", value: item.text.content.replaceAll("\n", " ") }, props: props }];
+                return [
+                    { node: { type: "inlineCode", value: item.text.content.replaceAll("\n", " ") }, props: props },
+                    ...citation,
+                ];
 
-            return item.text.content
-                .split("\n")
-                .flatMap((line, i): Leaf[] => [
-                    ...(i > 0 ? [{ node: "newline" as const, props }] : []),
-                    ...(line ? [{ node: { type: "text" as const, value: line }, props }] : []),
-                ]);
+            return [
+                ...item.text.content
+                    .split("\n")
+                    .flatMap((line, i): Leaf[] => [
+                        ...(i > 0 ? [{ node: "newline" as const, props }] : []),
+                        ...(line ? [{ node: { type: "text" as const, value: line }, props }] : []),
+                    ]),
+                ...citation,
+            ];
         }
         case "equation":
             return [{ node: { type: "inlineMath", value: item.equation.expression }, props }];
@@ -110,7 +117,10 @@ async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Prom
                     };
                     break;
                 case "page": {
-                    const page_node_res = await pageMention(new PageId(mention.page.id), ctx);
+                    // A mention of a block is a page mention whose URL names the block
+                    const block_id = item.href ? parseNotionUrl(item.href)?.block : undefined;
+                    const block = block_id ? { id: block_id, text: item.plain_text.trim() } : undefined;
+                    const page_node_res = await pageMention(new PageId(mention.page.id), ctx, block);
                     if (isExporterErr(page_node_res)) {
                         page_node_res.warn(ctx);
                         return [];
@@ -136,6 +146,15 @@ async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Prom
             return [{ node, props }];
         }
     }
+}
+
+/**
+ * Cites a literature entry without showing the citation, so the page's bibliography lists the entry and links to it work.
+ */
+function hiddenCitation(key: string): Leaf {
+    const unstyled: TextProperties = { href: null, bold: false, italic: false, strikethrough: false, underline: false };
+    // Resolved into a citation by `rehype-citation` when the wiki is built
+    return { node: jsxText("span", { hidden: true }, [{ type: "text", value: `[@${key}]` }]), props: unstyled };
 }
 
 /**

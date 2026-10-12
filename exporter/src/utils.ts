@@ -143,7 +143,7 @@ export function printWarnings(): void {
 
     const toArchy = (node: Node): archy.Data => ({
         label: node.label,
-        nodes: [...node.warnings.map((warning) => `• ${warning}`), ...[...node.children.values()].map(toArchy)],
+        nodes: [...node.warnings, ...[...node.children.values()].map(toArchy)],
     });
 
     const page_count = new Set(page_warnings.map(({ ctx }) => ctx!.path.toString())).size;
