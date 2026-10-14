@@ -4,9 +4,24 @@ interface Sponsor {
     logo_url: string;
 }
 
-// Add the confirmed 2026 sponsors here, in display order. Use final hosted logo
-// URLs (or base-prefixed public asset URLs). No exporter changes are needed.
-const sponsors: Sponsor[] = [];
+// Confirmed 2026 sponsors in display order. BASE_URL keeps public asset links
+// working both at the domain root and under the configured wiki path.
+const base_url = `${import.meta.env.BASE_URL.replace(/\/+$/, "")}/`;
+const sponsors: Sponsor[] = [
+    { name: "Life Sciences Institute", logo_url: `${base_url}assets/sponsors/lsi.png` },
+    { name: "Department of Zoology", logo_url: `${base_url}assets/sponsors/ubc-zoology.png` },
+    { name: "Faculty of Science", logo_url: `${base_url}assets/sponsors/ubc-science.png` },
+    {
+        name: "Department of Microbiology and Immunology",
+        logo_url: `${base_url}assets/sponsors/ubc-mbim.png`,
+    },
+    {
+        name: "School of Biomedical Engineering",
+        logo_url: `${base_url}assets/sponsors/ubc-sbme.png`,
+    },
+    { name: "Michael Smith Laboratories", logo_url: `${base_url}assets/sponsors/msl.png` },
+    { name: "SnapGene", logo_url: `${base_url}assets/sponsors/snapgene.svg` },
+];
 const preview = import.meta.env.DEV && sponsors.length === 0;
 const entries: Sponsor[] = preview
     ? Array.from({ length: 6 }, (_, index) => ({ name: `Sponsor ${index + 1}`, logo_url: "" }))
@@ -102,8 +117,16 @@ const entries: Sponsor[] = preview
     }
 
     .sponsor-item {
-        flex: 0 0 200px;
-        width: 200px;
+        align-items: center;
+        background: #f7f7f2;
+        border-radius: 0.5rem;
+        box-sizing: border-box;
+        display: flex;
+        flex: 0 0 224px;
+        height: 104px;
+        justify-content: center;
+        padding: 12px;
+        width: 224px;
     }
 
     img,
@@ -168,8 +191,9 @@ const entries: Sponsor[] = preview
         }
 
         .sponsor-item {
-            flex-basis: 140px;
-            width: 140px;
+            flex-basis: 164px;
+            height: 80px;
+            width: 164px;
         }
 
         img,
