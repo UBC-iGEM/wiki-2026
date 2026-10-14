@@ -86,7 +86,7 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
     .page-layout {
         background-color: var(--color-ebony-clay);
         min-height: 100vh;
-        padding: 1rem;
+        padding: 2rem var(--page-gutter) 4rem;
     }
 
     .page-layout.has-sidebar {
@@ -251,7 +251,7 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
 
     @media (max-width: 1000px) {
         .page-layout {
-            padding: 0.75rem;
+            padding: 1.25rem var(--page-gutter) 3rem;
         }
 
         /* Stretch, or the grid's `start` leaves the article at its full text width */

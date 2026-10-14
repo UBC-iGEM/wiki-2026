@@ -1,3 +1,20 @@
+/* The space between the page content and the edges of the window, shared by the navbar and the page */
+:root {
+    --page-gutter: clamp(1rem, 4vw, 3.5rem);
+}
+
+@media (max-width: 1000px) {
+    :root {
+        --page-gutter: 1.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    :root {
+        --page-gutter: 1rem;
+    }
+}
+
 /* Tables */
 table {
     border: 1px solid #555555;

@@ -103,7 +103,7 @@ const static_links = content_map.static_links;
         background: var(--color-ebony-clay);
         box-sizing: border-box;
         font-family: var(--font-geist);
-        padding: 1rem 2rem;
+        padding: 1rem var(--page-gutter);
     }
 
     nav.primary ul {
@@ -223,7 +223,7 @@ const static_links = content_map.static_links;
     /* The layout stacks its sidebar at this width too, so the bar collapses with it */
     @media (max-width: 1000px) {
         nav.primary {
-            padding: 0.75rem 1rem;
+            padding: 0.75rem var(--page-gutter);
         }
 
         .menu-toggle {
