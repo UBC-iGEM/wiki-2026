@@ -1,9 +1,15 @@
+import { fetchNotebook, parseColabFileId } from "../colab";
 import type { NotionBlock } from "../notion";
 import { ExporterError, isExporterErr, type ExporterResult } from "../utils";
 import { blockContext, convertItems, type ConvertContext, type Item } from "./blocks";
 import { jsxFlow, type FlowContent, type JsxAttrs } from "./mdx";
 import { mediaFileName, uploadMedia } from "./media";
 import { asPlainText } from "./rich-text";
+import type { Image } from "mdast";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import remarkParse from "remark-parse";
+import { unified } from "unified";
 
 /**
  * Support for block components.
@@ -32,6 +38,7 @@ export const COMPONENT_MAP: Record<string, (input: ComponentInput) => ComponentO
     carousel,
     model3d,
     ihp,
+    colab,
     skip,
 };
 
@@ -237,6 +244,114 @@ function malformedIHP(problem: string): ExporterError {
             ),
         ["malformed content"],
     );
+}
+
+// ====================
+// COLAB COMPONENT
+// ====================
+
+export interface ColabAttrs {
+    /** The notebook on the web, for running. */
+    url: string;
+}
+export const COLAB_SLOTS = ["notebook", "content"] as const;
+type ColabSlots = SlotRecord<typeof COLAB_SLOTS>;
+
+const notebookMarkdownParser = unified().use(remarkParse).use(remarkGfm).use(remarkMath);
+
+async function colab({ items, ctx }: ComponentInput): ComponentOutput {
+    // A link to the notebook, followed by its description
+    const [link_block, ...content] = trimBlank(items);
+    const url = link_block === undefined ? undefined : blockLink(link_block);
+    const file_id = url === undefined ? undefined : parseColabFileId(url);
+    if (url === undefined || file_id === undefined)
+        return malformedColab("it does not start with a Colab notebook link");
+
+    const notebook = await fetchNotebook(file_id);
+    if (isExporterErr(notebook)) return notebook;
+
+    // Markdown cells each get their own box; code cells are shown as code blocks
+    const dropped = new Set<string>();
+    const cells: FlowContent[] = [];
+    for (const [i, cell] of notebook.cells.entries()) {
+        if (cell.cell_type === "code") {
+            cells.push({ type: "code", lang: notebook.language, value: cell.source });
+        } else if (cell.cell_type === "markdown") {
+            const root = notebookMarkdownParser.parse(cell.source);
+            const children = sanitizeNotebookMarkdown(root.children as FlowContent[], dropped);
+            cells.push(jsxFlow("div", { class: "colab-markdown" }, children));
+        } else {
+            new ExporterError(
+                `Colab notebook cell ${i + 1} is a "${cell.cell_type}" cell, which cannot be shown; it was skipped.`,
+                ["malformed content"],
+            ).warn(ctx);
+        }
+    }
+
+    if (dropped.size > 0)
+        new ExporterError(
+            `Colab notebook markdown contains ${[...dropped].join(" and ")}, which cannot be shown on the wiki; they were removed.`,
+            ["malformed content"],
+        ).warn(ctx);
+
+    return generateComponent<ColabAttrs, ColabSlots>({
+        tag: "Colab",
+        attrs: { url },
+        slots: {
+            notebook: cells,
+            content: await convertItems(trimBlank(content), ctx),
+        },
+    });
+}
+
+/**
+ * Removes what notebook markdown can hold but the page cannot: raw HTML (which MDX would read as JSX)
+ * and images stored inside the notebook or next to it rather than on the web.
+ * What was removed is recorded in `dropped`.
+ */
+function sanitizeNotebookMarkdown<Node extends { type: string }>(nodes: Node[], dropped: Set<string>): Node[] {
+    return nodes.flatMap((node) => {
+        if (node.type === "html") {
+            dropped.add("raw HTML");
+            return [];
+        }
+        if (node.type === "image" && !/^https?:\/\//i.test((node as unknown as Image).url)) {
+            dropped.add("embedded images");
+            return [];
+        }
+        if (!("children" in node && Array.isArray(node.children))) return [node];
+
+        const children = sanitizeNotebookMarkdown(node.children as { type: string }[], dropped);
+        // A paragraph that only held removed content would leave a gap
+        if (node.type === "paragraph" && children.length === 0) return [];
+        return [{ ...node, children }];
+    });
+}
+
+function malformedColab(problem: string): ExporterError {
+    return new ExporterError(
+        `Colab component could not be understood: ${problem}.` +
+            componentDocSuggestion(
+                "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link",
+            ),
+        ["malformed content"],
+    );
+}
+
+/**
+ * The link a block holds: pasted links arrive as a bookmark, an embed, a mention, linked text or bare text.
+ */
+function blockLink(item: Item): string | undefined {
+    if (item.type === "bookmark") return item.bookmark.url.trim();
+    if (item.type === "embed") return item.embed.url.trim();
+    if (item.type !== "paragraph") return undefined;
+
+    const rich_text = item.paragraph.rich_text;
+    for (const text of rich_text) {
+        if (text.type === "mention" && text.mention.type === "link_mention") return text.mention.link_mention.href;
+        if (text.href) return text.href;
+    }
+    return asPlainText(rich_text).trim() || undefined;
 }
 
 // ====================

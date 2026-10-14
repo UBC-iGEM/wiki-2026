@@ -170,6 +170,11 @@
                     "item": "3f0d65dd82be80fbaed7df89ab37ed23"
                 },
                 {
+                    "path": "Fluorescence Detector",
+                    "type": "page",
+                    "item": "3f9d65dd82be80e28c7be16850fbcb90"
+                },
+                {
                     "path": "Lab Notebook",
                     "type": "page",
                     "item": "3ecd65dd82be80d1b702c82130b0682e"
@@ -270,6 +275,10 @@
                     "item": "359d65dd82be8151b34bf6b8b5f7ca59"
                 }
             ]
+        },
+        {
+            "name": "Judging",
+            "entries": []
         },
         {
             "name": "Testing",

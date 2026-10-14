@@ -56,3 +56,46 @@ pre.astro-code {
     max-width: 100%;
     height: auto;
 }
+
+/*
+ * The glowing panel used by various components.
+ * `.glow-panel` wraps a `.glow-panel-body`,
+ * and the mock stacks a second outline behind the body, offset down and to the right.
+ * Components set their own margins, padding and layout.
+ */
+.glow-panel {
+    position: relative;
+}
+
+.glow-panel::before {
+    border: 1px solid var(--color-cornflower);
+    border-radius: 32px;
+    box-shadow: 0 0 1.5rem color-mix(in srgb, var(--color-cornflower) 35%, transparent);
+    content: "";
+    inset: 1rem -1rem -1rem 1rem;
+    position: absolute;
+}
+
+/* Positioned, so it paints over the outline behind it rather than under */
+.glow-panel-body {
+    background: var(--color-ebony-clay);
+    border: 1px solid var(--color-cornflower);
+    border-radius: 32px;
+    box-shadow:
+        0 0 0.4rem color-mix(in srgb, var(--color-cornflower) 70%, transparent),
+        0 0 2.5rem color-mix(in srgb, var(--color-cornflower) 40%, transparent),
+        inset 0 0 1.5rem color-mix(in srgb, var(--color-cornflower) 18%, transparent);
+    color: var(--color-periwinkle);
+    position: relative;
+}
+
+@media (max-width: 700px) {
+    .glow-panel::before {
+        border-radius: 20px;
+        inset: 0.5rem -0.5rem -0.5rem 0.5rem;
+    }
+
+    .glow-panel-body {
+        border-radius: 20px;
+    }
+}

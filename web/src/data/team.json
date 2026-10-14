@@ -28,7 +28,8 @@
       },
       {
         "name": "Saige Mann",
-        "role": "Dry Lab Lead"
+        "role": "Dry Lab Lead",
+        "image": "/headshots/saige-mann.avif"
       }
     ]
   },
@@ -61,7 +62,8 @@
       },
       {
         "name": "Marina Chen",
-        "role": "Wet Lab"
+        "role": "Wet Lab",
+        "image": "/headshots/marina-chen.avif"
       }
     ]
   },
@@ -102,10 +104,6 @@
       },
       {
         "name": "Libby Lee",
-        "role": "Dry Lab"
-      },
-      {
-        "name": "Example",
         "role": "Dry Lab"
       }
     ]

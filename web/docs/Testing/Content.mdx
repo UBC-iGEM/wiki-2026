@@ -181,4 +181,490 @@ $$
   </Fragment>
 </IHP>
 
-<br id="3f5d65dd82be80a387eeeab8393aa846" />
+<br id="3f9d65dd82be8097a8f6f837b550ca5a" />
+
+<a id="3f9d65dd82be80ae953deff9c8375d95" />
+
+<Colab url="https://colab.research.google.com/drive/12aVH40tLIR2T6sfmBkdhWNCliaIy7yj1?authuser=2#scrollTo=cell-1">
+  <Fragment slot="notebook">
+    <div class="colab-markdown">
+      # JMP DoE → Echo transfer converter
+    </div>
+
+    <div class="colab-markdown">
+      ## Setup
+    </div>
+
+    ```python
+    from dataclasses import dataclass
+    from pathlib import Path
+    import polars as pl
+    from typing import Any, Dict, List, Optional, Tuple
+
+    pl.Config.set_tbl_hide_dataframe_shape(True)
+
+
+    nL = 1.0
+    uL = 1000.0
+    mL = 1000000.0
+
+
+    @dataclass
+    class Concentration:
+        """
+        A continuous factor whose JMP value is a target concentration.
+        The stock is STOCK_MULTIPLE x the lowest non-zero level of the factor.
+        """
+
+        factor: str
+        source: str
+
+
+    @dataclass
+    class Volume:
+        """
+        A continuous factor whose JMP value is a volume to dispense directly,
+        expressed in `unit` (e.g. uL for a column in microlitres).
+        """
+
+        factor: str
+        source: str
+        unit: float = nL
+
+
+    @dataclass
+    class SelectedConcentration:
+        """
+        A categorical factor that selects which reagent to dispense, paired with a
+        continuous factor giving that reagent's target concentration.
+        Each reagent's stock is STOCK_MULTIPLE x its own lowest non-zero concentration.
+        Map a level to None to dispense nothing; unmapped levels are also dropped.
+        """
+
+        selector: str
+        concentration: str
+        sources: Dict[Any, Optional[str]]
+
+
+    @dataclass
+    class Lookup:
+        """
+        A factor with fixed discrete levels, each mapped directly to a list of
+        (source reagent, volume) transfers. Volumes are in nL unless multiplied by a unit,
+        e.g. ("HCl", 0.12 * uL). Unmapped levels are dropped.
+        """
+
+        factor: str
+        levels: Dict[Any, List[Tuple[str, float]]]
+
+
+    Rule = Concentration | Volume | SelectedConcentration | Lookup
+    ```
+
+    <div class="colab-markdown">
+      ## Parameters
+    </div>
+
+    ```python
+    SOURCE_CSV_PATH: Path = Path("jmp_example.csv")
+    OUTPUT_CSV_PATH: Path = Path("echo_prog.csv")
+
+    # All factors that will be dispensed via the Echo, and how they map to reagent transfers.
+    TRANSFERS: List[Rule] = [
+        Concentration("Total Sodium", source="NaCl"),
+        Concentration("Potassium", source="KCl"),
+        Concentration("Media Mix", source="Media Mix"),
+        # SelectedConcentration(
+        #     selector="Antibiotic",
+        #     concentration="Antibiotic Volume",
+        #     sources={"Kan": "Kanamycin", "Amp": "Ampicillin", "None": None},
+        # ),
+        # Volume("Buffer", source="Buffer", unit=uL),
+        # Lookup("pH", {5.5: [("HCl", 120 * nL)], 7.0: [], 8.0: [("NaOH", 0.08 * uL)]}),
+    ]
+
+    # The final volume of each experimental well. Echo additions are not accounted for.
+    WELL_VOLUME = 25 * uL
+
+    # Concentration stocks are prepared at this multiple of the lowest non-zero level.
+    STOCK_MULTIPLE = 500
+    ```
+
+    <div class="colab-markdown">
+      ## Converter
+    </div>
+
+    ```python
+    # @title Constants and helpers
+    # The size of a single droplet dispensed by the Echo.
+    # All transfer volumes must be a multiple.
+    ECHO_DROPLET_VOLUME = 25
+
+    # The maximum volume of dispensable standard that can be put in a single well, in nL.
+    # The actual volume that should be in the well is this value + ECHO_SOURCE_WELL_DEAD_VOL.
+    ECHO_SOURCE_WELL_MAX_VOL = 40000
+
+    # The dead volume of a source well, in nL.
+    ECHO_SOURCE_WELL_DEAD_VOL = 15000
+
+    # The maximum volume of standard that can be transfered at once, in nL.
+    ECHO_MAX_TRANSFER_VOL = 5000
+
+    assert ECHO_SOURCE_WELL_MAX_VOL % ECHO_DROPLET_VOLUME == 0
+    assert ECHO_MAX_TRANSFER_VOL % ECHO_DROPLET_VOLUME == 0
+
+    # Columns expected in the Echo CSV output.
+    ECHO_CSV_COLS = ["Source Plate", "Source Well", "Destination Plate", "Destination Well", "Transfer Volume"]
+
+    def snake_case_to_literary(ident: str) -> str:
+        return ' '.join([word.capitalize() for word in ident.split('_')])
+
+    def col_to_literary(colname: str) -> str:
+        colname_as_literary = snake_case_to_literary(colname)
+        return colname_as_literary if colname_as_literary in ECHO_CSV_COLS else colname
+
+
+    # The number of wells per plate.
+    WELL_PLATE_SIZE = 384
+
+    WELL_COL_COUNT = 24
+    WELL_ROW_COUNT = WELL_PLATE_SIZE // WELL_COL_COUNT
+    WELL_ROW_NAMES = "ABCDEFGHIJKLMNOP"
+
+
+    def rule_sources(rule: Rule) -> List[str]:
+        match rule:
+            case Concentration(source=source) | Volume(source=source):
+                return [source]
+            case SelectedConcentration(sources=sources):
+                return [s for s in sources.values() if s is not None]
+            case Lookup(levels=levels):
+                return [s for transfers in levels.values() for s, _ in transfers]
+
+
+    def source_rows(rules: List[Rule]) -> Dict[str, str]:
+        """
+        Reagent standards will be set up on a source plate, with each reagent occupying a row.
+        For instance, the standard for the first reagent will be in A1, A2, ....
+        """
+        sources = list(dict.fromkeys(s for rule in rules for s in rule_sources(rule)))
+        if len(sources) > WELL_ROW_COUNT:
+            raise ValueError(
+                f"{len(sources)} reagents need source rows, but the plate only has {WELL_ROW_COUNT}"
+            )
+        return {s: WELL_ROW_NAMES[idx] for idx, s in enumerate(sources)}
+
+
+    # Long-format transfers produced by each rule: one row per (run, reagent).
+    # `target` is the target concentration (or the requested nL for Volume/Lookup rules);
+    # `stock` is the stock concentration (null for Volume/Lookup rules).
+    TRANSFER_SCHEMA = pl.Schema({
+        "Run": pl.Int64,
+        "factor": pl.String,
+        "level": pl.String,
+        "source": pl.String,
+        "target": pl.Float64,
+        "stock": pl.Float64,
+        "ideal_volume": pl.Float64,
+    })
+    ```
+
+    ```python
+    # @title Transfer calculation
+    def rule_transfers(jmp: pl.DataFrame, rule: Rule) -> pl.DataFrame:
+        match rule:
+            case Concentration(factor=factor, source=source):
+                df = jmp.select(
+                    "Run",
+                    factor=pl.lit(factor),
+                    level=pl.col(factor).cast(pl.String),
+                    source=pl.lit(source),
+                    target=pl.col(factor).cast(pl.Float64),
+                ).with_columns(
+                    stock=pl.col("target").filter(pl.col("target") > 0).min() * STOCK_MULTIPLE
+                )
+            case Volume(factor=factor, source=source, unit=unit):
+                df = jmp.select(
+                    "Run",
+                    factor=pl.lit(factor),
+                    level=pl.col(factor).cast(pl.String),
+                    source=pl.lit(source),
+                    target=pl.col(factor).cast(pl.Float64) * unit,
+                    stock=pl.lit(None, pl.Float64),
+                )
+            case SelectedConcentration(selector=selector, concentration=conc, sources=sources):
+                df = (
+                    jmp.select(
+                        "Run",
+                        factor=pl.lit(selector),
+                        level=pl.col(selector).cast(pl.String) + " @ " + pl.col(conc).cast(pl.String),
+                        source=pl.col(selector).replace_strict(
+                            sources, default=None, return_dtype=pl.String
+                        ),
+                        target=pl.col(conc).cast(pl.Float64),
+                    )
+                    .filter(pl.col("source").is_not_null())
+                    .with_columns(
+                        stock=pl.col("target").filter(pl.col("target") > 0).min().over("source")
+                        * STOCK_MULTIPLE
+                    )
+                )
+            case Lookup(factor=factor, levels=levels):
+                table = pl.DataFrame(
+                    [(level, source, float(vol)) for level, ts in levels.items() for source, vol in ts],
+                    schema={factor: jmp.schema[factor], "source": pl.String, "target": pl.Float64},
+                    orient="row",
+                )
+                df = jmp.select("Run", factor).join(table, on=factor).select(
+                    "Run",
+                    factor=pl.lit(factor),
+                    level=pl.col(factor).cast(pl.String),
+                    source="source",
+                    target="target",
+                    stock=pl.lit(None, pl.Float64),
+                )
+        return df.with_columns(
+            ideal_volume=pl.when(pl.col("stock").is_null())
+            .then(pl.col("target"))
+            .otherwise(pl.col("target") / pl.col("stock") * WELL_VOLUME)
+        ).select(*TRANSFER_SCHEMA).cast(TRANSFER_SCHEMA)
+
+
+    def jmp_to_transfers(jmp: pl.DataFrame, rules: List[Rule]) -> pl.DataFrame:
+        transfers = pl.concat([rule_transfers(jmp, rule) for rule in rules])
+        # A reagent dispensed by several rules must come from a single stock
+        conflicting = (
+            transfers.filter(pl.col("ideal_volume") > 0)
+            .group_by("source")
+            .agg(pl.col("stock").unique())
+            .filter(pl.col("stock").list.len() > 1)
+        )
+        if conflicting.height > 0:
+            raise ValueError(f"Reagents used with multiple stock concentrations:\n{conflicting}")
+        return (
+            transfers
+            # Drop any factors with no transfer
+            .filter(pl.col("ideal_volume") > 0)
+            # Round the full transfer to the nearest droplet before splitting it up
+            .with_columns(
+                echo_volume=(pl.col("ideal_volume") / ECHO_DROPLET_VOLUME).round().cast(pl.Int64)
+                * ECHO_DROPLET_VOLUME
+            )
+        )
+
+
+    def transfers_to_echo(transfers: pl.DataFrame, rows: Dict[str, str]) -> pl.DataFrame:
+        return (
+            transfers
+            .filter(pl.col("echo_volume") > 0)
+            .sort("source", "Run")
+            # FIGURE OUT WELL TO PULL FROM ==================================================
+            # Track the cumulative amount of input standard used by this reagent
+            .with_columns(csum_end=pl.col("echo_volume").cum_sum().over("source"))
+            .with_columns(csum_start=pl.col("csum_end") - pl.col("echo_volume"))
+            # Now figure out which input well to pull from
+            .with_columns(
+                # Some transfers may cross a source well boundary; this creates a range of ALL source wells to pull from (e.g., [2, 3])
+                well_index=pl.int_ranges(
+                    (pl.col("csum_start") // ECHO_SOURCE_WELL_MAX_VOL).cast(pl.Int64),
+                    (pl.col("csum_end") / ECHO_SOURCE_WELL_MAX_VOL).ceil().cast(pl.Int64),
+                )
+            )
+            # If multiple source wells are pulled from, explode the transfers into multiple rows, one per source well
+            .explode("well_index")
+            .with_columns(
+                transfer_volume=
+                # The upper cumulative boundary of this well
+                pl.min_horizontal(
+                    "csum_end", (pl.col("well_index") + 1) * ECHO_SOURCE_WELL_MAX_VOL
+                )
+                -
+                # The lower cumulative boundary of this well
+                pl.max_horizontal(
+                    "csum_start", pl.col("well_index") * ECHO_SOURCE_WELL_MAX_VOL
+                )
+            )
+            .with_columns(
+                source_well=
+                # Row name
+                pl.col("source").replace_strict(rows)
+                +
+                # Column name
+                (pl.col("well_index") + 1).cast(pl.String)
+            )
+            # SPLIT TRANSFERS THAT ARE TOO BIG ==================================================
+            .with_columns(
+                # Same strategy as above; create a range of pieces (e.g., [0, 1])
+                transfer_piece=pl.int_ranges(
+                    0,
+                    (pl.col("transfer_volume") / ECHO_MAX_TRANSFER_VOL)
+                    .ceil()
+                    .cast(pl.Int64),
+                )
+            )
+            # And then explode if there are multiple pieces
+            .explode("transfer_piece")
+            .with_columns(
+                # The volume of this transfer piece
+                transfer_volume=pl.min_horizontal(
+                    pl.lit(ECHO_MAX_TRANSFER_VOL),
+                    pl.col("transfer_volume")
+                    - pl.col("transfer_piece") * ECHO_MAX_TRANSFER_VOL,
+                )
+            )
+            # MAP JMP RUN TO EXPERIMENTAL PLATE/WELL ==================================================
+            # Run 1: Plate 1, A1
+            # Run 2: Plate 1, A2
+            # ...
+            # Run 25: Plate 1, B1
+            # ...
+            # Run 385: Plate 2, A1
+            # ...
+            .with_columns(
+                # 0-based index
+                run_index=pl.col("Run")
+                - 1
+            )
+            .with_columns(
+                dest_plate_index=pl.col("run_index") // WELL_PLATE_SIZE,
+                dest_plate_pos=pl.col("run_index") % WELL_PLATE_SIZE,  # A value between 0-383
+            )
+            .with_columns(
+                destination_plate=pl.lit("Experimental Plate ")
+                + (pl.col("dest_plate_index") + 1).cast(pl.String),
+                # Convert the plate pos to a row (letter) + column (number)
+                destination_well=pl.lit(WELL_ROW_NAMES).str.slice(
+                    pl.col("dest_plate_pos") // WELL_COL_COUNT, 1
+                )
+                + (pl.col("dest_plate_pos") % WELL_COL_COUNT + 1).cast(pl.String),
+            )
+            .with_columns(
+                source_plate=pl.lit("Standards Plate")
+            )
+            .sort("Run", "source", "well_index", "transfer_piece")
+            .rename(col_to_literary)
+            .select(ECHO_CSV_COLS)
+        )
+    ```
+
+    ```python
+    # @title Reports
+    def source_plate_summary(transfers: pl.DataFrame, rows: Dict[str, str]) -> pl.DataFrame:
+        """Volumes to load into each source well, including dead volume."""
+        summary = (
+            transfers.group_by("source")
+            .agg(pl.col("stock").first(), total_nL=pl.col("echo_volume").sum())
+            .filter(pl.col("total_nL") > 0)
+            .with_columns(
+                row=pl.col("source").replace_strict(rows),
+                wells=(pl.col("total_nL") / ECHO_SOURCE_WELL_MAX_VOL).ceil().cast(pl.Int64),
+            )
+            .with_columns(well_index=pl.int_ranges(0, "wells"))
+            .explode("well_index")
+            .with_columns(
+                dispensed_nL=pl.min_horizontal(
+                    pl.lit(ECHO_SOURCE_WELL_MAX_VOL),
+                    pl.col("total_nL") - pl.col("well_index") * ECHO_SOURCE_WELL_MAX_VOL,
+                )
+            )
+            .with_columns(
+                source_well=pl.col("row") + (pl.col("well_index") + 1).cast(pl.String),
+                load_uL=(pl.col("dispensed_nL") + ECHO_SOURCE_WELL_DEAD_VOL) / 1000,
+            )
+            .sort("row", "well_index")
+        )
+        overflow = summary.filter(pl.col("well_index") >= WELL_COL_COUNT)
+        if overflow.height > 0:
+            raise ValueError(
+                f"Reagents need more than {WELL_COL_COUNT} source wells:\n"
+                f"{overflow.select('source', 'source_well')}"
+            )
+        return summary.select("source_well", "source", "stock", "dispensed_nL", "load_uL")
+
+
+    def rounding_report(transfers: pl.DataFrame) -> pl.DataFrame:
+        """Deviation between requested and dispensable volume, for each distinct level."""
+        return (
+            transfers.group_by("factor", "source", "level")
+            .agg(
+                pl.col("target", "ideal_volume", "echo_volume").first(),
+                runs=pl.len(),
+            )
+            .with_columns(
+                error_pct=(pl.col("echo_volume") - pl.col("ideal_volume")) / pl.col("ideal_volume") * 100
+            )
+            .sort(pl.col("error_pct").abs(), descending=True)
+        )
+    ```
+
+    <div class="colab-markdown">
+      ## Run
+    </div>
+
+    ```python
+    if not SOURCE_CSV_PATH.exists():
+        try:
+            from google.colab import files
+        except ImportError:
+            raise FileNotFoundError(SOURCE_CSV_PATH)
+        print(f"{SOURCE_CSV_PATH} not found; upload the JMP CSV:")
+        SOURCE_CSV_PATH = Path(next(iter(files.upload())))
+
+    jmp_df = pl.read_csv(SOURCE_CSV_PATH)
+    rows = source_rows(TRANSFERS)
+    transfers = jmp_to_transfers(jmp_df, TRANSFERS)
+    plate = source_plate_summary(transfers, rows)
+    echo_df = transfers_to_echo(transfers, rows)
+    jmp_df
+    ```
+
+    <div class="colab-markdown">
+      ### Echo transfers
+    </div>
+
+    ```python
+    echo_df
+    ```
+
+    <div class="colab-markdown">
+      ### Source plate
+    </div>
+
+    ```python
+    print(f"load_uL includes {ECHO_SOURCE_WELL_DEAD_VOL / 1000:g} uL dead volume")
+    with pl.Config(tbl_rows=-1):
+        display(plate)
+    ```
+
+    <div class="colab-markdown">
+      ### Droplet rounding
+    </div>
+
+    ```python
+    rounding = rounding_report(transfers)
+    if rounding.height > 0:
+        worst = rounding.row(0, named=True)
+        print(
+            f"Worst deviation: {worst['error_pct']:+.1f}% "
+            f"({worst['factor']} = {worst['level']}, {worst['ideal_volume']:g} -> {worst['echo_volume']} nL)"
+        )
+    with pl.Config(tbl_rows=-1):
+        display(rounding)
+    ```
+
+    <div class="colab-markdown">
+      ## Export
+    </div>
+
+    ```python
+    echo_df.write_csv(OUTPUT_CSV_PATH)
+    try:
+        from google.colab import files
+        files.download(str(OUTPUT_CSV_PATH))
+    except ImportError:
+        print(f"Wrote {OUTPUT_CSV_PATH}")
+    ```
+  </Fragment>
+
+  <Fragment slot="content" />
+</Colab>

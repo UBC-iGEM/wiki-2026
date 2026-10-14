@@ -62,31 +62,65 @@ title: "Engineering"
   - <a id="3f1d65dd82be805fbc23ea97ef1d3659" />iteration 2 [Biosensor MIC Screening Titration v1](/ubc-vancouver/wet-lab/lab-notebook-2026/biosensor-mic-screening-titration-v1) - ZiQi
   - <a id="3f1d65dd82be80c29b39d660467883f8" />iteration 3 [Biosensor MIC Screening Titration v2](/ubc-vancouver/wet-lab/lab-notebook-2026/biosensor-mic-screening-titration-v2) - Evan
 
-  <a id="3f3d65dd82be80c987e9e0ebc2cd011e" />Design:
+  <a id="3f3d65dd82be80c987e9e0ebc2cd011e" />**Design:**
 
-  <a id="3f3d65dd82be80ab9023d49ffe9b56f5" />In the previous iteration, there were challenges such as the Varioskan jamming. This resulted in data points that were missing, and the purpose of this experiment was to determine whether the results from the last iteration are able to be reproduced, in order to identify the lower and upper bounds of detectable biosensor response to inform a more narrow range for the Biofactorial biosensor titration response.
+  <a id="3f3d65dd82be80ab9023d49ffe9b56f5" />In the previous iteration, there were challenges such as the Varioskan jamming, which resulted in missing and potentially unreliable measurements. Although preliminary fluorescence peaks were identified in some antibiotic conditions, a further experiment was necessary to select a concentration range for the Biofactorial biosensor experiment.
 
-  <a id="3f3d65dd82be809e90dac7cc305b3c4a" />Build:
+  <a id="3f8d65dd82be802db304faed03cd2437" />The purpose of this experiment was to determine whether the results from the last iteration are able to be reproduced, in order to identify the lower and upper bounds of detectable biosensor response to inform a more narrow range for the Biofactorial biosensor titration response.
 
-  <a id="3f3d65dd82be80e5bc3af8666d00e53f" />For each biosensor strain, fresh cultures of bacteria were inoculated from overnight cultures and grown to OD600 = 0.8. Serial dilutions were created across 13 different antibiotic (gentamicin, kanamycin, amoxicillin, cephalexin) concentrations, testing \_\_.
+  <a id="3f3d65dd82be809e90dac7cc305b3c4a" />**Build:**
 
-  <a id="3f3d65dd82be80778117feeaf4c08511" />Each biosensor strain was plated along with varying antibiotic concentrations, treated for 50 minutes and taking fluorescence and OD measurements every 10 minutes.
+  <a id="3f3d65dd82be80e5bc3af8666d00e53f" />For each both CpxP and RecA biosensor strains, fresh cultures of bacteria were inoculated from overnight cultures and grown. Serial dilutions were created across 13 concentrations of four antibiotics: gentamicin, kanamycin, amoxicillin, cephalexin. Two-fold serial dilutions were used to prepare the concentrations ranging from 0.015625-320 µg/mL.
+
+  <a id="3f3d65dd82be80778117feeaf4c08511" />Each antibiotic condition was tested in triplicate for both biosensor strains. Although the original experiment specified specified a final OD600 of 0.4, time limitations meant that the final starting OD600 used in the experiment was 0.2.
+
+  <a id="3f8d65dd82be8068ae1ad3f680f496c3" />The biosensors were plated on a clear, flat-bottom 96-well plate alongside untreated biosensor controls, a backbone control, and media blanks. Fluorescence and OD600 measurements were collected every 10 minutes over the 50-minute assay, with fluorescence measured at an excitation of 488 nm and and emission of 510 nm.
 
   <a id="3f3d65dd82be807099a7ec3c73695cdb" />Test:
 
-  <br id="3f3d65dd82be80418397c860fc3bc4a4" />
+  <a id="3f3d65dd82be80418397c860fc3bc4a4" />Preliminary results demonstrated that there were limited changes in fluorescence across the tested conditions. Fluorescence values were close to the LB media control, making fold-change calculations sensitive to small differences in background signal. Additional inconsistencies were observed with the OD measurement, as an entire column displayed unusually low OD values at one point in time without showing the same pattern at the other points, suggesting an artifact rather than a consistent biological response.
+
+  <a id="3f9d65dd82be80a8a870f9b9cb3aab1b" />For most antibiotic conditions, OD did not measurably decrease and instead appeared to increase. However, these measurements alone could not determine between bacterial growth or increased turbidity. Overall the results did not establish reproducible antibiotic concentration ranges that produced an elevated biosensor fluorescence response.
 
   <a id="3f3d65dd82be80a082b5ff3ee9482bd8" />Learn:
+
+  <a id="3f9d65dd82be80de9415d7d9fdc24868" />This iteration did not reproduce the preliminary response ranges identified in the previous experiment. Interpretation was limited by fluorescence values close to background, inconsistent measurements, and a lower starting bacterial density than originally planned.
+
+  <a id="3f9d65dd82be802a9a19f4c86cde4f15" />The use of clear plates introduced na additional source of variability through fluorescence interference between wells. For future experiments, using plates suitable for fluorescence measurements, maintaining a consistent starting density, and evaluating background signal before interpreting fold changes was noted as important.
+
+  <a id="3f9d65dd82be80e385abfe53b0b6e302" />For the next iteration, these findings highlighted a more focused approach for the next iteration. Rather than selecting conditions from uncertain peaks in the broad, wide-range screen, we used the independently determined biosensor MIC range to the next titration experiment, and extended the observation period to investigate responses that may not be detectable during a short assay.
 
   - <a id="3f1d65dd82be807ba73addaae4a6c60a" />iteration 4 [Biosensor Response Titration v1](/ubc-vancouver/wet-lab/lab-notebook-2026/biosensor-response-titration-v1) - Evan
 
   <a id="3f3d65dd82be80dda39ad5a3418c0d6e" />Design:
 
+  <a id="3f9d65dd82be8049948fdc4d3ff97b3c" />The previous broad concentration screens did not establish a clear, reproducible relationship between antibiotic concentration and biosensor fluorescence. To guide a more focused experiment, we used the results from our Biosensor Challenge Assay, which determined that the MIC of the two biosensor strains, CpxP and RecA, lies between 4 µg/mL to 8 µg/mL for Tobraymycin, Amoxicillin, and Gentamicin.
+
+  <a id="3f9d65dd82be807a963dc1bceeb28be5" />Therefore, our objective was to investigate whether antibiotic concentrations below at this inhibitory range or at sub-inhibitory antibiotic concentrations produced a measurable fluorescence response. We also wanted to extend the observation period to eight hours to determine whether longer incubation allowed distinct response to appear.
+
   <a id="3f3d65dd82be808dbd8bf8ab5b50562a" />Build:
+
+  <a id="3f9d65dd82be8014bbf2f351fd821692" />Both of the biosensors, CpxP and RecA, were exposed to nine two-fold serial dilutions of gentamicin, tobramycin, or amoxicillin. Each antibiotic was tested on seperate flat-bottom 96-well plates containing both biosensor strains, with each antibiotic condition plated in triplicate.
+
+  <a id="3f9d65dd82be8012a81cc6edc38bdec6" />Bacterial suspensions were adjusted to an OD600 of 0.2 before being mixed with an equal volume of antibiotic-containing media, giving a final starting OD600 of 0.1. This was tested alongside untreated biosensor controls, a backbone control, and media blanks.
+
+  <a id="3f9d65dd82be8065bcc7f48eca1e7e59" />OD600 and fluorescence were measured immediately after plating and after 30 minutes, one hour, two hours, four hours, and eight hours. Plates were returned to a 37°C incubator between measurements. Fluorescence was compared with the corresponding untreated growth controls to asses the response to antibiotic exposure.
 
   <a id="3f3d65dd82be807d8a96e7256927a09f" />Test:
 
+  <a id="3f9d65dd82be80b68feacf2c2d60af24" />The CpxP biosensor showed dose-dependent fluorescence responses at later time points. At the highest test amoxicillin concentration, fluorescence was approximately two- to three-fold higher than the untreated control during the four- to eight-hour interval relative to the control. For gentamicin and tobramycin, fluorescence peaked at the four-hour interval for the highest tested concentration condition.
+
+  <a id="3f9d65dd82be80008fa0f997531afdbf" />The RecA biosensor showed a different response pattern, not demonstrating the same dose-dependent trend. Increase fluorescence associated with amoxicillin concentration was observed at four to eight hours, particularly at the highest tested concentration. However, the aminoglycosides, gentamicin and tobramycin, did not produce a dose-dependent response.
+
+  <a id="3f9d65dd82be80908146c40c562669d0" />OD measurable increased over the eight-hour experiment. This was particularly relevant when interpreting the increased fluorescence observed in the RecA amoxicillin conditions, because difference in bacterial growth could contribute to total fluorescence.
+
   <a id="3f3d65dd82be804294fbe131b28e6dab" />Learn:
+
+  <a id="3f9d65dd82be80bd82c0e9f79a347828" />Extending the observation period revealed fluorescence responses at four to eight hours that were not clear in the earlier, short-duration screens, demonstrating that these later time points would be useful for further investigation. However, they did not establish comparable responses that would be achievable within a rapid assay.
+
+  <a id="3f9d65dd82be8013a92ff8bdbdd94651" />The results also indicated that reporter performance depended on both the antibiotic and the incubation period. CpxP showed concentration-dependent response to amoxicillin and both aminoglycosides, whereas RecA showed a clearer response to amoxicillin than to either aminoglycosides. Therefore, the conclusion from iteration 1 that RecA was generally the more sensitive reporter did not hold in this experiment.
+
+  <a id="3f9d65dd82be809ea7c5c93e928b81c3" />These findings demonstrated that these four- to eight-hour intervals are candidates for future testing. Before scaling this experiment up to the scale of Biofactorial, we would repeat this experiment to confirm reproducibility as well as a desired test range.
 </details>
 
 # <a id="3e5d65dd82be80e5bc8ad98fef6a23f8" />Patient Simulant

@@ -5,8 +5,8 @@ type Props = CalloutAttrs;
 const attrs = Astro.props;
 ---
 
-<div class="callout">
-    <div class="panel">
+<div class="callout glow-panel">
+    <div class="panel glow-panel-body">
         <span class="icon">{attrs.icon}</span>
         <div class="content">
             <slot />
@@ -15,37 +15,17 @@ const attrs = Astro.props;
 </div>
 
 <style>
+    /* The border and glow come from .glow-panel in style.css */
     .callout {
         margin: 1.5rem 0;
-        position: relative;
     }
 
-    /* The mock stacks a second outline behind the panel, offset down and to the right */
-    .callout::before {
-        border: 1px solid var(--color-cornflower);
-        border-radius: 32px;
-        box-shadow: 0 0 1.5rem color-mix(in srgb, var(--color-cornflower) 35%, transparent);
-        content: "";
-        inset: 1rem -1rem -1rem 1rem;
-        position: absolute;
-    }
-
-    /* Positioned, so it paints over the outline behind it rather than under */
     .panel {
         align-items: flex-start;
-        background: var(--color-ebony-clay);
-        border: 1px solid var(--color-cornflower);
-        border-radius: 32px;
-        box-shadow:
-            0 0 0.4rem color-mix(in srgb, var(--color-cornflower) 70%, transparent),
-            0 0 2.5rem color-mix(in srgb, var(--color-cornflower) 40%, transparent),
-            inset 0 0 1.5rem color-mix(in srgb, var(--color-cornflower) 18%, transparent);
-        color: var(--color-periwinkle);
         display: flex;
         font-family: var(--font-source-serif-4);
         gap: 1rem;
         padding: 2rem 2.5rem;
-        position: relative;
     }
 
     .icon {
@@ -67,13 +47,7 @@ const attrs = Astro.props;
     }
 
     @media (max-width: 700px) {
-        .callout::before {
-            border-radius: 20px;
-            inset: 0.5rem -0.5rem -0.5rem 0.5rem;
-        }
-
         .panel {
-            border-radius: 20px;
             gap: 0.75rem;
             padding: 1.25rem;
         }
