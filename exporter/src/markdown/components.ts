@@ -2,10 +2,10 @@ import { fetchNotebook, parseColabFileId } from "../colab";
 import type { NotionBlock } from "../notion";
 import { ExporterError, isExporterErr, type ExporterResult } from "../utils";
 import { blockContext, convertItems, type ConvertContext, type Item } from "./blocks";
-import { jsxFlow, type FlowContent, type JsxAttrs } from "./mdx";
+import { jsxFlow, jsxInlineBlock, type FlowContent, type JsxAttrs } from "./mdx";
 import { mediaFileName, uploadMedia } from "./media";
 import { asPlainText } from "./rich-text";
-import type { Image } from "mdast";
+import type { Heading, Image, PhrasingContent } from "mdast";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import remarkParse from "remark-parse";
@@ -308,6 +308,8 @@ async function colab({ items, ctx }: ComponentInput): ComponentOutput {
  * Removes what notebook markdown can hold but the page cannot: raw HTML (which MDX would read as JSX)
  * and images stored inside the notebook or next to it rather than on the web.
  * What was removed is recorded in `dropped`.
+ *
+ * Headings are written as JSX tags, which keeps their look but leaves them out of the page's table of contents.
  */
 function sanitizeNotebookMarkdown<Node extends { type: string }>(nodes: Node[], dropped: Set<string>): Node[] {
     return nodes.flatMap((node) => {
@@ -324,6 +326,15 @@ function sanitizeNotebookMarkdown<Node extends { type: string }>(nodes: Node[], 
         const children = sanitizeNotebookMarkdown(node.children as { type: string }[], dropped);
         // A paragraph that only held removed content would leave a gap
         if (node.type === "paragraph" && children.length === 0) return [];
+        if (node.type === "heading")
+            // So it isn't picked up by ToC
+            return [
+                jsxInlineBlock(
+                    `h${(node as unknown as Heading).depth}`,
+                    {},
+                    children as PhrasingContent[],
+                ) as unknown as Node,
+            ];
         return [{ ...node, children }];
     });
 }

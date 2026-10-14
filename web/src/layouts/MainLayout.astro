@@ -71,6 +71,9 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
         --color-grey-teal: #54a190;
         --color-cornflower: #6a67ff;
         --color-fluorescence: #00ff92;
+
+        /* Not one of the nine brand colours: a lighter ebony clay for surfaces raised off the page, like table headers */
+        --color-ebony-clay-raised: #2a2f5c;
     }
 
     :global(html),
@@ -89,11 +92,15 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
     .page-layout.has-sidebar {
         align-items: start;
         display: grid;
-        gap: 2.5rem;
+        gap: 4rem;
         grid-template-columns: minmax(0, 1fr) minmax(11rem, 15rem);
     }
 
+    /* Everything inherits the body font; headings, tables (in style.css) and captions override it */
     .page-content {
+        font-family: var(--font-source-serif-4);
+        font-size: 16px;
+        line-height: 1.5;
         min-width: 0;
         /* Bare URLs in links and citations offer a narrow screen no break opportunities */
         overflow-wrap: break-word;
@@ -144,10 +151,7 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
     .page-content :global(p),
     .page-content :global(li) {
         color: var(--color-periwinkle);
-        font-family: var(--font-source-serif-4);
-        font-size: 16px;
         font-weight: 400;
-        line-height: 1.5;
     }
 
     .page-content :global(p) {
@@ -171,21 +175,6 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
         outline-offset: 2px;
     }
 
-    .page-content :global(table) {
-        color: var(--color-periwinkle);
-        font-family: var(--font-source-serif-4);
-        font-size: 12px;
-        margin: 1rem 0;
-    }
-
-    .page-content :global(th) {
-        font-weight: 700;
-    }
-
-    .page-content :global(td) {
-        font-weight: 400;
-    }
-
     .page-content :global(figcaption),
     .page-content :global(caption) {
         color: var(--color-periwinkle);
@@ -199,7 +188,7 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
     .page-content :global(hr) {
         border: 0;
         border-top: 1px solid var(--color-northern-lights);
-        margin: 2rem 0;
+        margin: 3rem 0;
     }
 
     /* Only the table of contents scrolls, so an open dropdown is never clipped */

@@ -1,23 +1,70 @@
 /* Tables */
 table {
-    border-collapse: collapse;
-    margin: 20px 0;
+    border: 1px solid #555555;
+    border-collapse: separate;
+    border-radius: 8px;
+    border-spacing: 0;
+    color: var(--color-periwinkle);
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 1.5rem 0;
 }
 
+/* Notion tables without a header row still export an empty one */
 table:has(th:empty) thead {
     display: none;
 }
 
 table th,
 table td {
-    border: 1px solid #333333;
-    padding: 10px;
+    border-bottom: 1px solid #555555;
+    border-right: 1px solid #555555;
+    padding: 0.6rem 0.9rem;
     text-align: left;
+    vertical-align: top;
+}
+
+table tr > :last-child {
+    border-right: 0;
+}
+
+table tr:last-child > * {
+    border-bottom: 0;
+}
+
+/* A visible header row keeps its bottom edge, as it is the last row of its own section */
+table thead tr:last-child > * {
+    border-bottom: 1px solid #555555;
 }
 
 table th {
-    background-color: #f4f4f4;
-    color: #000000;
+    background-color: var(--color-ebony-clay-raised);
+    color: var(--color-periwinkle);
+    font-family: var(--font-geist);
+    font-weight: 700;
+}
+
+table td {
+    font-weight: 400;
+}
+
+/* Cell backgrounds would otherwise square off the rounded outline */
+table thead tr:first-child > :first-child,
+table:is(:has(th:empty), :not(:has(thead))) tbody tr:first-child > :first-child {
+    border-top-left-radius: 7px;
+}
+
+table thead tr:first-child > :last-child,
+table:is(:has(th:empty), :not(:has(thead))) tbody tr:first-child > :last-child {
+    border-top-right-radius: 7px;
+}
+
+table tbody tr:last-child > :first-child {
+    border-bottom-left-radius: 7px;
+}
+
+table tbody tr:last-child > :last-child {
+    border-bottom-right-radius: 7px;
 }
 
 /* Code blocks */
