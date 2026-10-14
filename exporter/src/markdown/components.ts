@@ -1,5 +1,6 @@
 import { fetchNotebook, parseColabFileId } from "../colab";
 import type { NotionBlock } from "../notion";
+import { fetchFileText, parsePlate, type Plate } from "../platemap";
 import { ExporterError, isExporterErr, type ExporterResult } from "../utils";
 import { blockContext, convertItems, type ConvertContext, type Item } from "./blocks";
 import { jsxFlow, jsxInlineBlock, type FlowContent, type JsxAttrs } from "./mdx";
@@ -39,6 +40,7 @@ export const COMPONENT_MAP: Record<string, (input: ComponentInput) => ComponentO
     model3d,
     ihp,
     colab,
+    platemap,
     skip,
 };
 
@@ -363,6 +365,94 @@ function blockLink(item: Item): string | undefined {
         if (text.href) return text.href;
     }
     return asPlainText(rich_text).trim() || undefined;
+}
+
+// ====================
+// PLATEMAP COMPONENT
+// ====================
+
+export interface PlatemapAttrs {
+    title: string;
+    /** Group names, in order of first appearance; a well's `group` indexes into this. */
+    groups: string[];
+    /** The plates as JSON (`Plate[]`). */
+    plates: string;
+}
+export const PLATEMAP_SLOTS = [] as const;
+type PlatemapSlots = SlotRecord<typeof PLATEMAP_SLOTS>;
+
+async function platemap({ items, ctx }: ComponentInput): ComponentOutput {
+    // A title, then a subtitle followed by an uploaded CSV for each plate
+    const [title_block, ...rest] = items.filter((item) => !isBlank(item));
+    const title = title_block === undefined ? undefined : blockText(title_block);
+    if (title === undefined || title === "") return malformedPlatemap("it does not start with a title");
+
+    if (rest.length === 0 || rest.length % 2 !== 0)
+        return malformedPlatemap("each plate must be a subtitle followed by an uploaded CSV file");
+
+    const groups: string[] = [];
+    const plates: Plate[] = [];
+    for (let i = 0; i < rest.length; i += 2) {
+        const subtitle_block = rest[i]!;
+        const file_block = rest[i + 1]!;
+        const name = blockText(subtitle_block);
+        if (name === undefined || name === "")
+            return malformedPlatemap(`plate ${i / 2 + 1} does not start with a subtitle`);
+        if (file_block.type !== "file" || !/\.csv$/i.test(mediaFileName(file_block)))
+            return malformedPlatemap(`the subtitle "${name}" is not followed by an uploaded .csv file`);
+
+        const csv = await fetchFileText(file_block);
+        if (isExporterErr(csv)) return csv;
+
+        const parsed = parsePlate(name, csv, groups);
+        if (isExporterErr(parsed)) return parsed;
+        for (const warning of parsed.warnings)
+            new ExporterError(warning, ["malformed content"]).warn(blockContext(ctx, file_block));
+        plates.push(parsed.plate);
+    }
+
+    if (groups.length > PLATEMAP_PALETTE_SIZE)
+        new ExporterError(
+            `Platemap "${title}" has ${groups.length} groups, but only ${PLATEMAP_PALETTE_SIZE} colours; some groups share a colour.`,
+            ["malformed content"],
+        ).warn(ctx);
+
+    return generateComponent<PlatemapAttrs, PlatemapSlots>({
+        tag: "Platemap",
+        attrs: { title, groups, plates: JSON.stringify(plates) },
+        slots: {},
+    });
+}
+
+/** How many distinct group colours `Platemap.astro` has. */
+export const PLATEMAP_PALETTE_SIZE = 12;
+
+/** The text of a heading or paragraph. */
+function blockText(item: Item): string | undefined {
+    switch (item.type) {
+        case "paragraph":
+            return asPlainText(item.paragraph.rich_text).trim();
+        case "heading_1":
+            return asPlainText(item.heading_1.rich_text).trim();
+        case "heading_2":
+            return asPlainText(item.heading_2.rich_text).trim();
+        case "heading_3":
+            return asPlainText(item.heading_3.rich_text).trim();
+        case "heading_4":
+            return asPlainText(item.heading_4.rich_text).trim();
+        default:
+            return undefined;
+    }
+}
+
+function malformedPlatemap(problem: string): ExporterError {
+    return new ExporterError(
+        `Platemap component could not be understood: ${problem}.` +
+            componentDocSuggestion(
+                "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link",
+            ),
+        ["malformed content"],
+    );
 }
 
 // ====================

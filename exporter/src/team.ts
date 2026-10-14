@@ -5,7 +5,6 @@ import { getToolsClient } from "./tools-api";
 import { ExporterError, isExporterErr, saveFile, type ExporterResult } from "./utils";
 import type { PageObjectResponse } from "@notionhq/client";
 
-const TEAM_JSON_DIR = "web/src/data";
 const TEAM_JSON_FILE = "team.json";
 
 // Property names on the team database. Update these if your Notion property names differ.
@@ -107,7 +106,6 @@ export async function exportTeamPage(): Promise<ExporterResult<void>> {
     return await saveFile({
         content: JSON.stringify(orderSections(sections), null, 2),
         path: TEAM_JSON_FILE,
-        base_path: TEAM_JSON_DIR,
     });
 }
 

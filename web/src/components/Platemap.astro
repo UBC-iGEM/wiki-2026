@@ -1,0 +1,442 @@
+---
+import { type PlatemapAttrs, PLATEMAP_SLOTS, PLATEMAP_PALETTE_SIZE } from "@exporter/markdown/components";
+import type { Plate } from "@exporter/platemap";
+type Props = PlatemapAttrs;
+
+const { title, groups, plates: plates_json } = Astro.props;
+PLATEMAP_SLOTS satisfies readonly [];
+
+const plates: Plate[] = JSON.parse(plates_json);
+const first = plates[0]!;
+// Groups share colours across plates, but each plate's legend lists only the groups on it
+const groupsOn = (plate: Plate) =>
+    [...new Set(plate.rows.flatMap((row) => row.wells.flatMap((well) => (well ? [well.group] : []))))].sort(
+        (a, b) => a - b,
+    );
+
+// `<` is escaped so a well name can't close the script tag.
+const data = JSON.stringify({ groups, plates }).replaceAll("<", "\\u003c");
+
+// Bright enough to read against the dark panel; groups take them in order of first appearance.
+// Each is a `.g<n>` class below.
+const PALETTE_SIZE = 12;
+PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
+---
+
+<div class="platemap glow-panel">
+    <div class="panel glow-panel-body">
+        <div class="title">{title}</div>
+
+        <figure class="plate">
+            <figcaption class="plate-header">
+                <span class="plate-name" aria-live="polite">{first.name}</span>
+                {
+                    plates.length > 1 && (
+                        <span class="plate-nav">
+                            <button class="arrow prev" aria-label="Previous plate">
+                                <span class="marker" aria-hidden="true" />
+                            </button>
+                            <span class="plate-count">1 / {plates.length}</span>
+                            <button class="arrow next" aria-label="Next plate">
+                                <span class="marker" aria-hidden="true" />
+                            </button>
+                        </span>
+                    )
+                }
+            </figcaption>
+            <div class="grid-scroll">
+                <!-- Must match `drawGrid` in the script, which redraws it for other plates -->
+                <div class="grid" style={`--columns: ${first.columns.length}`}>
+                    <span></span>
+                    {first.columns.map((column) => <span class="label">{column}</span>)}
+                    {
+                        first.rows.map((row, r) => (
+                            <>
+                                <span class="label">{row.label}</span>
+                                {row.wells.map((well, c) =>
+                                    well === null ? (
+                                        <span class="well empty" />
+                                    ) : (
+                                        <span
+                                            class={`well g${well.group % PALETTE_SIZE}`}
+                                            style={`--fill: ${Math.round(well.value * 100)}%`}
+                                            tabindex="0"
+                                            role="img"
+                                            aria-label={`${row.label}${first.columns[c]}: ${well.name}`}
+                                            data-r={r}
+                                            data-c={c}
+                                        />
+                                    ),
+                                )}
+                            </>
+                        ))
+                    }
+                </div>
+            </div>
+        </figure>
+
+        <!-- Must match `drawLegend` in the script -->
+        <ul class="legend">
+            {
+                groupsOn(first).map((i) => (
+                    <li>
+                        <span class={`swatch g${i % PALETTE_SIZE}`} />
+                        {groups[i]}
+                    </li>
+                ))
+            }
+        </ul>
+
+        <div class="tooltip" role="tooltip" hidden></div>
+        <script type="application/json" class="platemap-data" is:inline set:html={data} />
+    </div>
+</div>
+
+<script>
+    import type { Plate } from "@exporter/platemap";
+
+    const PALETTE_SIZE = 12;
+
+    /** Redraw the grid for `plate`, matching the server-rendered markup. */
+    function drawGrid(grid: HTMLElement, plate: Plate) {
+        const span = (className: string, text = "") => {
+            const el = document.createElement("span");
+            el.className = className;
+            el.textContent = text;
+            return el;
+        };
+
+        const cells: HTMLElement[] = [span("")];
+        for (const column of plate.columns) cells.push(span("label", column));
+        plate.rows.forEach((row, r) => {
+            cells.push(span("label", row.label));
+            row.wells.forEach((well, c) => {
+                if (well === null) return cells.push(span("well empty"));
+                const el = span(`well g${well.group % PALETTE_SIZE}`);
+                el.style.setProperty("--fill", `${Math.round(well.value * 100)}%`);
+                el.tabIndex = 0;
+                el.setAttribute("role", "img");
+                el.setAttribute("aria-label", `${row.label}${plate.columns[c]}: ${well.name}`);
+                el.dataset.r = `${r}`;
+                el.dataset.c = `${c}`;
+                cells.push(el);
+            });
+        });
+        grid.style.setProperty("--columns", `${plate.columns.length}`);
+        grid.replaceChildren(...cells);
+    }
+
+    /** Redraw the legend with the groups on `plate`, matching the server-rendered markup. */
+    function drawLegend(legend: HTMLElement, plate: Plate, groups: string[]) {
+        const on = new Set(plate.rows.flatMap((row) => row.wells.flatMap((well) => (well ? [well.group] : []))));
+        legend.replaceChildren(
+            ...[...on]
+                .sort((a, b) => a - b)
+                .map((i) => {
+                    const item = document.createElement("li");
+                    const swatch = document.createElement("span");
+                    swatch.className = `swatch g${i % PALETTE_SIZE}`;
+                    item.append(swatch, groups[i]!);
+                    return item;
+                }),
+        );
+    }
+
+    for (const platemap of document.querySelectorAll<HTMLElement>(".platemap")) {
+        const { groups, plates } = JSON.parse(platemap.querySelector(".platemap-data")!.textContent!) as {
+            groups: string[];
+            plates: Plate[];
+        };
+        const grid = platemap.querySelector<HTMLElement>(".grid")!;
+        const legend = platemap.querySelector<HTMLElement>(".legend")!;
+        const name = platemap.querySelector<HTMLElement>(".plate-name")!;
+        const count = platemap.querySelector<HTMLElement>(".plate-count");
+        const tooltip = platemap.querySelector<HTMLElement>(".tooltip")!;
+        const n = plates.length;
+
+        let current = 0;
+        const show = (index: number) => {
+            current = (index + n) % n;
+            const plate = plates[current]!;
+            name.textContent = plate.name;
+            if (count) count.textContent = `${current + 1} / ${n}`;
+            drawGrid(grid, plate);
+            drawLegend(legend, plate, groups);
+            close();
+        };
+        platemap.querySelector(".arrow.prev")?.addEventListener("click", () => show(current - 1));
+        platemap.querySelector(".arrow.next")?.addEventListener("click", () => show(current + 1));
+
+        // One tooltip per platemap, fixed to the viewport so the scrolling grid can't clip it
+        const open = (well: HTMLElement) => {
+            const plate = plates[current]!;
+            const row = plate.rows[Number(well.dataset.r)]!;
+            const column = plate.columns[Number(well.dataset.c)]!;
+            const data = row.wells[Number(well.dataset.c)];
+            if (!data) return;
+
+            const heading = document.createElement("strong");
+            heading.textContent = data.name || `${row.label}${column}`;
+            const detail = document.createElement("span");
+            detail.textContent = `${row.label}${column} · ${groups[data.group]} · ${data.value.toFixed(2)}`;
+            tooltip.replaceChildren(heading, detail);
+            tooltip.hidden = false;
+
+            const rect = well.getBoundingClientRect();
+            const tip = tooltip.getBoundingClientRect();
+            const left = Math.min(Math.max(8, rect.left + rect.width / 2 - tip.width / 2), innerWidth - tip.width - 8);
+            const above = rect.top - tip.height - 8;
+            tooltip.style.left = `${left}px`;
+            tooltip.style.top = `${above >= 8 ? above : rect.bottom + 8}px`;
+        };
+        const close = () => (tooltip.hidden = true);
+
+        // Delegated, so redrawn wells need no listeners of their own
+        const wellAt = (target: EventTarget | null) =>
+            target instanceof Element ? target.closest<HTMLElement>(".well:not(.empty)") : null;
+        grid.addEventListener("pointerover", (event) => {
+            const well = wellAt(event.target);
+            if (well) open(well);
+            else close();
+        });
+        grid.addEventListener("pointerleave", close);
+        grid.addEventListener("focusin", (event) => {
+            const well = wellAt(event.target);
+            if (well) open(well);
+        });
+        grid.addEventListener("focusout", close);
+        addEventListener("scroll", close, { passive: true });
+
+        platemap.classList.add("js-ready");
+    }
+</script>
+
+<!-- Global, as wells redrawn by the script don't carry Astro's scoping attribute -->
+<style is:global>
+    .platemap {
+        margin: 2rem 0 3rem;
+    }
+
+    .platemap .panel {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        padding: 1.5rem 2.5rem;
+    }
+
+    .platemap .title {
+        font-family: var(--font-source-serif-4);
+        font-size: 1.15rem;
+        font-weight: 700;
+    }
+
+    .platemap .plate {
+        margin: 0;
+    }
+
+    .platemap .plate-header {
+        align-items: center;
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .platemap .plate-name {
+        flex: 1;
+        font-weight: 700;
+    }
+
+    /* A steady width, so the arrows don't shift as the count goes from 9 to 10 */
+    .platemap .plate-count {
+        font-size: 0.85rem;
+        font-variant-numeric: tabular-nums;
+        min-width: 5.5ch;
+        opacity: 0.7;
+        text-align: center;
+    }
+
+    /* Hidden until the script can make them work */
+    .platemap .arrow {
+        align-items: center;
+        background: none;
+        border: 1px solid var(--color-cornflower);
+        border-radius: 50%;
+        cursor: pointer;
+        display: none;
+        flex-shrink: 0;
+        height: 2rem;
+        justify-content: center;
+        padding: 0;
+        transition: background 120ms ease;
+        width: 2rem;
+    }
+
+    .platemap.js-ready .arrow {
+        display: flex;
+    }
+
+    /* The arrows sit either side of the count */
+    .platemap .plate-nav {
+        align-items: center;
+        display: flex;
+        flex-shrink: 0;
+        gap: 0.5rem;
+    }
+
+    .platemap .arrow:hover {
+        background: color-mix(in srgb, var(--color-cornflower) 35%, transparent);
+    }
+
+    .platemap .arrow:focus-visible {
+        outline: 2px solid var(--color-lime-yellow);
+        outline-offset: 3px;
+    }
+
+    /* The same chevron as the Colab panel, pointing left or right */
+    .platemap .marker {
+        border-bottom: 2px solid var(--color-cornflower);
+        border-right: 2px solid var(--color-cornflower);
+        height: 0.45rem;
+        width: 0.45rem;
+    }
+
+    .platemap .prev .marker {
+        margin-left: 0.15rem;
+        transform: rotate(135deg);
+    }
+
+    .platemap .next .marker {
+        margin-right: 0.15rem;
+        transform: rotate(-45deg);
+    }
+
+    .platemap .grid-scroll {
+        overflow-x: auto;
+        padding: 2px;
+    }
+
+    .platemap .grid {
+        align-items: center;
+        display: grid;
+        gap: 0.35rem;
+        grid-template-columns: 1.5rem repeat(var(--columns), minmax(0.9rem, 2.25rem));
+        justify-content: center;
+    }
+
+    .platemap .label {
+        font-family: var(--font-geist);
+        font-size: 0.75rem;
+        opacity: 0.7;
+        text-align: center;
+    }
+
+    /* The group colour fills the well in proportion to its value */
+    .platemap .well {
+        aspect-ratio: 1;
+        background: color-mix(in srgb, var(--group) var(--fill), var(--color-ebony-clay));
+        border: 1.5px solid var(--group);
+        border-radius: 50%;
+        transition: transform 100ms ease;
+    }
+
+    .platemap .well:not(.empty):is(:hover, :focus-visible) {
+        outline: 2px solid var(--color-periwinkle);
+        outline-offset: 2px;
+        transform: scale(1.12);
+    }
+
+    .platemap .well.empty {
+        background: none;
+        border: 1px dashed color-mix(in srgb, var(--color-periwinkle) 30%, transparent);
+    }
+
+    .platemap .g0 {
+        --group: var(--color-lime-yellow);
+    }
+    .platemap .g1 {
+        --group: var(--color-orchid);
+    }
+    .platemap .g2 {
+        --group: var(--color-fluorescence);
+    }
+    .platemap .g3 {
+        --group: var(--color-northern-lights);
+    }
+    .platemap .g4 {
+        --group: var(--color-citrine);
+    }
+    .platemap .g5 {
+        --group: var(--color-cornflower);
+    }
+    .platemap .g6 {
+        --group: #ff8a5c;
+    }
+    .platemap .g7 {
+        --group: #ff5c8a;
+    }
+    .platemap .g8 {
+        --group: #b08cff;
+    }
+    .platemap .g9 {
+        --group: #5cd6ff;
+    }
+    .platemap .g10 {
+        --group: var(--color-grey-teal);
+    }
+    .platemap .g11 {
+        --group: #f2f2f2;
+    }
+
+    .platemap .legend {
+        display: flex;
+        flex-wrap: wrap;
+        font-size: 0.85rem;
+        gap: 0.5rem 1.25rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .platemap .legend li {
+        align-items: center;
+        display: flex;
+        gap: 0.4rem;
+        margin: 0;
+    }
+
+    .platemap .swatch {
+        background: var(--group);
+        border-radius: 50%;
+        height: 0.8rem;
+        width: 0.8rem;
+    }
+
+    .platemap .tooltip {
+        background: var(--color-ebony-clay-raised);
+        border: 1px solid var(--color-cornflower);
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        font-size: 0.8rem;
+        gap: 0.15rem;
+        max-width: 18rem;
+        padding: 0.4rem 0.7rem;
+        pointer-events: none;
+        position: fixed;
+        z-index: 10;
+    }
+
+    .platemap .tooltip[hidden] {
+        display: none;
+    }
+
+    .platemap .tooltip span {
+        opacity: 0.75;
+    }
+
+    @media (max-width: 700px) {
+        .platemap .panel {
+            padding: 1rem 1.25rem;
+        }
+    }
+</style>
