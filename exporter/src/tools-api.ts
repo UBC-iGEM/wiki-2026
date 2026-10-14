@@ -232,59 +232,16 @@ class ToolsClient {
         return uploaded_uids.has(uid);
     }
 
-    // assumes UID == filename excluding file extension
-    private getUidFromRemoteFile(file: any): string | null {
-        const file_name = file.name ?? file.key?.split("/").pop() ?? file.uploadKey?.split("/").pop() ?? "";
-
-        if (!file_name) return null;
-
-        const dot_index = file_name.lastIndexOf(".");
-
-        if (dot_index === -1) {
-            return file_name;
-        }
-
-        return file_name.slice(0, dot_index);
-    }
-
-    // Make GET request to igem api endpoint to retrieve list of files in a directory
+    /** The cached UIDs of files in `folder_name`; a UID is the file name without its extension. */
     private async getUploadedAssetUids({ folder_name }: { folder_name: string }): Promise<ExporterResult<Set<string>>> {
         if (this.uploaded_asset_uuids_promise) {
             return this.uploaded_asset_uuids_promise;
         }
 
         this.uploaded_asset_uuids_promise = (async (): Promise<ExporterResult<Set<string>>> => {
-            const response = await $unsafe(
-                async () =>
-                    await this.client.get(`/teams/${this.team_id}/repositories/${CONFIG.repo_uuid}/files`, {
-                        params: { directory: folder_name },
-                        timeout: 30000,
-                    }),
-            );
-
-            if (isErr(response))
-                return new ExporterError(
-                    `Failed to retrieve the list of already uploaded assets for folder "${folder_name}".`,
-                    ["igem tools server"],
-                    response,
-                );
-
-            const files = Array.isArray(response.data)
-                ? response.data
-                : Array.isArray(response.data?.files)
-                  ? response.data.files
-                  : Array.isArray(response.data?.data)
-                    ? response.data.data
-                    : [];
-
-            const uploaded_uids = new Set<string>();
-
-            for (const file of files) {
-                const uid = this.getUidFromRemoteFile(file);
-                if (uid) uploaded_uids.add(uid);
-            }
-
-            return uploaded_uids;
+            const names = await this.listFiles(folder_name);
+            if (isExporterErr(names)) return names;
+            return new Set(names.map((name) => nodePath.parse(name).name));
         })();
 
         const result = await this.uploaded_asset_uuids_promise;
@@ -295,5 +252,46 @@ class ToolsClient {
         }
 
         return result;
+    }
+
+    /** The names of every file in the assets folder, e.g. `0123abcd.avif`. Not cached. */
+    public listAssets(): Promise<ExporterResult<string[]>> {
+        return this.listFiles(ASSETS_FOLDER);
+    }
+
+    private async listFiles(folder_name: string): Promise<ExporterResult<string[]>> {
+        const response = await $unsafe(
+            async () =>
+                await this.client.get(`/teams/${this.team_id}/repositories/${CONFIG.repo_uuid}/files`, {
+                    params: { directory: folder_name },
+                    timeout: 30000,
+                }),
+        );
+        if (isErr(response))
+            return new ExporterError(`Failed to list the files in "${folder_name}".`, ["igem tools server"], response);
+
+        const files: unknown = response.data?.files;
+        if (!Array.isArray(files))
+            return new ExporterError(`The file list for "${folder_name}" came back in an unexpected shape.`, [
+                "igem tools server",
+            ]);
+        return files.map((file: { name: string }) => file.name);
+    }
+
+    /** Delete one file from the assets folder by name, e.g. `0123abcd.avif`. */
+    public async deleteAsset(file_name: string): Promise<ExporterResult<void>> {
+        const response = await $unsafe(
+            async () =>
+                await this.client.delete(
+                    `/teams/${this.team_id}/repositories/${CONFIG.repo_uuid}/files/${encodeURIComponent(file_name)}`,
+                    { params: { directory: ASSETS_FOLDER }, timeout: 30000 },
+                ),
+        );
+        if (isErr(response))
+            return new ExporterError(
+                `Failed to delete "${ASSETS_FOLDER}/${file_name}".`,
+                ["igem tools server"],
+                response,
+            );
     }
 }

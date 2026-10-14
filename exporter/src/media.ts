@@ -78,6 +78,7 @@ export async function downloadToTempFile({
     const cleanup = async (): Promise<void> => {
         await rm(temp_dir, { recursive: true, force: true });
     };
+    const url_without_query = url.split("?")[0];
 
     const response = await $unsafe(
         async () =>
@@ -91,7 +92,7 @@ export async function downloadToTempFile({
     if (isErr(response)) {
         await cleanup();
         return new ExporterError(
-            `Failed to retrieve data from url "${url}".`,
+            `Failed to retrieve data from url "${url_without_query}".`,
             ["igem tools server", "notion server"],
             response,
         );
@@ -109,7 +110,7 @@ export async function downloadToTempFile({
     } catch (error) {
         await cleanup();
         return new ExporterError(
-            `Failed to download data from url "${url}".`,
+            `Failed to download data from url "${url_without_query}".`,
             ["igem tools server", "notion server"],
             error instanceof Error ? error : new Error(String(error)),
         );

@@ -21,6 +21,7 @@
     },
     "scripts": {
         "export": "npx tsx --env-file=.env exporter/src/main.ts",
+        "clear-assets": "npx tsx --env-file=.env exporter/src/clear-assets.ts",
         "dev": "npm run dev -w web",
         "build": "npm run build -w web",
         "fmt": "prettier . --write",

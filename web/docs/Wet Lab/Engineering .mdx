@@ -1,6 +1,6 @@
 ---
 type: "page"
-title: "Engineering"
+title: "Engineering "
 ---
 
 <a id="3f1d65dd82be803a991df3dc3b2be8f9" />If you need inspo: [McGill - iGEM 2025](https://2025.igem.wiki/mcgill/engineering)
@@ -59,7 +59,56 @@ title: "Engineering"
   <a id="3f1d65dd82be805e919ef2d67c868715" />GFP sensitivity/dose response (you might want to pick and choose which iterations to highlight, please look through the notebook to decide; I have a few suggested below)
 
   - <a id="3f1d65dd82be80ee8775e361243de68a" />iteration 1 [Biosensor GFP sensitivity assay v1 ](/ubc-vancouver/wet-lab/lab-notebook-2026/biosensor-gfp-sensitivity-assay-v1-) - ZiQi
-  - <a id="3f1d65dd82be805fbc23ea97ef1d3659" />iteration 2 [Biosensor MIC Screening Titration v1](/ubc-vancouver/wet-lab/lab-notebook-2026/biosensor-mic-screening-titration-v1) - ZiQi
+
+  <a id="3f9d65dd82be801484dbde983c9f2b2d" />Design:
+
+  <a id="3f9d65dd82be805892ade1407c3b287a" />After transforming our constructs into our host species, we needed a way to validate its function as a biosensor. To begin, we started by looking for any form of differential expression of GFP to get a sense of a general range of sub-inhibitory antibiotic concentrations to use, as well as the time ranges to investigate.
+
+  <a id="3f9d65dd82be8045b15bd77b44550ae2" />We also considered the effect of OD on GFP expression, and included this condition in the experiment.
+
+  <a id="3f9d65dd82be803f9ca5ccd664e607ba" />Build
+
+  <a id="3f9d65dd82be802aa079cfdcf58676ba" />RecA and CpxP biosensor strains were inoculated and harvested, then diluted to 1x and 0.5x at OD600 of 0.4. Antibiotics (Amoxicillin, Kanamycin, Gentamicin, Cephalexin) were reconstituted, and serially diluted twice to test a broad range of antibiotic concentrations.
+
+  <a id="3f9d65dd82be8028ab20d26a22bef776" />In a clear, U-bottom 96-well plate, LB-Cm media was pipetted into the wells allotted for antibiotic conditions, then given the associated serial dilution of antibiotic to create a 2x condition. This 2x condition was diluted using the grown biosensor strains at an equal volume. Wells were allotted for blank LB-Cm and unstimulated biosensor strain controls. Each condition was done in triplicate, including controls.
+
+  <a id="3f9d65dd82be80fcbb5fe0de755af8d8" />Test
+
+  <a id="3f9d65dd82be8094bd25df7b20a66fc5" />We evaluated the plate using a Varioskan machine, exciting at 488 nm and reading fluorescence at 510 nm. The plate was incubated at 37˚C, and scanned every 10 minutes over the span of one hour.
+
+  <a id="3f9d65dd82be80e9ae86e1f494c7ab99" />Learn
+
+  <a id="3f9d65dd82be80a49d67d02d31fe1866" />We had four major takeaways: \
+  The RecA biosensor was more sensitive, with significantly higher fold changes observed in the same timescale.
+
+  <a id="3f9d65dd82be8059834ddfb42d584ab8" />Higher OD values resulted in more discernible GFP signals.
+
+  <a id="3f9d65dd82be80bd8b9eef87af1b617a" />Most conditions had a peak between 10-30 minutes.
+
+  <a id="3f9d65dd82be80a7be75c64579ab8248" />We identified potential antibiotic concentration and time value ranges for optimal GFP-stimulation response in both CpxP and RecA, although RecA showed more promise.
+
+  <a id="3f9d65dd82be80798c64fda4c6921baf" />However, this experiment had some setbacks, like the U-bottom plates not being ideal, as well as low overall expression, OD600, and identified ranges.
+
+  - <a id="3f1d65dd82be805fbc23ea97ef1d3659" />iteration 2 [Biosensor MIC Screening Titration v1](/ubc-vancouver/wet-lab/lab-notebook-2026/biosensor-mic-screening-titration-v1)
+
+  <a id="3f9d65dd82be80cd894fc603ea350d28" />Design:
+
+  <a id="3f9d65dd82be8095be44c14f9fd3db85" />In the previous experiment, we identified potential ranges for antibiotic concentrations and time values, but this was very narrow and we did not properly assess the starting and ending bounds for GFP-stimulation response, since there were very little changes with different antibiotic concentrations. Additionally, the OD600 was low, and our findings in the previous experiment show that greater OD600 values improved GFP output - we elected to test one condition this time for simplicity. We also increased the time range, in order to assess if there was a difference outside of the time range we tested previously. Finally, the results from this experiment were intended to eventually inform a Biofactorial biosensor experiment that could characterize our biosensor with greater resolution than Benchtop.
+
+  <a id="3f9d65dd82be80729508e813ae9e7568" />Build
+
+  <a id="3f9d65dd82be80e1a297da1be525df07" />We learned in the last experiment that the OD600 was too low, so the biosensor strains were grown to an OD600 of 0.8 instead of 0.4 so that it would dilute to 0.4 instead of 0.2. Antibiotics were reconstituted (Amoxicillin, Kanamycin, Gentamicin, Cephalexin) and serially diluted 5 times instead of twice. This was done to test for changes based on antibiotic concentration, as we did not observe much change in the last experiment.
+
+  <a id="3f9d65dd82be807f9b07fb626387b5ef" />In an opaque, flat-bottom, 96-well plate, LB-Cm media was pipetted into the wells allotted for antibiotic conditions, then given the associated antibiotic dilutions at 2x concentration. These were diluted by an identical volume of the associated biosensor strain at OD600 0.8, to a final OD600 of 0.4 and antibiotic concentration of 1x (but each was diluted via the serial dilution)
+
+  <a id="3f9d65dd82be80e79295c62b9acc4a51" />Test
+
+  <a id="3f9d65dd82be80d985b7d6a75c0d7d0e" />We evaluated the plate using a Varioskan machine, exciting at 488 nm and reading fluorescence at 510 nm. The plate was incubated at 37˚C, and scanned every 10 minutes over the span of 40 minutes due to time restrictions.
+
+  <a id="3f9d65dd82be80c28b9defc8daee01aa" />Learn
+
+  <a id="3f9d65dd82be80c185c0d70b4cf7563f" />We encountered significant technical issues, including the Varioskan jamming, which lost us both time and data. Despite this, we identified preliminary ranges to further zoom in on.
+
   - <a id="3f1d65dd82be80c29b39d660467883f8" />iteration 3 [Biosensor MIC Screening Titration v2](/ubc-vancouver/wet-lab/lab-notebook-2026/biosensor-mic-screening-titration-v2) - Evan
 
   <a id="3f3d65dd82be80c987e9e0ebc2cd011e" />**Design:**
@@ -86,7 +135,7 @@ title: "Engineering"
 
   <a id="3f9d65dd82be80de9415d7d9fdc24868" />This iteration did not reproduce the preliminary response ranges identified in the previous experiment. Interpretation was limited by fluorescence values close to background, inconsistent measurements, and a lower starting bacterial density than originally planned.
 
-  <a id="3f9d65dd82be802a9a19f4c86cde4f15" />The use of clear plates introduced na additional source of variability through fluorescence interference between wells. For future experiments, using plates suitable for fluorescence measurements, maintaining a consistent starting density, and evaluating background signal before interpreting fold changes was noted as important.
+  <a id="3f9d65dd82be802a9a19f4c86cde4f15" />The use of clear plates introduced an additional source of variability through fluorescence interference between wells. For future experiments, using plates suitable for fluorescence measurements, maintaining a consistent starting density, and evaluating background signal before interpreting fold changes was noted as important.
 
   <a id="3f9d65dd82be80e385abfe53b0b6e302" />For the next iteration, these findings highlighted a more focused approach for the next iteration. Rather than selecting conditions from uncertain peaks in the broad, wide-range screen, we used the independently determined biosensor MIC range to the next titration experiment, and extended the observation period to investigate responses that may not be detectable during a short assay.
 
@@ -206,9 +255,9 @@ title: "Engineering"
 
   <a id="3f2d65dd82be80578c4eecb145aded9a" />As expected, all blank controls had comparably low OD values, indicating that the LB-Cm media was not contaminated and the the supernatant filtration successfully removed residual bacterial cells before the antibiotic-containing supernatants were introduced to the biosensors. This successfully addressed the confounding variable identified in V1.
 
-  <a id="3f2d65dd82be8024a19bcd6ea3e49a7c" />![Figure 1. Biosensor strains (CpxP and RecA) exposed to supernatant, harvested after 6-hours of incubation with patient simulant strains (GmR, KanR, Beta-lactamase) at an initial OD value of 0.1.](https://static.igem.wiki/teams/6279/wiki/assets/3f2d65dd82be8024a19bcd6ea3e49a7c.avif)
+  <a id="3f2d65dd82be8024a19bcd6ea3e49a7c" />![Figure 1. Biosensor strains (CpxP and RecA) exposed to supernatant, harvested after 6-hours of incubation with patient simulant strains (GmR, KanR, Beta-lactamase) at an initial OD value of 0.1.](https://static.igem.wiki/teams/6279/wiki/assets/10520000d659526786a58332e78d1661.avif)
 
-  <a id="3f2d65dd82be80cea11fc84310597e03" />![Figure 2. Biosensor strains (CpxP and RecA) exposed to supernatant, harvested after 10-hours of incubation with patient simulant strains (GmR, KanR, Beta-lactamase) at an initial OD value of 0.1.](https://static.igem.wiki/teams/6279/wiki/assets/3f2d65dd82be80cea11fc84310597e03.avif)
+  <a id="3f2d65dd82be80cea11fc84310597e03" />![Figure 2. Biosensor strains (CpxP and RecA) exposed to supernatant, harvested after 10-hours of incubation with patient simulant strains (GmR, KanR, Beta-lactamase) at an initial OD value of 0.1.](https://static.igem.wiki/teams/6279/wiki/assets/7e63f6d39c1854b19cecb59e9422989b.avif)
 
   <a id="3f2d65dd82be8014adfbca271a059776" />The results from Figures 1 and 2 indicate that the maximum MIC value of 8 ug/mL was generally a more suitable initial antibiotic concentration than the two-fold MIC value of 16 ug/mL for patient simulant-induced degradation, although the β-lactamase simulant strain was able to further reduce the activity of amoxicillin at both concentrations.
 

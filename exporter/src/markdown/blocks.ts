@@ -67,7 +67,8 @@ function componentMarker(block: NotionBlock): { type: "start"; name: string } | 
     if (text.toLowerCase() === "end") return { type: "end" };
 
     const name = text.match(/^START(?:\s+([\s\S]*))?$/i);
-    if (name) return { type: "start", name: name[1]!.replace(/\s+/g, "").toLowerCase() };
+    // An empty name (a bare START) is reported by `parseItems`
+    if (name) return { type: "start", name: (name[1] ?? "").replace(/\s+/g, "").toLowerCase() };
 }
 
 /**
@@ -95,7 +96,11 @@ function parseItems(
 
         if (marker?.type === "start") {
             const inner = parseItems(blocks, pos, ctx, marker.name);
-            if (inner.closed) {
+            if (marker.name === "") {
+                // Keep the content, as if the markers were absent
+                warnMarker(blockContext(ctx, block), "a START block does not name a component");
+                items.push(...inner.items);
+            } else if (inner.closed) {
                 items.push({ type: "component", name: marker.name, start: block, items: inner.items });
             } else {
                 // Keep the content, as if the marker were absent

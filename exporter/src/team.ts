@@ -1,14 +1,12 @@
 import { CONFIG } from "./config";
-import { convertToAvif, downloadToTempFile } from "./media";
+import { mediaUid } from "./markdown/media";
 import { DatabaseId, PageId } from "./notion";
-import { $unsafe, ExporterError, isErr, isExporterErr, saveFile, type ExporterResult } from "./utils";
+import { getToolsClient } from "./tools-api";
+import { ExporterError, isExporterErr, saveFile, type ExporterResult } from "./utils";
 import type { PageObjectResponse } from "@notionhq/client";
-import { mkdir, rm } from "node:fs/promises";
 
 const TEAM_JSON_DIR = "web/src/data";
 const TEAM_JSON_FILE = "team.json";
-const HEADSHOTS_DIR = "web/public/headshots";
-const HEADSHOTS_PUBLIC_PATH = "/headshots";
 
 // Property names on the team database. Update these if your Notion property names differ.
 const SUBTEAM_PROPERTY_NAME = "Subteam";
@@ -91,11 +89,6 @@ export async function exportTeamPage(): Promise<ExporterResult<void>> {
     const rows_res = await database_res.getRows();
     if (isExporterErr(rows_res)) return rows_res;
 
-    // Re-download every headshot on each run so removed/replaced photos don't linger.
-    const clear_res = await $unsafe(rm, HEADSHOTS_DIR, { recursive: true, force: true });
-    if (isErr(clear_res))
-        return new ExporterError(`Failed to clear previous headshots at ${HEADSHOTS_DIR}.`, ["wiki server"], clear_res);
-
     const sections: Record<string, TeamSection> = {};
 
     for (const row of rows_res) {
@@ -162,7 +155,7 @@ async function rowToMember(
 
     let image: string | undefined;
     if (headshot_url_res) {
-        const image_res = await saveHeadshotAvif(headshot_url_res, slugify(name_res));
+        const image_res = await uploadHeadshot(headshot_url_res);
         if (isExporterErr(image_res)) return image_res;
         image = image_res;
     }
@@ -259,30 +252,15 @@ function getOptionalFileUrl(row: PageObjectResponse, property_name: string): Exp
 }
 
 /**
- * Downloads a headshot from `url` and re-encodes it as AVIF into {@link HEADSHOTS_DIR}, returning
- * the public path to store on the member's `image` field.
+ * Uploads a headshot to `tools.igem.org` as AVIF, returning its static URL.
+ * See {@link mediaUid} for how unchanged photos are skipped.
  */
-async function saveHeadshotAvif(url: string, slug: string): Promise<ExporterResult<string>> {
-    const download_res = await downloadToTempFile({ url, uid: slug });
-    if (isExporterErr(download_res)) return download_res;
+async function uploadHeadshot(url: string): Promise<ExporterResult<string>> {
+    const client_res = await getToolsClient();
+    if (isExporterErr(client_res)) return client_res;
 
-    const { file_path, cleanup } = download_res;
+    const upload_res = await client_res.upload({ uid: mediaUid(url).toString(), url });
+    if (isExporterErr(upload_res)) return upload_res;
 
-    try {
-        const mkdir_res = await $unsafe(mkdir, HEADSHOTS_DIR, { recursive: true });
-        if (isErr(mkdir_res))
-            return new ExporterError(
-                `Failed to create headshots directory ${HEADSHOTS_DIR}.`,
-                ["wiki server"],
-                mkdir_res,
-            );
-
-        const final_path = `${HEADSHOTS_DIR}/${slug}.avif`;
-        const convert_res = await convertToAvif(file_path, final_path);
-        if (isExporterErr(convert_res)) return convert_res;
-    } finally {
-        await cleanup();
-    }
-
-    return `${HEADSHOTS_PUBLIC_PATH}/${slug}.avif`;
+    return upload_res.location;
 }

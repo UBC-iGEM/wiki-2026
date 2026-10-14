@@ -11,13 +11,13 @@ title: "Microfluidic Chip"
 
 <a id="3ecd65dd82be8021b470f88b3f0261b1" />Microfluidic chips are an emerging technology within the biomedical space \[@pattanayakMicrofluidicChipsRecent2021] . They function by using a series of grooves less than a millimetre in diameter engraved into a wide variety of materials, including but not limited to PDMS and acrylic \[@pattanayakMicrofluidicChipsRecent2021], \[@whitesidesOriginsFutureMicrofluidics2006]  \[@sackmannPresentFutureRole2014].
 
-<a id="3f8d65dd82be80329f21d5d40ae98bf1" />![](https://static.igem.wiki/teams/6279/wiki/assets/3f8d65dd82be80329f21d5d40ae98bf1.avif)
+<a id="3f8d65dd82be80329f21d5d40ae98bf1" />![](https://static.igem.wiki/teams/6279/wiki/assets/8e777445531759f38ecd3f6487d3e5b7.avif)
 
 <a id="3f8d65dd82be80e9acc5d959143e5f41" />Image from:\[@liuSimpleDirectReading2015]
 
 <a id="3f9d65dd82be80cd85a7c6b8012e7fe8" />Microfluidic chips are especially valuable in biomedical engineering due to the scale of the chips, leading to laminar flow \[@whitesidesOriginsFutureMicrofluidics2006]. Laminar flow is valuable to engineers
 
-## <a id="3edd65dd82be805b9410f31bfdcf29d8" />Historical Use of Microfluidic chips in iGEM
+## <a id="3edd65dd82be805b9410f31bfdcf29d8" />Historical Use of FDM-PDMS Microfluidic chips in iGEM
 
 <a id="3f9d65dd82be80208170cf080c45e8ac" />[Team:Technion Israel/Hardware - 2016.igem.org](https://2016.igem.org/Team:Technion_Israel/Hardware)
 
@@ -28,6 +28,10 @@ title: "Microfluidic Chip"
 
 - <a id="3f9d65dd82be8034ab35eb1f1344a1e6" />Similar technique but used a negative
 
+<br id="3f9d65dd82be80db897fe3dc8037014e" />
+
+<a id="3f9d65dd82be80d29661ca6d3dab549a" />As such we made improvements on both of these protocols.
+
 ## <a id="3ecd65dd82be80da9a8fcc670521c91a" />How does a microfluidic chip integrate into our project?
 
 <a id="3ecd65dd82be805bbca8ec1ec15b7aca" />The microfluidic chip is the epicentre of the project, where everything comes together. Early on in the conception of the project, we realized that we needed a platform that could serve the purposes of:
@@ -37,9 +41,15 @@ title: "Microfluidic Chip"
 - <a id="3f8d65dd82be80e1bc61ce995bb4f216" />Move the mixed antibiotic and patient sample to our sensor bacteria
 - <a id="3f8d65dd82be802da9cfcca63d63161a" />Quantify whether or not fluorescence is present
 
+<a id="3f9d65dd82be80d69e3aced35483f3fb" />We felt that a microfluidic chip would allow us to approach the above in the fewest steps possible, so a clinician using the device would not need to monitor or work with it as closely, enabling them to run multiple experiments in parallel for different patients.
+
+# <a id="3f9d65dd82be805eb652fb78180e2f93" />Design Process
+
+<a id="3f9d65dd82be8094a965f5486dee8d9c" />*Picture of timeline from design will go there*
+
 # <a id="3ecd65dd82be80a98a75ed92ac7b1687" />Design Considerations
 
-<a id="3ecd65dd82be8039b3bedf46a9028251" />When we were brainstorming for this project, this was the list we generated:
+<a id="3ecd65dd82be8039b3bedf46a9028251" />In accordance with this book on medical device design (@Saige add later), we knew we needed to first outline the design parameters we wanted to work within. As such, we brainstormed a list of factors to take into consideration before picking a material to work with or sketching any designs:
 
 - <a id="3f8d65dd82be80c3a420f0ac793c4ef2" />low cost
 - <a id="3f8d65dd82be805f9c20fa4da2b317eb" />no leakage
@@ -47,21 +57,15 @@ title: "Microfluidic Chip"
 - <a id="3f8d65dd82be80efb82dcca39c536cf0" />needs to be able to fill with the desired fluid easily
   - <a id="3f8d65dd82be802389bfe34b7b5dd69e" />ie connectable to tubing
 - <a id="3f8d65dd82be80fc8c3bed5d831f7b5b" />needs to connect with an external monitor or have some way to output user data that is needed
-- <a id="3f8d65dd82be8037beebf9a103af209b" />Channels must allow fluids to behave the way they naturally do without restriction
-  - <a id="3f8d65dd82be80bda614eb69c382f1b1" />ie. channel diameter should not restrict mixing or seperation
 - <a id="3f8d65dd82be8046a5ebf7b5f1f1e12c" />manufacturing material must not be reactive with the fluid or be absorbent
   - <a id="3f8d65dd82be8056abd4d757e9fa437d" />chemically and biologically compatible
 - <a id="3f8d65dd82be80a2bc6ade7f4e80aef2" />preferably transparent material for observation
 
-# <a id="3ecd65dd82be804b8e91e59c785a7ca6" />Design Process
+<a id="3f9d65dd82be806babfacbf3c7c7fe61" />With this list in mind we were able to start approaching picking a manufacturing process.
 
-<a id="3ecd65dd82be805d9658dcf70cdf4c66" />*Picture of timeline from design will go there*
+## <a id="3f9d65dd82be8063ab9fe12333edc041" />Manufacturing Decisions
 
-<br id="3f9d65dd82be80e787f3cfad607fa5b9" />
-
-# <a id="3f9d65dd82be8063ab9fe12333edc041" />Design Decisions
-
-<a id="3f9d65dd82be80658962f652cb40997e" />Before designing our microfluidic chip, we needed to select a suitable manufacturing process that balanced cost, optical transparency, and leak resistance. Since multiple prototypes would be required throughout development, low fabrication costs were essential to support iterative design improvements. The chip also needed to be transparent for fluorescence imaging and reliably sealed to prevent fluid leakage and ensure consistent operation. Based on our research into common microfluidic fabrication techniques, we compiled the comparison table below to evaluate each method and identify the most suitable approach for our application.
+<a id="3f9d65dd82be80658962f652cb40997e" />Before designing the channels of our microfluidic chip, we needed to select a suitable manufacturing process that balanced cost, optical transparency, and leak resistance.  We heavily prioritized cost, as a low fabrication cost was essential to support iterative design improvements. The chip also needed to be transparent for fluorescence imaging and reliably sealed to prevent fluid leakage and ensure consistent operation. Based on our research into common microfluidic fabrication techniques, we compiled the comparison table below to evaluate each method and identify the most suitable approach for our application.
 
 <a id="3f9d65dd82be80f0a5ccd0d5129b9c4d" />
 
@@ -108,7 +112,7 @@ title: "Microfluidic Chip"
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3f9d65dd82be80039d81efeb55570457" />Design
+    <a id="3f9d65dd82be80039d81efeb55570457" />Design: At this point in the process, we started to develop channel designs and cast them in epoxy to get a sense of how the process would work before we moved onto the more precious PDMS.
   </Fragment>
 
   <Fragment slot="build">
@@ -124,15 +128,15 @@ title: "Microfluidic Chip"
   </Fragment>
 </Dbtl>
 
-## <a id="3ecd65dd82be80c0b3ffdc399eeb8f0e" />Mark Two: PDMS Attempt 1
+## <a id="3ecd65dd82be80c0b3ffdc399eeb8f0e" />Mark Two: PDMS Attempt I
 
-<a id="3f9d65dd82be80bd9dfcc6f1ad042ae4" />![](https://static.igem.wiki/teams/6279/wiki/assets/3f9d65dd82be80bd9dfcc6f1ad042ae4.avif)
+<a id="3f9d65dd82be80bd9dfcc6f1ad042ae4" />![](https://static.igem.wiki/teams/6279/wiki/assets/c23e24da49d65ee7bd3399cc385ce8eb.avif)
 
 <a id="3f9d65dd82be808db28ed6e5a299f61b" />
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3f9d65dd82be8017ae1af43bfa788ddb" />Design
+    <a id="3f9d65dd82be8017ae1af43bfa788ddb" />Design: At this point, we developed a PDMS protocol.
   </Fragment>
 
   <Fragment slot="build">
@@ -140,7 +144,7 @@ title: "Microfluidic Chip"
   </Fragment>
 
   <Fragment slot="test">
-    <a id="3f9d65dd82be80e3b457dc8903556158" />Test
+    <a id="3f9d65dd82be80e3b457dc8903556158" />Test: We were unable to test this iteration as our channel floated in the PDMS during the oven step, and as such, we could not remove it.
   </Fragment>
 
   <Fragment slot="learn">
@@ -148,13 +152,35 @@ title: "Microfluidic Chip"
   </Fragment>
 </Dbtl>
 
-<br id="3f9d65dd82be80b6aa95d79b44a66b51" />
+<br id="3f9d65dd82be8070b533c93cc4e19a0c" />
 
-## <a id="3f9d65dd82be80eb9142eef475fe0596" />Mark Three: PDMS Attempt 2
+## <a id="3f9d65dd82be80b6aa95d79b44a66b51" />Mark Three: PDMS Attempt II
 
-<a id="3f9d65dd82be8098bec1cb79b60fbad3" />![](https://static.igem.wiki/teams/6279/wiki/assets/3f9d65dd82be8098bec1cb79b60fbad3.avif)
+<a id="3f9d65dd82be801eae01dca176a523fc" />![](https://static.igem.wiki/teams/6279/wiki/assets/f8c312fee52b50cf9c6bc7aece2b3b58.avif)
 
-<br id="3f9d65dd82be801dac73c8227d771f7d" />
+<br id="3f9d65dd82be8005ae1fcb691df623d2" />
+
+<a id="3f9d65dd82be80a8a392e44b741787d1" />
+
+<Dbtl>
+  <Fragment slot="design">
+    <a id="3f9d65dd82be808c8c37f1336cc4a8d1" />Design:
+  </Fragment>
+
+  <Fragment slot="build">
+    <a id="3f9d65dd82be805e8bc2c2bded9f3781" />Build
+  </Fragment>
+
+  <Fragment slot="test">
+    <a id="3f9d65dd82be803a838bc8b1b35827c6" />Test:
+  </Fragment>
+
+  <Fragment slot="learn">
+    <a id="3f9d65dd82be801a9fb2d4d5e61ef56d" />Learn: We added walls and made the corners more defined
+  </Fragment>
+</Dbtl>
+
+## <a id="3f9d65dd82be80eb9142eef475fe0596" />Mark Four: PDMS Attempt III
 
 <a id="3f9d65dd82be808193dec1c61f35af51" />
 
@@ -168,7 +194,7 @@ title: "Microfluidic Chip"
   </Fragment>
 
   <Fragment slot="test">
-    <a id="3f9d65dd82be80df84aef745eed0e64d" />Test
+    <a id="3f9d65dd82be80df84aef745eed0e64d" />Test: When we flowed liquid through this version of our chip, the liquid would spill out of the sides due to the resolution of the printer creating incredibly small channels on the sides.
   </Fragment>
 
   <Fragment slot="learn">
@@ -178,9 +204,9 @@ title: "Microfluidic Chip"
 
 <br id="3f9d65dd82be80fbbcd8d4345a8eb89e" />
 
-## <a id="3f9d65dd82be80fa8960f1ca0fd50c50" />Mark Four: PDMS Attempt 3
+## <a id="3f9d65dd82be80fa8960f1ca0fd50c50" />Mark Five: PDMS Attempt IV
 
-<a id="3f9d65dd82be8055b559cc82ddf2433e" />![](https://static.igem.wiki/teams/6279/wiki/assets/3f9d65dd82be8055b559cc82ddf2433e.avif)
+<a id="3f9d65dd82be8055b559cc82ddf2433e" />![](https://static.igem.wiki/teams/6279/wiki/assets/16d5e688bb6a5b07b284038fac2a9e91.avif)
 
 <a id="3f9d65dd82be80bc9085d315f5812221" />
 
@@ -194,7 +220,11 @@ title: "Microfluidic Chip"
   </Fragment>
 
   <Fragment slot="test">
-    <a id="3f9d65dd82be806e83b2c0d8a635f589" />Test
+    <a id="3f9d65dd82be806e83b2c0d8a635f589" />Test: We were finally able to successfully run our indicator solution through the device with no leaking.
+
+    <a id="3f9d65dd82be808192dfdfe127f7c470" />![](https://static.igem.wiki/teams/6279/wiki/assets/565558afed2256d4b387f59766ec2696.avif)
+
+    <a id="3f9d65dd82be8079adcedd4547c602ba" />We printed both an ironed (left) and a non-ironed (right) device so that we could use the non-ironed device as a control. As can be seen, the ironed device exhibited no leaking, while the non-ironed device exhibited a significant amount of leaking.
   </Fragment>
 
   <Fragment slot="learn">
@@ -202,6 +232,32 @@ title: "Microfluidic Chip"
   </Fragment>
 </Dbtl>
 
+<br id="3f9d65dd82be8059a1a2cabb16ada6a4" />
+
+## <a id="3f9d65dd82be80248af7fe362fb89f9b" />Mark Six: Linear Channels
+
+<a id="3f9d65dd82be80d09733e1fd08769961" />
+
+<Dbtl>
+  <Fragment slot="design">
+    <a id="3f9d65dd82be809bb910fd33cfb5f9cd" />Design: We changed the position of our channels to make integration with the fluorescence detector significantly easier.
+
+    <a id="3f9d65dd82be800bae53f5a7bfeca4cd" />![](https://static.igem.wiki/teams/6279/wiki/assets/5c224f14c07456a49d3d19034975abb1.avif)
+  </Fragment>
+
+  <Fragment slot="build">
+    <a id="3f9d65dd82be800ea3c9ce7cd01f5ec6" />Build
+  </Fragment>
+
+  <Fragment slot="test">
+    <a id="3f9d65dd82be80ed869af70d70f2625d" />Test:
+  </Fragment>
+
+  <Fragment slot="learn">
+    <a id="3f9d65dd82be80eaa0b3f6a57715b681" />Learn: because we didn’t use silane the inside of the device is mildly hydrophobic, and as such it is very hard to move liquid through the device.
+  </Fragment>
+</Dbtl>
+
 # <a id="3ecd65dd82be803eb079c678c4df61d6" />Next Steps
 
-<br id="3ecd65dd82be805fa34df6357216a17e" />
+- <a id="3f9d65dd82be809a8eb5f5d53d4d801e" />Optimizing flowrates

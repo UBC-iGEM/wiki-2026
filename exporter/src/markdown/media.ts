@@ -16,13 +16,8 @@ export async function uploadMedia(
 ): Promise<ExporterResult<string>> {
     const media = block.type === "image" ? block.image : block.file;
 
-    // The UID is stable between export runs, so it can be used to check if the media has already been uploaded
-    const { uid, url } =
-        media.type === "file"
-            ? // Uploaded to Notion
-              { uid: new Id(block.id), url: media.file.url }
-            : // Linked from elsewhere; the AWS URLs returned by Notion often have changing query parameters
-              { uid: new Id(uuidv5(media.external.url.split("?")[0]!, uuidv5.DNS)), url: media.external.url };
+    const url = media.type === "file" ? media.file.url : media.external.url;
+    const uid = mediaUid(url);
 
     const client_res = await getToolsClient();
     if (isExporterErr(client_res)) return client_res;
@@ -35,6 +30,16 @@ export async function uploadMedia(
     if (isExporterErr(upload_res)) return upload_res;
 
     return upload_res.location;
+}
+
+/**
+ * The upload UID for the file at `url`, which is used to skip files that have already been uploaded.
+ *
+ * Notion changes the query of its file URLs on every request, but the path holds an ID for the uploaded file itself.
+ * Ignoring the query keeps the UID stable between export run.
+ */
+export function mediaUid(url: string): Id {
+    return new Id(uuidv5(url.split("?")[0]!, uuidv5.DNS));
 }
 
 export function mediaFileName(block: MediaBlock): string {

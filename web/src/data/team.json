@@ -24,12 +24,13 @@
       },
       {
         "name": "Jessie Luo",
-        "role": "Wet Lab Lead"
+        "role": "Wet Lab Lead",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/7a9dfdc0de345bf083e83a6118d3119b.avif"
       },
       {
         "name": "Saige Mann",
         "role": "Dry Lab Lead",
-        "image": "/headshots/saige-mann.avif"
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/e9ee264d4ee756d39db1afb39540c24a.avif"
       }
     ]
   },
@@ -63,7 +64,7 @@
       {
         "name": "Marina Chen",
         "role": "Wet Lab",
-        "image": "/headshots/marina-chen.avif"
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/d080a6c46f6154febaa45bfaada36ab1.avif"
       }
     ]
   },
@@ -166,6 +167,11 @@
     "title": "Design/Wiki",
     "members": [
       {
+        "name": "Yogya Gupta",
+        "role": "Design/Wiki",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/dcec3be35411510e91fb35966c50a95b.avif"
+      },
+      {
         "name": "Paul Xu",
         "role": "Design/Wiki"
       },
@@ -175,12 +181,13 @@
       },
       {
         "name": "Lavenia Suherman",
-        "role": "Design/Wiki"
+        "role": "Design/Wiki",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/55392af6fe325f34b817a240e7c14161.avif"
       },
       {
         "name": "Rachel Weng",
         "role": "Design/Wiki",
-        "image": "/headshots/rachel-weng.avif"
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/d0f1f86cd9e258e9b60a39d2a796bcbd.avif"
       }
     ]
   }
