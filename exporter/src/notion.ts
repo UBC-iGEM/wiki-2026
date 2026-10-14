@@ -7,12 +7,15 @@ import {
     ExporterError,
     isErr,
     isExporterErr,
+    recordNotionRateLimit,
     type ExporterResult,
     type Result,
 } from "./utils";
 import {
+    APIErrorCode,
     Client,
     LogLevel,
+    type Logger,
     type BlockObjectResponse,
     type GetDatabaseResponse,
     type GetPageResponse,
@@ -21,6 +24,13 @@ import {
     type QueryDataSourceParameters,
 } from "@notionhq/client";
 
+/**
+ * Counts rate-limited responses.
+ */
+const notionLogger: Logger = (_level, message, extra_info) => {
+    if (message === "request fail" && extra_info.code === APIErrorCode.RateLimited) recordNotionRateLimit();
+};
+
 class NotionClientArmy {
     clients: Client[];
     next_to_retrieve: number = 0;
@@ -28,7 +38,9 @@ class NotionClientArmy {
     constructor() {
         const keys = Object.entries(process.env).filter(([k, v]) => k.startsWith("NOTION_API_KEY") && v);
         this.clients = keys.map(([, v]) => {
-            const client_res = $unsafeSync(() => new Client({ auth: v, logLevel: LogLevel.ERROR }));
+            const client_res = $unsafeSync(
+                () => new Client({ auth: v, logLevel: LogLevel.WARN, logger: notionLogger }),
+            );
             if (isErr(client_res))
                 new ExporterError(
                     "Failed to construct a client to connect to the Notion server.",

@@ -26,10 +26,11 @@ export interface WarningContext {
     block?: Id;
 }
 
-const BOLD = "\x1b[1m";
-const BOLD_RED = "\x1b[1;31m";
-const YELLOW = "\x1b[33m";
-const RESET = "\x1b[0m";
+export const BOLD = "\x1b[1m";
+export const BOLD_RED = "\x1b[1;31m";
+export const YELLOW = "\x1b[33m";
+export const GREEN = "\x1b[32m";
+export const RESET = "\x1b[0m";
 
 export class ExporterError {
     constructor(
@@ -95,11 +96,26 @@ export function setWarningRoutes(routes: ContentMap): void {
     WARNING_ROUTES = routes;
 }
 
+// EXPORT STATS
+const EXPORT_START_TIME = performance.now();
+let NOTION_RATE_LIMITED_COUNT = 0;
+
+export function recordNotionRateLimit(): void {
+    NOTION_RATE_LIMITED_COUNT++;
+}
+
 /**
  * Prints all collected warnings as a tree of the pages they occurred on.
  */
 export function printWarnings(): void {
-    if (WARNINGS.length === 0) return;
+    const plural = (n: number, word: string): string => `${n} ${word}${n === 1 ? "" : "s"}`;
+    const export_time = `${BOLD}${GREEN}DEBUG${RESET}: Export took ${(performance.now() - EXPORT_START_TIME) / 1000}s.`;
+    const notion_ratelim = `${BOLD}${GREEN}DEBUG${RESET}: ${plural(NOTION_RATE_LIMITED_COUNT, "request")} ${NOTION_RATE_LIMITED_COUNT === 1 ? "was" : "were"} rate-limited.`;
+
+    if (WARNINGS.length === 0) {
+        console.error(`\n${export_time}\n${notion_ratelim}`);
+        return;
+    }
 
     interface Node {
         label: string;
@@ -148,10 +164,11 @@ export function printWarnings(): void {
 
     const page_count = new Set(page_warnings.map(({ ctx }) => ctx!.path.toString())).size;
     const total = WARNING_ROUTES ? ` of ${route_order.length}` : "";
-    const plural = (n: number, word: string): string => `${n} ${word}${n === 1 ? "" : "s"}`;
-    const heading = `${BOLD}${plural(WARNINGS.length, "warning")} on ${page_count}${total} ${page_count === 1 && !total ? "page" : "pages"}${RESET}`;
+    const heading = `${BOLD}${plural(WARNINGS.length, "warning")} on ${page_count}${total} ${page_count === 1 && !total ? "page" : "pages"}.${RESET}`;
 
-    console.error(`\n${heading}\n${[...root.children.values()].map((node) => archy(toArchy(node))).join("")}`);
+    console.error(
+        `\n${export_time}\n${notion_ratelim}\n\n${heading}\n${[...root.children.values()].map((node) => archy(toArchy(node))).join("")}`,
+    );
 }
 
 function orderOf(order: string[], key: string): number {
