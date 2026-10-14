@@ -96,11 +96,17 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
         grid-template-columns: minmax(0, 1fr) minmax(11rem, 15rem);
     }
 
-    /* Everything inherits the body font; headings, tables (in style.css) and captions override it */
+    /*
+     * Type scale:
+     * A 17px serif body
+     * Headings stepping down 32 / 24 / 20 / 17px
+     * Secondary text (tables, captions, code, bibliography) at 14-15px
+     * All sizes in rem.
+     */
     .page-content {
         font-family: var(--font-source-serif-4);
-        font-size: 16px;
-        line-height: 1.5;
+        font-size: 1.0625rem;
+        line-height: 1.65;
         min-width: 0;
         /* Bare URLs in links and citations offer a narrow screen no break opportunities */
         overflow-wrap: break-word;
@@ -109,43 +115,41 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
     .page-title {
         color: var(--color-periwinkle);
         font-family: var(--font-geist);
-        font-size: clamp(2rem, 8vw, 48px);
+        font-size: clamp(2.25rem, 6vw, 3rem);
         font-weight: 700;
-        line-height: 1.2;
+        line-height: 1.15;
         margin-bottom: 1.5rem;
     }
 
-    .page-content :global(h1),
-    .page-content :global(h2),
-    .page-content :global(h3),
-    .page-content :global(h4) {
+    .page-content :global(:is(h1, h2, h3, h4, h5, h6)) {
         color: var(--color-periwinkle);
         font-family: var(--font-geist);
         font-weight: 700;
     }
 
     .page-content :global(h1) {
-        font-size: 36px;
+        font-size: 2rem;
         line-height: 1.2;
-        margin: 2rem 0 1rem;
+        margin: 2.5rem 0 1rem;
     }
 
     .page-content :global(h2) {
-        font-size: 24px;
+        font-size: 1.5rem;
         line-height: 1.25;
-        margin: 1.5rem 0 0.75rem;
+        margin: 2rem 0 0.75rem;
     }
 
     .page-content :global(h3) {
-        font-size: 16px;
+        font-size: 1.25rem;
         line-height: 1.3;
-        margin: 1.25rem 0 0.5rem;
+        margin: 1.75rem 0 0.5rem;
     }
 
-    .page-content :global(h4) {
-        font-size: 16px;
-        line-height: 1.3;
-        margin: 1.25rem 0 0.5rem;
+    /* h4 and below match the body size and rely on weight/font */
+    .page-content :global(:is(h4, h5, h6)) {
+        font-size: 1.0625rem;
+        line-height: 1.4;
+        margin: 1.5rem 0 0.5rem;
     }
 
     .page-content :global(p),
@@ -155,7 +159,16 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
     }
 
     .page-content :global(p) {
-        margin: 0 0 1rem;
+        margin: 0 0 1em;
+    }
+
+    .page-content :global(li + li) {
+        margin-top: 0.25em;
+    }
+
+    /* Monospace runs large beside serif text */
+    .page-content :global(:not(pre) > code) {
+        font-size: 0.875em;
     }
 
     .page-content :global(a) {
@@ -179,9 +192,9 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
     .page-content :global(caption) {
         color: var(--color-periwinkle);
         font-family: var(--font-source-serif-4);
-        font-size: 12px;
+        font-size: 0.875rem;
         font-weight: 400;
-        line-height: 1.4;
+        line-height: 1.45;
         margin-top: 0.5rem;
     }
 
@@ -204,7 +217,6 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
     .page-toc {
         color: var(--color-periwinkle);
         font-family: var(--font-source-serif-4);
-        font-size: 16px;
         font-weight: 400;
         line-height: 1.5;
         max-height: calc(100vh - 6rem);
@@ -265,6 +277,21 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
         .page-content :global(table) {
             display: block;
             overflow-x: auto;
+        }
+    }
+
+    /* Big headings take up too much of a phone screen */
+    @media (max-width: 600px) {
+        .page-content :global(h1) {
+            font-size: 1.75rem;
+        }
+
+        .page-content :global(h2) {
+            font-size: 1.375rem;
+        }
+
+        .page-content :global(h3) {
+            font-size: 1.1875rem;
         }
     }
 </style>

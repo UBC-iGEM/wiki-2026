@@ -5,8 +5,8 @@ table {
     border-radius: 8px;
     border-spacing: 0;
     color: var(--color-periwinkle);
-    font-size: 14px;
-    line-height: 1.4;
+    font-size: 0.9375rem;
+    line-height: 1.45;
     margin: 1.5rem 0;
 }
 
@@ -69,6 +69,8 @@ table tbody tr:last-child > :last-child {
 
 /* Code blocks */
 pre.astro-code {
+    font-size: 0.875rem;
+    line-height: 1.55;
     padding: 15px;
     border-radius: 10px;
     overflow-x: auto;
@@ -109,6 +111,7 @@ pre.astro-code {
 
 /* Bibliography */
 .csl-bib-body {
+    font-size: 0.9375rem;
     margin-top: 1.5rem;
 }
 

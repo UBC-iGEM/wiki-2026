@@ -88,9 +88,10 @@ COLAB_SLOTS satisfies readonly ["notebook", "content"];
         color: var(--color-ebony-clay);
     }
 
-    /* Long notebooks scroll inside the panel rather than taking over the page */
+    /* Long notebooks scroll inside the panel rather than taking over the page. */
     .notebook {
         border-top: 1px solid color-mix(in srgb, var(--color-cornflower) 50%, transparent);
+        font-size: 0.875rem;
         display: flex;
         flex-direction: column;
         gap: 1rem;
@@ -118,7 +119,32 @@ COLAB_SLOTS satisfies readonly ["notebook", "content"];
 
     .notebook :global(pre) {
         flex-shrink: 0;
+        font-size: 0.9em;
         margin: 0;
+    }
+
+    .notebook :global(.colab-markdown h1) {
+        font-size: 1.6em;
+    }
+
+    .notebook :global(.colab-markdown h2) {
+        font-size: 1.35em;
+    }
+
+    .notebook :global(.colab-markdown h3) {
+        font-size: 1.15em;
+    }
+
+    .notebook :global(.colab-markdown :is(h4, h5, h6)) {
+        font-size: 1em;
+    }
+
+    .notebook :global(.colab-markdown :is(h1, h2, h3, h4, h5, h6)) {
+        margin: 1.25em 0 0.5em;
+    }
+
+    .notebook :global(.colab-markdown table) {
+        font-size: 0.9em;
     }
 
     @media (max-width: 700px) {
