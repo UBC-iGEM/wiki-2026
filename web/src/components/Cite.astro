@@ -1,0 +1,211 @@
+---
+import type { CiteAttrs, CitedRef } from "@exporter/markdown/citations";
+import { referenceHtml, referenceId } from "../utils/literature";
+
+type Props = CiteAttrs;
+const { refs, prose } = Astro.props;
+
+/**
+ * A numbered citation as HTML, with each number linking to its reference.
+ * Runs of three or more consecutive numbers collapse into a range: 1, 2, 3, 5 becomes (1–3, 5).
+ */
+function numberedHtml(sorted: CitedRef[]): string {
+    const runs: CitedRef[][] = [];
+    for (const ref of sorted) {
+        const run = runs.at(-1);
+        if (run && run.at(-1)!.n === ref.n - 1) run.push(ref);
+        else runs.push([ref]);
+    }
+
+    const link = (ref: CitedRef) => `<a href="${href(ref)}">${ref.n}</a>`;
+    const groups = runs.flatMap((run) => (run.length >= 3 ? [`${link(run[0]!)}–${link(run.at(-1)!)}`] : run.map(link)));
+    return `(${groups.join(", ")})`;
+}
+
+const href = (ref: CitedRef) => `#${referenceId(ref.key)}`;
+
+/*
+ * Astro renders line breaks between tags as spaces, so the template has none inside a citation:
+ * its tags hug the expressions, and the citation text is passed as HTML rather than laid out where prettier would break it onto lines
+ */
+const prose_html = prose ? await Astro.slots.render("default") : "";
+---
+
+<span class="cite"
+    >{
+        prose ? (
+            <a class="cite-prose" href={href(refs[0]!)} set:html={prose_html} />
+        ) : (
+            <span class="cite-nums" set:html={numberedHtml(refs)} />
+        )
+    }<span class="cite-tip" hidden
+        >{
+            // Copied into the page's one tooltip by the script below
+            refs.map((ref) => (
+                <span class="cite-tip-entry">
+                    <a class="cite-tip-n" href={href(ref)}>
+                        {ref.n}.
+                    </a>
+                    <span set:html={referenceHtml(ref.key)} />
+                </span>
+            ))
+        }</span
+    ></span
+>
+
+<script>
+    // One tooltip for every citation on the page, fixed to the viewport so scrolling tables can't clip it
+    const tip = document.createElement("div");
+    tip.className = "cite-popup";
+    tip.setAttribute("role", "tooltip");
+    tip.hidden = true;
+    document.body.append(tip);
+
+    let owner: HTMLElement | null = null;
+    let close_timer: ReturnType<typeof setTimeout> | undefined;
+
+    const citeOf = (target: EventTarget | null) =>
+        target instanceof Element ? target.closest<HTMLElement>(".cite") : null;
+    const within = (target: EventTarget | null) =>
+        target instanceof Node && (tip.contains(target) || (owner?.contains(target) ?? false));
+
+    const GAP = 8;
+    const position = () => {
+        if (!owner) return;
+        // A prose citation can wrap over lines; anchor to its first
+        const trigger = owner.querySelector<HTMLElement>(".cite-prose, .cite-nums")!;
+        const rect = trigger.getClientRects()[0] ?? trigger.getBoundingClientRect();
+        const box = tip.getBoundingClientRect();
+        const left = Math.min(Math.max(GAP, rect.left + rect.width / 2 - box.width / 2), innerWidth - box.width - GAP);
+        const below = rect.bottom + GAP;
+        const above = rect.top - box.height - GAP;
+        tip.style.left = `${left}px`;
+        tip.style.top = `${below + box.height <= innerHeight - GAP || above < GAP ? below : above}px`;
+    };
+
+    const open = (cite: HTMLElement) => {
+        clearTimeout(close_timer);
+        if (owner === cite) return;
+        owner = cite;
+        const entries = cite.querySelector<HTMLElement>(".cite-tip")!.cloneNode(true) as HTMLElement;
+        entries.hidden = false;
+        tip.replaceChildren(entries);
+        tip.hidden = false;
+        position();
+    };
+    const close = () => {
+        clearTimeout(close_timer);
+        tip.hidden = true;
+        owner = null;
+    };
+    // A short delay, so the pointer can cross the gap into the tooltip to reach its links
+    const closeSoon = () => {
+        clearTimeout(close_timer);
+        close_timer = setTimeout(close, 200);
+    };
+
+    document.addEventListener("pointerover", (event) => {
+        if (event.pointerType === "touch") return;
+        const cite = citeOf(event.target);
+        if (cite) open(cite);
+        else if (tip.contains(event.target as Node)) clearTimeout(close_timer);
+    });
+    document.addEventListener("pointerout", (event) => {
+        if (event.pointerType === "touch" || !owner) return;
+        if (within(event.target) && !within(event.relatedTarget)) closeSoon();
+    });
+
+    // Without hover, the first tap on a citation shows its tooltip and a second follows the link
+    let pointer_type = "mouse";
+    document.addEventListener(
+        "pointerdown",
+        (event) => {
+            pointer_type = event.pointerType;
+        },
+        { capture: true },
+    );
+    document.addEventListener("click", (event) => {
+        const cite = citeOf(event.target);
+        if (cite && pointer_type === "touch" && owner !== cite) {
+            event.preventDefault();
+            open(cite);
+        } else if (!within(event.target)) close();
+    });
+
+    document.addEventListener("focusin", (event) => {
+        const cite = citeOf(event.target);
+        if (cite) open(cite);
+        else if (!within(event.target)) close();
+    });
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") close();
+    });
+    addEventListener("scroll", position, { passive: true });
+    addEventListener("resize", position);
+</script>
+
+<!-- Global, as the tooltip is built by the script and doesn't carry Astro's scoping attribute -->
+<style is:global>
+    .cite-nums {
+        white-space: nowrap;
+    }
+
+    .page-content .cite-nums a {
+        text-decoration-line: none;
+    }
+
+    .page-content .cite-nums a:hover {
+        text-decoration-line: underline;
+    }
+
+    /* Reads as a link, but dotted to mark it as a reference rather than somewhere to go */
+    .page-content a.cite-prose {
+        text-decoration-style: dotted;
+    }
+
+    .cite-popup {
+        background: var(--color-ebony-clay-raised);
+        border: 1px solid var(--color-cornflower);
+        border-radius: 8px;
+        box-shadow: 0 0 1.5rem color-mix(in srgb, var(--color-cornflower) 35%, transparent);
+        color: var(--color-periwinkle);
+        font-family: var(--font-source-serif-4);
+        font-size: 0.875rem;
+        line-height: 1.45;
+        max-height: min(20rem, 60vh);
+        max-width: min(28rem, calc(100vw - 16px));
+        overflow-wrap: anywhere;
+        overflow-y: auto;
+        padding: 0.6rem 0.8rem;
+        position: fixed;
+        z-index: 20;
+    }
+
+    .cite-popup[hidden] {
+        display: none;
+    }
+
+    .cite-popup .cite-tip {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .cite-tip-entry {
+        display: flex;
+        gap: 0.4rem;
+    }
+
+    .cite-popup a {
+        color: var(--color-northern-lights);
+        text-decoration-color: var(--color-cornflower);
+        text-underline-offset: 0.15em;
+    }
+
+    .cite-popup a.cite-tip-n {
+        color: var(--color-periwinkle);
+        flex-shrink: 0;
+        font-weight: 700;
+        text-decoration: none;
+    }
+</style>

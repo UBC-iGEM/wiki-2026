@@ -1,5 +1,6 @@
 import { isExporterErr, saveFile } from "../utils";
 import { convertBlocks, type ConvertContext } from "./blocks";
+import { numberCitations } from "./citations";
 import type { Root } from "mdast";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -37,6 +38,7 @@ export async function exportPageMarkdown(ctx: ConvertContext): Promise<void> {
     if (isExporterErr(blocks_res)) return blocks_res.warn(ctx);
 
     const tree: Root = { type: "root", children: await convertBlocks(blocks_res, ctx) };
+    numberCitations(tree, ctx);
     const processed_markdown = mdStringifier.stringify(tree);
 
     const type = path.components().length === 3 ? "database" : "page";

@@ -1,0 +1,51 @@
+---
+import type { BibliographyAttrs } from "@exporter/markdown/citations";
+import { referenceHtml, referenceId } from "../utils/literature";
+
+type Props = BibliographyAttrs;
+const { refs } = Astro.props;
+---
+
+<ol class="bibliography">
+    {
+        refs.map((ref) => (
+            <li id={referenceId(ref.key)} value={ref.n}>
+                <span set:html={referenceHtml(ref.key)} />
+            </li>
+        ))
+    }
+</ol>
+
+<style>
+    .bibliography {
+        font-size: 0.9375rem;
+        line-height: 1.5;
+        margin: 1.5rem 0 0;
+        padding-left: 2.25rem;
+    }
+
+    .bibliography li {
+        padding-left: 0.25rem;
+        scroll-margin-top: 1.5rem;
+    }
+
+    .bibliography li + li {
+        margin-top: 0.75rem;
+    }
+
+    .bibliography li::marker {
+        font-variant-numeric: tabular-nums;
+    }
+
+    /* Bare URLs offer no break opportunities */
+    .bibliography :global(a) {
+        overflow-wrap: anywhere;
+    }
+
+    /* The entry a citation was followed to */
+    .bibliography li:target {
+        background: color-mix(in srgb, var(--color-cornflower) 18%, transparent);
+        border-radius: 6px;
+        outline: 0.35rem solid color-mix(in srgb, var(--color-cornflower) 18%, transparent);
+    }
+</style>

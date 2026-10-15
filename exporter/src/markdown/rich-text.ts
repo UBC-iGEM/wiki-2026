@@ -1,6 +1,7 @@
 import { PageId } from "../notion";
 import { ExporterError, isExporterErr } from "../utils";
 import type { ConvertContext } from "./blocks";
+import { citation } from "./citations";
 import { pageMention, parseNotionUrl, resolveHref } from "./link";
 import { jsxText } from "./mdx";
 import type { RichTextItemResponse } from "@notionhq/client";
@@ -14,7 +15,11 @@ import type { PhrasingContent, Text } from "mdast";
  */
 export type NewlineMode = "break" | "jsx" | "space";
 
+/**
+ * @property cite the citation key of the literature entry linked text cites
+ */
 interface TextProperties {
+    cite: string | null;
     href: string | null;
     bold: boolean;
     italic: boolean;
@@ -54,6 +59,7 @@ export async function convertRichText(
 
 async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Promise<Leaf[]> {
     const props: TextProperties = {
+        cite: null,
         href: null,
         bold: item.annotations.bold,
         italic: item.annotations.italic,
@@ -68,32 +74,23 @@ async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Prom
                     "malformed content",
                 ]).warn(ctx);
 
-            let citation: Leaf[] = [];
             if (item.href) {
                 const href_res = await resolveHref(item.href, ctx);
-                if (isExporterErr(href_res)) {
-                    href_res.warn(ctx);
-                } else {
-                    props.href = href_res.url;
-                    if (href_res.citation) citation = [hiddenCitation(href_res.citation)];
-                }
+                if (isExporterErr(href_res)) href_res.warn(ctx);
+                // Linked text cites the entry it links to
+                else if (href_res.citation) props.cite = href_res.citation.citation_key;
+                else props.href = href_res.url;
             }
 
             if (item.annotations.code)
-                return [
-                    { node: { type: "inlineCode", value: item.text.content.replaceAll("\n", " ") }, props: props },
-                    ...citation,
-                ];
+                return [{ node: { type: "inlineCode", value: item.text.content.replaceAll("\n", " ") }, props: props }];
 
-            return [
-                ...item.text.content
-                    .split("\n")
-                    .flatMap((line, i): Leaf[] => [
-                        ...(i > 0 ? [{ node: "newline" as const, props }] : []),
-                        ...(line ? [{ node: { type: "text" as const, value: line }, props }] : []),
-                    ]),
-                ...citation,
-            ];
+            return item.text.content
+                .split("\n")
+                .flatMap((line, i): Leaf[] => [
+                    ...(i > 0 ? [{ node: "newline" as const, props }] : []),
+                    ...(line ? [{ node: { type: "text" as const, value: line }, props }] : []),
+                ]);
         }
         case "equation":
             return [{ node: { type: "inlineMath", value: item.equation.expression }, props }];
@@ -149,15 +146,6 @@ async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Prom
 }
 
 /**
- * Cites a literature entry without showing the citation, so the page's bibliography lists the entry and links to it work.
- */
-function hiddenCitation(key: string): Leaf {
-    const unstyled: TextProperties = { href: null, bold: false, italic: false, strikethrough: false, underline: false };
-    // Resolved into a citation by `rehype-citation` when the wiki is built
-    return { node: jsxText("span", { hidden: true }, [{ type: "text", value: `[@${key}]` }]), props: unstyled };
-}
-
-/**
  * Formats a Notion date (`YYYY-MM-DD`, optionally with a time) as `DD/MM/YYYY` or `DD/MM/YYYY at HH:mm`.
  */
 function formatDate(date: string): string {
@@ -206,6 +194,11 @@ interface TextProperty {
 }
 
 const PROP_GENERATORS: TextProperty[] = [
+    {
+        key: (m) => m.cite,
+        wrap: (m, children) => citation([m.cite!], children),
+        hoist_whitespace: true,
+    },
     {
         key: (m) => m.href,
         wrap: (m, children) => ({ type: "link", url: m.href!, children }),

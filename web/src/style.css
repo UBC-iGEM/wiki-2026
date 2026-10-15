@@ -126,32 +126,6 @@ pre.astro-code {
     object-fit: contain;
 }
 
-/* Bibliography */
-.csl-bib-body {
-    font-size: 0.9375rem;
-    margin-top: 1.5rem;
-}
-
-.csl-entry {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-    line-height: 1.5;
-}
-
-.csl-left-margin {
-    flex: 0 0 auto;
-}
-
-.csl-right-inline {
-    flex: 1;
-    min-width: 0;
-}
-
-.csl-entry a {
-    overflow-wrap: anywhere;
-}
-
 /*
  * The glowing panel used by various components.
  * `.glow-panel` wraps a `.glow-panel-body`,

@@ -1,6 +1,8 @@
 import { Id, PageId } from "../notion";
 import { ExporterError, isExporterErr, type ExporterResult } from "../utils";
+import { findLiterature, type LitEntry } from "../zotero";
 import type { ConvertContext } from "./blocks";
+import { citation } from "./citations";
 import { asPlainText } from "./rich-text";
 import type { PhrasingContent } from "mdast";
 
@@ -20,31 +22,25 @@ export async function pageMention(
             children: [{ type: "text", value: block?.text || page_path.name().toString() }],
         };
 
-    const citation_key = await citationKey(page);
-    if (isExporterErr(citation_key)) return citation_key;
-    if (!citation_key)
+    const entry = await literatureEntry(page);
+    if (isExporterErr(entry)) return entry;
+    if (!entry)
         return new ExporterError(`A link to a page that is neither a wiki page nor a literature entry was ignored.`, [
             "malformed content",
         ]);
 
-    // Resolved into a citation by `rehype-citation` when the wiki is built
-    return { type: "text", value: `[@${citation_key}]` };
+    return citation([entry.citation_key]);
 }
 
 /**
- * Where a link points on the wiki.
- *
- * @property citation for a link to a literature entry: its citation key. The page must cite it, so the target exists.
+ * Where a link points: either a URL, or a literature entry it cites.
  */
-interface ResolvedHref {
-    url: string;
-    citation?: string;
-}
+type ResolvedHref = { url: string; citation?: undefined } | { citation: LitEntry };
 
 /**
  * If a URL points to:
- * - Notion, then replace it with the URL of that page (and block) on the wiki
- * - a literature entry, then link to its entry in the page's bibliography
+ * - a Notion page on the wiki, then replace it with the URL of that page (and block) on the wiki
+ * - the Notion page of a literature entry, then cite it
  * - another URL, then return it unchanged
  */
 export async function resolveHref(href: string, ctx: ConvertContext): Promise<ExporterResult<ResolvedHref>> {
@@ -54,10 +50,9 @@ export async function resolveHref(href: string, ctx: ConvertContext): Promise<Ex
     const page_path = target.page ? ctx.routes.get(target.page) : undefined;
     if (page_path) return { url: page_path.toURL(target.block) };
 
-    const citation_key = target.page ? await citationKey(target.page) : undefined;
-    if (isExporterErr(citation_key)) return citation_key;
-    // `rehype-citation` gives each bibliography entry this ID
-    if (citation_key) return { url: `#bib-${citation_key.toLowerCase()}`, citation: citation_key };
+    const entry = target.page ? await literatureEntry(target.page) : undefined;
+    if (isExporterErr(entry)) return entry;
+    if (entry) return { citation: entry };
 
     const target_link = ExporterError.link({ with_label: "this Notion page", to: target.url });
     return new ExporterError(
@@ -93,11 +88,10 @@ export function parseNotionUrl(href: string): { url: string; page?: PageId; bloc
 }
 
 /**
- * @returns the citation key of a literature entry, or `undefined` if the page is not one.
+ * The literature entry a Notion page is for, by its "Citation Key" property, or `undefined` if the page is not one.
  */
-async function citationKey(page: PageId): Promise<ExporterResult<string | undefined>> {
+async function literatureEntry(page: PageId): Promise<ExporterResult<LitEntry | undefined>> {
     const property = await page.getProperty("Citation Key");
-    // Pages the exporter cannot read are not literature entries it can cite
     if (isExporterErr(property) || !property) return undefined;
 
     if (property.type !== "rich_text")
@@ -113,5 +107,11 @@ async function citationKey(page: PageId): Promise<ExporterResult<string | undefi
             "notion server",
         ]);
 
-    return citation_key;
+    return (
+        findLiterature(citation_key) ??
+        new ExporterError(
+            `Literature entry at Notion ID ${page} has the citation key "${citation_key}", which is not in the Zotero library; the citation was ignored.`,
+            ["malformed content", "zotero server"],
+        )
+    );
 }

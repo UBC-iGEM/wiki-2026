@@ -12,6 +12,7 @@ const CONFIG_SCHEMA = z.object({
     team_id: z.string(),
     team_page_id: z.string(),
     zotero_group_id: z.number().int().positive(),
+    zotero_style: z.string().default("vancouver"),
     repo_uuid: z.string(),
 });
 
