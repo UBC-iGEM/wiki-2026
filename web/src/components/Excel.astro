@@ -1,0 +1,131 @@
+---
+import { type ExcelAttrs, EXCEL_SLOTS } from "@exporter/markdown/components";
+type Props = ExcelAttrs;
+
+const { url, file_name } = Astro.props;
+EXCEL_SLOTS satisfies readonly ["sheets", "content"];
+---
+
+<div class="excel glow-panel">
+    <details class="panel glow-panel-body" open>
+        <summary>
+            <span class="marker" aria-hidden="true"></span>
+            <span class="title">{file_name}</span>
+            <a class="download" href={url} download={file_name}>Download</a>
+        </summary>
+        <div class="sheets">
+            <slot name="sheets" />
+        </div>
+    </details>
+</div>
+<div class="excel-desc">
+    <slot name="content" />
+</div>
+
+<style>
+    /* The border and glow come from .glow-panel in style.css; the bottom margin clears the outline hanging below */
+    .excel {
+        margin: 2rem 0 3rem;
+    }
+
+    .panel {
+        padding: 1.25rem 2.5rem;
+    }
+
+    summary {
+        align-items: center;
+        cursor: pointer;
+        display: flex;
+        gap: 1rem;
+        list-style: none;
+    }
+
+    summary::-webkit-details-marker {
+        display: none;
+    }
+
+    summary:focus-visible {
+        outline: 2px solid var(--color-lime-yellow);
+        outline-offset: 6px;
+    }
+
+    /* A chevron that turns to point down once the spreadsheet is open */
+    .marker {
+        border-bottom: 2px solid var(--color-cornflower);
+        border-right: 2px solid var(--color-cornflower);
+        flex-shrink: 0;
+        height: 0.5rem;
+        transform: rotate(-45deg);
+        transition: transform 160ms ease;
+        width: 0.5rem;
+    }
+
+    .panel[open] .marker {
+        transform: rotate(45deg);
+    }
+
+    .title {
+        flex: 1;
+        font-family: var(--font-source-serif-4);
+        font-weight: 700;
+        overflow-wrap: anywhere;
+    }
+
+    .download {
+        background: var(--color-cornflower);
+        color: var(--color-periwinkle);
+        flex-shrink: 0;
+        font-size: 0.9rem;
+        font-weight: 700;
+        padding: 0.4rem 1rem;
+        text-decoration: none;
+        transition:
+            background 120ms ease,
+            color 120ms ease;
+    }
+
+    .download:hover {
+        background: var(--color-lime-yellow);
+        color: var(--color-ebony-clay);
+    }
+
+    /* A wide or long spreadsheet scrolls inside the panel rather than taking over the page. */
+    .sheets {
+        border-top: 1px solid color-mix(in srgb, var(--color-cornflower) 50%, transparent);
+        margin-top: 1.25rem;
+        max-height: 36rem;
+        overflow: auto;
+        padding-top: 1.25rem;
+    }
+
+    /* :global because the sheets arrive through a slot */
+    .sheets :global(table) {
+        font-size: 0.875rem;
+        margin: 0;
+    }
+
+    .sheets :global(.excel-sheet + .excel-sheet) {
+        margin-top: 1.5rem;
+    }
+
+    .sheets :global(.excel-sheet-name) {
+        font-family: var(--font-geist);
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    /* A spreadsheet's corner cell is often blank, which style.css otherwise reads as "no header row" */
+    .sheets :global(table:has(th:empty) thead) {
+        display: table-header-group;
+    }
+
+    @media (max-width: 700px) {
+        .panel {
+            padding: 1rem 1.25rem;
+        }
+
+        .sheets {
+            max-height: 28rem;
+        }
+    }
+</style>
