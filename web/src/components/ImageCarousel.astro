@@ -14,11 +14,13 @@ const multiple = slides.length > 1;
         <div class="carousel-stage">
             {
                 slides.map((slide, i) => (
-                    <figure class="carousel-slide glow-panel" data-index={i}>
-                        <div class="carousel-frame glow-panel-body">
-                            <img src={slide.url} alt={slide.alt} />
-                        </div>
-                    </figure>
+                    <div class="carousel-slide" data-index={i}>
+                        <figure class="carousel-panel glow-panel">
+                            <div class="carousel-frame glow-panel-body">
+                                <img src={slide.url} alt={slide.alt} data-lightbox />
+                            </div>
+                        </figure>
+                    </div>
                 ))
             }
         </div>
@@ -88,7 +90,7 @@ const multiple = slides.length > 1;
 <style is:global>
     .carousel {
         --slide-width: 70%;
-        --frame-height: 26rem;
+        --frame-height: 34rem;
         margin: 2rem 0 3rem;
     }
 
@@ -101,6 +103,7 @@ const multiple = slides.length > 1;
 
     /* Every slide in the same grid cell; the bottom padding leaves room for the offset outline */
     .carousel-stage {
+        align-items: center;
         display: grid;
         flex: 1;
         justify-items: center;
@@ -109,9 +112,15 @@ const multiple = slides.length > 1;
         padding: 0.5rem 0 1.5rem;
     }
 
+    /*
+     * The slide is a fixed-width slot that positions the peeking neighbours;
+     * the panel inside shrinks to the image, so only the panel takes clicks
+     */
     .carousel-slide {
+        display: flex;
         grid-area: 1 / 1;
-        margin: 0;
+        justify-content: center;
+        pointer-events: none;
         transition:
             opacity 300ms ease,
             transform 300ms ease;
@@ -134,8 +143,13 @@ const multiple = slides.length > 1;
 
     .carousel-slide:is([data-role="prev"], [data-role="next"]) {
         cursor: pointer;
-        opacity: 0.4;
+        opacity: 0.2;
         z-index: 1;
+    }
+
+    /* Clicking a peeking slide navigates, so its image doesn't offer to enlarge */
+    .carousel-slide:is([data-role="prev"], [data-role="next"]) img[data-lightbox] {
+        cursor: pointer;
     }
 
     .carousel-slide[data-role="prev"] {
@@ -148,17 +162,23 @@ const multiple = slides.length > 1;
 
     .carousel-slide[data-role="hidden"] {
         opacity: 0;
-        pointer-events: none;
         visibility: hidden;
     }
 
-    /* The image fits inside a fixed-height frame without cropping */
+    .carousel-panel {
+        margin: 0;
+        max-width: 100%;
+        min-width: 0;
+        pointer-events: auto;
+    }
+
+    .carousel-slide[data-role="hidden"] .carousel-panel {
+        pointer-events: none;
+    }
+
+    /* The frame hugs the image, which is capped to the frame height without cropping */
     .carousel-frame {
-        align-items: center;
         box-sizing: border-box;
-        display: flex;
-        height: var(--frame-height);
-        justify-content: center;
         overflow: hidden;
         padding: 0.75rem;
     }
@@ -167,7 +187,7 @@ const multiple = slides.length > 1;
         border-radius: 22px;
         display: block;
         height: auto;
-        max-height: 100%;
+        max-height: calc(var(--frame-height) - 1.5rem);
         max-width: 100%;
         object-fit: contain;
         width: auto;
@@ -207,7 +227,7 @@ const multiple = slides.length > 1;
         .carousel {
             /* Less room for the outline, which hangs 0.5rem to the side at this width */
             --slide-width: calc(100% - 0.5rem);
-            --frame-height: 16rem;
+            --frame-height: 20rem;
         }
 
         .carousel-row {
@@ -216,8 +236,11 @@ const multiple = slides.length > 1;
 
         .carousel-slide:is([data-role="prev"], [data-role="next"]) {
             opacity: 0;
-            pointer-events: none;
             visibility: hidden;
+        }
+
+        .carousel-slide:is([data-role="prev"], [data-role="next"]) .carousel-panel {
+            pointer-events: none;
         }
     }
 </style>

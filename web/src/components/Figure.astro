@@ -6,16 +6,73 @@ const { imgs } = Astro.props;
 FIGURE_SLOTS satisfies readonly ["content"];
 ---
 
-<div class="figure">
-    <div class="figure-imgs">
-        {
-            /* Insert all images */
-            imgs.map((img) => <img src={img.url} alt={img.alt} />)
-        }
+<figure class="figure glow-panel">
+    <div class="figure-body glow-panel-body">
+        <div class="figure-imgs">
+            {
+                /* Insert all images */
+                imgs.map((img) => <img src={img.url} alt={img.alt} data-lightbox />)
+            }
+        </div>
+        <figcaption class="figure-desc">
+            <slot name="content" />
+        </figcaption>
     </div>
-    <div class="figure-desc">
-        <slot name="content" />
-    </div>
-</div>
+</figure>
 
-<style></style>
+<style>
+    /* The border and glow come from .glow-panel in style.css; the bottom margin clears the outline hanging below */
+    .figure {
+        margin: 2rem 0 3rem;
+    }
+
+    .figure-body {
+        padding: 0.75rem;
+    }
+
+    /* Side by side when there are several, wrapping when they run out of room */
+    .figure-imgs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        justify-content: center;
+    }
+
+    .figure-imgs img {
+        border-radius: 22px;
+        display: block;
+        flex: 1 1 14rem;
+        height: auto;
+        max-height: 32.5rem;
+        min-width: 0;
+        object-fit: contain;
+    }
+
+    .figure-desc {
+        padding: 0.25rem 1rem 0.5rem;
+        text-align: center;
+    }
+
+    .figure-desc:empty {
+        display: none;
+    }
+
+    /* The panel supplies its own padding, so the outermost children drop theirs */
+    .figure-desc :global(> *:first-child) {
+        margin-top: 0;
+    }
+
+    .figure-desc :global(> *:last-child) {
+        margin-bottom: 0;
+    }
+
+    @media (max-width: 700px) {
+        .figure-body {
+            padding: 0.5rem;
+        }
+
+        .figure-imgs img {
+            border-radius: 14px;
+        }
+    }
+</style>

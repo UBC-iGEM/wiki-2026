@@ -1,0 +1,125 @@
+---
+type: "page"
+title: "Patient Simulant"
+---
+
+<a id="3fad65dd82be80979d02f971e94b7000" />*E. coli* is one of the most common UTI-causing bacteria in patient populations, and resistance to many common and older antibiotics, such as ampicillin, amoxicillin, and tetracycline, is widespread. Resistant bacteria can lead to longer UTI infections and increased treatment costs if the resistant strain is not identified quickly.
+
+<a id="3fad65dd82be804d8ef5ff496406b418" />\[Summary + Explanation of aims: 3-4 sentences]
+
+- <a id="3fad65dd82be801b8c0bfddb9d0a9202" />in order to validate our microfluidic chip assay, we need to simulate patient UTI sample
+- <a id="3fad65dd82be809cad51e6cf0dcffd2f" />Goals
+  - <a id="3fad65dd82be80558c7eee9088c9e710" />generate bacterial strain with resistance to antibiotics of interest
+  - <a id="3fad65dd82be8036b808ed24ea19b6c6" />confirm simulant strains’ capacity for antibioitc resistance
+  - <a id="3fad65dd82be80e8986ce3ead03949d8" />validate simulant strains’ antibioitc degradation
+
+<br id="3fad65dd82be807ebccde0ca7e344da3" />
+
+<a id="3fad65dd82be8030bf7dd0161985a7f6" />![](https://static.igem.wiki/teams/6279/wiki/assets/2d757a6cd1b755798fde332936a6d2d9.avif)
+
+<a id="3fad65dd82be8073a167cd891eb9c188" />\[replace soon]
+
+# <a id="3fad65dd82be80148897d1d1c70afef1" />**Patient Simulant Constructs**
+
+<a id="3fad65dd82be80258a22c564887cb5e6" />We have chosen the non-pathogenic K12 *E.coli* to simulate the antibiotic-resistant, infection-derived bacteria. We decided to model three strains resistant to the most commonly prescribed antibiotics: beta-lactams (amoxicillin and cephalexin) and aminoglycosides (kanamycin and gentamycin). The beta-lactam-resistant strain contains a broad-spectrum beta-lactamase-encoding plasmid, which confers resistance to many antibiotics within this class. The kanamycin-resistant strain contains a KanR casette and the gentamycin-resistant strain contains a GmR casette.
+
+<a id="3fad65dd82be80a391a5cb03a780f84a" />![](https://static.igem.wiki/teams/6279/wiki/assets/63da2dabe7ce53d9822f09c9c0cb23fb.avif)
+
+<a id="3fad65dd82be808ca783d582889e2599" />![](https://static.igem.wiki/teams/6279/wiki/assets/4158ba9ddd0e5bd793bf3cfc8a9829eb.avif)
+
+<br id="3fad65dd82be808e9edcc10d65740b26" />
+
+# <a id="3fad65dd82be800f81b0e2791204212d" />**Simulant survival titration**
+
+<a id="3fad65dd82be80b1afdfd8e6d0a575f2" />Ideally, we would expect our patient simulants to degrade the antibiotic administered at a minimum inhibitory concentration; the products of degraded antibiotic will be detected by biosensor strain, resulting in a fluorescent signal output to indicate the presence of antibiotic. To determine the minimum inhibitory concentration to use in simulant degradation experiments, we performed antibiotic titrations at different concentrations.
+
+### <a id="3fad65dd82be80269e9ed461252c296f" />Purpose
+
+<a id="3fad65dd82be803787c6f9302dd7f908" />The purpose of this titration was to identify a<u> concentration range for each antibiotic that would allow our engineered K12 patient simulant strains to survive</u>**.** Doing so would help us understand the resistance of our model bacteria to the respective antibiotics. The results would present a useful starting point for the antibiotic degradation titration.
+
+<a id="3fad65dd82be803aa388cbd8158fe09c" />In a real-world application, this data could guide our<u> choice of an appropriate concentration to stimulate, but not kill, </u>the bacteria in the patient sample in the first chamber of our microfluidic device.
+
+### <a id="3fad65dd82be808893c7d85e04e49f97" />Method
+
+<a id="3fad65dd82be802f99b0c2c309396b43" />We used a 96-well plate to perform serial 2-fold dilutions of antibiotics for each strain to find the minimum inhibitory concentration. An example plate set-up is below:
+
+<a id="3fad65dd82be80bdbbe4fc31d5dbb621" />
+
+|                                                        |                                                  |   |
+| ------------------------------------------------------ | ------------------------------------------------ | - |
+| <a id="3fad65dd82be8008b006de890bdebeb9" />**Columns** | **Contents**                                     |   |
+| <a id="3fad65dd82be803197ccce9c31f4f792" />1           | Growth control (broth + inoculum, no antibiotic) |   |
+| <a id="3fad65dd82be802a84ffeb7d0af613bf" />2–10        | Serial 2-fold dilution series of antibiotic      |   |
+| <a id="3fad65dd82be809cbe05c5f99dfad7fd" />2           | Highest antibiotic concentration                 |   |
+| <a id="3fad65dd82be8025add2c6a59b4d9e9e" />12          | Sterility control (broth only, no inoculum)      |   |
+
+<a id="3fad65dd82be800e9700c07718592ecb" />
+
+|                                              |       |          |          |          |          |         |         |           |           |            |          |        |
+| -------------------------------------------- | ----- | -------- | -------- | -------- | -------- | ------- | ------- | --------- | --------- | ---------- | -------- | ------ |
+| <a id="3fad65dd82be8008986ff17dc743905e" />  | 1     | 2        | 3        | 4        | 5        | 6       | 7       | 8         | 9         | 10         | 11       | 12     |
+| <a id="3fad65dd82be801f80c9cd14a562a36d" />A | blank | 800ug/ml | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.125ug/ml | 1.6ug/ml | 0ug/ml |
+| <a id="3fad65dd82be809cb2dcdc926648b7cd" />B | blank | 800ug/ml | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.125ug/ml | 1.6ug/ml | 0ug/ml |
+| <a id="3fad65dd82be80fb8952debef1852209" />C | blank | 800ug/ml | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.125ug/ml | 1.6ug/ml | 0ug/ml |
+| <a id="3fad65dd82be800ca6a5c64f6b84f9b9" />D |       |          |          |          |          |         |         |           |           |            |          |        |
+| <a id="3fad65dd82be8011aac0e196bd3b2424" />E | blank | 800ug/ml | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.125ug/ml | 1.6ug/ml | 0ug/ml |
+| <a id="3fad65dd82be80bd8b97d78bf975882c" />F | blank | 800ug/ml | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.125ug/ml | 1.6ug/ml | 0ug/ml |
+| <a id="3fad65dd82be80d092ddd5a261c5ac1d" />G | blank | 800ug/ml | 400ug/ml | 200ug/ml | 100ug/ml | 50ug/ml | 25ug/ml | 12.5ug/ml | 6.25ug/ml | 3.125ug/ml | 1.6ug/ml | 0ug/ml |
+| <a id="3fad65dd82be8047835fdca4401a9644" />H |       |          |          |          |          |         |         |           |           |            |          |        |
+| <a id="3fad65dd82be80e9994cf674993abc48" />  |       |          |          |          |          |         |         |           |           |            |          |        |
+
+<a id="3fad65dd82be80edb2a5e40955d7756b" />The antibiotics used were amoxicillin, cephalexin, kanamycin and gentamicin. The growth in each well was measured via an OD 600 reading with a spectrophotometer.
+
+### <a id="3fad65dd82be80ee8ab0c2dd0917c7a8" />Results
+
+<a id="3fad65dd82be808282f9e4e5cfe59e8f" />We conducted three repeat experiments of the titration protocol and observed a dose response for gentamicin. We successfully identified a minimum inhibitory concentration (MIC) of 8 ug/mL consistent with literature and a survival concentration range for our GenR K12. The MICs for the other antibiotics appeared to be outside the tested range, as no growth inhibition of the corresponding engineered strains was observed even at concentrations several times higher than the literature values.
+
+<br id="3fad65dd82be807f85b8c40c24a9f49f" />
+
+# <a id="3fad65dd82be80e7bcdcc3599d310865" />**Validation**
+
+## <a id="3fad65dd82be809f9b96ec4dd8ee2d52" />**Simulant antibiotic degradation**
+
+### <a id="3fad65dd82be80808a03ee92b7a11c64" />Purpose
+
+<a id="3fad65dd82be801598f9e52ad6dc80ab" />Patient urine simulants containing antibiotic-resistant bacteria are used to model real clinical samples that our biosensor may be exposed to. However, these bacteria may degrade or reduce the activity of the antibiotics present in the sample. This could then affect the concentration of antibiotic available to activate our downstream biosensors and therefore influence the strength of the resulting signal.
+
+### <a id="3fad65dd82be80c5b410c199174a7487" />Method
+
+<a id="3fad65dd82be807f8b34eef052b5cbab" />To investigate this, each patient simulant strain (GmR simulant, KanR simulant, Beta-lactamase simulant) was exposed to antibiotics for either 6 or 10 hours.  The initial antibiotic concentration was either 8ug/ml, since this is the upper limit of the biosensor MIC range identified in our Biosensor Challenge Assay, or 16ug/ml since it is twice the upper limit of the biosensor MIC range. Patient simulants were tested at an initial OD diluted to approximately 0.1, with an additional set of 6-hour conditions using an initial OD of approximately 0.5.
+
+<a id="3fad65dd82be80079c1dc787eb496cf4" />Following antibiotic exposure, the cultures were centrifuged and the resulting supernatants were passed through sterile 0.2 µm filters and then applied to both our CpxP-sfGFP and RecA-sfGFP biosensors constructs.
+
+<a id="3fad65dd82be80fd9493f71382026678" />After 24 hours of biosensor incubation, the OD600 was measured as an indicator of biosensor growth. These values were then compared with untreated controls to determine the degree of antibiotic activity remaining after exposure to the patient simulants. Because active antibiotic inhibits biosensor growth, greater biosensor growth in a patient-simulant supernatant corresponds to a greater reduction in antibiotic activity following exposure to the patient simulant.
+
+### <a id="3fad65dd82be80128fbdd21d4f3481b1" />Results
+
+<a id="3fad65dd82be80cea847ea3cedff5707" />As expected, all blank controls had comparably low OD values, indicating that the LB-Cm media was not contaminated and the the supernatant filtration successfully removed residual bacterial cells before the antibiotic-containing supernatants were introduced to the biosensors. This successfully addressed the confounding variable identified in V1.
+
+<a id="3fad65dd82be80c4b22bebd747833818" />![Figure 1. Biosensor strains (CpxP and RecA) exposed to supernatant, harvested after 6-hours of incubation with patient simulant strains (GmR, KanR, Beta-lactamase) at an initial OD value of 0.1.](https://static.igem.wiki/teams/6279/wiki/assets/10520000d659526786a58332e78d1661.avif)
+
+<a id="3fad65dd82be8014bcb1e8af92713a61" />![Figure 2. Biosensor strains (CpxP and RecA) exposed to supernatant, harvested after 10-hours of incubation with patient simulant strains (GmR, KanR, Beta-lactamase) at an initial OD value of 0.1.](https://static.igem.wiki/teams/6279/wiki/assets/7e63f6d39c1854b19cecb59e9422989b.avif)
+
+<a id="3fad65dd82be80518041e6a47f166a2a" />The results from Figures 1 and 2 indicate that the maximum MIC value of 8 ug/mL was generally a more suitable initial antibiotic concentration than the two-fold MIC value of 16 ug/mL for patient simulant-induced degradation, although the β-lactamase simulant strain was able to further reduce the activity of amoxicillin at both concentrations.
+
+<a id="3fad65dd82be80ac8cc9c65a25330a38" />For the β-lactamase simulant strain, exposure to 8 µg/mL amoxicillin for 6 hours resulted in sufficiently high reduction of amoxicillin activity, which is consistent with sufficiently high biosensor growth. At 16 ug/mL, nearly full degradation of amoxicillin was also observed. This response was consistent across both the CpxP and RecA biosensors strains.
+
+<a id="3fad65dd82be80fea54ac7d480835d16" />For the KanR simulant strain, exposure to 8 µg/mL tobramycin for 6 hours resulted in sufficiently high growth of both biosensor strains, once again indicating substantial reduction of tobramycin activity, suggesting that the KanR simulant was able to reduce the antibiotic activity sufficiently to prevent significant growth inhibition of the downstream biosensors. This response was consistent across both the CpxP and RecA biosensors strains.
+
+<a id="3fad65dd82be80548f57d0b7781cfa88" />For the GmR simulant, exposure to 8 µg/mL gentamicin required the longer exposure condition of 10 hours to achieve substantial degradation. The biosensor response after the longer exposure time showed with greater gentamicin degradation compared to the shorter 6 hour condition. This response was consistent across both the CpxP and RecA biosensors strains.
+
+<a id="3fad65dd82be80e9a682c3f393c297a8" />Together, these results allowed us to identify suitable conditions for each patient simulant. At an initial simulant OD of approximately 0.1, 8 µg/mL was sufficient for substantial degradation of tobramycin and amoxicillin after 6 hours, while gentamicin required a longer exposure period. Increasing the antibiotic concentration to 16 µg/mL did not generally provide a more suitable degradation condition, with the exception of the β-lactamase simulant, which was able to substantially degrade amoxicillin even at this higher concentration.
+
+<a id="3fad65dd82be80b39722e77ec05f11a0" />Our findings for optimal antibiotic input concentration, initial patient simulant OD, and degradation time can be summarized in a table as follows:
+
+<a id="3fad65dd82be8021aa01c9344e7321a0" />
+
+| <a id="3fad65dd82be8091976eee3586256f2b" />Patient simulant strain | Input antibiotic | Initial OD | Input concentration | Degradation time  |
+| ------------------------------------------------------------------ | ---------------- | ---------- | ------------------- | ----------------- |
+| <a id="3fad65dd82be809b88c8ca58c8c97531" />GmR simulant            | Gentamicin       | 0.1        | 8 µg/mL             | At least 10 hours |
+| <a id="3fad65dd82be805ea3aded0d8682d574" />KanR simulant           | Tobramycin       | 0.1        | 8 µg/mL             | 6 hours           |
+| <a id="3fad65dd82be80119a04e65f2ad5df99" />β-lactamase simulant    | Amoxicillin      | 0.1        | 8–16 µg/mL          | 6 hours           |
+
+<a id="3fad65dd82be801d9eb5f32bad0d093e" />Although the OD results indicated reduced antibiotic activity, the fluorescence measurements were lower than in the baseline antibiotic-treated bacteria conditions, suggesting that the degraded antibiotics in the patient-simulant supernatants may affect biosensor GFP fluorescence in our biosensor strains. Therefore, fluorescence and OD should be interpreted as separate readouts.
+
+<br id="3fad65dd82be80fd86a8ca20277a7496" />

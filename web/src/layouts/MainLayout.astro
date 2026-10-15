@@ -5,6 +5,7 @@ import "../style.css";
 import type { MarkdownHeading } from "astro";
 import { Font } from "astro:assets";
 
+import Lightbox from "../components/Lightbox.astro";
 import Navbar from "../components/Navbar.astro";
 import SponsorFooter from "../components/SponsorFooter.astro";
 import TableOfContents from "../components/TableOfContents.astro";
@@ -59,6 +60,7 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
             }
         </div>
         <SponsorFooter />
+        <Lightbox />
     </body>
 </html>
 

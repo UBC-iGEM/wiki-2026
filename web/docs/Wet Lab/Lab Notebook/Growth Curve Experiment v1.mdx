@@ -1,0 +1,107 @@
+---
+type: "database"
+title: "Growth Curve Experiment v1"
+path: "Wet Lab/Lab Notebook/Growth Curve Experiment v1"
+date: "2026-08-27"
+---
+
+# <a id="3c4d65dd82be80baaa73f9d9aa87e109" />Background
+
+## <a id="3c4d65dd82be803ebf96d83e1cef996c" />Objective
+
+<a id="3c4d65dd82be80218dc0d3871ac7c267" />To measure the baseline growth kinetics of each strain and determine burden of the backbone w/wo promotor+sfGFP.
+
+<Callout icon="🗣">
+  <a id="3c4d65dd82be8023a0ddfcb7c161ffc7" />**How do our biosensors grow compared to normal EPI300, and EPI300+CmR, at both 37C and RT (22C)?**
+</Callout>
+
+<a id="3c4d65dd82be80d4bfded827912f445d" />Another piece of information we obtain is the level of basal expression of GFP at RT and 37C.
+
+## <a id="3c4d65dd82be806dae89e64d77047dd2" />Variables
+
+<a id="3c4d65dd82be800a8825f526d29d9e10" />Independent: Bacterial Strains
+
+<a id="3c4d65dd82be8017b6d1d157bff4ab4d" />
+
+| <a id="3c4d65dd82be800ba944cf06afe0539f" />ID | Strain                 | Role                       |
+| --------------------------------------------- | ---------------------- | -------------------------- |
+| <a id="3c4d65dd82be80bf9d8cd5155cc0f8af" />1  | EPI300, no plasmid     | Growth Ceiling             |
+| <a id="3c4d65dd82be804da7b4df81b448ff21" />2  | EPI300, empty backbone | Measuring cost of backbone |
+| <a id="3c4d65dd82be80129420ddd10b53e8c5" />3  | EPI300, RecA           | Biosensor strain           |
+| <a id="3c4d65dd82be80aeb867d64f0cc9eca3" />4  | EPI300, CpxP           | Biosensor strain           |
+
+<a id="3c4d65dd82be804a9532c1f23eb1e4ac" />Dependent: OD600 + fluorescence measurement at each timepoint
+
+# <a id="3c4d65dd82be80cf8ca6d2ea564cee16" />Experiment
+
+## <a id="3c4d65dd82be80f2ae4ac9e5f713758e" />Materials and Equipment
+
+- <a id="3c4d65dd82be8027983fc8343ef69a04" />LB Broth
+- <a id="3c4d65dd82be808b93d5fa205a1aa17a" />LB-Cm Broth (17mg/ml)
+- <a id="3c4d65dd82be80a5a1d8e25c6495fe30" />96-well flat bottom, clear plate + lid
+- <a id="3c4d65dd82be804386f4f1fed373727b" />DI water
+- <a id="3c4d65dd82be80919b2dcc3e198770a6" />Culture tubes
+
+## <a id="3c4d65dd82be80ff909fd41b1db3087a" />Procedure
+
+### <a id="3c4d65dd82be80f2bd09dd39622f180f" />Day 1+2 - Streak and Starter
+
+1. <a id="3c4d65dd82be80758711efabf677680b" />Streak each strain and grow overnight at 37ºC
+   1. <a id="3c4d65dd82be8097b066fb52ccd6d6d3" />Use LB agar plates for strain 1, LB-Cm plates for strains 2-4
+2. <a id="3c4d65dd82be809193b5f15c77e07355" />Pick 3 colonies per strain, inoculate into separate tubes w/ 3mL of media each and grow overnight at 37C , 200rpm
+   1. <a id="3c4d65dd82be8045a713dba874f4770a" />Use LB for strain 1, LB-Cm for strains 2-4
+
+<a id="3c4d65dd82be80219d18c67bb9492de8" />
+
+|                                                                     |               |
+| ------------------------------------------------------------------- | ------------- |
+| <a id="3c4d65dd82be80f795a1e90582b4c019" />Condition                | Tube IDs      |
+| <a id="3c4d65dd82be80d68b32c5176b0d386c" />Wild Type (Strain 1)     | WT1, WT2, WT3 |
+| <a id="3c4d65dd82be805fbe6dc6ff4514189e" />Backbone-only (Strain 2) | BB1, BB2, BB3 |
+| <a id="3c4d65dd82be80c9aae5cca00f2cf998" />RecA (Strain 3)          | RC1, RC2, RC3 |
+| <a id="3c4d65dd82be806cb11ff9ff8aeab784" />CpxP (Strain 4)          | CX1, CX2, CX3 |
+
+### <a id="3c4d65dd82be804ea633c96f14e618d9" />Day 3 - Plating + Experiment
+
+1. <a id="3c4d65dd82be80f0aacde9f3526a1c45" />Measure OD600 of each tube, diluting into linear range if needed
+2. <a id="3c4d65dd82be80c0981bcd61a3f5bf43" />For cells cultured in LB-Cm, pellet \~1mL, discard supernatant and resuspend in LB media, LB-Cm for those with plasmids.
+3. <a id="3c4d65dd82be80209e3cd6b6a697e404" />Dilute all cultures to 0.02 OD600 in LB media
+4. <a id="3c4d65dd82be80028b6bd3d8d7a44bd9" />Dispense 200uL per well using layout below. Create a total of 2 plates
+
+<a id="3c4d65dd82be80d28bb2f3b455a29fdd" />![](https://static.igem.wiki/teams/6279/wiki/assets/a459353383a35e9d83ea326f21903369.avif)
+
+## <a id="3c4d65dd82be80d98b63f9c246e2bda0" />Biofactorial Plans
+
+### <a id="3c4d65dd82be800ba9e9dcfafa62ef91" />Equipment Used
+
+<a id="3c4d65dd82be80869e3aeafeedb0bbd8" />
+
+| <a id="3c4d65dd82be80c9a1fcfde99efa7406" />Equipment         | Use                             |
+| ------------------------------------------------------------ | ------------------------------- |
+| <a id="3c4d65dd82be80ae8e85cf1be32c76fb" />BMG PHERAstar FSX | OD600 and GFP fluorescence read |
+| <a id="3c4d65dd82be80148bd5c77f09ede0d5" />Cytomat Incubator | Incubation of the 37C plate     |
+
+### <a id="3c4d65dd82be803c8db3c31e1777edec" />Inputs
+
+- <a id="3c4d65dd82be800f8e6cd9769cf677a2" />See above, end of Day 3 - Step 4
+
+### <a id="3c4d65dd82be80c6ad05cc4d87c6e3b0" />Data Recorded
+
+- <a id="3c4d65dd82be809ba09ccb0691ac4914" />OD600 and fluorescence (488nm excitation and 510nm emission), every 30 minutes
+- <a id="3c4d65dd82be80f1ae3fce9e363d94e3" />Duration: 24 hours
+
+# <a id="3cbd65dd82be8041b36cddad2987b7a3" />Results
+
+- <a id="3cbd65dd82be80cf93aee444b2229c7b" />There was an equipment error where the incubator reads were not performed overnight
+- <a id="3cbd65dd82be805ba952e4ca8cd958bd" />Upon analysis of the data, it appears there is contamination, possibly from the media itself
+- <a id="3cbd65dd82be809797aef93ae051dca6" />Experiment will be repeated next week
+
+<a id="3cbd65dd82be800195bff6dd07c0d89d" />![Blank control wells show contamination](https://static.igem.wiki/teams/6279/wiki/assets/e419d22d51e35a1fa879d564be6b515f.avif)
+
+<a id="3cbd65dd82be804aa9e2c6c92aec6a78" />![This is consistent for all 9 wells for all plates indicating that the media used was contaminated](https://static.igem.wiki/teams/6279/wiki/assets/11422183d4685b4e903706013b2a2920.avif)
+
+<br id="3d6d65dd82be80068706d3fe0a0a13cf" />
+
+## <a id="3d6d65dd82be80adada2e83e0e3a3eea" />Summary
+
+<a id="3d6d65dd82be80109ae5f5be5d806c29" />We will repeat this experiment with fresh media to prevent contamination.

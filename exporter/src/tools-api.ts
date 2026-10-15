@@ -57,7 +57,7 @@ export async function getToolsClient(): Promise<ExporterResult<ToolsClient>> {
 
 class ToolsClient {
     private client: AxiosInstance;
-    private uploaded_asset_uuids_promise: Promise<ExporterResult<Set<string>>> | null = null;
+    private uploaded_asset_names_promise: Promise<ExporterResult<Set<string>>> | null = null;
 
     private constructor(private team_id: string) {
         // Internally holds a cookie store so we don't need to constantly re-authenticate our session
@@ -123,7 +123,7 @@ class ToolsClient {
             : "image/avif";
         const expected_public_url = `https://static.igem.wiki/teams/${this.team_id}/wiki/${folder_name}/${final_filename}`;
 
-        const already_uploaded = await this.alreadyUploaded({ folder_name, uid });
+        const already_uploaded = await this.alreadyUploaded({ folder_name, file_name: final_filename });
 
         if (isExporterErr(already_uploaded)) return already_uploaded;
 
@@ -220,35 +220,43 @@ class ToolsClient {
 
     public async alreadyUploaded({
         folder_name,
-        uid,
+        file_name,
     }: {
         folder_name: string;
-        uid: string;
+        file_name: string;
     }): Promise<ExporterResult<boolean>> {
-        const uploaded_uids = await this.getUploadedAssetUids({ folder_name });
+        const uploaded_names = await this.getUploadedAssetNames({ folder_name });
 
-        if (isExporterErr(uploaded_uids)) return uploaded_uids;
+        if (isExporterErr(uploaded_names)) return uploaded_names;
 
-        return uploaded_uids.has(uid);
+        return uploaded_names.has(file_name);
     }
 
-    /** The cached UIDs of files in `folder_name`; a UID is the file name without its extension. */
-    private async getUploadedAssetUids({ folder_name }: { folder_name: string }): Promise<ExporterResult<Set<string>>> {
-        if (this.uploaded_asset_uuids_promise) {
-            return this.uploaded_asset_uuids_promise;
+    /**
+     * The cached names of files in `folder_name`, e.g. `0123abcd.avif`.
+     *
+     * Names include the extension, so a UID uploaded under a different format is uploaded again.
+     */
+    private async getUploadedAssetNames({
+        folder_name,
+    }: {
+        folder_name: string;
+    }): Promise<ExporterResult<Set<string>>> {
+        if (this.uploaded_asset_names_promise) {
+            return this.uploaded_asset_names_promise;
         }
 
-        this.uploaded_asset_uuids_promise = (async (): Promise<ExporterResult<Set<string>>> => {
+        this.uploaded_asset_names_promise = (async (): Promise<ExporterResult<Set<string>>> => {
             const names = await this.listFiles(folder_name);
             if (isExporterErr(names)) return names;
-            return new Set(names.map((name) => nodePath.parse(name).name));
+            return new Set(names);
         })();
 
-        const result = await this.uploaded_asset_uuids_promise;
+        const result = await this.uploaded_asset_names_promise;
 
         // If the GET failed, do not permanently cache the failed result.
         if (isExporterErr(result)) {
-            this.uploaded_asset_uuids_promise = null;
+            this.uploaded_asset_names_promise = null;
         }
 
         return result;

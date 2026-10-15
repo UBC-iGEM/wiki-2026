@@ -1,0 +1,99 @@
+---
+/*
+ * One fullscreen viewer per page, opened by clicking any `img[data-lightbox]`.
+ * Components opt their images in with the attribute; this listens for them page-wide.
+ */
+---
+
+<dialog class="lightbox" aria-label="Enlarged image">
+    <button class="lightbox-close" aria-label="Close">×</button>
+    <img class="lightbox-img" alt="" />
+</dialog>
+
+<script>
+    const dialog = document.querySelector<HTMLDialogElement>("dialog.lightbox")!;
+    const view = dialog.querySelector<HTMLImageElement>(".lightbox-img")!;
+
+    // Capture phase, so a peeking carousel slide is checked before its own click handler brings it to the front
+    document.addEventListener(
+        "click",
+        (event) => {
+            const img = (event.target as Element).closest<HTMLImageElement>("img[data-lightbox]");
+            if (!img) return;
+            // A peeking carousel slide navigates rather than enlarges
+            if (img.closest('.carousel-slide[data-role]:not([data-role="active"])')) return;
+            view.src = img.currentSrc || img.src;
+            view.alt = img.alt;
+            dialog.showModal();
+        },
+        { capture: true },
+    );
+
+    // Any click inside closes it, as the image fills the dialog; Escape is handled by <dialog> itself
+    dialog.addEventListener("click", () => dialog.close());
+    dialog.addEventListener("close", () => view.removeAttribute("src"));
+</script>
+
+<style is:global>
+    img[data-lightbox] {
+        cursor: zoom-in;
+    }
+</style>
+
+<style>
+    .lightbox {
+        background: transparent;
+        border: none;
+        cursor: zoom-out;
+        height: 100%;
+        max-height: none;
+        max-width: none;
+        padding: 0;
+        width: 100%;
+    }
+
+    .lightbox[open] {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    .lightbox::backdrop {
+        backdrop-filter: blur(4px);
+        background: color-mix(in srgb, var(--color-ebony-clay) 90%, transparent);
+    }
+
+    .lightbox-img {
+        border-radius: 22px;
+        box-shadow: 0 0 2.5rem color-mix(in srgb, var(--color-cornflower) 40%, transparent);
+        max-height: calc(100vh - 4rem);
+        max-width: calc(100vw - 2 * var(--page-gutter));
+        object-fit: contain;
+    }
+
+    .lightbox-close {
+        background: none;
+        border: none;
+        color: var(--color-periwinkle);
+        cursor: pointer;
+        font-family: var(--font-geist);
+        font-size: 2.5rem;
+        line-height: 1;
+        padding: 0.25rem 0.75rem;
+        position: absolute;
+        right: var(--page-gutter);
+        top: 0.75rem;
+    }
+
+    .lightbox-close:hover,
+    .lightbox-close:focus-visible {
+        color: var(--color-lime-yellow);
+        outline: none;
+    }
+
+    @media (max-width: 700px) {
+        .lightbox-img {
+            border-radius: 14px;
+        }
+    }
+</style>

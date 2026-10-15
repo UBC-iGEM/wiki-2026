@@ -15,8 +15,14 @@
         "role": "Director"
       },
       {
+        "name": "Zahra Savoji",
+        "role": "Human Practices Lead",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/4193c63ade42501cbe24183dc1e507ed.avif"
+      },
+      {
         "name": "Tracy Lei",
-        "role": "Design/Wiki Lead"
+        "role": "Design/Wiki Lead",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/6cd96b3aa6ea56e0a86611140b150c38.avif"
       },
       {
         "name": "Jae-Yoon Kim",
@@ -51,7 +57,8 @@
       },
       {
         "name": "Evan Wong",
-        "role": "Wet Lab"
+        "role": "Wet Lab",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/e2932b5a32e4535d96dd46b8a17222b5.avif"
       },
       {
         "name": "ZiQi Chen",
@@ -59,7 +66,8 @@
       },
       {
         "name": "Arda Sayla",
-        "role": "Wet Lab"
+        "role": "Wet Lab",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/69567da7120c506abf18cb86567f8fc4.avif"
       },
       {
         "name": "Marina Chen",
@@ -77,7 +85,8 @@
       },
       {
         "name": "Andrew Li",
-        "role": "Dry Lab"
+        "role": "Dry Lab",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/cf45efd1e1c85d45b81457628a540bf6.avif"
       },
       {
         "name": "Connor Mora",
@@ -85,7 +94,8 @@
       },
       {
         "name": "Kaylie Chen",
-        "role": "Dry Lab"
+        "role": "Dry Lab",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/89bbc583d2bf5ed0956e78576dbec164.avif"
       },
       {
         "name": "Claudia Chen",
@@ -98,7 +108,8 @@
       },
       {
         "name": "Maximilien Filion",
-        "role": "Dry Lab"
+        "role": "Dry Lab",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/8cf84315a19e5b6e9d02251dc1ef5dd4.avif"
       },
       {
         "name": "Tiffany Feng",
@@ -130,10 +141,6 @@
         "role": "Human Practices"
       },
       {
-        "name": "Zahra Savoji",
-        "role": "Human Practices"
-      },
-      {
         "name": "Daniel Rostin",
         "role": "Human Practices"
       }
@@ -143,24 +150,32 @@
     "title": "Administration",
     "members": [
       {
+        "name": "[YOUR NAME]",
+        "role": "Administration"
+      },
+      {
         "name": "Gabriella Marie Gubantes",
         "role": "Administration"
       },
       {
         "name": "Jewell Alexo",
-        "role": "Administration"
+        "role": "Administration",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/bf6e815e010c54bcafeacefefdc38727.avif"
       },
       {
         "name": "Yoshier Hu",
-        "role": "Administration"
+        "role": "Administration",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/b71e7074947951b291abf934f935fe29.avif"
       },
       {
         "name": "Izaak Yip",
-        "role": "Administration"
+        "role": "Administration",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/d66905f455fb545b80fcb6658f126dff.avif"
       },
       {
         "name": "Gia Rishi",
-        "role": "Administration"
+        "role": "Administration",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/e196b7eb425a53fbae48f2ea82cc6370.avif"
       }
     ]
   },
@@ -178,7 +193,8 @@
       },
       {
         "name": "Eris Do",
-        "role": "Design/Wiki"
+        "role": "Design/Wiki",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/4149ba30f80152e19e7aa17228365cf3.avif"
       },
       {
         "name": "Lavenia Suherman",
@@ -189,6 +205,15 @@
         "name": "Rachel Weng",
         "role": "Design/Wiki",
         "image": "https://static.igem.wiki/teams/6279/wiki/assets/d0f1f86cd9e258e9b60a39d2a796bcbd.avif"
+      }
+    ]
+  },
+  "instructor": {
+    "title": "Instructor",
+    "members": [
+      {
+        "name": "Antonio Wong",
+        "role": "Instructor"
       }
     ]
   }

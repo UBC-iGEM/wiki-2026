@@ -9,7 +9,12 @@
                     "item": "3f3d65dd82be80bd9debd83f0bb47b7b"
                 },
                 {
-                    "path": "Results",
+                    "path": "Biosensor",
+                    "type": "page",
+                    "item": "3fad65dd82be80deaeeaf21d6dc3234b"
+                },
+                {
+                    "path": "Patient Simulant",
                     "type": "page",
                     "item": "3ecd65dd82be8081bb4ce8c55cf21a03"
                 },
@@ -19,22 +24,14 @@
                     "item": "3e5d65dd82be80b1a707f371063052e1"
                 },
                 {
-                    "path": "Parts Collection",
+                    "path": "Parts",
                     "type": "page",
                     "item": "3ecd65dd82be809090dde212edf509aa"
                 },
                 {
-                    "path": "Lab Notebook 2026",
+                    "path": "Lab Notebook",
                     "type": "db",
                     "item": [
-                        {
-                            "path": "Notebook Entry Template",
-                            "item": "36dd65dd82be80b6a286ce3121c64387"
-                        },
-                        {
-                            "path": "Sample Notebook Entry",
-                            "item": "36dd65dd82be801e87eac615d082d8bf"
-                        },
                         {
                             "path": "Assembly of CpxP and RecA",
                             "item": "37ad65dd82be80b6998fe86801e1e445"
@@ -243,6 +240,11 @@
                     "path": "Our Journey",
                     "type": "page",
                     "item": "3d7d65dd82be8078a43bfd438b8af0ff"
+                },
+                {
+                    "path": "Education",
+                    "type": "page",
+                    "item": "3fad65dd82be80658fcffc85c01b881c"
                 }
             ]
         },
@@ -278,7 +280,23 @@
         },
         {
             "name": "Judging",
-            "entries": []
+            "entries": [
+                {
+                    "path": "Contribution",
+                    "type": "page",
+                    "item": "3fad65dd82be80ffb6d8f8d5c65f8225"
+                },
+                {
+                    "path": "Engineering Success",
+                    "type": "page",
+                    "item": "3fad65dd82be8064b4d2fd929f74d04a"
+                },
+                {
+                    "path": "Human Practices",
+                    "type": "page",
+                    "item": "3fad65dd82be80019c3dc5829472d6e6"
+                }
+            ]
         },
         {
             "name": "Testing",

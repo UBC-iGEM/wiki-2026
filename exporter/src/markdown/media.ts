@@ -19,13 +19,17 @@ export async function uploadMedia(
     const url = media.type === "file" ? media.file.url : media.external.url;
     const uid = mediaUid(url);
 
+    const file_name = mediaFileName(block);
+    // Converting an SVG would rasterize it, so SVGs are always uploaded as-is
+    const is_svg = file_name.toLowerCase().endsWith(".svg");
+
     const client_res = await getToolsClient();
     if (isExporterErr(client_res)) return client_res;
 
     const upload_res = await client_res.upload({
         uid: uid.toString(),
         url,
-        original_file: keep_original_file ? { file_name: mediaFileName(block) } : undefined,
+        original_file: keep_original_file || is_svg ? { file_name } : undefined,
     });
     if (isExporterErr(upload_res)) return upload_res;
 
@@ -47,5 +51,8 @@ export function mediaFileName(block: MediaBlock): string {
 
     const media = block.type === "image" ? block.image : block.file;
     const url = media.type === "file" ? media.file.url : media.external.url;
-    return decodeURIComponent(url.split("?")[0]!.split("/").pop()!);
+    // Notion image URLs can end in a suffix like `/Commercialization_roadmap.svg/size`, so take the last segment with an
+    // extension rather than the last segment.
+    const segments = decodeURIComponent(url.split("?")[0]!).split("/");
+    return segments.findLast((segment) => segment.includes(".")) ?? segments.pop()!;
 }

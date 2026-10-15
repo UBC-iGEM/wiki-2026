@@ -1,0 +1,68 @@
+---
+type: "page"
+title: "Biosensor"
+---
+
+<a id="3fad65dd82be808ca4dbd348051a966f" />\[Summary + Explanation of aims: 3-4 sentences]
+
+<a id="3fad65dd82be8004a5b2fcd1fd2bde49" />We started by determining 1) the different growth rates between WT (Wild Type) EPI300 *E. coli*, and 2) the basal fluorescence of each culture. This information allowed us to design first set of fluorescence and OD measuring experiments. The first tests were done to screen through a variety of minimal inhibitory concentrations (MIC) in order to determine an optimal antibiotic concentration range to try. These took place over an extremely broad antibiotic concentration range, and allowed us to narrow down our antibiotic concentration values to a smaller range.
+
+<a id="3fad65dd82be806db05decded4c5c383" />Our next goals were to characterize dose-response curves, including both OD and fluorescence values after antibiotic stimulation. The end goal for these experiments was to produce a proper calibration curve for our biosensor.
+
+<a id="3fad65dd82be80e8b091e62bdeac1a4f" />![](https://static.igem.wiki/teams/6279/wiki/assets/19aac0dddbfc57f792d6d6389a0b216e.avif)
+
+<br id="3fad65dd82be80f4b5dbd628ae8788ed" />
+
+# <a id="3fad65dd82be802e8b2ae06e4c514213" />**Biosensor Constructs**
+
+<a id="3fad65dd82be8061b3c4cf9aa552f919" />We based both biosensor plasmids on the pSB1C3\_J04450 backbone. For selection we included chloramphenicol (Cm) resistance. Other typical selection markers, like ampicillin and kanamycin, could confer resistances to the β-lactam and aminoglycoside antibiotic groups respectively. The part is iGEM compatible, with a BioBrick RFC10 MCS (Multiple Cloning Site). The presence of a red fluorescent protein (RFP) in this plasmid distinguishes whether the backbone contains the desired insert. Lastly, this plasmid contains a high-copy origin of replication (ori), which allows high titre transformant production. Our chosen restriction enzymes were EcoRI and PstI.
+
+<a id="3fad65dd82be8037aa70d58d5ebf3aa0" />→ picture of the pSB1C3\_J04450
+
+<a id="3fad65dd82be8013a325ed1bde35f850" />The final biosensor plasmids also employs the same pSB1C3\_J04450 backbone, and were assembled by HiFi assembly with the desired inserts, which is any one of CpxP and RecA. As aforementioned in , the aim of constructing these strains is to detect *stressors* for *E. coli*, including antibiotic stimulation. Our output here is the production of superfolder GFP, which creates a fluorescent visual output.
+
+<a id="3fad65dd82be805e816ed5302beb6781" />→ picture(s) of the mechanisms for Cpxp and RecA
+
+<a id="3fad65dd82be804b9d0bc5f8d0c3f2e3" />→ picture(s) of the CpxP and RecA maps.
+
+<a id="3fad65dd82be808c9b7cec57482f7473" />However, building the biosensor was only our first step. We later performed characterization experiments with the biosensor strains in order to better understand their capabilities and limits.
+
+<br id="3fad65dd82be802eaa45eb35a2d7dcce" />
+
+# <a id="3fad65dd82be80178e5af6c8962dca2f" />Characterization
+
+## <a id="3fad65dd82be8083ab32c2c0a5db3547" />**Growth Curve Experiment**
+
+<a id="3fad65dd82be80378664deccfa8ff3b9" />→  graphs found in [Growth Curve Experiment v2](/ubc-vancouver/wet-lab/lab-notebook/growth-curve-experiment-v2).
+
+<a id="3fad65dd82be803a9751ebe37998a726" />To begin, we determined characteristic growth curves of unstimulated strains over time. The spectroscopic results showed that CpxP had an extremely high basal fluorescence compared to WT and the RecA strain, although RecA also displayed higher basal fluorescence. Additionally, the maximum bacterial concentrations for the biosensor strains were lower. There may be a degree of stress associated with the plasmid, or the Cm media used.
+
+<a id="3fad65dd82be8047b725ff7085a8a22a" />We also performed plasmid retention tests to study whether the transformed plasmids are stably retained. This was completed by plating biosensor strains and WT bacteria in various concentrations of Cm LB plates. The result of these experiments showed that it was essential to have Cm selection pressure to retain our plasmids. We used DBTL to improve our ongoing MIC titration experiments, including better data normalization informed by the base fluorescence we observed.
+
+## <a id="3fad65dd82be8079befbc4c2621d5550" />**Plasmid Retention Experiment**
+
+<br id="3fad65dd82be8078986aceb67f09dcd2" />
+
+## <a id="3fad65dd82be807eb8b0d73c3d0f68ec" />**MIC Titration Experiments**
+
+<br id="3fad65dd82be804bae28fbbe65507270" />
+
+<br id="3fad65dd82be80ed812dd5ff39048c38" />
+
+# <a id="3fad65dd82be80c5a420c96e1b62a059" />Validation
+
+## <a id="3fad65dd82be80ffbc1cc433e0f4077f" />**Dose Response Titration Experiments**
+
+- <a id="3fad65dd82be8043bb16fe77c9705fa9" />general workflow flowchart? (antibiotic stimulation —> cpxp/reca activation —> sfGFP fluorescence readout + od measuremtn)
+- <a id="3fad65dd82be8002b3caf1bee3f2478d" />Graphs?
+- <a id="3fad65dd82be803bb701dc64cc97139f" />plate with experiment example, maybe from [Biosensor MIC Screening Titration v2](/ubc-vancouver/wet-lab/lab-notebook/biosensor-mic-screening-titration-v2)
+
+<a id="3fad65dd82be80a69c04e4021160ec4b" />In order to build the in-house CpxP and RecA biosensors, we needed a method to measure their responses to antibiotic stress and their growth over time. We used two measurements: 1) superfolder GFP fluorescence and 2) optical density at 600nm (OD600). Fluorescence served as the primary output to measure stress-response activation. However, fluorescence cannot be interpreted independently since the number of viable cells is confounding. By normalizing fluorescence to optical density (OD), a measurement of cell density, we could normalize increase in fluorescence against population.
+
+<a id="3fad65dd82be80bcaf6ae6244ffab163" />Our first experiments screened a wide range of antibiotic concentrations to determine an optimal concentration window at which CpxP and RecA produced a detectable fluorescent response. We therefore expanded the concentration ranges, and examined antibiotic concentrations, biosensor strain, exposure time, and bacterial density to identify conditions that could generate a measurable signal. For these experiments, we exposed both biosensors to gentamicin, kanamycin, amoxicillin, and cephalexin.
+
+<a id="3fad65dd82be808d98b8dae7ecb2f9fb" />Our initial characterization did not produce a statistically significant response across every antibiotic and biosensor combination. Some conditions showed potential concentration-dependent differences, particularly for RecA exposed to aminoglycosides, while other conditions showed overlap. Because of this, we treated the identified ranges from these experiments as preliminary and repeated experiments before moving forward.
+
+<a id="3fad65dd82be80c99e9ecd86f7c5c4f0" />Future broad screening experiments allowed us to narrow conditions tested in later-dose response experiments and ultimately informed the design of our Biofactorial characterization, where variables like starting OD, antibiotic concentration, and exposure time could be assessed more systematically.
+
+<a id="3fad65dd82be801c977bf85e0526b11a" />The greater goal of this characterization was to determine whether fluorescence from our CpxP and RecA biosensors could eventually serve as meaningful indicators of bacterial response to antibiotics. Although preliminary experiments did not produce consistent dose-response relationships across every conditions, they established experimental conditions and limitations of our system and provided a foundation for future optimization towards our rapid antibiotic susceptibility testing platform.

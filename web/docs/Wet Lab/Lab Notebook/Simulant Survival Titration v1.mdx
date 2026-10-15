@@ -1,0 +1,153 @@
+---
+type: "database"
+title: "Simulant Survival Titration v1"
+path: "Wet Lab/Lab Notebook/Simulant Survival Titration v1"
+date: "2026-08-30"
+---
+
+# <a id="3cdd65dd82be8093aeb0e22f38f060a4" />Background
+
+## <a id="3cdd65dd82be80439ea6d4ba99b5bb5e" />Objective
+
+<Callout icon="🗣">
+  <a id="3cdd65dd82be8081b977c6a0600a9851" />**What is the maximum amount of antibiotic we can use as an input for our patient samples?**
+</Callout>
+
+<br id="3cdd65dd82be807590abcc237c07a921" />
+
+## <a id="3d6d65dd82be8013b5aff3db597f3f86" />Variables
+
+- <a id="3cdd65dd82be8066a38cc53646fcf976" />Independent: antibiotic concentration
+- <a id="3d6d65dd82be80198e9dec6981b5962a" />Readout: OD value after 24 hours of antibioitc exposure
+- <a id="3d6d65dd82be809195c6ea90c5eb471c" />Objective: To find the optimal antibiotic concentration for each strain that maximises the number of colonies on the agar plate to use for future validations
+
+# <a id="3cdd65dd82be803aa819ca880a32a8f0" />Experiment:
+
+## <a id="3cdd65dd82be80f59debf83a6b8cca9d" />Materials:
+
+- <a id="3cdd65dd82be80b7b688fcb5bf2e2c7f" />Standard 96-well microplate (flat-bottom, sterile)
+- <a id="3d6d65dd82be80548fedd4ce7f2cf8df" />Multichannel pipette + reservoir
+- <a id="3d6d65dd82be8038b93bd800bb558ddb" />0.2 µm sterile filter and syringe
+- <a id="3d6d65dd82be80ae9c6fec640a033f4c" />Gentamicin (Sigma Aldrich, #G1264-50MG)
+- <a id="3d6d65dd82be80b6afcccd084200d3f0" />Kanamycin (BioShop, #KAN201)
+- <a id="3d6d65dd82be80578f2ad9dce2e08b32" />Amoxicillin (Sigma Aldrich, #A8523-1G)
+- <a id="3d6d65dd82be809683efd1556e607d49" />Cephalexin (AmBeed, #A320894)
+- <a id="3d6d65dd82be80e086a9e04a177443c3" />MilliQ water
+- <a id="3d6d65dd82be803a84a6cac61766db90" />LB+Cm-agar dishes
+- <a id="3d6d65dd82be8090a788ee1dbbd26ced" />3 Patient simulant strains (from [Patient Simulant (KanR, GmR) Cloning](/ubc-vancouver/wet-lab/lab-notebook/patient-simulant-kanr-gmr-cloning) and [Patient Simulant (B-Lact., CmR backbone) Cloning](/ubc-vancouver/wet-lab/lab-notebook/patient-simulant-b-lact-cmr-backbone-cloning) )
+- <a id="3d6d65dd82be80608479c02231f78db8" />LB-Cm broth (17 mg/ml)
+- <a id="3d6d65dd82be80b6af6fc8fd79c95823" />LB broth
+- <a id="3d6d65dd82be8092a16cec424315d738" />Varioskan plate reader
+
+## <a id="3cdd65dd82be809290fdf93eb421f915" />Procedure:
+
+## <a id="3cdd65dd82be8095b53cf8913cbc81e1" />Day 1 - Preparation of Inoculum
+
+1. <a id="3cdd65dd82be804989bbeeb510ae8093" />Using glycerol stocks of each strain, inoculate 10 mL of the LB-Cm broth.
+2. <a id="3cdd65dd82be808e84a9cf87929805c5" />Grow each strain to mid-log phase (standardize OD600, e.g., 0.4–0.6) overnight at 37 ºC
+   1. <a id="3cdd65dd82be800a93f8daf13e946b81" />LB-Gm = Gm resistant strain in LB-Cm
+   2. <a id="3cdd65dd82be80c29da3ee375e26c39f" />LB-Kn = Kan resistant strain in LB-Cm
+   3. <a id="3cdd65dd82be80e9b571d83202edea34" />LB-Amox = beta lactam resistant strain in LB-Cm
+   4. <a id="3cdd65dd82be805681aaea7c132f0c28" />LB-Cephalexin = beta lactam resistant strain in LB-Cm
+
+## <a id="3cdd65dd82be80379e26de12eada5d66" />Day 2
+
+1. <a id="3cdd65dd82be8042a3c7e0c0c149f3a1" />**Measuring OD600 of starting culture:** Use a spectrophotometer or plate reader to measure the OD600 of the culture. If OD600 is above 0.1, dilute with fresh broth. If it's between 0.09–0.1, proceed. If below 0.09, incubate 15–30 more minutes and re-check.
+2. <a id="3cdd65dd82be80908c63c58d2a5495fb" />**Prep of diluted, standardised inoculum**: Add 100 µL of OD-adjusted culture into 10 mL of fresh broth in a trough (a 1:100 dilution). Mix gently by pipetting up and down a few times. This gives \~10⁶ CFU/mL and is enough to inoculate about 16 rows of a 96-well plate.
+3. <a id="3cdd65dd82be80e3b2e2c3a76121176f" />**Prep of antibiotic stock**: Dissolve antibiotic in broth at 2× the highest concentration to be tested. Check concentration range on literature MIC values for your strain, spanning at least several dilutions below and above that value.
+4. <a id="3cdd65dd82be8090a33cfcc1da3ab40f" />Using the layout below, add 50 µL of broth to columns 1–10 of the 96-well plate. Leave column 11 empty. Add 100 µL of broth to column 12 (sterility control).
+
+<a id="3cdd65dd82be80f6bb6adc31b5352039" />
+
+|                                                        |                                                  |
+| ------------------------------------------------------ | ------------------------------------------------ |
+| <a id="3cdd65dd82be80c4ab81d90a08412883" />**Columns** | **Contents**                                     |
+| <a id="3cdd65dd82be806f810be9b560bb2b96" />1           | Growth control (broth + inoculum, no antibiotic) |
+| <a id="3cdd65dd82be80cba38cce504ad4f23f" />2–10        | Serial 2-fold dilution series of antibiotic      |
+| <a id="3cdd65dd82be80edb24df3c8de956411" />11          | Highest antibiotic concentration                 |
+| <a id="3cdd65dd82be80beaec8e9187692fc56" />12          | Sterility control (broth only, no inoculum)      |
+
+1. <a id="3cdd65dd82be8032b971ea574fc41eaf" />**Perform the serial dilution :** Add 100 µL from 2× antibiotic stock to column 11. Using a multichannel pipette, mix and transfer 50 µL from column 11 into column 10, mix, then transfer 50 µL from column 10 into column 9, and continue this pattern down to column 2. After mixing column 2, remove and discard 50 µL so all wells end at equal volume.
+2. <a id="3cdd65dd82be8085b76be11993a50d8c" />**Inoculating the plate**: Using a multichannel pipette, add 50 µL of the diluted standardized inoculum to every well in columns 1–11. Do not add inoculum to column 12 (it must stay sterile). Complete this step within 15 minutes of preparing the inoculum in Step 3.
+3. <a id="3cdd65dd82be80c3be4af14521d64d95" />Seal and incubate: cover the plate with a sealing film, then a lid. Incubate at 37°C overnight.
+
+<a id="3ced65dd82be806cab81e101ef997259" />
+
+|                                              |          |              |            |           |          |          |          |          |          |          |          |          |
+| -------------------------------------------- | -------- | ------------ | ---------- | --------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |
+| <a id="3ced65dd82be806db162dd4997b8951c" />  | 1        | 2            | 3          | 4         | 5        | 6        | 7        | 8        | 9        | 10       | 11       | 12       |
+| <a id="3ced65dd82be80c49549f27607f105b5" />A | 0ug/ml   | 0.0625 ug/mL | 0.125ug/ml | 0.25ug/ml | 0.5ug/ml | 1ug/ml   | 2ug/ml   | 4ug/ml   | 8ug/ml   | 16ug/ml  | 32ug/ml  | blank LB |
+| <a id="3ced65dd82be801f87c1f320af34c3ab" />B | 0ug/ml   | 0.0625 ug/mL | 0.125ug/ml | 0.25ug/ml | 0.5ug/ml | 1ug/ml   | 2ug/ml   | 4ug/ml   | 8ug/ml   | 16ug/ml  | 32ug/ml  | blank LB |
+| <a id="3ced65dd82be8012b604e3ea02024356" />C | 0ug/ml   | 0.0625 ug/mL | 0.125ug/ml | 0.25ug/ml | 0.5ug/ml | 1ug/ml   | 2ug/ml   | 4ug/ml   | 8ug/ml   | 16ug/ml  | 32ug/ml  | blank LB |
+| <a id="3ced65dd82be80178c36d9a5690978e7" />D | blank LB | blank LB     | blank LB   | blank LB  | blank LB | blank LB | blank LB | blank LB | blank LB | blank LB | blank LB | blank LB |
+
+<br id="3ced65dd82be80e58a2ae1a8b9b79f3b" />
+
+## <a id="3cdd65dd82be80a892dfd0b274aaeeb5" />Day 3: Read the Plate and Determine MIC
+
+1. <a id="3cdd65dd82be80a3ac35f57e8d56f51f" />Remove the plate from the incubator, take off the lid and sealing film, and let it sit at room temperature for 15 minutes before reading.
+2. <a id="3cdd65dd82be8060ada8d73315200ff7" />**Read OD**: Load the plate into a plate reader and record the OD600 value for every well, including the growth control and sterility control.
+3. <a id="3cdd65dd82be800ab39cf58188d059dc" />**Data analysis**: Subtract the sterility control OD600 (background) from each well. Plot OD600 versus antibiotic concentration (log scale on the x-axis) for each strain. Determine the MIC as the lowest concentration where no visible turbidity/growth occurs — this can be done visually or by fitting the curve with a Gompertz model for a more precise value.
+
+# <a id="3cdd65dd82be80ffb628d74a013c917d" />Results
+
+- <a id="3cdd65dd82be806295b9ed510bbaaddf" />Cultures were at an OD of 0.6 after 26 hours of incubation at 37˚C, 250rpm.
+- <a id="3ced65dd82be8070b79dd923e0811548" />To wash out the Cm from the LB-Cm, centrifuged each tube at 4000xg for 10 mins. Resuspended each pellet in 8-10ml of LB.
+- <a id="3ced65dd82be80468ea1eec916799724" />Diluted to OD of 0.1 by diluting 1ml of inoculum with 5ml of fresh LB
+
+## <a id="3d0d65dd82be8032af47dd8fcdcf1e77" />Raw Data
+
+### <a id="3d0d65dd82be806599bef80f8663450d" />Amoxicillin
+
+<a id="3d0d65dd82be807da2f7fffb4ef27d75" />
+
+|                                                  |          |          |          |          |          |          |          |          |          |          |          |           |
+| ------------------------------------------------ | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | --------- |
+| <a id="3d0d65dd82be80bbbe26f67b1493f89d" />Value | 1        | 2        | 3        | 4        | 5        | 6        | 7        | 8        | 9        | 10       | 11       | 12        |
+| <a id="3d0d65dd82be80ccb742c0df77718d7a" />A     | 0.618753 | 0.620193 | 0.616001 | 0.612305 | 0.59505  | 0.587819 | 0.597853 | 0.597499 | 0.571858 | 0.544433 | 0.375674 | 0.0478967 |
+| <a id="3d0d65dd82be80919c3ddf8d090f5bec" />B     | 0.610362 | 0.446911 | 0.430529 | 0.440213 | 0.462577 | 0.474315 | 0.431883 | 0.456323 | 0.447055 | 0.381601 | 0.306534 | 0.044811  |
+| <a id="3d0d65dd82be801da480cb6853d8fdda" />C     | 0.638113 | 0.481398 | 0.458041 | 0.530465 | 0.55488  | 0.51657  | 0.42628  | 0.514452 | 0.461856 | 0.415118 | 0.313574 | 0.0458851 |
+| <a id="3d0d65dd82be80d48bdfcbd80f24ecee" />D     |          |          |          |          |          |          |          |          |          |          |          |           |
+
+### <a id="3d0d65dd82be8071a8e2cc58b32e4268" />Cephalexin
+
+<a id="3d0d65dd82be80509a74c2e83107e3c4" />
+
+|                                                  |          |          |          |          |          |          |          |          |          |          |          |           |
+| ------------------------------------------------ | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | --------- |
+| <a id="3d0d65dd82be804eb7d8d6ab89e5b5cb" />Value | 1        | 2        | 3        | 4        | 5        | 6        | 7        | 8        | 9        | 10       | 11       | 12        |
+| <a id="3d0d65dd82be807893caea5b5bbdf784" />A     | 0.630451 | 0.585028 | 0.59495  | 0.58109  | 0.598102 | 0.618301 | 0.578239 | 0.424015 | 0.381793 | 0.283639 | 0.173653 | 0.384211  |
+| <a id="3d0d65dd82be8097b5b6fa64e502db84" />B     | 0.578314 | 0.475433 | 0.450958 | 0.466715 | 0.408942 | 0.448217 | 0.416412 | 0.260146 | 0.253072 | 0.193302 | 0.162307 | 0.043535  |
+| <a id="3d0d65dd82be801d9bd2dd7a9ece8aec" />C     | 0.609929 | 0.442427 | 0.469463 | 0.445112 | 0.442535 | 0.447405 | 0.390285 | 0.264791 | 0.235637 | 0.200533 | 0.176372 | 0.0439296 |
+| <a id="3d0d65dd82be80f1b976f7e5b403cfe1" />D     |          |          |          |          |          |          |          |          |          |          |          |           |
+
+### <a id="3d0d65dd82be8023bcb1e489a11255a3" />Kanamycin
+
+<a id="3d0d65dd82be800eaf0acc2c004758a1" />
+
+|                                                  |          |          |          |          |          |          |          |          |          |          |          |           |
+| ------------------------------------------------ | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | --------- |
+| <a id="3d0d65dd82be804a82b2cd51830bb7c0" />Value | 1        | 2        | 3        | 4        | 5        | 6        | 7        | 8        | 9        | 10       | 11       | 12        |
+| <a id="3d0d65dd82be8019b627f204089e8772" />A     | 0.645399 | 0.607226 | 0.563102 | 0.545972 | 0.580833 | 0.582546 | 0.565489 | 0.533999 | 0.532746 | 0.521321 | 0.367223 | 0.0444336 |
+| <a id="3d0d65dd82be8031bb20f583fc62592f" />B     | 0.602545 | 0.436714 | 0.421808 | 0.443354 | 0.425293 | 0.442045 | 0.439623 | 0.419111 | 0.401195 | 0.447447 | 0.331296 | 0.048137  |
+| <a id="3d0d65dd82be800b838fd1e394419fde" />C     | 0.601253 | 0.430087 | 0.4426   | 0.436012 | 0.421412 | 0.423716 | 0.424838 | 0.421077 | 0.409386 | 0.398957 | 0.360142 | 0.0446047 |
+| <a id="3d0d65dd82be8006868ae472ec08e209" />D     |          |          |          |          |          |          |          |          |          |          |          |           |
+
+### <a id="3d0d65dd82be80c69fcfd966adbe6979" />Gentamicin
+
+<a id="3d0d65dd82be8021b811c50d2167c3ad" />
+
+|                                                  |          |          |          |          |          |          |          |          |          |           |           |           |
+| ------------------------------------------------ | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | --------- | --------- | --------- |
+| <a id="3d0d65dd82be802bb6aaf0d99a8e8bca" />Value | 1        | 2        | 3        | 4        | 5        | 6        | 7        | 8        | 9        | 10        | 11        | 12        |
+| <a id="3d0d65dd82be8023853be439e308c5a3" />A     | 0.634369 | 0.597419 | 0.56726  | 0.592876 | 0.548059 | 0.507158 | 0.334564 | 0.271909 | 0.217407 | 0.0851785 | 0.06327   | 0.0444004 |
+| <a id="3d0d65dd82be8056a10fda313f3b097f" />B     | 0.716411 | 0.466075 | 0.482795 | 0.432712 | 0.367496 | 0.304772 | 0.290202 | 0.213742 | 0.184495 | 0.0668427 | 0.0489015 | 0.0509045 |
+| <a id="3d0d65dd82be80b68beac52a9eca09a4" />C     | 0.584953 | 0.47644  | 0.442003 | 0.429645 | 0.363108 | 0.363668 | 0.278401 | 0.261233 | 0.177444 | 0.0669779 | 0.0552461 | 0.0436356 |
+| <a id="3d0d65dd82be808f92e5e54661e481f1" />D     | 0.61667  | 0.454672 | 0.435198 | 0.403814 | 0.332473 | 0.302388 | 0.276581 | 0.257127 | 0.186741 | 0.070248  | 0.0550161 | 0.0431899 |
+
+# <a id="3cdd65dd82be80cda7a6df847aa2374e" />Summary
+
+- <a id="3d0d65dd82be806eb9d2e06c89c237fc" />Gentamicin at \<8 ug/ml allows for simulant survival.
+- <a id="3d2d65dd82be80dea181f5f329073535" />Kanamycin, Cephalexin, and Amoxicillin should be titrated again at concentrations above 32 ug/mL as bacterial growth from baseline was observed at all dilutions.
+
+<br id="3d2d65dd82be80798c34d187bff4fac7" />
