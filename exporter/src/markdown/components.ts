@@ -2,10 +2,10 @@ import { fetchNotebook, parseColabFileId } from "../colab";
 import type { NotionBlock } from "../notion";
 import { fetchFileText, parsePlate, type Plate } from "../platemap";
 import { ExporterError, isExporterErr, type ExporterResult } from "../utils";
-import { blockContext, convertItems, type ConvertContext, type Item } from "./blocks";
+import { blockContext, convertBlocks, convertItems, type ConvertContext, type Item } from "./blocks";
 import { jsxFlow, jsxInlineBlock, type FlowContent, type JsxAttrs } from "./mdx";
 import { mediaFileName, uploadMedia } from "./media";
-import { asPlainText } from "./rich-text";
+import { asPlainText, convertRichText } from "./rich-text";
 import type { Heading, Image, PhrasingContent } from "mdast";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -198,43 +198,59 @@ async function carousel({ items, ctx }: ComponentInput): ComponentOutput {
 // IHP COMPONENT
 // ====================
 
-export interface IHPAttrs {
-    image: {
-        url: string;
-        alt: string;
-    };
-    name: string;
-    bio: string;
-}
-
-export const IHP_SLOTS = ["content"] as const;
+/** Each person's card arrives pre-built in the `people` slot; the component counts them in the browser. */
+export type IHPAttrs = Record<string, never>;
+export const IHP_SLOTS = ["people"] as const;
 type IHPSlots = SlotRecord<typeof IHP_SLOTS>;
 
 async function ihp({ items, ctx }: ComponentInput): ComponentOutput {
-    // An image, a two-item bulleted list with the name and bio, a divider, then the interview description
-    const [image_block, name_block, bio_block, divider, ...content] = trimBlank(items);
+    // One or more people separated by dividers, each:
+    // a paragraph with their name, an optional image, a callout describing them, then anything else
+    const sections = splitOnDividers(items).map(trimBlank);
+    const cards: FlowContent[] = [];
 
-    if (image_block?.type !== "image") return malformedIHP("it does not start with an image");
+    for (const [i, section] of sections.entries()) {
+        const position = sections.length > 1 ? ` (person ${i + 1})` : "";
+        const [name_block, ...rest] = section;
+        const name = name_block?.type === "paragraph" ? asPlainText(name_block.paragraph.rich_text).trim() : "";
+        if (name === "") return malformedIHP(`it does not start with a paragraph holding the person's name${position}`);
 
-    if (name_block?.type !== "bulleted_list_item" || bio_block?.type !== "bulleted_list_item")
-        return malformedIHP("the image must be followed by a two-item bulleted list containing the name and bio");
+        const image_block = rest[0]?.type === "image" ? rest.shift() : undefined;
+        const callout_block = rest.shift();
+        if (callout_block?.type !== "callout")
+            return malformedIHP(`the name "${name}" must be followed by an optional image, then a callout`);
 
-    const name = asPlainText(name_block.bulleted_list_item.rich_text).trim();
-    const bio = asPlainText(bio_block.bulleted_list_item.rich_text).trim();
-    if (name === "" || bio === "") return malformedIHP("the name and bio cannot be empty");
+        const image = image_block?.type === "image" ? await imageAttr(image_block, ctx) : null;
+        const callout_ctx = blockContext(ctx, callout_block);
+        const description_text = await convertRichText(callout_block.callout.rich_text, callout_ctx);
+        const description: FlowContent[] = [
+            ...(asPlainText(callout_block.callout.rich_text).trim() === ""
+                ? []
+                : [{ type: "paragraph", children: description_text } as const]),
+            ...(await convertBlocks(callout_block.children, callout_ctx)),
+        ];
 
-    if (divider?.type !== "divider") return malformedIHP("the name and bio must be followed by a divider");
-
-    if (trimBlank(content).length === 0)
-        return malformedIHP("it does not contain an interview description after the divider");
-
-    const image = await imageAttr(image_block, ctx);
-    if (!image) return malformedIHP("its image could not be uploaded");
+        // The card's markup is built here, so each person's content stays with their name and image
+        cards.push(
+            jsxFlow("div", { class: "ihp-card glow-panel", "data-index": `${i}` }, [
+                jsxFlow("div", { class: "ihp-card-body glow-panel-body" }, [
+                    jsxInlineBlock("div", { class: "ihp-name" }, [{ type: "text", value: name }]),
+                    jsxFlow("div", { class: "ihp-profile" }, [
+                        ...(image
+                            ? [jsxFlow("img", { class: "ihp-photo", src: image.url, alt: image.alt || name })]
+                            : []),
+                        jsxFlow("div", { class: "ihp-desc" }, description),
+                    ]),
+                    jsxFlow("div", { class: "ihp-content" }, await convertItems(trimBlank(rest), ctx)),
+                ]),
+            ]),
+        );
+    }
 
     return generateComponent<IHPAttrs, IHPSlots>({
         tag: "IHP",
-        attrs: { image, name, bio },
-        slots: { content: await convertItems(trimBlank(content), ctx) },
+        attrs: {},
+        slots: { people: cards },
     });
 }
 

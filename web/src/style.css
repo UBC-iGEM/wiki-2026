@@ -194,3 +194,70 @@ pre.astro-code {
         border-radius: 20px;
     }
 }
+
+/*
+ * Carousel controls shared by components: lime triangle arrows and square dots.
+ * Components position them and decide when they show.
+ */
+.nav-arrow {
+    background: var(--color-lime-yellow);
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    height: 2.75rem;
+    padding: 0;
+    transition:
+        background 120ms ease,
+        transform 120ms ease;
+    width: 2.4rem;
+}
+
+.nav-arrow.prev {
+    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+.nav-arrow.next {
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.nav-arrow:hover {
+    transform: scale(1.12);
+}
+
+/* An outline would be clipped away with the rest of the button */
+.nav-arrow:focus-visible {
+    background: var(--color-periwinkle);
+    outline: none;
+    transform: scale(1.12);
+}
+
+.nav-dots {
+    display: flex;
+    gap: 1.75rem;
+    justify-content: center;
+}
+
+.nav-dot {
+    background: var(--color-cornflower);
+    border: none;
+    cursor: pointer;
+    height: 0.6rem;
+    padding: 0;
+    width: 0.6rem;
+}
+
+.nav-dot.active {
+    background: var(--color-lime-yellow);
+}
+
+.nav-dot:focus-visible {
+    outline: 2px solid var(--color-periwinkle);
+    outline-offset: 3px;
+}
+
+@media (max-width: 700px) {
+    .nav-arrow {
+        height: 2rem;
+        width: 1.75rem;
+    }
+}

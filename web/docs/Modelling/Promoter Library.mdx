@@ -3,7 +3,7 @@ type: "page"
 title: "Promoter Library"
 ---
 
-<a id="3e5d65dd82be80f0ae2bc5554786b6b0" />Abstract
+## <a id="3e5d65dd82be80f0ae2bc5554786b6b0" />Abstract
 
 <a id="3e7d65dd82be80688649ec2ca503bfe8" />As our project this year was to develop an E. coli promoter-GFP biosensor, we sought to identify high quality promoters—characterized by dynamic range, low basal expression, and low cross-activation—that enable quantifying presence of antibiotic in solution. We wanted to capture the response to four anitibiotics: Amoxicillin, Cephalexin, Gentamicin, and Tobramycin.
 
@@ -13,33 +13,66 @@ title: "Promoter Library"
 
 <br id="3e5d65dd82be806ea714f7a90e71d3c3" />
 
-<a id="3e5d65dd82be8079af05c75febc5617c" />Method
+## <a id="3e5d65dd82be8079af05c75febc5617c" />Method
 
 <a id="3e8d65dd82be80878d35e3da3a754df1" />The objective of the Promoter Library was to identify top promoter candidates out of a library of over 200 promoter candidates. The library consisted of promoter-GFP constructs on well plates. The antibiotic response of these constructs were unknown, as well as the promoter barcodes. Our experiment consisted of three parts: an assay development to select sub-inhibitory concentrations for each antibiotic, the high-throughput library screen exposing the promoter-GFP plates to the antibiotics at the selected concentrations, and then finally Sanger sequencing the top candidates. As we had over 200 promoter candidates, doing this experiment on our own bench top would not be effective. Thus, we collaborated with Biofactorial, a High-Throughput Biology and Automation Facility here at UBC’s Life Sciences Institute. Biofactorial was able to execute the assay testing and library screen for us, so we worked in collaboration to develop the proposal and experimental design.
 
 <br id="3f9d65dd82be8043a0b3d62d4455a86d" />
 
-<a id="3f9d65dd82be8014888ace9e8aff5203" />Part 1:
+<a id="3f9d65dd82be8014888ace9e8aff5203" />**Part 1:**
 
-<a id="3f9d65dd82be80958a9eeb4fa987baf4" />Before beginning the library screen, it was critical to first develop an assay to select sub-inhibitory concentrations for each antibiotic that we would expose the library to during the screening. We began by conducting literature review to guide our experimental design .
+<a id="3f9d65dd82be80958a9eeb4fa987baf4" />Before beginning the library screen, it was critical to first develop an assay to select sub-inhibitory concentrations for each antibiotic that we would expose the library to during the subsequent screening. We began by conducting literature review to guide our experimental design  . We used literature minimum inhibitory concentration (MIC) values as a reference point for our experimental design, creating a dilution series around the literature MIC values to capture a curve. Literature review was also conducted on all of the antibiotics to ensure solubility at low concentrations.
 
-<br id="3f9d65dd82be80d0b833f6855f5ed8a7" />
+<br id="3fad65dd82be8064ba45fdc5e504e0a4" />
 
-<br id="3e8d65dd82be80608eefe3972c41f8d3" />
+<a id="3fad65dd82be80aeb1f2d04b61d579d5" /><u>Two-fold Dilution Series for Each Antibiotic</u>
 
-<br id="3e5d65dd82be80b5ba04cce010d1c4ae" />
+<a id="3fad65dd82be805b99e5e186a9928d3d" />
 
-<a id="3e5d65dd82be80b08248d1431cfbb2f2" />Part 1: Assay development
+| <a id="3fad65dd82be808699c0fe152547a05b" />Antibiotic  | Dilution Series |
+| ------------------------------------------------------ | --------------- |
+| <a id="3fad65dd82be80c69fb0ffb19b4a6772" />Amoxicillin |                 |
+| <a id="3fad65dd82be80e49bf3cb6a5cb892a2" />Cephalexin  |                 |
+| <a id="3fad65dd82be80c98281cede73399c2c" />Gentamicin  |                 |
+| <a id="3fad65dd82be80b8b0a9d1ef6b012146" />Tobramycin  |                 |
 
-<a id="3e5d65dd82be803096f7d17585291957" />explain experiment and plate set up here
+<a id="3f9d65dd82be806ba234eade70507f26" />Each E. coli strain from the plates were scraped and grown in LB media tubes overnight. The four antibiotics were also prepared at their subsequent stock volumes. In order to align compatibility with Biofactorial’s operations and equipment, we required setting up our experiment through an antibiotic source place which would then dispense the antibiotic from lowest to highest concentration into a destination plate with the E. coli. The plate layouts are as follows:
+
+<a id="3f9d65dd82be807a9267d368151a4052" /><u>Antibiotic Source Plate Layout</u>
+
+<a id="3f9d65dd82be80118246f94772c56b45" />
+
+| <a id="3f9d65dd82be808abc7beb3e24482d6e" />Source wells | Antibiotic  |
+| ------------------------------------------------------- | ----------- |
+| <a id="3f9d65dd82be807580d6efe6e809e772" />A1 B1 C1     | Amoxicillin |
+| <a id="3f9d65dd82be80728dfed01b2aa8ee83" />D1 E1 F1     | Cephalexin  |
+| <a id="3f9d65dd82be80b19c16c0f9e89e0439" />G1 H1 I1     | Gentamicin  |
+| <a id="3f9d65dd82be80829202e76037f42a10" />J1 K1 L1     | Tobramycin  |
+
+<a id="3f9d65dd82be80f4beacd97a835d79ac" /><u>Destination Plate Layout</u>
+
+<a id="3f9d65dd82be80be9179cbd6cb110b92" />
+
+| <a id="3f9d65dd82be80d08c40f4cdfabc3754" />Destination wells | Contents                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <a id="3f9d65dd82be8038afc4c86bc3057180" />AX–HX             | Amoxicillin, lowest to highest concentration                 |
+| <a id="3f9d65dd82be80a5a3b1fbdf7792dcab" />IX–PX             | Cephalexin, lowest to highest concentration                  |
+| <a id="3f9d65dd82be8015befcc93625de47b3" />AY–HY             | Gentamicin, lowest to highest concentration                  |
+| <a id="3f9d65dd82be8020b0a7cfdf11ea41d1" />IY–PY             | Tobramycin, lowest to highest concentration                  |
+| <a id="3f9d65dd82be80fc9270d33fca7cf91c" />AZ                | *E. coli* growth control without antibiotic (one per strain) |
+| <a id="3f9d65dd82be801fa359ec13fb0044f2" />P24               | Media-only blank without *E. coli* or antibiotic (one only)  |
 
 <a id="3e5d65dd82be80899b98c620ac4d5c12" />**\*\*can insert a figure of the plate layout (asset request) here**
 
-<br id="3e8d65dd82be80cd8754f106221b3177" />
-
-<a id="3e5d65dd82be805c8254c24f7dd3d5e7" />explain results here
+<a id="3e8d65dd82be80cd8754f106221b3177" />Over the duration of 8 hours, OD600 was measured every 30 minutes along with GFP fluorescence with 488 nm excitation and detected at 510 nm emission.
 
 <a id="3e8d65dd82be806297fbebd5b72e00e5" />**\*\*can insert OD600 graphs here**
+
+<br id="3f9d65dd82be8087b5afda9facaf7734" />
+
+<br id="3f9d65dd82be80a2bf5cc1ebc02e23e2" />
+
+<a id="3f9d65dd82be80be897ef2435e219cf8" />The complete protocol can be found here for reference  .
 
 <br id="3e8d65dd82be80fe97feee7bf9fba231" />
 
@@ -47,33 +80,39 @@ title: "Promoter Library"
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3e5d65dd82be8085b770e2f7aef37eff" />Design:
+    <a id="3e5d65dd82be8085b770e2f7aef37eff" />Design: We began designing the assay development based on our literature MIC values
   </Fragment>
 
   <Fragment slot="build">
-    <a id="3e5d65dd82be8008ae0dd6bbdd2bcc9b" />Build:
+    <a id="3e5d65dd82be8008ae0dd6bbdd2bcc9b" />Build: Now we began building the plate layouts
   </Fragment>
 
   <Fragment slot="test">
-    <a id="3e5d65dd82be800ab9b5c1ca546c20b0" />Test:
+    <a id="3e5d65dd82be800ab9b5c1ca546c20b0" />Test: Measuring OD600 and GFP fluorescence over 8 hours
   </Fragment>
 
   <Fragment slot="learn">
-    <a id="3e5d65dd82be80f6bad5f07ea4d3460d" />Learn:
+    <a id="3e5d65dd82be80f6bad5f07ea4d3460d" />Learn: We were able to derive from our OD600 graphs that…
   </Fragment>
 </Dbtl>
-
-<br id="3e8d65dd82be803986f8e605a98cf8ca" />
-
-<a id="3e8d65dd82be807e9da9eb0fd498ad35" />Iteration:
-
-<a id="3e8d65dd82be80788b55c313c1f235e4" />Throughout developing our experimental design, we were fortunate to connect with Biofactorial’s Automation Manager, Tom Pfeifer, for feedback on our proposal. \*\*explain more here
 
 <br id="3e5d65dd82be80a889e4d67d8dc3ce90" />
 
 <a id="3e5d65dd82be807eabedf015927c482f" />Part 2: High-throughput Library Screen
 
-<a id="3e5d65dd82be8082b49fd23996e892d8" />explain experiment and plate layout here
+<a id="3e5d65dd82be8082b49fd23996e892d8" />The objective of part 2 was to now conduct the entire library screen by exposing all promoter-GFP constructs to the antibiotics at the concentration levels determined from part 1. This required creating 5 replicates of the library plates, so we could expose the library to each of the four antibiotics while having one control plate with no antibiotic exposure. Biofactorial was able to carry out the plate replication for us, and we were able to use the same antibiotic stock source plates from part 1. The E. coli plates were incubated with LB media and the antibiotic for 8 hours, following the same data collection guidelines as part 1: measure OD600 every 30 minutes along with GFP fluorescence with 488 nm excitation and detected at 510 nm emission.
+
+<br id="3f9d65dd82be80968a94e373f7a04883" />
+
+<br id="3f9d65dd82be802daf59f43d6bc9cdf1" />
+
+<br id="3fad65dd82be80699423deb7d5bf5719" />
+
+<br id="3fad65dd82be80ba9b83c14724e1987a" />
+
+<br id="3fad65dd82be80a7b998c0c7eef81de9" />
+
+<a id="3f9d65dd82be80ce99cef1e9a1f08f4c" />Part 3: Sanger Sequencing
 
 <a id="3e8d65dd82be80e5b0ebcdf97baa4169" />results here
 

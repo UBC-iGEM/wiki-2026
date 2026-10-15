@@ -1,91 +1,288 @@
 ---
 import { type IHPAttrs, IHP_SLOTS } from "@exporter/markdown/components";
-
 type Props = IHPAttrs;
 
-IHP_SLOTS satisfies readonly ["content"];
-
-const { image, name, bio } = Astro.props;
+IHP_SLOTS satisfies readonly ["people"];
 ---
 
+<!-- The controls stay hidden unless the script finds more than one card -->
 <div class="ihp">
-    <div class="ihp-profile">
-        <div class="ihp-image">
-            <img src={image.url} alt={image.alt} />
-        </div>
-
-        <div class="ihp-person">
-            <h3>{name}</h3>
-            <p>{bio}</p>
-        </div>
+    <div class="ihp-stage">
+        <!-- Cards arrive pre-built as `.ihp-card[data-index]` from the exporter -->
+        <slot name="people" />
+        <button class="ihp-arrow nav-arrow prev" aria-label="Previous person"></button>
+        <button class="ihp-arrow nav-arrow next" aria-label="Next person"></button>
     </div>
-
-    <div class="ihp-interview">
-        <slot name="content" />
-    </div>
+    <div class="ihp-dots nav-dots"></div>
 </div>
 
-<style>
+<script>
+    // Fade the bottom of a description only when it has more to scroll to
+    const markOverflow = () => {
+        for (const desc of document.querySelectorAll<HTMLElement>(".ihp-desc"))
+            desc.classList.toggle("overflowing", desc.scrollHeight > desc.clientHeight + 1);
+    };
+    markOverflow();
+    addEventListener("resize", markOverflow, { passive: true });
+
+    for (const ihp of document.querySelectorAll<HTMLElement>(".ihp")) {
+        const cards = Array.from(ihp.querySelectorAll<HTMLElement>(".ihp-card"));
+        const n = cards.length;
+        // One person needs no carousel
+        if (n < 2) continue;
+
+        // One dot per card, named after its person
+        const dots = cards.map((card) => {
+            const dot = document.createElement("button");
+            dot.className = "nav-dot";
+            dot.dataset.index = card.dataset.index;
+            dot.setAttribute("aria-label", card.querySelector(".ihp-name")?.textContent ?? "");
+            return dot;
+        });
+        ihp.querySelector(".ihp-dots")!.replaceChildren(...dots);
+
+        let current = 0;
+        const show = (index: number) => {
+            current = (index + n) % n;
+            for (const card of cards) {
+                // Position relative to the current card, wrapping around
+                const offset = (Number(card.dataset.index) - current + n) % n;
+                const role = offset === 0 ? "active" : offset === 1 ? "next" : offset === n - 1 ? "prev" : "hidden";
+                card.dataset.role = role;
+                // Only the card in front can be read or tabbed into
+                card.inert = role !== "active";
+            }
+            dots.forEach((dot) => dot.classList.toggle("active", Number(dot.dataset.index) === current));
+            markOverflow();
+        };
+
+        ihp.querySelector(".ihp-arrow.prev")?.addEventListener("click", () => show(current - 1));
+        ihp.querySelector(".ihp-arrow.next")?.addEventListener("click", () => show(current + 1));
+        dots.forEach((dot) => dot.addEventListener("click", () => show(Number(dot.dataset.index))));
+        // The peeking cards bring themselves to the front
+        for (const card of cards)
+            card.addEventListener("click", () => {
+                if (card.dataset.role !== "active") show(Number(card.dataset.index));
+            });
+
+        // Until now the cards are listed one after another, as a no-JS fallback
+        ihp.classList.add("js-ready");
+        show(0);
+    }
+</script>
+
+<!-- Global, as the cards arrive through a slot and don't carry Astro's scoping attribute -->
+<style is:global>
     .ihp {
-        width: 100%;
+        --card-width: min(100%, 36rem);
+        --photo-width: 9.5rem;
+        --photo-height: 11rem;
+        margin: 2rem 0 3rem;
+    }
+
+    /* No-JS fallback, and a single person: cards one after another */
+    .ihp-stage {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+        /* Room for each card's offset outline */
+        padding: 0 1rem 1rem 0;
+        position: relative;
+    }
+
+    /* The carousel: every card in the same grid cell, so the stage is as tall as the tallest */
+    .ihp.js-ready .ihp-stage {
+        display: grid;
+        justify-items: center;
+        overflow-x: clip;
+        padding: 1rem 0 2rem;
+    }
+
+    .ihp.js-ready .ihp-card {
+        grid-area: 1 / 1;
+        transition:
+            opacity 300ms ease,
+            transform 300ms ease;
+        width: var(--card-width);
+    }
+
+    .ihp-card[data-role="active"] {
+        z-index: 2;
+    }
+
+    .ihp-card:is([data-role="prev"], [data-role="next"]) {
+        cursor: pointer;
+        opacity: 0.45;
+        z-index: 1;
+    }
+
+    .ihp-card[data-role="prev"] {
+        transform: translateX(-58%) scale(0.88);
+    }
+
+    .ihp-card[data-role="next"] {
+        transform: translateX(58%) scale(0.88);
+    }
+
+    .ihp-card[data-role="hidden"] {
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+    }
+
+    /* The card */
+    .ihp .ihp-card-body {
+        background: color-mix(in srgb, var(--color-cornflower) 32%, var(--color-ebony-clay));
+        height: 100%;
+        padding: 2rem 2.25rem;
+    }
+
+    .ihp-name {
+        color: #f5f7ff;
+        font-family: var(--font-geist);
+        font-size: 1.85rem;
+        font-weight: 700;
+        line-height: 1.15;
+        margin: 0;
+        text-transform: uppercase;
     }
 
     .ihp-profile {
         display: flex;
-        align-items: center;
-        gap: 24px;
-        margin-bottom: 24px;
+        gap: 1.25rem;
+        margin: 1.25rem 0 1.5rem;
     }
 
-    .ihp-image {
+    /* Fixed size, cropped to fill; beats the page's general image sizing */
+    .ihp .ihp-photo {
+        border-radius: 14px;
         flex-shrink: 0;
-        width: 160px;
-        height: 160px;
-        overflow: hidden;
-        border-radius: 8px;
-    }
-
-    .ihp-image img {
-        display: block;
-        width: 100%;
-        height: 100%;
+        height: var(--photo-height);
+        max-height: none;
         object-fit: cover;
+        width: var(--photo-width);
     }
 
-    .ihp-person {
+    /* As tall as the photo; longer descriptions scroll */
+    .ihp-desc {
+        background: color-mix(in srgb, var(--color-cornflower) 60%, var(--color-ebony-clay));
+        border: 1px solid color-mix(in srgb, var(--color-cornflower) 80%, white);
+        border-radius: 18px;
+        box-sizing: border-box;
         flex: 1;
+        font-family: var(--font-geist);
+        font-size: 0.85rem;
+        height: var(--photo-height);
+        line-height: 1.5;
+        min-width: 0;
+        overflow-y: auto;
+        padding: 1rem 1.25rem;
     }
 
-    .ihp-person h3 {
-        margin: 0 0 8px;
+    .ihp-desc.overflowing {
+        mask-image: linear-gradient(to bottom, black calc(100% - 2rem), transparent);
     }
 
-    .ihp-person p {
-        margin: 0;
-    }
-
-    .ihp-interview {
-        width: 100%;
-    }
-
-    :global(.ihp-interview > :first-child) {
+    .ihp-desc > :first-child,
+    .ihp-content > :first-child {
         margin-top: 0;
     }
 
-    :global(.ihp-interview > :last-child) {
+    .ihp-desc > :last-child,
+    .ihp-content > :last-child {
         margin-bottom: 0;
     }
 
-    @media (max-width: 600px) {
-        .ihp-profile {
-            flex-direction: column;
-            align-items: flex-start;
+    .ihp-desc p {
+        margin: 0 0 0.5em;
+    }
+
+    .ihp-content {
+        font-size: 0.95rem;
+        line-height: 1.55;
+    }
+
+    .ihp-content p {
+        margin: 0 0 1em;
+    }
+
+    /* Beside the card in front, level with the middle of the photo; the look comes from .nav-arrow */
+    .ihp .ihp-arrow {
+        display: none;
+        position: absolute;
+        top: calc(5.5rem + var(--photo-height) / 2);
+        z-index: 3;
+    }
+
+    .ihp.js-ready .ihp-arrow {
+        display: block;
+    }
+
+    .ihp-arrow.prev {
+        left: calc(50% - var(--card-width) / 2 - 1.2rem);
+    }
+
+    .ihp-arrow.next {
+        right: calc(50% - var(--card-width) / 2 - 1.2rem);
+    }
+
+    /* Clear of the cards' offset outline and glow */
+    .ihp .ihp-dots {
+        display: none;
+        margin-top: 1.5rem;
+    }
+
+    .ihp.js-ready .ihp-dots {
+        display: flex;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .ihp.js-ready .ihp-card {
+            transition: none;
+        }
+    }
+
+    /* Too narrow for the neighbours to peek: one card, with the arrows on its edges */
+    @media (max-width: 700px) {
+        .ihp {
+            --card-width: 100%;
+            --photo-width: 7.5rem;
+            --photo-height: 9rem;
         }
 
-        .ihp-image {
-            width: 100%;
-            height: auto;
-            aspect-ratio: 1 / 1;
+        .ihp-card:is([data-role="prev"], [data-role="next"]) {
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        .ihp .ihp-card-body {
+            padding: 1.5rem 1.25rem;
+        }
+
+        .ihp-name {
+            font-size: 1.4rem;
+        }
+
+        .ihp-profile {
+            flex-direction: column;
+        }
+
+        .ihp-desc {
+            flex: none;
+        }
+
+        .ihp .ihp-arrow {
+            top: 1.75rem;
+        }
+
+        .ihp-arrow.prev {
+            left: auto;
+            right: 3rem;
+        }
+
+        .ihp-arrow.next {
+            right: 1rem;
         }
     }
 </style>

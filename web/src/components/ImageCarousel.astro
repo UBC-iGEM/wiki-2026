@@ -4,69 +4,78 @@ import { type CarouselAttrs, CAROUSEL_SLOTS } from "@exporter/markdown/component
 type Props = CarouselAttrs;
 CAROUSEL_SLOTS satisfies readonly ["descriptions"];
 const { slides } = Astro.props;
+const multiple = slides.length > 1;
 ---
 
-<div class="carousel">
-    <div class="carousel-slides">
-        {
-            slides.map((slide, i) => (
-                <div class="carousel-slide" data-index={i}>
-                    <img src={slide.url} alt={slide.alt} />
-                </div>
-            ))
-        }
-    </div>
+<div class:list={["carousel", { single: !multiple }]}>
+    <div class="carousel-row">
+        {multiple && <button class="carousel-arrow nav-arrow prev" aria-label="Previous image" />}
 
-    {
-        slides.length > 1 && (
-            <div class="carousel-controls">
-                <button class="carousel-arrow prev" aria-label="Previous image">
-                    ‹
-                </button>
-                <div class="carousel-dots">
-                    {slides.map((_, i) => (
-                        <button class="carousel-dot" data-index={i} aria-label={`Go to image ${i + 1}`} />
-                    ))}
-                </div>
-                <button class="carousel-arrow next" aria-label="Next image">
-                    ›
-                </button>
-            </div>
-        )
-    }
+        <div class="carousel-stage">
+            {
+                slides.map((slide, i) => (
+                    <figure class="carousel-slide glow-panel" data-index={i}>
+                        <div class="carousel-frame glow-panel-body">
+                            <img src={slide.url} alt={slide.alt} />
+                        </div>
+                    </figure>
+                ))
+            }
+        </div>
+
+        {multiple && <button class="carousel-arrow nav-arrow next" aria-label="Next image" />}
+    </div>
 
     <div class="carousel-descs">
         <!-- Descriptions arrive pre-wrapped in `.carousel-desc[data-index]` divs from the exporter (static slot names only) -->
         <slot name="descriptions" />
     </div>
+
+    {
+        multiple && (
+            <div class="carousel-dots nav-dots">
+                {slides.map((_, i) => (
+                    <button class="nav-dot" data-index={i} aria-label={`Go to image ${i + 1}`} />
+                ))}
+            </div>
+        )
+    }
 </div>
 
 <script>
-    for (const carousel of document.querySelectorAll<HTMLElement>(".carousel")) {
+    for (const carousel of document.querySelectorAll<HTMLElement>(".carousel:not(.single)")) {
         const slides = Array.from(carousel.querySelectorAll<HTMLElement>(".carousel-slide"));
         const descs = Array.from(carousel.querySelectorAll<HTMLElement>(".carousel-desc"));
-        const dots = Array.from(carousel.querySelectorAll<HTMLButtonElement>(".carousel-dot"));
-        const prev = carousel.querySelector<HTMLButtonElement>(".carousel-arrow.prev");
-        const next = carousel.querySelector<HTMLButtonElement>(".carousel-arrow.next");
-
+        const dots = Array.from(carousel.querySelectorAll<HTMLElement>(".nav-dot"));
         const n = slides.length;
-        if (n === 0) continue;
+        if (n < 2) continue;
 
         // Match by `data-index` rather than DOM/array position, so slides (rendered directly
         // in this template) and descriptions (arriving via <slot>) can't silently drift apart
         const indexOf = (el: HTMLElement) => Number(el.dataset.index);
 
-        // Show slide `index`, wrapping around in either direction
+        let current = 0;
         const show = (index: number) => {
-            slides.forEach((slide) => slide.classList.toggle("active", indexOf(slide) === index));
-            descs.forEach((desc) => desc.classList.toggle("active", indexOf(desc) === index));
-            dots.forEach((dot) => dot.classList.toggle("active", indexOf(dot) === index));
+            current = (index + n) % n;
+            for (const slide of slides) {
+                // Position relative to the current slide, wrapping around
+                const offset = (indexOf(slide) - current + n) % n;
+                const role = offset === 0 ? "active" : offset === 1 ? "next" : offset === n - 1 ? "prev" : "hidden";
+                slide.dataset.role = role;
+                slide.inert = role !== "active";
+            }
+            descs.forEach((desc) => desc.classList.toggle("active", indexOf(desc) === current));
+            dots.forEach((dot) => dot.classList.toggle("active", indexOf(dot) === current));
         };
 
-        let current = 0;
-        prev?.addEventListener("click", () => show((current = (current - 1 + n) % n)));
-        next?.addEventListener("click", () => show((current = (current + 1) % n)));
-        dots.forEach((dot) => dot.addEventListener("click", () => show((current = indexOf(dot)))));
+        carousel.querySelector(".carousel-arrow.prev")?.addEventListener("click", () => show(current - 1));
+        carousel.querySelector(".carousel-arrow.next")?.addEventListener("click", () => show(current + 1));
+        dots.forEach((dot) => dot.addEventListener("click", () => show(indexOf(dot))));
+        // The peeking slides bring themselves to the front
+        for (const slide of slides)
+            slide.addEventListener("click", () => {
+                if (slide.dataset.role !== "active") show(indexOf(slide));
+            });
 
         // Everything up to here is a no-JS fallback (CSS shows only the first slide);
         // this flips the carousel into JS-driven mode once navigation is wired up
@@ -75,104 +84,140 @@ const { slides } = Astro.props;
     }
 </script>
 
-<style>
-    .carousel-slides {
-        height: 450px;
-        width: 100%;
-        border-radius: 8px;
-        overflow: hidden;
+<!-- Global, as the descriptions arrive through a slot and don't carry Astro's scoping attribute -->
+<style is:global>
+    .carousel {
+        --slide-width: 70%;
+        --frame-height: 26rem;
+        margin: 2rem 0 3rem;
+    }
+
+    /* The arrows sit outside the images, either side of them */
+    .carousel-row {
+        align-items: center;
+        display: flex;
+        gap: 1.25rem;
+    }
+
+    /* Every slide in the same grid cell; the bottom padding leaves room for the offset outline */
+    .carousel-stage {
+        display: grid;
+        flex: 1;
+        justify-items: center;
+        min-width: 0;
+        overflow-x: clip;
+        padding: 0.5rem 0 1.5rem;
     }
 
     .carousel-slide {
-        height: 100%;
-        width: 100%;
+        grid-area: 1 / 1;
+        margin: 0;
+        transition:
+            opacity 300ms ease,
+            transform 300ms ease;
+        width: var(--slide-width);
+    }
+
+    /* A lone image takes the full width, less room for its outline */
+    .carousel.single .carousel-slide {
+        width: calc(100% - 1rem);
     }
 
     /* No-JS fallback: show only the first slide until the script marks the carousel ready */
-    .carousel-slide:not(:first-child) {
+    .carousel:not(.js-ready) .carousel-slide:not(:first-child) {
         display: none;
     }
 
-    .carousel.js-ready .carousel-slide {
-        display: none;
+    .carousel-slide[data-role="active"] {
+        z-index: 2;
     }
 
-    .carousel.js-ready .carousel-slide.active {
-        display: block;
-    }
-
-    /* Descriptions arrive via <slot>, so Astro can't scope these - they need :global() */
-    :global(.carousel-desc) {
-        text-align: center;
-        width: 100%;
-    }
-
-    :global(.carousel-desc p) {
-        margin: 0;
-        padding: 0;
-    }
-
-    :global(.carousel-desc:not(:first-child)) {
-        display: none;
-    }
-
-    :global(.carousel.js-ready .carousel-desc) {
-        display: none;
-    }
-
-    :global(.carousel.js-ready .carousel-desc.active) {
-        display: block;
-    }
-
-    .carousel-slide img {
-        display: block;
-        margin: 0 auto;
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        object-position: center;
-    }
-
-    .carousel-controls {
-        align-items: center;
-        display: flex;
-        gap: 12px;
-        justify-content: center;
-        margin: 12px 0;
-    }
-
-    .carousel-arrow {
-        background: none;
-        border: none;
+    .carousel-slide:is([data-role="prev"], [data-role="next"]) {
         cursor: pointer;
-        font-size: 1.5rem;
-        line-height: 1;
-        padding: 4px 8px;
+        opacity: 0.4;
+        z-index: 1;
+    }
+
+    .carousel-slide[data-role="prev"] {
+        transform: translateX(-55%) scale(0.85);
+    }
+
+    .carousel-slide[data-role="next"] {
+        transform: translateX(55%) scale(0.85);
+    }
+
+    .carousel-slide[data-role="hidden"] {
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+    }
+
+    /* The image fits inside a fixed-height frame without cropping */
+    .carousel-frame {
+        align-items: center;
+        box-sizing: border-box;
+        display: flex;
+        height: var(--frame-height);
+        justify-content: center;
+        overflow: hidden;
+        padding: 0.75rem;
+    }
+
+    .carousel .carousel-frame img {
+        border-radius: 22px;
+        display: block;
+        height: auto;
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+        width: auto;
+    }
+
+    /* Below the images, above the dots; only the current slide's shows */
+    .carousel-descs {
+        margin-top: 0.75rem;
+        text-align: center;
+    }
+
+    .carousel-desc p {
+        margin: 0;
+    }
+
+    .carousel-desc:not(:first-child),
+    .carousel.js-ready .carousel-desc {
+        display: none;
+    }
+
+    .carousel.js-ready .carousel-desc.active {
+        display: block;
     }
 
     .carousel-dots {
-        display: flex;
-        gap: 6px;
+        margin-top: 1.25rem;
     }
 
-    .carousel-dot {
-        background: #ccc;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        height: 8px;
-        padding: 0;
-        width: 8px;
+    @media (prefers-reduced-motion: reduce) {
+        .carousel-slide {
+            transition: none;
+        }
     }
 
-    .carousel-dot.active {
-        background: #333;
-    }
-    .carousel-descs {
-        min-height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
+    /* Too narrow for the neighbours to peek */
+    @media (max-width: 700px) {
+        .carousel {
+            /* Less room for the outline, which hangs 0.5rem to the side at this width */
+            --slide-width: calc(100% - 0.5rem);
+            --frame-height: 16rem;
+        }
+
+        .carousel-row {
+            gap: 0.5rem;
+        }
+
+        .carousel-slide:is([data-role="prev"], [data-role="next"]) {
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+        }
     }
 </style>
