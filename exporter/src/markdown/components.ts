@@ -1,12 +1,13 @@
 import { fetchNotebook, parseColabFileId } from "../colab";
 import type { NotionBlock } from "../notion";
-import { fetchFileText, parsePlate, type Plate } from "../platemap";
+import { parsePlate, type Plate } from "../platemap";
+import { MAX_ROWS, readWorkbook, type Sheet } from "../spreadsheet";
 import { ExporterError, isExporterErr, type ExporterResult } from "../utils";
 import { blockContext, convertBlocks, convertItems, type ConvertContext, type Item } from "./blocks";
 import { jsxFlow, jsxInlineBlock, type FlowContent, type JsxAttrs } from "./mdx";
-import { mediaFileName, uploadMedia } from "./media";
+import { fetchMedia, mediaFileName, uploadMedia } from "./media";
 import { asPlainText, convertRichText } from "./rich-text";
-import type { Heading, Image, PhrasingContent } from "mdast";
+import type { Heading, Image, PhrasingContent, Table } from "mdast";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import remarkParse from "remark-parse";
@@ -40,6 +41,7 @@ export const COMPONENT_MAP: Record<string, (input: ComponentInput) => ComponentO
     model3d,
     ihp,
     colab,
+    excel,
     platemap,
     skip,
 };
@@ -384,6 +386,84 @@ function blockLink(item: Item): string | undefined {
 }
 
 // ====================
+// EXCEL COMPONENT
+// ====================
+
+export interface ExcelAttrs {
+    /** The spreadsheet as uploaded, for download. */
+    url: string;
+    file_name: string;
+}
+export const EXCEL_SLOTS = ["sheets", "content"] as const;
+type ExcelSlots = SlotRecord<typeof EXCEL_SLOTS>;
+
+async function excel({ items, ctx }: ComponentInput): ComponentOutput {
+    // An uploaded spreadsheet, followed by its description
+    const [file_block, ...content] = trimBlank(items);
+    if (file_block?.type !== "file") return malformedExcel("it does not start with an uploaded file");
+
+    const file_name = mediaFileName(file_block);
+    if (!/\.xls[xm]$/i.test(file_name)) return malformedExcel("its uploaded file is not a .xlsx or .xlsm spreadsheet");
+
+    const data = await fetchMedia(file_block);
+    if (isExporterErr(data)) return data;
+
+    const sheets = await readWorkbook(file_name, data);
+    if (isExporterErr(sheets)) return sheets;
+
+    const url = await uploadMedia(file_block, { keep_original_file: true });
+    if (isExporterErr(url)) return url;
+
+    for (const sheet of sheets.filter((sheet) => sheet.truncated))
+        new ExporterError(
+            `Sheet "${sheet.name}" of "${file_name}" is longer than ${MAX_ROWS} rows; the rest was left out of the page.`,
+            ["malformed content"],
+        ).warn(blockContext(ctx, file_block));
+
+    // A lone sheet is usually just called "Sheet1", so it is only named when there are several
+    const show_names = sheets.length > 1;
+    return generateComponent<ExcelAttrs, ExcelSlots>({
+        tag: "Excel",
+        attrs: { url, file_name },
+        slots: {
+            sheets: sheets.map((sheet) =>
+                jsxFlow("div", { class: "excel-sheet" }, [
+                    ...(show_names
+                        ? [jsxInlineBlock("div", { class: "excel-sheet-name" }, [{ type: "text", value: sheet.name }])]
+                        : []),
+                    sheetTable(sheet),
+                ]),
+            ),
+            content: await convertItems(trimBlank(content), ctx),
+        },
+    });
+}
+
+/** The top row of a spreadsheet nearly always names its columns, so it becomes the table's header. */
+function sheetTable(sheet: Sheet): Table {
+    return {
+        type: "table",
+        children: sheet.rows.map((row) => ({
+            type: "tableRow",
+            children: row.map((cell) => ({
+                type: "tableCell",
+                children: cell === "" ? [] : [{ type: "text", value: cell }],
+            })),
+        })),
+    };
+}
+
+function malformedExcel(problem: string): ExporterError {
+    return new ExporterError(
+        `Excel component could not be understood: ${problem}.` +
+            componentDocSuggestion(
+                "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link",
+            ),
+        ["malformed content"],
+    );
+}
+
+// ====================
 // PLATEMAP COMPONENT
 // ====================
 
@@ -417,10 +497,10 @@ async function platemap({ items, ctx }: ComponentInput): ComponentOutput {
         if (file_block.type !== "file" || !/\.csv$/i.test(mediaFileName(file_block)))
             return malformedPlatemap(`the subtitle "${name}" is not followed by an uploaded .csv file`);
 
-        const csv = await fetchFileText(file_block);
+        const csv = await fetchMedia(file_block);
         if (isExporterErr(csv)) return csv;
 
-        const parsed = parsePlate(name, csv, groups);
+        const parsed = parsePlate(name, csv.toString(), groups);
         if (isExporterErr(parsed)) return parsed;
         for (const warning of parsed.warnings)
             new ExporterError(warning, ["malformed content"]).warn(blockContext(ctx, file_block));
