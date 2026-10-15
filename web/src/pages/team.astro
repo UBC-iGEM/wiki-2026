@@ -1,6 +1,7 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import teamData from "../../docs/team.json";
+import { BASE_URL } from "../utils/base-url";
 
 interface TeamMember {
     name: string;
@@ -14,10 +15,9 @@ interface TeamSection {
 }
 
 const sections = Object.values(teamData as Record<string, TeamSection>);
-const base_url = `${import.meta.env.BASE_URL}/`;
 
 function imageUrl(image: string): string {
-    return image.startsWith("/") ? `${base_url}${image.slice(1)}` : image;
+    return image.startsWith("/") ? `${BASE_URL}${image.slice(1)}` : image;
 }
 ---
 

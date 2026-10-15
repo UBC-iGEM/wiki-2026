@@ -3,6 +3,7 @@ import { ContentMap, PagePath, type JsonMap } from "@exporter/map";
 import type { DatabaseAttrs } from "@exporter/markdown/markdown";
 import config from "../../docs/content_map.json";
 import { getCollection } from "astro:content";
+import { BASE_URL } from "../utils/base-url";
 
 const content_map = ContentMap.fromJSON(config as JsonMap);
 
@@ -13,7 +14,6 @@ interface Props {
 const { current_page_path, parent_db_path } = Astro.props;
 
 const parent_db = PagePath.fromString(parent_db_path);
-const base_url = `${import.meta.env.BASE_URL}/`;
 
 interface DayEntry {
     date: string;
@@ -59,7 +59,7 @@ const entries_by_date = Map.groupBy(
             {
                 date,
                 label: entry.name().toString(),
-                href: `${base_url}${entry.toSlug()}`,
+                href: `${BASE_URL}${entry.toSlug()}`,
                 is_current: path === current_page_path,
             },
         ];
@@ -194,7 +194,7 @@ function buildMonth(key: string): CalendarMonth {
 }
 
 <script>
-    import { makeDismissable } from "../dismissable";
+    import { makeDismissable } from "../utils/dismissable";
 
     for (const day_menu of document.querySelectorAll<HTMLDetailsElement>("details.day-menu")) {
         makeDismissable(day_menu);
