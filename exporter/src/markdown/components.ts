@@ -218,7 +218,7 @@ async function ihp({ items, ctx }: ComponentInput): ComponentOutput {
         const image_block = rest[0]?.type === "image" ? rest.shift() : undefined;
         const callout_block = rest.shift();
         if (callout_block?.type !== "callout")
-            return malformedIHP(`the name "${name}" must be followed by an optional image, then a callout`);
+            return malformedIHP(`the interviewee's name must be followed by an optional image, then a callout`);
 
         const image = image_block?.type === "image" ? await imageAttr(image_block, ctx) : null;
         const callout_ctx = blockContext(ctx, callout_block);

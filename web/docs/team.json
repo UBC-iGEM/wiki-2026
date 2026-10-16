@@ -4,7 +4,8 @@
     "members": [
       {
         "name": "Matthias Wong",
-        "role": "Director"
+        "role": "Director",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/fb583a5552b75f74ac3873fad3bbab4f.avif"
       },
       {
         "name": "Aden Chan",
@@ -50,7 +51,8 @@
       },
       {
         "name": "Alya Kaynak",
-        "role": "Wet Lab"
+        "role": "Wet Lab",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/7d2ed241fff751edabd7e970e5a10f10.avif"
       },
       {
         "name": "Diana Laschewski",
@@ -63,7 +65,8 @@
       },
       {
         "name": "ZiQi Chen",
-        "role": "Wet Lab"
+        "role": "Wet Lab",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/e9af0c38118852aebf7b4b868aa7ebab.avif"
       },
       {
         "name": "Arda Sayla",
@@ -131,7 +134,8 @@
       },
       {
         "name": "Rachael Zhang",
-        "role": "Human Practices"
+        "role": "Human Practices",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/01c1dd42acca5238b94ce4e97629d906.avif"
       },
       {
         "name": "Ali Mohammad Yazdani",
@@ -143,17 +147,14 @@
       },
       {
         "name": "Daniel Rostin",
-        "role": "Human Practices"
+        "role": "Human Practices",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/25825724e95e5b2fad7d7e9fc4a9245a.avif"
       }
     ]
   },
   "administration": {
     "title": "Administration",
     "members": [
-      {
-        "name": "[YOUR NAME]",
-        "role": "Administration"
-      },
       {
         "name": "Gabriella Marie Gubantes",
         "role": "Administration"
@@ -183,11 +184,6 @@
   "design/wiki": {
     "title": "Design/Wiki",
     "members": [
-      {
-        "name": "Yogya Gupta",
-        "role": "Design/Wiki",
-        "image": "https://static.igem.wiki/teams/6279/wiki/assets/dcec3be35411510e91fb35966c50a95b.avif"
-      },
       {
         "name": "Paul Xu",
         "role": "Design/Wiki"

@@ -144,6 +144,17 @@ export class PageId extends Id implements Named {
         return page_res.properties[name];
     }
 
+    /**
+     * Whether the page is in Notion's trash, which the API still serves.
+     */
+    async isTrashed(): Promise<ExporterResult<boolean>> {
+        const page_res = await this.retrieve();
+        if (isErr(page_res))
+            return new ExporterError(`Failed to retrieve page at Notion ID ${this}.`, ["notion server"], page_res);
+
+        return "in_trash" in page_res && page_res.in_trash;
+    }
+
     private retrieve(): Promise<Result<GetPageResponse>> {
         return cached(PAGE_CACHE, this, () =>
             $withRetries($unsafe, notion().pages.retrieve, { page_id: this.toString() }),

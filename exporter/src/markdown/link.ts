@@ -14,6 +14,9 @@ export async function pageMention(
     ctx: ConvertContext,
     block?: { id: Id; text: string },
 ): Promise<ExporterResult<PhrasingContent>> {
+    const trashed = await trashedError(page);
+    if (trashed) return trashed;
+
     const page_path = ctx.routes.get(page);
     if (page_path)
         return {
@@ -47,6 +50,9 @@ export async function resolveHref(href: string, ctx: ConvertContext): Promise<Ex
     const target = parseNotionUrl(href);
     if (!target) return { url: href };
 
+    const trashed = target.page ? await trashedError(target.page) : undefined;
+    if (trashed) return trashed;
+
     const page_path = target.page ? ctx.routes.get(target.page) : undefined;
     if (page_path) return { url: page_path.toURL(target.block) };
 
@@ -59,6 +65,19 @@ export async function resolveHref(href: string, ctx: ConvertContext): Promise<Ex
         `A link to ${target_link} does not point to a known wiki page or literature entry; the link was ignored.`,
         ["malformed content"],
     );
+}
+
+/**
+ * The API still serves pages in Notion's trash, so links to them are refused here rather than followed.
+ */
+async function trashedError(page: PageId): Promise<ExporterError | undefined> {
+    // Pages the exporter cannot read are reported by whatever goes on to look them up
+    if ((await page.isTrashed()) !== true) return undefined;
+
+    const page_link = ExporterError.link({ with_label: "a page", to: `https://app.notion.com/p/${page}` });
+    return new ExporterError(`A link to ${page_link} in the Notion trash was ignored; link to the live page instead.`, [
+        "malformed content",
+    ]);
 }
 
 /**

@@ -3,8 +3,6 @@ type: "page"
 title: "Fluorescence Detector"
 ---
 
-<br id="3f9d65dd82be8033ae32f4535f006618" />
-
 # <a id="3f9d65dd82be8075b6b2f8a74de1c8fd" />Principles of Fluorescence
 
 <a id="3f9d65dd82be8050867be53a9a577c19" />Fluorescence is critical to many experiments and research, such as flow cytometry, fluorescence immunoassay, and more. The glow helps us identify cell-structures, quantify colonies, and even acts as a signal for cell susceptibility to antibiotics.
@@ -15,13 +13,13 @@ title: "Fluorescence Detector"
 
 <a id="3f9d65dd82be802baf5ce7932fffe8fa" />cite\[2] ([https://lumenistics.com/2012/03/19/what-is-full-spectrum-lighting/](https://lumenistics.com/2012/03/19/what-is-full-spectrum-lighting/))
 
-<a id="3fad65dd82be807fb546fd7dc36e0bf3" />![](https://static.igem.wiki/teams/6279/wiki/assets/77516b88ba6e59a79a45c9eb50e1d093.avif)
+<a id="3fcd65dd82be8054b13ac95c53655d16" />![](https://static.igem.wiki/teams/6279/wiki/assets/b67cc0d90a9b5cf1a49c641aa5e6abcf.avif)
 
-<a id="3fad65dd82be806d8febfed39e6ff72f" />\[3] same link as 1
+<a id="3fcd65dd82be806b8948c357cdb7fcf7" />\[3] [https://www.knauer.net/blog/blog-9/seeing-is-believing-detection-made-easy-part-5-fluorescence-detectors-164](https://www.knauer.net/blog/blog-9/seeing-is-believing-detection-made-easy-part-5-fluorescence-detectors-164)
 
 # <a id="3f9d65dd82be8054b0a7da2a0caffc89" />Motivation for Fluorescence Detector
 
-<a id="3f9d65dd82be8073989bff903243bc0c" />Our microfluidic chips utilize fluorescence to binarily output information on antibiotic resistance, allowing for a quick preliminary screening before further assessments are assigned. However, we realized that the detection of fluorescence still require equipment that is likely difficult to access at the hospital, which counteracts our goal of point-of-care rapid detection. To address the problem, we further iterated and brainstormed, and eventually decided to create a complimentary fluorescence detector.
+<a id="3f9d65dd82be8073989bff903243bc0c" />Our microfluidic chips utilize fluorescence to binarily output information on antibiotic resistance, allowing for a quick preliminary screening before further assessments are assigned. However, we realized that the detection of fluorescence still requires equipment that is rather difficult to access at the hospital, which counteracts our goal of point-of-care rapid detection. To address the problem, we further iterated and brainstormed, and eventually decided to create a complimentary fluorescence detector.
 
 ## <a id="3f9d65dd82be80b4bb54d4d68e2b0c45" />Conventional vs. Our Fluorescence Detector
 
@@ -31,25 +29,83 @@ title: "Fluorescence Detector"
 
 <a id="3f9d65dd82be80ed8deed7516467b47d" />With our customized fluorescence detector, we make antibiotic resistance detection easier, quicker, and cheaper than ever.
 
-# <a id="3f9d65dd82be8068b44bd24912be8c33" />Designing
-
-## <a id="3f9d65dd82be80ecb775e5a36ad03581" />Needs and Requirements (?)
-
-<a id="3fad65dd82be80e0b132e399af3ba258" />Aiming to improve the raw cost, compactness, and usability of our design, we summarized the following requirements:
-
-- <a id="3fad65dd82be8088bae8c9f1683ea632" />Production cost ≤ \$100
-
-## <a id="3f9d65dd82be808f844aec659af2f946" />Bill of Materials
+## <a id="3f9d65dd82be808f844aec659af2f946" />Bill of Materials (move this somewhere else)
 
 <a id="3fad65dd82be8025b08ec928df6ba23c" />
 
 | <a id="3fad65dd82be80159391e1f59be216b2" />Materials            | Overall Price | Cost for the Project |
 | --------------------------------------------------------------- | ------------- | -------------------- |
 | <a id="3fad65dd82be800aa19ddfc70ef2025e" />3D Printing Filament | \$19.99/1 kg  |                      |
-| <a id="3fad65dd82be80de878fff86005eaf7c" />                     |               |                      |
+| <a id="3fbd65dd82be80ee9a06f337958d1ac7" />488nm LED            |               |                      |
+| <a id="3fad65dd82be80de878fff86005eaf7c" />Long Pass Filter     | \$37.00 each  | \$37                 |
 
-<br id="3fad65dd82be8089b32fdc7e914f0a6a" />
+<br id="3fbd65dd82be80fca1d8c801a0118282" />
 
-<br id="3fad65dd82be8086a8e2f55d7c455c7d" />
+# <a id="3fbd65dd82be80beb3d8f05eb568492f" />What’s New About Our Design
 
-<br id="3f9d65dd82be805f9d5bdfdd19f47850" />
+## <a id="3fad65dd82be8089b32fdc7e914f0a6a" />Snap-and-Seal Enclosure
+
+<a id="3fbd65dd82be80b4baddccfa2fa0bdd6" />Before beginning our journey in designing a fluorescence detector, we researched on some previous iGEM works to see what has been achieved in the past.
+
+<a id="3fbd65dd82be80a2b6c4d594c87938f4" />Team Munich’s design in 2017 inspired us: they came up with a compact fluorescence detector design by integrating magnets to sandwich detection components in between 3D printed parts. We realized the potential of magnets in enhancing user-friendliness and introducing a convenient method of assembly.
+
+<a id="3fbd65dd82be80fcbf3dd64607f5505b" />As demonstrated in the 3D model (demonstrate in 3d model), the detector is split into two halves: A and B (label). Part A acts as the bottom, encompassing a sliding track for the microfluidic holder and circuit components that detect fluorescence. Part B will go on top of Part A to create an all dark enclosure; it also contains the Arduino microcontroller, illumination, and user interface for active control and feedback.
+
+<a id="3fbd65dd82be805fb3eaebad02216a88" />So, how exactly do our magnets improve the design functionality?
+
+1. <a id="3fbd65dd82be80308af3fb723f5e20b7" />You can open the device up and lay each part completely flat on your workspace (another format? for 1 & 2)
+
+   <a id="3fbd65dd82be804d9155f5c54c41047f" />This means you can:
+   - <a id="3fbd65dd82be805ea29ae3e8c49cc52b" />load the microfluidics easily
+   - <a id="3fbd65dd82be80c28232d38699eeca44" />inspect and adjust the electronics freely instead of having to maneuver in a tight space (our detector is quite compact!)
+   - <a id="3fbd65dd82be806b9d15f04b96604c8a" />clean and maintain the device without trouble
+2. <a id="3fbd65dd82be809ca907cbb18fffc58b" />You can snap and seal the detector and get a dark enclosure
+
+   <a id="3fbd65dd82be802b8bb4e9314b51b1b4" />This means no more:
+   - <a id="3fbd65dd82be80e4b47cd6202d5b830a" />figuring out complex fit mechanisms
+   - <a id="3fbd65dd82be8055a8aaeb6b2c10b5f3" />lengthy assembly/disassembly processes
+   - <a id="3fbd65dd82be8081ab96fede5d93b6d2" />struggling to keep each piece in the right place
+
+## <a id="3fbd65dd82be806d90befc2e7b60dca1" />One (detector) for All (wells)
+
+<a id="3fad65dd82be8086a8e2f55d7c455c7d" />Chip Holder
+
+<a id="3fbd65dd82be80aaab7ad9e96191e50d" />Sliding Track
+
+<a id="3fbd65dd82be8072a122e078ce4d497b" />(the bumps) Image carousel
+
+<a id="3fbd65dd82be806ca8dff047baa90170" />Slide in and out to finish fluorescence detection of all wells in one sitting!
+
+<a id="3fbd65dd82be806ea994f23ea4691532" />Our holder is designed to fit the microfluidic chips snugly, minimizing unwanted displacements or inaccurate readouts. The extruded legs on the bottom go onto the sliding tracks. The ledges on the track and the legs help prevent the chip from lifting up from the path (might only be able to reflect on cad)
+
+<a id="3fbd65dd82be8061bac6f6b0a79ab107" />How will the user realize they are at the site of detection? The small bumps are design to create gentle vibration to notify the users that they can pause and let the fluorescence detector do its work. Additionally, we added in visual reminders on the holder handle to mark the location of each well. For example, if the second white line reached the wall of the detector, it indicates that the second well has arrived at the site of fluorescence detection.
+
+## <a id="3fbd65dd82be8055acb5c9d629e47f52" />Improved Detection Workflow
+
+<a id="3fbd65dd82be80988d13d51f15f40090" />We studied the mechanism of fluorescence detection used in conventional detectors, and simplified them so they get the same task done at a way cheaper cost.
+
+<a id="3fcd65dd82be80b1a2f2eb0a0ccfdead" />Most fluorescence detectors adopt a similar layout, with the illumination component, the sample, and the detection component forming a 90 degrees angle. This arrangement helps improve signal quality
+
+<a id="3fcd65dd82be8062a968f9b2f9a77986" />![](https://static.igem.wiki/teams/6279/wiki/assets/f8b2720263995db386f5deee570d3b02.avif)
+
+<a id="3fcd65dd82be8068a723c71bce724dd7" />\[3]
+
+<a id="3fbd65dd82be80ca8eb3c43119c51ce4" />Design Breakdown
+
+<a id="3fbd65dd82be8040ba01dabf592e8b51" />where technical drawings go
+
+<a id="3fbd65dd82be8075b097f31bad8f865d" />also some comparisons between different designs and how we arrived to our final one
+
+<a id="3fbd65dd82be805ba95ed803ef3c84bf" />circuitry
+
+<br id="3fbd65dd82be809da305fb39cbc4728b" />
+
+<a id="3fbd65dd82be8042b94cfa15b5b4a7f3" />Testing and Validation
+
+<a id="3fbd65dd82be8050b707f95f6e52651d" />User manual
+
+<a id="3fbd65dd82be80d780d0ea4b97a7a0f3" />data log
+
+<br id="3fbd65dd82be8023913adfada4de8751" />
+
+<a id="3fbd65dd82be8034992cdf993e9976df" />Future Improvements
