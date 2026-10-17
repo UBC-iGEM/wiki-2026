@@ -1,5 +1,5 @@
 ---
-
+import howItWorksChipSvg from "../assets/hero/how-it-works-chip.svg?raw";
 ---
 
 <section class="ast-diagram">
@@ -12,8 +12,7 @@
             <p>Allows antibiotics to diffuse slowly in 2 - 3 hours, while preventing cells from passing through</p>
         </div>
 
-        <!-- Placeholder for a future 3D model of the chip. -->
-        <div class="model-placeholder">3D img placeholder</div>
+        <div class="chip-visual" set:html={howItWorksChipSvg} />
 
         <div class="diagram-col diagram-col--right">
             <div class="chamber">
@@ -40,20 +39,23 @@
         padding: 4rem 2rem;
     }
 
+    /* color/font-family/font-weight come from MainLayout's global
+       ".page-content :global(:is(h1..h6))" rule - only the parts that
+       actually diverge from it need stating here. */
     .ast-diagram h2 {
-        color: var(--color-periwinkle);
-        font-family: var(--font-geist);
         font-size: 36px;
-        font-weight: 700;
         line-height: 1.2;
         margin: 0 0 2rem;
+        text-align: center;
     }
 
-    /* Extra .ast-diagram qualifier needed to out-specificity MainLayout's
-       global ".page-content :global(p)" rule, which otherwise overrides
-       this margin (and would un-center it). */
+    /* font-family/font-weight here diverge from the inherited body
+       serif/400 (this is a bold Geist caption, not running text), so
+       those stay. color matches the global ".page-content :global(p)"
+       rule already. Extra .ast-diagram qualifier needed to out-specificity
+       that same global rule for margin, which would otherwise un-center
+       this. */
     .ast-diagram .diagram-caption {
-        color: var(--color-periwinkle);
         font-family: var(--font-geist);
         font-size: 20px;
         font-weight: 700;
@@ -88,37 +90,33 @@
         justify-content: space-between;
     }
 
+    /* Real <h3>s - color/font-family/font-weight AND font-size (global h3
+       is 1.25rem = exactly 20px) all already match the global rule; only
+       the margin actually needs overriding here. */
     .diagram-col h3,
     .chamber h3 {
-        color: var(--color-periwinkle);
-        font-family: var(--font-geist);
-        font-size: 20px;
-        font-weight: 700;
         margin: 0 0 0.5rem;
     }
 
+    /* Real <p>s - color/font-family/font-size/line-height all already
+       match (or are inherited from) MainLayout's global type scale; only
+       the margin needs overriding (global p has a 1em bottom margin). */
     .diagram-col p,
     .chamber p {
-        color: var(--color-periwinkle);
-        font-family: var(--font-source-serif-4);
-        font-size: 16px;
-        line-height: 1.5;
         margin: 0;
     }
 
-    .model-placeholder {
-        align-items: center;
-        background-color: #ffffff;
-        color: var(--color-ebony-clay);
-        display: flex;
-        font-family: var(--font-geist);
-        font-size: 20px;
-        font-weight: 700;
-        justify-content: center;
-        min-height: 24rem;
-        padding: 1rem;
-        text-align: center;
-        width: min(20rem, 40vw);
+    /* how-it-works-chip.svg is 256x720 (tall/narrow) - width-driven, height
+       auto so it keeps that aspect ratio instead of the old placeholder
+       box's. */
+    .chip-visual {
+        width: min(16rem, 30vw);
+    }
+
+    .chip-visual :global(svg) {
+        display: block;
+        height: auto;
+        width: 100%;
     }
 
     .legend {
@@ -129,8 +127,9 @@
         text-align: center;
     }
 
+    /* color matches the global p rule already; font-family/font-weight
+       diverge (bold Geist, not running serif body text) so those stay. */
     .legend p {
-        color: var(--color-periwinkle);
         font-family: var(--font-geist);
         font-size: 20px;
         font-weight: 700;
@@ -157,9 +156,11 @@
             text-align: center;
         }
 
-        .model-placeholder {
+        .chip-visual {
             margin: 0 auto;
-            width: 100%;
+            /* Narrower cap than the desktop min() above - at 100% width
+               this tall/narrow image would be very tall on a phone. */
+            width: min(12rem, 60vw);
         }
     }
 </style>
