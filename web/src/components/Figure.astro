@@ -1,5 +1,6 @@
 ---
 import { type FigureAttrs, FIGURE_SLOTS } from "@exporter/markdown/components";
+import { imageScaleStyle } from "../utils/image-scale";
 type Props = FigureAttrs;
 
 const { imgs } = Astro.props;
@@ -11,7 +12,7 @@ FIGURE_SLOTS satisfies readonly ["content"];
         <div class="figure-imgs">
             {
                 /* Insert all images */
-                imgs.map((img) => <img src={img.url} alt={img.alt} data-lightbox />)
+                imgs.map((img) => <img src={img.url} alt={img.alt} style={imageScaleStyle(img.scale)} data-lightbox />)
             }
         </div>
         <figcaption class="figure-desc">
@@ -41,9 +42,10 @@ FIGURE_SLOTS satisfies readonly ["content"];
     .figure-imgs img {
         border-radius: 22px;
         display: block;
-        flex: 1 1 14rem;
+        flex: 1 1 calc(14rem * var(--img-scale, 1));
         height: auto;
-        max-height: 32.5rem;
+        max-height: calc(32.5rem * var(--img-scale, 1));
+        max-width: min(100%, 100% * var(--img-scale, 1));
         min-width: 0;
         object-fit: contain;
     }

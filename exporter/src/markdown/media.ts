@@ -1,6 +1,9 @@
 import { Id, type NotionBlock } from "../notion";
 import { getToolsClient } from "../tools-api";
-import { isExporterErr, type ExporterResult } from "../utils";
+import { ExporterError, isExporterErr, type ExporterResult } from "../utils";
+import { blockContext, type ConvertContext } from "./blocks";
+import { asPlainText } from "./rich-text";
+import type { ImageBlockObjectResponse } from "@notionhq/client";
 import { v5 as uuidv5 } from "uuid";
 
 type MediaBlock = Extract<NotionBlock, { type: "image" | "file" }>;
@@ -55,4 +58,24 @@ export function mediaFileName(block: MediaBlock): string {
     // extension rather than the last segment.
     const segments = decodeURIComponent(url.split("?")[0]!).split("/");
     return segments.findLast((segment) => segment.includes(".")) ?? segments.pop()!;
+}
+
+/** A `{scale=<percent>}` argument in an image caption, like `{scale=-35}` or `{scale = 20%}`. */
+const SCALE_ARG = /\{\s*scale\s*=\s*([+-]?\d+(?:\.\d+)?)\s*%?\s*\}/i;
+
+/**
+ * Splits an image caption into its alt text and the percentage scale given by a {@link SCALE_ARG}, defaulting to 0.
+ */
+export function parseImageCaption(
+    block: ImageBlockObjectResponse,
+    ctx: ConvertContext,
+): { alt: string; scale: number } {
+    const caption = asPlainText(block.image.caption);
+    const match = SCALE_ARG.exec(caption);
+    if (!match && /\{\s*scale/i.test(caption))
+        new ExporterError(`Image scaling argument should look like {scale=20} or {scale=-35%}.`, [
+            "malformed content",
+        ]).warn(blockContext(ctx, block));
+
+    return { alt: caption.replace(SCALE_ARG, "").trim(), scale: match ? Number(match[1]) : 0 };
 }

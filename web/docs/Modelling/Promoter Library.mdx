@@ -15,19 +15,45 @@ title: "Promoter Library"
 
 ## <a id="3e5d65dd82be806ea714f7a90e71d3c3" />**Background**
 
-<a id="3fad65dd82be80eaa5fcdacf471b1be4" />Before beginning any experimental planning, we conducted thorough literature review on various aspects
+<a id="3fad65dd82be80eaa5fcdacf471b1be4" />Before beginning any experimental planning, we conducted thorough literature review on various aspects to guide our planning. We began by researching top promoter candidates with our desired characteristics, to form an idea of expected candidates:
 
-<br id="3fad65dd82be80fc852bc51952c878c8" />
+<a id="3fcd65dd82be80cfa0ced4518f6c3677" />
+
+|                                                     |                          |                |                  |                                                                                                                              |
+| --------------------------------------------------- | ------------------------ | -------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| <a id="3fcd65dd82be807d81f9d3bd8c3c4c3b" />Promoter | Antibiotic               | Basal Activity | Induced Activity | Source                                                                                                                       |
+| <a id="3fcd65dd82be80dfa061e9f47a0565a7" />hsIJ     | Ampicillin (beta-lactam) |                | High             | [https://journals.asm.org/doi/pdf/10.1128/spectrum.02253-21](https://journals.asm.org/doi/pdf/10.1128/spectrum.02253-21)     |
+| <a id="3fcd65dd82be8036a10bf731bd4c77e2" />spy      | Ampicillin (beta-lactam) | Low            | High             | [https://journals.asm.org/doi/pdf/10.1128/spectrum.02253-21](https://journals.asm.org/doi/pdf/10.1128/spectrum.02253-21)     |
+| <a id="3fcd65dd82be804aa598d8884ef2f196" />ycfJ     | Ampicillin (beta-lactam) |                | High             | [https://journals.asm.org/doi/pdf/10.1128/spectrum.02253-21](https://journals.asm.org/doi/pdf/10.1128/spectrum.02253-21)     |
+| <a id="3fcd65dd82be8091b2b2d2ec7000831c" />ibpA     | Aminoglycoside           | Low            | High             | [https://journals.asm.org/doi/10.1128/aac.46.8.2490-2497.2002](https://journals.asm.org/doi/10.1128/aac.46.8.2490-2497.2002) |
+| <a id="3fcd65dd82be80a0baa6ccfd639735fb" />ibpB     | Aminoglycoside           | Low            | High             | [https://journals.asm.org/doi/10.1128/aac.46.8.2490-2497.2002](https://journals.asm.org/doi/10.1128/aac.46.8.2490-2497.2002) |
+| <a id="3fcd65dd82be8057ae16eb7e430d5d1c" />pspA     | Beta-lactam              | Low            | High             | [https://pubmed.ncbi.nlm.nih.gov/16862137/](https://pubmed.ncbi.nlm.nih.gov/16862137/)                                       |
+| <a id="3fcd65dd82be80bfa818e7297c133f45" />cpxP     | Beta-lactam              | Low            | High             | [https://pubmed.ncbi.nlm.nih.gov/16862137/](https://pubmed.ncbi.nlm.nih.gov/16862137/)                                       |
+| <a id="3fcd65dd82be809a9f41f755a2bb9b76" />spy      | Beta-lactam              | Low            | High             | [https://pubmed.ncbi.nlm.nih.gov/16862137/](https://pubmed.ncbi.nlm.nih.gov/16862137/)                                       |
+
+<a id="3fcd65dd82be805e8fc8e38cc399e61b" />We also researched literature MIC values, which we used to base our experimental design upon for part 1:
+
+<a id="3fcd65dd82be809dbe26e2b341bce49c" />
+
+|                                                           |                 |                                                                      |                                                                                                        |
+| --------------------------------------------------------- | --------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| <a id="3fcd65dd82be80ae96bff0a87c5fc924" />**Antibiotic** | **MIC** (μg/ml) | **Conditions**                                                       | **Source**                                                                                             |
+| <a id="3fcd65dd82be809fae28e13bcecd4aee" />Amoxicillin    | 4               | two fold serial dilutions, Mueller-Hinton (MH) broth, 96-well plates | [https://pmc.ncbi.nlm.nih.gov/articles/PMC4364456/](https://pmc.ncbi.nlm.nih.gov/articles/PMC4364456/) |
+| <a id="3fcd65dd82be802884f9fd42cb771446" />Cephalexin     | 4               | two fold serial dilutions, MH broth, 96-well plates                  | [https://pmc.ncbi.nlm.nih.gov/articles/PMC4364456/](https://pmc.ncbi.nlm.nih.gov/articles/PMC4364456/) |
+| <a id="3fcd65dd82be80d78508eac446f5c11a" />Gentamicin     | 0.5             | 96-well plates                                                       | [https://pmc.ncbi.nlm.nih.gov/articles/PMC1635178/](https://pmc.ncbi.nlm.nih.gov/articles/PMC1635178/) |
+| <a id="3fcd65dd82be80ab8964d3ce377e4075" />Tobramycin     | 0.5 - 2         | heart infusion broth, two fold serial dilutions,                     | [https://europepmc.org/api/getPdf?pmcid=PMC44423](https://europepmc.org/api/getPdf?pmcid=PMC444234)    |
+
+<br id="3fcd65dd82be807899abea38e18dba08" />
 
 ## <a id="3e5d65dd82be8079af05c75febc5617c" />Method
 
 <a id="3e8d65dd82be80878d35e3da3a754df1" />The objective of the Promoter Library was to identify top promoter candidates out of a library of over 200 promoter candidates. The library consisted of promoter-GFP constructs on well plates. The antibiotic response of these constructs were unknown, as well as the promoter barcodes. Our experiment consisted of three parts: an assay development to select sub-inhibitory concentrations for each antibiotic, the high-throughput library screen exposing the promoter-GFP plates to the antibiotics at the selected concentrations, and then finally Sanger sequencing the top candidates. As we had over 200 promoter candidates, doing this experiment on our own bench top would not be effective. Thus, we collaborated with Biofactorial, a High-Throughput Biology and Automation Facility here at UBC’s Life Sciences Institute. Biofactorial was able to execute the assay testing and library screen for us, so we worked in collaboration to develop the proposal and experimental design.
 
-<br id="3f9d65dd82be8043a0b3d62d4455a86d" />
+<a id="3fcd65dd82be80bdb51cf62054830b9f" />Note: complete protocols can be found under Wet Lab - Lab Notebook
 
-<a id="3f9d65dd82be8014888ace9e8aff5203" />**Part 1:**
+<a id="3f9d65dd82be8014888ace9e8aff5203" />**Part 1: Identifying Sub-inhibitory Concentrations**
 
-<a id="3f9d65dd82be80958a9eeb4fa987baf4" />Before beginning the library screen, it was critical to first develop an assay to select sub-inhibitory concentrations for each antibiotic that we would expose the library to during the subsequent screening. We began by conducting literature review to guide our experimental design  . We used literature minimum inhibitory concentration (MIC) values as a reference point for our experimental design, creating a dilution series around the literature MIC values to capture a curve. Literature review was also conducted on all of the antibiotics to ensure solubility at low concentrations.
+<a id="3f9d65dd82be80958a9eeb4fa987baf4" />Before beginning the library screen, it was critical to first develop an assay to select sub-inhibitory concentrations for each antibiotic that we would expose the library to during the subsequent screening. We used literature minimum inhibitory concentration (MIC) values as a reference point for our experimental design, creating a dilution series around the literature MIC values to capture a curve.  Literature review was also conducted on all of the antibiotics to ensure solubility at low concentrations.
 
 <br id="3fad65dd82be8064ba45fdc5e504e0a4" />
 
@@ -42,7 +68,7 @@ title: "Promoter Library"
 | <a id="3fad65dd82be80c98281cede73399c2c" />Gentamicin  |                 |
 | <a id="3fad65dd82be80b8b0a9d1ef6b012146" />Tobramycin  |                 |
 
-<a id="3f9d65dd82be806ba234eade70507f26" />Each E. coli strain from the plates were scraped and grown in LB media tubes overnight. The four antibiotics were also prepared at their subsequent stock volumes. In order to align compatibility with Biofactorial’s operations and equipment, we required setting up our experiment through an antibiotic source place which would then dispense the antibiotic from lowest to highest concentration into a destination plate with the E. coli. The plate layouts are as follows:
+<a id="3f9d65dd82be806ba234eade70507f26" />Each E. coli strain from the plates were scraped and grown in LB media tubes overnight. The four antibiotics were also prepared at their subsequent stock volumes. In order to align compatibility with Biofactorial’s operations and equipment, we required setting up our experiment through an antibiotic source place which would then dispense the antibiotic from lowest to highest concentration into a destination plate with the E. coli using a piece of equipment called the Echo Acoustic Liquid Handler. The plate layouts are as follows:
 
 <a id="3f9d65dd82be807a9267d368151a4052" /><u>Antibiotic Source Plate Layout</u>
 
@@ -78,7 +104,7 @@ title: "Promoter Library"
 
 <br id="3f9d65dd82be80a2bf5cc1ebc02e23e2" />
 
-<a id="3f9d65dd82be80be897ef2435e219cf8" />The complete protocol can be found here for reference  .
+<br id="3f9d65dd82be80be897ef2435e219cf8" />
 
 <br id="3e8d65dd82be80fe97feee7bf9fba231" />
 
@@ -86,19 +112,19 @@ title: "Promoter Library"
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3e5d65dd82be8085b770e2f7aef37eff" />Design: We began designing the assay development based on our literature MIC values
+    <a id="3e5d65dd82be8085b770e2f7aef37eff" />Design: We established our antibiotic concentration levels using literature-reported MICs to guide our assay development
   </Fragment>
 
   <Fragment slot="build">
-    <a id="3e5d65dd82be8008ae0dd6bbdd2bcc9b" />Build: Now we began building the plate layouts
+    <a id="3e5d65dd82be8008ae0dd6bbdd2bcc9b" />Build: Next, we designed and organized well plate layouts to systematically test the antibiotic concentration dilution series
   </Fragment>
 
   <Fragment slot="test">
-    <a id="3e5d65dd82be800ab9b5c1ca546c20b0" />Test: Measuring OD600 and GFP fluorescence over 8 hours
+    <a id="3e5d65dd82be800ab9b5c1ca546c20b0" />Test: Then, bacterial growth (OD600) and GFP fluorescence was measured over an 8 hour period to evaluate promoter activity
   </Fragment>
 
   <Fragment slot="learn">
-    <a id="3e5d65dd82be80f6bad5f07ea4d3460d" />Learn: We were able to derive from our OD600 graphs that…
+    <a id="3e5d65dd82be80f6bad5f07ea4d3460d" />Learn: Finally, we produced and analyzed the resulting OD600 growth curves to understand bacterial responses across antibiotic concentrations, identifying sub-inhibitory conditions to inform part 2
   </Fragment>
 </Dbtl>
 
@@ -106,37 +132,59 @@ title: "Promoter Library"
 
 <a id="3fbd65dd82be80abb6abe6c3c389d8c7" />
 
-<ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/ae04675ad8cd5483844771a5e8543aeb.avif","alt":""},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/2421ecd0007d5cb380ca0a133ceeca0b.avif","alt":""},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/ccaeab1ebcf45a13b5de40788d8bbe60.avif","alt":""}]}>
+<ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/ae04675ad8cd5483844771a5e8543aeb.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/2421ecd0007d5cb380ca0a133ceeca0b.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/ccaeab1ebcf45a13b5de40788d8bbe60.avif","alt":"","scale":0}]}>
   <Fragment slot="descriptions">
     <div class="carousel-desc" data-index="0">
-      <a id="3fbd65dd82be8029b619c2fea00fe90d" />Plates in Biofactorial …
+      <a id="3fbd65dd82be8029b619c2fea00fe90d" />Experiment being run in the Biofactorial Facility
     </div>
 
-    <div class="carousel-desc" data-index="1" />
+    <div class="carousel-desc" data-index="1">
+      <a id="3fcd65dd82be80a1be6ec5c8c0eeb67d" />Echo Acoustic Liquid Handler
+    </div>
 
-    <div class="carousel-desc" data-index="2" />
+    <div class="carousel-desc" data-index="2">
+      <a id="3fcd65dd82be80768681d13293bf807c" />Close Up of Plates
+    </div>
   </Fragment>
 </ImageCarousel>
 
 <br id="3fbd65dd82be8040ac3eeeed2d6b00ac" />
 
-<a id="3e5d65dd82be807eabedf015927c482f" />Part 2: High-throughput Library Screen
+<a id="3e5d65dd82be807eabedf015927c482f" />**Part 2: High-throughput Library Screen**
 
-<a id="3e5d65dd82be8082b49fd23996e892d8" />The objective of part 2 was to now conduct the entire library screen by exposing all promoter-GFP constructs to the antibiotics at the appropriate concentration levels determined from part 1. This required creating 5 replicates of the library plates, so we could expose the library to each of the four antibiotics while having one control plate with no antibiotic exposure. Biofactorial was able to carry out the plate replication for us, and we were able to use the same antibiotic stock source plates from part 1. The E. coli plates were incubated with LB media and the antibiotic for 8 hours, following the same data collection guidelines as part 1: measure OD600 every 30 minutes along with GFP fluorescence with 488 nm excitation and detected at 510 nm emission.
-
-<br id="3fad65dd82be80e6ae99ef63996e08c1" />
-
-<a id="3f9d65dd82be802daf59f43d6bc9cdf1" />\*\*can insert any images if we get any of Biofactorial, our plates, etc.
+<a id="3e5d65dd82be8082b49fd23996e892d8" />The objective of part 2 was to now conduct the entire library screen by exposing all promoter-GFP constructs to the antibiotics at the appropriate concentration levels determined from part 1. This required creating 5 replicates of the library plates, so we could expose the library to each of the four antibiotics while having one control plate with no antibiotic exposure. In total, we had 30 plates. Biofactorial was able to carry out the plate replication for us, however, this time instead of using the Echo Acoustic Liquid Handler to dispense from the antibiotic source plates, an alternative pinning machine was used dispensing 70μl rather than the original 50μl. This simply meant that our starting OD600 was slightly higher, but this did not impact our results. From here, the E. coli plates were incubated with LB media and the antibiotic for 8 hours, following the same data collection guidelines as part 1: measure OD600 every 30 minutes along with GFP fluorescence with 488 nm excitation and detected at 510 nm emission.
 
 <br id="3fad65dd82be80699423deb7d5bf5719" />
 
-<br id="3fad65dd82be80ba9b83c14724e1987a" />
+<a id="3fcd65dd82be802f9398cdb35d1e472d" />
+
+<Dbtl>
+  <Fragment slot="design">
+    <a id="3fcd65dd82be8001b64fe9ee6273ea3b" />Design:
+  </Fragment>
+
+  <Fragment slot="build">
+    <a id="3fcd65dd82be807d81ffcfa056612da3" />Build:
+  </Fragment>
+
+  <Fragment slot="test">
+    <a id="3fcd65dd82be8088b0a4e136e573b7a2" />Test:
+  </Fragment>
+
+  <Fragment slot="learn">
+    <a id="3fcd65dd82be8000ad8be0c82b8b986d" />Learn:
+  </Fragment>
+</Dbtl>
 
 <br id="3fad65dd82be80a7b998c0c7eef81de9" />
 
-<a id="3f9d65dd82be80ce99cef1e9a1f08f4c" />Part 3: Sanger Sequencing
+<a id="3f9d65dd82be80ce99cef1e9a1f08f4c" />**Part 3: Sanger Sequencing**
 
 <a id="3e8d65dd82be80e5b0ebcdf97baa4169" />results here
+
+<br id="3fcd65dd82be805fb6b4d085a7ed5259" />
+
+<a id="3fcd65dd82be8094b5f0e732bc6498de" />The criteria we evaluated promoter candidates was as follows:
 
 <a id="3f9d65dd82be801b9043f78865877242" />
 
@@ -173,13 +221,11 @@ title: "Promoter Library"
 
 <br id="3e8d65dd82be809d993cc363e0bee96c" />
 
-<a id="3e5d65dd82be80d7b093e75b11a1cbf7" />Iteration:
-
 <br id="3e5d65dd82be80f0b1abd2d4c159f5ce" />
 
 <br id="3e8d65dd82be80e4970cf11676387a74" />
 
-<a id="3e5d65dd82be8035a318d64d6d4d3826" />Results / Conclusion
+## <a id="3e5d65dd82be8035a318d64d6d4d3826" />Conclusion
 
 <a id="3e5d65dd82be8079a833c4b14dd85bad" />findings go here, our top promoter candidates
 
@@ -187,7 +233,7 @@ title: "Promoter Library"
 
 <br id="3e8d65dd82be80bd9608e9da7e045123" />
 
-<a id="3e8d65dd82be80f6b624c85d8fbacb9f" />Limitations, Errors, and Ways to Build on this
+<a id="3e8d65dd82be80f6b624c85d8fbacb9f" />Limitations, Errors, and Ways to Build on this (tbd)
 
 <a id="3e8d65dd82be80389111d7c7a58985ff" />writing here
 

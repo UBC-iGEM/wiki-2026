@@ -1,5 +1,6 @@
 ---
 import { type CarouselAttrs, CAROUSEL_SLOTS } from "@exporter/markdown/components";
+import { imageScaleStyle } from "../utils/image-scale";
 
 type Props = CarouselAttrs;
 CAROUSEL_SLOTS satisfies readonly ["descriptions"];
@@ -17,7 +18,7 @@ const multiple = slides.length > 1;
                     <div class="carousel-slide" data-index={i}>
                         <figure class="carousel-panel glow-panel">
                             <div class="carousel-frame glow-panel-body">
-                                <img src={slide.url} alt={slide.alt} data-lightbox />
+                                <img src={slide.url} alt={slide.alt} style={imageScaleStyle(slide.scale)} data-lightbox />
                             </div>
                         </figure>
                     </div>
@@ -178,7 +179,7 @@ const multiple = slides.length > 1;
         pointer-events: none;
     }
 
-    /* The frame hugs the image, which is capped to the frame height without cropping */
+    /* The frame hugs the image, which is capped to the frame height (times its `--img-scale`) without cropping */
     .carousel-frame {
         box-sizing: border-box;
         overflow: hidden;
@@ -189,8 +190,8 @@ const multiple = slides.length > 1;
         border-radius: 22px;
         display: block;
         height: auto;
-        max-height: calc(var(--frame-height) - 1.5rem);
-        max-width: 100%;
+        max-height: calc((var(--frame-height) - 1.5rem) * var(--img-scale, 1));
+        max-width: min(100%, 100% * var(--img-scale, 1));
         object-fit: contain;
         width: auto;
     }

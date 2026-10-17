@@ -4,7 +4,7 @@ import { fetchFileText, parsePlate, type Plate } from "../platemap";
 import { ExporterError, isExporterErr, type ExporterResult } from "../utils";
 import { blockContext, convertBlocks, convertItems, type ConvertContext, type Item } from "./blocks";
 import { jsxFlow, jsxInlineBlock, type FlowContent, type JsxAttrs } from "./mdx";
-import { mediaFileName, uploadMedia } from "./media";
+import { mediaFileName, parseImageCaption, uploadMedia } from "./media";
 import { asPlainText, convertRichText } from "./rich-text";
 import type { Heading, Image, PhrasingContent } from "mdast";
 import remarkGfm from "remark-gfm";
@@ -48,8 +48,22 @@ export const COMPONENT_MAP: Record<string, (input: ComponentInput) => ComponentO
 // FIGURE COMPONENT
 // ====================
 
+/**
+ * An image as passed to the web components.
+ *
+ * `scale` is a percentage change to the image's default size, so `20` renders it 20% larger and `-78` 78% smaller.
+ */
+export interface ImageAttrs {
+    url: string;
+    alt: string;
+    scale: number;
+}
+
+/** A standalone image. */
+export type ImgAttrs = ImageAttrs;
+
 export interface FigureAttrs {
-    imgs: { url: string; alt: string }[];
+    imgs: ImageAttrs[];
 }
 export const FIGURE_SLOTS = ["content"] as const;
 type FigureSlots = SlotRecord<typeof FIGURE_SLOTS>;
@@ -157,7 +171,7 @@ function malformedModel3d(problem: string): ExporterError {
 // ====================
 
 export interface CarouselAttrs {
-    slides: { url: string; alt: string }[];
+    slides: ImageAttrs[];
 }
 export const CAROUSEL_SLOTS = ["descriptions"] as const;
 type CarouselSlots = SlotRecord<typeof CAROUSEL_SLOTS>;
@@ -498,17 +512,16 @@ async function skip(): ComponentOutput {
 type ImageBlock = Extract<NotionBlock, { type: "image" }>;
 
 /**
- * Uploads an image for use as a component attribute. Captions are used as alt text.
+ * Uploads an image for use as a component attribute. Captions are used as alt text, less any `{scale=…}` argument.
  */
-async function imageAttr(block: ImageBlock, ctx: ConvertContext): Promise<{ url: string; alt: string } | null> {
+async function imageAttr(block: ImageBlock, ctx: ConvertContext): Promise<ImageAttrs | null> {
     const image_ctx = blockContext(ctx, block);
     const url = await uploadMedia(block);
     if (isExporterErr(url)) {
         url.warn(image_ctx);
         return null;
     }
-
-    return { url, alt: asPlainText(block.image.caption).trim() };
+    return { url, ...parseImageCaption(block, ctx) };
 }
 
 function isBlank(item: Item): boolean {

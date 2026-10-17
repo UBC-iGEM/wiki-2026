@@ -4,7 +4,7 @@ import { ExporterError, isExporterErr, type WarningContext } from "../utils";
 import { COMPONENT_MAP, componentDocSuggestion } from "./components";
 import { pageMention } from "./link";
 import { anchorFlow, anchorText, jsxFlow, jsxInlineBlock, type FlowContent } from "./mdx";
-import { uploadMedia } from "./media";
+import { parseImageCaption, uploadMedia } from "./media";
 import { convertRichText, asPlainText } from "./rich-text";
 import type { RichTextItemResponse } from "@notionhq/client";
 import type { Heading, List, ListItem, Paragraph, PhrasingContent, Table, TableRow } from "mdast";
@@ -266,10 +266,9 @@ async function convertBlock(block: NotionBlock, parent_ctx: ConvertContext): Pro
                 url.warn(ctx);
                 return [];
             }
-
             // Captions are used as alt text
-            const alt = asPlainText(block.image.caption).trim();
-            return [{ type: "paragraph", children: [anchorText(anchor), { type: "image", url, alt }] }];
+            const { alt, scale } = parseImageCaption(block, ctx);
+            return [anchorFlow(anchor), jsxFlow("Img", { url, alt, scale })];
         }
         case "table":
             return [anchorFlow(anchor), await convertTable(block, ctx)];

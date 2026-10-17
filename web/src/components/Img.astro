@@ -1,0 +1,10 @@
+---
+import { type ImgAttrs } from "@exporter/markdown/components";
+import { imageScaleStyle } from "../utils/image-scale";
+type Props = ImgAttrs;
+
+const { url, alt, scale } = Astro.props;
+---
+
+<!-- Sized by `.page-content img` in style.css, like a markdown image -->
+<img src={url} alt={alt} style={imageScaleStyle(scale)} />

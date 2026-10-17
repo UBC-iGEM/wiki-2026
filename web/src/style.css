@@ -117,10 +117,10 @@ pre.astro-code {
     scroll-margin-top: 1.5rem;
 }
 
-/* Img size constraint */
+/* Img size constraint, scaled by the `--img-scale` an image may set (see Img.astro) */
 .page-content img {
-    max-width: 100%;
-    max-height: 400px;
+    max-width: min(100%, 100% * var(--img-scale, 1));
+    max-height: calc(400px * var(--img-scale, 1));
     width: auto;
     height: auto;
     object-fit: contain;
