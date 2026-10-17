@@ -25,7 +25,7 @@ title: "Fluorescence Detector"
 
 # <a id="3f9d65dd82be8054b0a7da2a0caffc89" />Motivation for Fluorescence Detector
 
-<a id="3f9d65dd82be8073989bff903243bc0c" />Our microfluidic chips utilize fluorescence to binarily output information on antibiotic resistance, allowing for a quick preliminary screening before further assessments are assigned. However, we realized that the detection of fluorescence still requires equipment that is rather difficult to access at the hospital, which counteracts our goal of point-of-care rapid detection. To address the problem, we further iterated and brainstormed, and eventually decided to create a complimentary fluorescence detector.
+<a id="3f9d65dd82be8073989bff903243bc0c" />Our microfluidic chips utilize fluorescence primarily to output binary information on antibiotic resistance, allowing for a quick preliminary screening before further assessments are assigned. However, we realized that the detection of fluorescence still requires equipment that is rather difficult to access at the hospital, which counteracts our goal of point-of-care rapid detection. To address the problem, we further iterated and brainstormed, and eventually decided to create a complimentary fluorescence detector.
 
 ## <a id="3f9d65dd82be80b4bb54d4d68e2b0c45" />Conventional vs. Our Fluorescence Detector
 
@@ -108,11 +108,33 @@ title: "Fluorescence Detector"
 
 # <a id="3fbd65dd82be80ca8eb3c43119c51ce4" />Design Breakdown
 
-<a id="3fbd65dd82be8040ba01dabf592e8b51" />where technical drawings go
+## <a id="3fbd65dd82be8040ba01dabf592e8b51" />Microfluidic Chip Holder → image carousel
 
-<a id="3fbd65dd82be8075b097f31bad8f865d" />also some comparisons between different designs and how we arrived to our final one
+<a id="3fcd65dd82be80a5af0bf567c1ede359" />(technical drawing)
 
-<br id="3fcd65dd82be80089f38e2d9f24613c3" />
+- <a id="3fcd65dd82be8013a409ef1abc32a4df" />After the chip is dropped into the holder, each well will rest on top of a gap. This allows proper illumination and permits the fluorescence to reach the photodetector.
+
+<a id="3fcd65dd82be803eba2cffbe7394c314" />(close-up of the bottom section)
+
+- <a id="3fcd65dd82be80258641f67c7796cacf" />There are 7 hemisphere-shaped indents on the bottom of the holder legs, each representing a well. When a well arrives at the site of detection, the indent slides onto a bump and gentle vibration is transmitted through the handle to the user’s hand. This serves as a reminder for the user to pause and wait for detection to happen.
+
+<a id="3fcd65dd82be809c8f64daf9c0cafa3a" />(close up of the handle (3d model & irl with the markings))
+
+- <a id="3fcd65dd82be80d2bf0ad0e31281fcef" />The user can hold onto the handle to move the chip forward or back. We also added in visual marks to ensure a smoother detection process.
+
+## <a id="3fcd65dd82be80089f38e2d9f24613c3" />Bottom Part
+
+<a id="3fcd65dd82be809aa264d7101f55596e" />Sliding tracks
+
+- <a id="3fcd65dd82be8015a288d32884d700fc" />The holder slides smoothly on the tracks so the user can move each well to the site of detection. One track is attached onto the side wall to leave out space for PCB insert.
+
+<a id="3fcd65dd82be8032b15dc40cb0f8a936" />Anti-lifting? structure close up
+
+- <a id="3fcd65dd82be80e2b309caaef1472ee5" />
+
+## <a id="3fcd65dd82be80679f69c5d39ed7906b" />Top Part
+
+<br id="3fcd65dd82be80aa95e1c1a61665ff79" />
 
 <a id="3fbd65dd82be805ba95ed803ef3c84bf" />circuitry
 
@@ -128,7 +150,7 @@ title: "Fluorescence Detector"
 
 # <a id="3fbd65dd82be8034992cdf993e9976df" />Improvements for Future Iterations
 
-#### <a id="3fcd65dd82be8016a5bddf3afc0838d6" />**We plan to continue exploring the potential of our customized fluorescence detector. The following are some of our planned next steps:**
+#### <a id="3fcd65dd82be8016a5bddf3afc0838d6" />**We plan to continue exploring the potential of our customized fluorescence detector. The following are some of our next steps:**
 
 - <a id="3fcd65dd82be80c48737ec42f030366e" />**Implement a fully automated detection process**
   - <a id="3fcd65dd82be80b399c0d57eec43d687" />Adopt a rack-and-pinion mechanism, with the rack attached to the bottom of the chip holder and the pinion positioned directly beneath it. A servomotor will control the angle of rotation precisely, allowing the chip to be displaced by a fixed distance with each turn.

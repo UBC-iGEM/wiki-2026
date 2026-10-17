@@ -1,0 +1,178 @@
+---
+type: "database"
+title: "Biosensor"
+path: "Wet Lab/Engineering/Biosensor"
+---
+
+# <a id="3fcd65dd82be80aba876df2f39145a69" />Cloning
+
+<a id="3fcd65dd82be800b8f42fa53a84fa7e9" />**Design**: constructs designed based on lit review (CpxP and RecA); refer to
+
+<a id="3fcd65dd82be80a2ac03d001a10d78c1" />**Build**: gibson assemblies
+
+<a id="3fcd65dd82be803bb36cd9ccb8935bf8" />**Test**: extract plasmids + sequencing to confirm successful cloning
+
+<a id="3fcd65dd82be80be98b3da47cb485e10" />**Learn**: insights about mutations → decided that they were negligible mutations
+
+<br id="3fcd65dd82be80469f06c576a2521439" />
+
+# <a id="3fcd65dd82be8007a578d37cd26249d0" />Characterization
+
+## <a id="3fcd65dd82be80ff8da3c4247b714f89" />Growth Curve
+
+<details>
+  <summary><a id="3fcd65dd82be8044b241c20cb6e62775" />Plasmid Retention</summary>
+
+  ### <a id="3fcd65dd82be809a8de7c9fcc54c1a0d" />Iteration 1 [Plasmid Retention Assay v1](/ubc-vancouver/wet-lab/lab-notebook/plasmid-retention-assay-v1)
+
+  <br id="3fcd65dd82be80eb845be45bc0be377c" />
+
+  <br id="3fcd65dd82be80d3be55e0494c421cb2" />
+
+  ### <a id="3fcd65dd82be80db963ee8270606f4d3" />Iteration 2 [Plasmid Retention Assay v2](/ubc-vancouver/wet-lab/lab-notebook/plasmid-retention-assay-v2)
+</details>
+
+<br id="3fcd65dd82be804ebbabfc4845997b66" />
+
+# <a id="3fcd65dd82be803397e6c89a77ff59f8" />Reporter Validation
+
+<details>
+  <summary><a id="3fcd65dd82be807da888f6d15162c5eb" />Iteration 1</summary>
+
+  ### <a id="3fcd65dd82be80be96add9635f48293f" />Iteration 1 [Biosensor GFP sensitivity assay v1 ](/ubc-vancouver/wet-lab/lab-notebook/biosensor-gfp-sensitivity-assay-v1-)
+
+  <a id="3fcd65dd82be804dbe45dad6de0c21ee" />
+
+  <Dbtl>
+    <Fragment slot="design">
+      <a id="3fcd65dd82be807fb30ddf585c3b60a1" />After transformation, we needed to validate its biological function as a sensor. To this end, we started by looking for differential expression of green fluorescent protein (GFP) to determine a range of sub-inhibitory antibiotic concentrations to use, as well its incubation time.
+
+      <a id="3fcd65dd82be806db602fbe3e1d46fbd" />We also considered the effect of optical density (OD) on GFP expression, and included this as a variable in the experiment.
+    </Fragment>
+
+    <Fragment slot="build">
+      <a id="3fcd65dd82be802b9aa8e3cc3cf0975a" />RecA and CpxP biosensor strains were inoculated and harvested, then diluted to 1x and 0.5x at OD600 of 0.4. Antibiotics (Amoxicillin, Kanamycin, Gentamicin, Cephalexin) were reconstituted, and serially diluted twice to test a broad range of antibiotic concentrations.
+
+      <a id="3fcd65dd82be80bca928d22295bda6ef" />In a clear, U-bottom 96-well plate, LB-Cm media was added into the wells allotted for antibiotic conditions, then given the associated serial dilution of antibiotic to create a 2x condition. This 2x condition was diluted using the grown biosensor strains at an equal volume. Wells were allotted for blank LB-Cm and unstimulated biosensor strain controls. Each condition was done in triplicate, including controls.
+    </Fragment>
+
+    <Fragment slot="test">
+      <a id="3fcd65dd82be8032857ac6b5e38da9c9" />We evaluated the plate using a microplate reader machine, exciting at 488 nm and reading fluorescence at 510 nm. The plate was incubated at 37˚C, and scanned every 10 minutes over one hour.
+    </Fragment>
+
+    <Fragment slot="learn">
+      <a id="3fcd65dd82be80efb1fdf241785741a9" />We had four major findings:
+
+      1. <a id="3fcd65dd82be809aa5dff63b278c87b4" />The RecA biosensor was more sensitive, with significantly higher fold changes observed in the same timescale.
+      2. <a id="3fcd65dd82be800fa6dae081a66378a1" />Higher OD values resulted in more discernible GFP signals.
+      3. <a id="3fcd65dd82be804aa065fb98a2c5247b" />Most conditions had a peak between 10-30 minutes.
+      4. <a id="3fcd65dd82be80f1b1aad07c7f4249e4" />We identified potential antibiotic concentration and time value ranges for optimal GFP-stimulation response in both CpxP and RecA, although RecA showed more promise.
+
+      <a id="3fcd65dd82be80d0bda0cd1c0071e6b9" />However, this experiment had some setbacks, like the U-bottom plates not being optimal for plate reading, as well as low overall expression, OD600, and identified ranges.
+    </Fragment>
+  </Dbtl>
+</details>
+
+<details>
+  <summary><a id="3fcd65dd82be80b19497c66957e4d5e1" />Iteration 2</summary>
+
+  ### <a id="3fcd65dd82be807ea6ffc187a93bb573" />Iteration 2 [Biosensor MIC Screening Titration v1](/ubc-vancouver/wet-lab/lab-notebook/biosensor-mic-screening-titration-v1)
+
+  <a id="3fcd65dd82be8022baebe7d18af38715" />
+
+  <Dbtl>
+    <Fragment slot="design">
+      <a id="3fcd65dd82be80698cbcefbd5ab9d1a8" />In the previous experiment, we identified potential ranges for antibiotic concentrations and time values, but this was very narrow and we did not properly assess the starting and ending bounds for GFP-stimulation response, since there were very little changes with different antibiotic concentrations. Additionally, the cell density (by way of OD600) was low, and our findings in the previous experiment show that OD600 values increased with GFP output - we elected to test one condition this time for simplicity. We also increased the time range. Finally, the results from this experiment were intended to inform a Biofactorial biosensor experiment that could characterize our biosensor with greater resolution than manual pipetting.
+    </Fragment>
+
+    <Fragment slot="build">
+      <a id="3fcd65dd82be80a49face35b0549a9c1" />We learned in the last experiment that the OD600 was too low, so the biosensor strains were grown to OD600 = 0.8 instead of 0.4. Reconsituted antibiotics (Amoxicillin, Kanamycin, Gentamicin, Cephalexin) were serially diluted five times instead of twice.
+
+      <a id="3fcd65dd82be8057bab5cab41457a901" />In an opaque, flat-bottom, 96-well plate, LB-Cm media was pipetted into the wells allotted for antibiotic conditions, then given the associated antibiotic dilutions at 2x concentration. These were diluted by an identical volume of the associated biosensor strain at OD600 0.8, to a final OD600 of 0.4 and antibiotic concentration of 1x (but each was diluted via the serial dilution)
+    </Fragment>
+
+    <Fragment slot="test">
+      <a id="3fcd65dd82be8009bce2dd6f3f462ad3" />We evaluated the plate using a microplate reader, exciting at 488 nm and reading fluorescence at 510 nm. The plate was incubated at 37˚C, and scanned every 10 minutes over the span of 40 minutes.
+    </Fragment>
+
+    <Fragment slot="learn">
+      <a id="3fcd65dd82be80d8aa44cd720713ad69" />We encountered significant technical issues, including microplate reader plate jamming, which led to loss of time and data. Nonetheless, we identified preliminary ranges for further exploration.
+    </Fragment>
+  </Dbtl>
+</details>
+
+<details>
+  <summary><a id="3fcd65dd82be8091b143def78fce63ea" />Iteration 3</summary>
+
+  ### <a id="3fcd65dd82be801da543d1c9ae9511a4" />Iteration 3 [Biosensor GFP sensitivity assay v2](/ubc-vancouver/wet-lab/lab-notebook/biosensor-gfp-sensitivity-assay-v2)
+
+  <a id="3fcd65dd82be80819c25d1bb39faab35" />
+
+  <Dbtl>
+    <Fragment slot="design">
+      <a id="3fcd65dd82be80b99decc07c412b77f0" />The previous iteration identified preliminary fluorescence peaks under some antibiotic conditions, but instrument errors and inconsistent measurements prevented us from defining reliable concentration ranges. We therefore repeated the broad screen to identitfy the upper and lower bounds of detectable biosensor response to inform an appropriate range for the future factorial biosensor approach.
+    </Fragment>
+
+    <Fragment slot="build">
+      <a id="3fcd65dd82be80c78adaf7a16f8f55fe" />CpxP and RecA were exposed to 13 two-fold serial dilutions of gentamicin, kanamycin, amoxicillin, cephalexin ranging from 0.0156-320 µg/mL, with each condition being tested in triplicate. The cultures were plated on a clear, flat-bottom 96-well plate after 1:1 mixing with antibiotic containing media alongside untreated biosensor controls, a backbone control, and media blanks. Although the original experiment specified specified final OD600 = 0.4, time limitations meant that the final starting OD600 used in the experiment was 0.2.
+
+      <a id="3fcd65dd82be80809abccb4ba54ccfaa" />The biosensors were plated on a clear, flat-bottom 96-well plate alongside untreated biosensor controls, a backbone control, and media blanks. Fluorescence and OD600 measurements were collected every 10 minutes over the 50-minute assay, with fluorescence measured at an excitation of 488 nm and and emission of 510 nm.
+    </Fragment>
+
+    <Fragment slot="test">
+      <a id="3fcd65dd82be80fc997bd922b848e706" />The results demonstrated that there were limited changes in fluorescence across the tested conditions. Fluorescence values were close to the LB media control, making fold-change calculations sensitive to small differences in background signal. Additional inconsistencies were observed with the OD measurement, as an entire column displayed unusually low OD values at one point in time without showing the same pattern at the other points, suggesting an artifact rather than a consistent biological response.
+
+      <a id="3fcd65dd82be80aa819dfd39fd8c6c98" />Unfortunately, OD did not measurably decrease and instead appeared to increase as a response of antibiotic exposure. However, these measurements alone could not determine between bacterial growth or increased turbidity. Overall the results did not establish reproducible antibiotic concentration ranges that produced an elevated biosensor fluorescence response.
+    </Fragment>
+
+    <Fragment slot="learn">
+      <a id="3fcd65dd82be800a9c7cfc7c1f3c5e5a" />This iteration did not reproduce the preliminary response ranges identified in the previous experiment. Interpretation was limited by fluorescence values close to background, inconsistent measurements, and a lower starting bacterial density than originally planned.
+
+      <a id="3fcd65dd82be804dbe71d1fc3f267916" />The use of clear plates introduced an additional source of variability through fluorescence interference between wells. For future experiments, using plates suitable for fluorescence measurements, maintaining a consistent starting density, and evaluating background signal before interpreting fold changes was noted as important.
+
+      <a id="3fcd65dd82be80bfaf95d338f834935b" />For the next iteration, these findings highlighted a more focused approach for the next iteration. Rather than selecting conditions from uncertain peaks in the broad, wide-range screen, we used the independently determined biosensor MIC range to the next titration experiment, and extended the observation period to investigate responses that may not be detectable during a short assay.
+    </Fragment>
+  </Dbtl>
+
+  <br id="3fcd65dd82be8030afd0f7658ff30efb" />
+</details>
+
+<details>
+  <summary><a id="3fcd65dd82be80cc9855d03259338059" />Iteration 4</summary>
+
+  ### <a id="3fcd65dd82be807da1d4ee801ace3c83" />Iteration 4 [Biosensor Response Titration v1](/ubc-vancouver/wet-lab/lab-notebook/biosensor-response-titration-v1)
+
+  <a id="3fcd65dd82be8023a96bdcae6d01fa2f" />
+
+  <Dbtl>
+    <Fragment slot="design">
+      <a id="3fcd65dd82be807c9563d4c7466ca980" />The previous broad concentration screens did not establish a clear, reproducible relationship between antibiotic concentration and biosensor fluorescence. To guide a more focused experiment, we used the results from our Biosensor Challenge Assay, which determined that the minimal inhibitory concentration (MIC) of the two biosensor strains, CpxP and RecA, lies between 4 µg/mL to 8 µg/mL for Tobraymycin, Amoxicillin, and Gentamicin.
+
+      <a id="3fcd65dd82be800c9f01c67c13b57376" />Therefore, our objective was to investigate whether antibiotic concentrations below at this inhibitory range or at sub-inhibitory antibiotic concentrations produced a measurable fluorescence response. We also wanted to extend the observation period to eight hours to determine whether longer incubation allowed distinct response to appear.
+    </Fragment>
+
+    <Fragment slot="build">
+      <a id="3fcd65dd82be80fba881f09264cbfdac" />Both of the biosensors, CpxP and RecA, were exposed to nine two-fold serial dilutions of gentamicin, tobramycin, or amoxicillin. Each antibiotic was tested on seperate flat-bottom 96-well plates containing both biosensor strains, with each antibiotic condition plated in triplicate.
+
+      <a id="3fcd65dd82be80ed8cc3cca3eef6df1c" />Bacterial suspensions were adjusted to an OD600 of 0.2 before being mixed with an equal volume of antibiotic-containing media, giving a final starting OD600 of 0.1. This was tested alongside untreated biosensor controls, a backbone control, and media blanks.
+
+      <a id="3fcd65dd82be80f19105d4faf017834d" />OD600 and fluorescence were measured immediately after plating and after 0.5–8 hours. Plates were returned to a 37°C incubator between measurements. Fluorescence was compared with the corresponding untreated growth controls to asses the response to antibiotic exposure.
+    </Fragment>
+
+    <Fragment slot="test">
+      <a id="3fcd65dd82be80119f19c9a45f6cb856" />The CpxP biosensor showed dose-dependent fluorescence responses at later time points. At the highest test amoxicillin concentration, fluorescence was approximately two- to three-fold higher than the untreated control during the four- to eight-hour interval relative to the control. For gentamicin and tobramycin, fluorescence peaked at the four-hour interval for the highest tested concentration condition.
+
+      <a id="3fcd65dd82be808cbca5ca9e26196647" />The RecA biosensor showed a different response pattern, not demonstrating the same dose-dependent trend. Increase fluorescence associated with amoxicillin concentration was observed at four to eight hours, particularly at the highest tested concentration. However, the aminoglycosides, gentamicin and tobramycin, did not produce a dose-dependent response.
+
+      <a id="3fcd65dd82be80fcadb5f3c8538129f6" />OD measurable increased over the eight-hour experiment. This was particularly relevant when interpreting the increased fluorescence observed in the RecA amoxicillin conditions, because difference in bacterial growth could contribute to total fluorescence.
+    </Fragment>
+
+    <Fragment slot="learn">
+      <a id="3fcd65dd82be80c8a83df965df84dd1d" />Extending the observation period revealed fluorescence responses at four to eight hours that were not clear in the earlier, short-duration screens, demonstrating that these later time points would be useful for further investigation. However, they did not establish comparable responses that would be achievable within a rapid assay.
+
+      <a id="3fcd65dd82be80a887a6d89553d5d9df" />The results also indicated that reporter performance depended on both the antibiotic and the incubation period. CpxP showed concentration-dependent response to amoxicillin and both aminoglycosides, whereas RecA showed a clearer response to amoxicillin than to either aminoglycosides. Therefore, the conclusion from iteration 1 that RecA was generally the more sensitive reporter did not hold in this experiment.
+
+      <a id="3fcd65dd82be802ca67bd5ff48fd1332" />These findings demonstrated that these four- to eight-hour intervals are candidates for future testing. Before scaling this experiment up to the scale of Biofactorial, we would repeat this experiment to confirm reproducibility as well as a desired test range.
+    </Fragment>
+  </Dbtl>
+</details>

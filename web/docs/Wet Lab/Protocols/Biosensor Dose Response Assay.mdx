@@ -1,0 +1,73 @@
+---
+type: "database"
+title: "Biosensor Dose Response Assay"
+path: "Wet Lab/Protocols/Biosensor Dose Response Assay"
+---
+
+# <a id="3fcd65dd82be80829b7bc6c782ae49df" />Purpose
+
+<a id="3fcd65dd82be807d8217ecce3548015d" />This protocol outlines a method to determine the antibiotic concentration range is produces a dose-dependent GFP expression response from a biosensor reporter strain.
+
+# <a id="3fcd65dd82be807dbc49dda1f2a38025" />Materials
+
+- <a id="3fcd65dd82be805fb54afc315d726aec" />Antibiotics of interest
+- <a id="3fcd65dd82be804e8c70f2d5413c3f74" />MilliQ Water
+- <a id="3fcd65dd82be80579510cfffbf6963b7" />0.2 uM sterile filter
+- <a id="3fcd65dd82be80718ec1c4b9e4dbedee" />LB-Cm media (17 mg/L)
+- <a id="3fcd65dd82be80edae5bf646d4c22100" />RecA and CpxP biosensor strains (containing Cm selection marker)
+- <a id="3fcd65dd82be8037ab65dd1589cdf02e" />96-well plates, flat bottom
+- <a id="3fcd65dd82be8075bcccce5cadd4a4dc" />Microplate reader
+
+# <a id="3fcd65dd82be80aeada3f94d6e3ed211" />Methods
+
+## <a id="3fcd65dd82be80d59a34dc87ec2fc689" />Day 1: Culture Inoculations
+
+1. <a id="3fcd65dd82be804ea5dbe336c3ae7ddc" />Inoculate 10 mL of LB-Cm from glycerol stocks of the bacterial strains.
+2. <a id="3fcd65dd82be80029a58dafd82e5b26b" />Incubate overnight at 37˚C, shaking at 220 rpm.
+
+## <a id="3fcd65dd82be80088d9ac5063db09a87" />Day 2: Plating and Readout
+
+1. <a id="3fcd65dd82be80c19d80e58e53763943" />**Prepare antibiotics:** reconstituting in MilliQ water at the appropriate concentration. Sterile filter the stock solutions through a 0.2 uM filter.
+2. <a id="3fcd65dd82be80acb757d930f46713a8" />**Prepare the working stock**: Adding the appropriate volume of antibiotics into the LB-Cm media. The concentration of this antibioitc-containing media should be 2x the highest concentration.
+3. <a id="3fcd65dd82be80608843e0e3ba4d92ce" />**Prepare the inoculum**: Obtain the overnight culture and mix thoroughly. Read OD600 of the cultures. Dilute to an OD600 value of 0.2 in LB-Cm.
+4. <a id="3fcd65dd82be80feaf17ec62aa158f80" />**Prepare the plate**:
+   1. <a id="3fcd65dd82be80bfb1aec8fdf526fc92" />For the outermost wells (moat wells), dispense 200 uL of sterile water
+   2. <a id="3fcd65dd82be8001a0d1c791d5c7efa3" />Dispense 100 uL of LB-Cm into all interior wells except column 2 (cols 3-11, rows B-G)
+   3. <a id="3fcd65dd82be80828e3df234455a2c57" />Dispense an additional 100 uL LB-Cm to the sterility well (blank media control, G11)
+   4. <a id="3fcd65dd82be80bcbc83ee47f25e1d70" />Dispense 200 uL of the 2x antibiotic media into column 2. Mix throughly, then transfer 100 uL of mixture into the next column to the right. Repeat until column 10. Discard 100 uL from column 10
+   5. <a id="3fcd65dd82be80249d7dd87d44343ad7" />Repeat steps 3d for all rows
+   6. <a id="3fcd65dd82be8029b3b0fc9331eb1605" />Except for the media blank and moat wells, add 100 uL of inoculum to interior wells
+5. <a id="3fcd65dd82be8048b5d5fef97c9a57e0" />**Initial Readout**: Read the OD600 and fluorescence of the plates immediately. After reading, return the plates to a 37˚C incubator.
+6. <a id="3fcd65dd82be808d99e6ccee42e3d92d" />Repeat this reading at 30 mins, 1 hr, 2 hrs, 4 hrs and 8 hrs.
+
+<br id="3fcd65dd82be80bc963fdfa8986794d2" />
+
+<a id="3fcd65dd82be807abd76fa5855b18eb9" />Table 1. Antibiotic 2-fold dilution concentrations
+
+<a id="3fcd65dd82be8052adebd223fcc390fa" />
+
+| <a id="3fcd65dd82be80bbbd71ed31fb4d9aaa" />In ug/mL | 1  | 2  | 3    | 4    | 5    | 6     | 7     | 8     | 9      |
+| --------------------------------------------------- | -- | -- | ---- | ---- | ---- | ----- | ----- | ----- | ------ |
+| <a id="3fcd65dd82be80e6b74ff1a6ca19954d" />All      | 2x | 1x | 1/2x | 1/4x | 1/8x | 1/16x | 1/32x | 1/64x | 1/128x |
+
+<a id="3fcd65dd82be805ab33edcb3e1529570" />Table 2. Single Plate Layout
+
+<a id="3fcd65dd82be80739e5af5da16c48865" />
+
+| <a id="3fcd65dd82be803f97ecd4b8fcc7da76" />  | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
+| -------------------------------------------- | - | - | - | - | - | - | - | - | - | -- | -- | -- |
+| <a id="3fcd65dd82be80f88e89c34c1a1a85a2" />A | M | M | M | M | M | M | M | M | M | M  | M  | M  |
+| <a id="3fcd65dd82be80d98f33ca9b75696853" />B | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | G  | M  |
+| <a id="3fcd65dd82be8017bdeed844fe31c7f8" />C | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | G  | M  |
+| <a id="3fcd65dd82be807b8f9ed57d3818c564" />D | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | G  | M  |
+| <a id="3fcd65dd82be808d8862f17c2fcf40b6" />E | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | G  | M  |
+| <a id="3fcd65dd82be80b691e3ce2113514e2e" />F | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | G  | M  |
+| <a id="3fcd65dd82be809a9ec3ffb3562e5138" />G | M | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9  | B  | M  |
+| <a id="3fcd65dd82be8008a375d1a875cf1658" />H | M | M | M | M | M | M | M | M | M | M  | M  | M  |
+
+<a id="3fcd65dd82be80108e6bcfcb6fdaed67" />`M` Water Moat         `G` Control         `B` Media Blank        `1-9` Antibiotic
+
+- <a id="3fcd65dd82be80c095aff7d73b659b9d" />The water moat is to create an evaporation buffer
+- <a id="3fcd65dd82be801d8192f180fbd57cf6" />Control is no antibiotic to compare against
+
+<br id="3fcd65dd82be809fa785dbfb8662e7c2" />

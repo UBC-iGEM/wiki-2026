@@ -1,0 +1,155 @@
+---
+import { type SeqmapAttrs, SEQMAP_SLOTS } from "@exporter/markdown/components";
+type Props = SeqmapAttrs;
+
+const { title, seq } = Astro.props;
+SEQMAP_SLOTS satisfies readonly [];
+
+// `<` is escaped so a feature name can't close the script tag.
+const data = seq.replaceAll("<", "\\u003c");
+---
+
+<figure class="seqmap glow-panel">
+    <div class="seqmap-body glow-panel-body">
+        <div class="title">{title}</div>
+        <div class="seqmap-host" aria-label={`Sequence map: ${title}`}></div>
+        <script type="application/json" class="seqmap-data" is:inline set:html={data} />
+    </div>
+</figure>
+
+<script>
+    import type { SeqmapSeq } from "@exporter/seqmap";
+    import { createElement, createRef } from "react";
+    import { createRoot } from "react-dom/client";
+    import { Circular, Linear, SeqViz } from "seqviz";
+
+    /** How much smaller to draw the plasmid than SeqViz would, leaving room around it for feature labels. */
+    const CIRCULAR_SCALE = 0.85;
+
+    for (const seqmap of document.querySelectorAll<HTMLElement>(".seqmap")) {
+        const { name, seq, type, annotations } = JSON.parse(
+            seqmap.querySelector(".seqmap-data")!.textContent!,
+        ) as SeqmapSeq;
+
+        // One SeqViz container laying out both viewers itself, so they share the selection and scroll position.
+        const circular = createRef<HTMLDivElement>();
+        const linear = createRef<HTMLDivElement>();
+        const host = seqmap.querySelector<HTMLElement>(".seqmap-host")!;
+        createRoot(host).render(
+            createElement(SeqViz, {
+                name,
+                seq,
+                seqType: type,
+                annotations,
+                primers: [],
+                // DO NOT LOAD EXTERNAL FONTS
+                disableExternalFonts: true,
+                refs: { circular, linear } as never,
+                children: ({ circularProps, linearProps, ...handlers }) =>
+                    createElement(
+                        "div",
+                        { className: "seqmap-viewers" },
+                        createElement(
+                            "div",
+                            { className: "seqmap-viewer circular", ref: circular },
+                            createElement(Circular, {
+                                ...circularProps,
+                                ...handlers,
+                                radius: circularProps.radius * CIRCULAR_SCALE,
+                            }),
+                        ),
+                        createElement(
+                            "div",
+                            { className: "seqmap-viewer linear", ref: linear },
+                            createElement(Linear, { ...linearProps, ...handlers }),
+                        ),
+                    ),
+            }),
+        );
+
+        // Scrolling over the plasmid map rotates it, so it shouldn't scroll the page too.
+        host.addEventListener(
+            "wheel",
+            (event) => {
+                if (event.target instanceof Element && event.target.closest(".seqmap-viewer.circular"))
+                    event.preventDefault();
+            },
+            { passive: false },
+        );
+    }
+</script>
+
+<!-- Global, as the viewer boxes are created by SeqViz and don't carry Astro's scoping attribute -->
+<style is:global>
+    /* The border and glow come from .glow-panel in style.css; the bottom margin clears the outline hanging below */
+    .seqmap {
+        margin: 2rem 0 3rem;
+    }
+
+    /* Laid out as the Platemap panel; a size container, so the stacked layout can make the plasmid map square */
+    .seqmap .seqmap-body {
+        container-type: inline-size;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        padding: 1.5rem 2.5rem;
+    }
+
+    .seqmap .title {
+        font-family: var(--font-source-serif-4);
+        font-size: 1.15rem;
+        font-weight: 700;
+    }
+
+    /* SeqViz positions its contents absolutely, so the host sets the height */
+    .seqmap .seqmap-host {
+        height: 32.5rem;
+    }
+
+    .seqmap .seqmap-viewers {
+        display: grid;
+        flex: 1;
+        gap: 0.75rem;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 100%;
+    }
+
+    /* SeqViz draws dark text, so each viewer sits on a light card */
+    .seqmap .seqmap-viewer {
+        background: #fff;
+        border-radius: 22px;
+        color: #000;
+        min-height: 0;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    /*
+     * SeqViz pads it on top of its full height, which would push the end of the scrollbar out of the card,
+     * and reaching either end of the sequence shouldn't carry on to scroll the page.
+     */
+    .seqmap .la-vz-linear-scroller {
+        box-sizing: border-box;
+        overscroll-behavior: contain;
+    }
+
+    @media (max-width: 700px) {
+        .seqmap .seqmap-body {
+            padding: 1rem 1.25rem;
+        }
+
+        /* Stacked: a square plasmid map above the sequence */
+        .seqmap .seqmap-host {
+            height: calc(100cqw + 0.75rem + 28rem);
+        }
+
+        .seqmap .seqmap-viewers {
+            grid-template-columns: 1fr;
+            grid-template-rows: 100cqw 28rem;
+        }
+
+        .seqmap .seqmap-viewer {
+            border-radius: 14px;
+        }
+    }
+</style>

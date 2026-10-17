@@ -1,4 +1,76 @@
 {
+    "BeachheadMarketDisciplined": {
+        "citation_key": "BeachheadMarketDisciplined",
+        "bib": "Beachhead Market (Disciplined Entrepreneurship) [Internet]. Disciplined Entrepreneurship. [cited 2026 Oct 17]. Available from: <a href=\"https://www.d-eship.com/step2/\">https://www.d-eship.com/step2/</a>"
+    },
+    "ValuePropositionCanvas": {
+        "citation_key": "ValuePropositionCanvas",
+        "bib": "Value Proposition Canvas [Internet]. Innovation Toolkit. [cited 2026 Oct 17]. Available from: <a href=\"https://itk.mitre.org/toolkit-tools/value-proposition-canvas/\">https://itk.mitre.org/toolkit-tools/value-proposition-canvas/</a>"
+    },
+    "entrepreneurshipValuePropositionCanvas": {
+        "citation_key": "entrepreneurshipValuePropositionCanvas",
+        "bib": "Entrepreneurship WI of. The Studio &#x2014; Wade Institute. [cited 2026 Oct 17]. Value Proposition Canvas &#x2014; Wade Innovation Toolbox. Available from: <a href=\"https://studio.wadeinstitute.org.au/tool-detail-value-proposition-canvas.html\">https://studio.wadeinstitute.org.au/tool-detail-value-proposition-canvas.html</a>"
+    },
+    "shadomyVitroSusceptibilityTesting1972": {
+        "citation_key": "shadomyVitroSusceptibilityTesting1972",
+        "bib": "Shadomy S, Kirchoff C. In Vitro Susceptibility Testing with Tobramycin. Antimicrob Agents Chemother [Internet]. 1972 May [cited 2026 Oct 17];1(5):412&#x2013;6. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC444234/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC444234/</a>"
+    },
+    "chenCompleteNucleotideSequence2006": {
+        "citation_key": "chenCompleteNucleotideSequence2006",
+        "bib": "Chen YT, Shu HY, Li LH, Liao TL, Wu KM, Shiau YR, et al. Complete Nucleotide Sequence of pK245, a 98-Kilobase Plasmid Conferring Quinolone Resistance and Extended-Spectrum-&#x3B2;-Lactamase Activity in a Clinical Klebsiella pneumoniae Isolate. Antimicrob Agents Chemother [Internet]. 2006 Nov [cited 2026 Oct 17];50(11):3861&#x2013;6. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC1635178/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC1635178/</a>"
+    },
+    "allenResponseRegulatorSoil2015a": {
+        "citation_key": "allenResponseRegulatorSoil2015a",
+        "bib": "Allen HK, An R, Handelsman J, Moe LA. A Response Regulator from a Soil Metagenome Enhances Resistance to the &#x3B2;-Lactam Antibiotic Carbenicillin in Escherichia coli. PLoS One [Internet]. 2015 Mar 17 [cited 2026 Oct 17];10(3):e0120094. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC4364456/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC4364456/</a>"
+    },
+    "allenResponseRegulatorSoil2015": {
+        "citation_key": "allenResponseRegulatorSoil2015",
+        "bib": "Allen HK, An R, Handelsman J, Moe LA. A Response Regulator from a Soil Metagenome Enhances Resistance to the &#x3B2;-Lactam Antibiotic Carbenicillin in Escherichia coli. PLoS One [Internet]. 2015 Mar 17 [cited 2026 Oct 17];10(3):e0120094. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC4364456/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC4364456/</a>"
+    },
+    "zaslaverComprehensiveLibraryFluorescent2006": {
+        "citation_key": "zaslaverComprehensiveLibraryFluorescent2006",
+        "bib": "Zaslaver A, Bren A, Ronen M, Itzkovitz S, Kikoin I, Shavit S, et al. A comprehensive library of fluorescent transcriptional reporters for Escherichia coli. Nat Methods. 2006 Aug;3(8):623&#x2013;8."
+    },
+    "shapiroStressBasedIdentificationClassification2002": {
+        "citation_key": "shapiroStressBasedIdentificationClassification2002",
+        "bib": "Shapiro E, Baneyx F. Stress-Based Identification and Classification of Antibacterial Agents: Second-Generation Escherichia coli Reporter Strains and Optimization of Detection. Antimicrobial Agents and Chemotherapy [Internet]. 2002 Aug [cited 2026 Oct 17];46(8):2490&#x2013;7. Available from: <a href=\"https://journals.asm.org/doi/10.1128/aac.46.8.2490-2497.2002\">https://journals.asm.org/doi/10.1128/aac.46.8.2490-2497.2002</a>"
+    },
+    "mohiuddinHighThroughputScreeningPromoter2022": {
+        "citation_key": "mohiuddinHighThroughputScreeningPromoter2022",
+        "bib": "Mohiuddin SG, Massahi A, Orman MA. High-Throughput Screening of a Promoter Library Reveals New Persister Mechanisms in Escherichia Coli. Microbiol Spectr. 2022 Feb 23;10(1):e0225321."
+    },
+    "foxmanEpidemiologyUrinaryTract2010": {
+        "citation_key": "foxmanEpidemiologyUrinaryTract2010",
+        "bib": "Foxman B. The epidemiology of urinary tract infection. Nat Rev Urol. 2010 Dec;7(12):653&#x2013;60."
+    },
+    "emailPharmacistsNowPrescribing2023": {
+        "citation_key": "emailPharmacistsNowPrescribing2023",
+        "bib": "Email S by, Facebook S on, X S on, LinkedIn S on, Message S via T. Vancouver Is Awesome. 2023 [cited 2026 Oct 17]. Pharmacists now prescribing medication for minor ailments. Available from: <a href=\"https://www.vancouverisawesome.com/highlights/pharmacists-now-prescribing-medication-for-minor-ailments-7095241\">https://www.vancouverisawesome.com/highlights/pharmacists-now-prescribing-medication-for-minor-ailments-7095241</a>"
+    },
+    "healthPharmacistsCanPrescribe2023": {
+        "citation_key": "healthPharmacistsCanPrescribe2023",
+        "bib": "Health. BC Gov News. 2023 [cited 2026 Oct 17]. Pharmacists can prescribe contraceptives, treatments for minor ailments. Available from: <a href=\"https://news.gov.bc.ca/releases/2023HLTH0074-000859\">https://news.gov.bc.ca/releases/2023HLTH0074-000859</a>"
+    },
+    "narayanRapidIdentificationSusceptibility": {
+        "citation_key": "narayanRapidIdentificationSusceptibility",
+        "bib": "Narayan M, Mohapatra S, Das B, Mani K, Gautam H, Sood S, et al. Rapid Identification and Susceptibility Testing Directly From Urine Specimens, Reducing Turnaround Time, a Step Towards Advancing Diagnostic Stewardship. Cureus [Internet]. [cited 2026 Oct 17];17(9):e93441. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC12571694/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC12571694/</a>"
+    },
+    "smithRapidSusceptibilityTesting2019": {
+        "citation_key": "smithRapidSusceptibilityTesting2019",
+        "bib": "Smith KP, Kirby JE. Rapid Susceptibility Testing Methods. Clin Lab Med [Internet]. 2019 Sept [cited 2026 Oct 17];39(3):333&#x2013;44. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC6686868/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC6686868/</a>"
+    },
+    "ahmedUropathogensTheirAntimicrobial2019": {
+        "citation_key": "ahmedUropathogensTheirAntimicrobial2019",
+        "bib": "Ahmed SS, Shariq A, Alsalloom AA, Babikir IH, Alhomoud BN. Uropathogens and their antimicrobial resistance patterns: Relationship with urinary tract infections. Int J Health Sci (Qassim) [Internet]. 2019 [cited 2026 Oct 17];13(2):48&#x2013;55. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC6436442/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC6436442/</a>"
+    },
+    "mirAntimicrobialResistanceUrinary2025": {
+        "citation_key": "mirAntimicrobialResistanceUrinary2025",
+        "bib": "Mir SS, Ali E, Alghamdi SAA, Alghamdi NM, Alharbi RA, Sindi AAA, et al. Antimicrobial Resistance in Urinary Tract Infections Among Patients with and Without Renal Comorbidities: A Retrospective Study from Al-Baha, Saudi Arabia. Pathogens [Internet]. 2025 Dec [cited 2026 Oct 17];14(12):1297. Available from: <a href=\"https://www.mdpi.com/2076-0817/14/12/1297\">https://www.mdpi.com/2076-0817/14/12/1297</a>"
+    },
+    "llorAntimicrobialResistanceRisk2014": {
+        "citation_key": "llorAntimicrobialResistanceRisk2014",
+        "bib": "Llor C, Bjerrum L. Antimicrobial resistance: risk associated with antibiotic overuse and initiatives to reduce the problem. Ther Adv Drug Saf [Internet]. 2014 Dec [cited 2026 Oct 17];5(6):229&#x2013;41. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC4232501/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC4232501/</a>"
+    },
     "yehParachuteUsePrevent2018": {
         "citation_key": "yehParachuteUsePrevent2018",
         "bib": "Yeh RW, Valsdottir LR, Yeh MW, Shen C, Kramer DB, Strom JB, et al. Parachute use to prevent death and major trauma when jumping from aircraft: randomized controlled trial. 2018 Dec 13 [cited 2026 July 16]; Available from: <a href=\"https://www.bmj.com/content/363/bmj.k5094\">https://www.bmj.com/content/363/bmj.k5094</a>"

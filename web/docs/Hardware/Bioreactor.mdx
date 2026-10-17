@@ -7,15 +7,43 @@ title: "Bioreactor"
 
 <a id="3f0d65dd82be8013b7c9c45b65fea97b" />Bioreactors are vessels that facilitate a controlled, stable environment where microorganisms and similar biological components can grow at an optimal rate. As one of UBC iGEM 2026’s hardware projects, we developed a compact bioreactor to culture E. coli for biosensor development in antibiotic susceptibility testing.
 
-<a id="3f0d65dd82be804fac57d7f214df889a" />More about what a bioreactor is ()
+## <a id="3f0d65dd82be8052b407e9132156ecbf" />The Need for Bioreactors
 
-## <a id="3f0d65dd82be8052b407e9132156ecbf" />The Need for Bioreactors ()
-
-<a id="3fad65dd82be80e39714f6e9569d58c4" />Cells can only work properly in a conductive environment, and bioreactors establish these environments by controlling temperatures, balancing pH, managing physical, chemical, and nutritional parameters, and providing agitation. In doing so, the reactor cultivates certain biological components and chemical reactions at peak efficiency. In our UBC iGem project this year, a bioreactor was necessary to cultivate E.coli cells for the wells in our microfluidic chip.
+<a id="3fad65dd82be80e39714f6e9569d58c4" />Cells can only work properly in a conductive environment, and bioreactors establish these environments by controlling temperatures, balancing pH, managing physical, chemical, and nutritional parameters, and providing agitation. In doing so, the reactor cultivates certain biological components and chemical reactions at peak efficiency.
 
 ## <a id="3f0d65dd82be80b9b69ce42379b3fb66" />Identifying Needs
 
+<a id="3fcd65dd82be80748a68f78586adfb55" />Last year, the 2025 UBC iGEM team attempted to create a lab-top bioreactor. This endeavour created a large surplus of supplies, which our team this year decided to take advantage of. We adopted our vessel from a leftover mason jar from 2025 and reused several different sensors. As a sub-team, we set an internal goal of increasing the quality of our manufacturing and functionality compared to last year. As a group, we created the list of needs below with both our project and internal goals in mind:
+
+- <a id="3fcd65dd82be801ab353e6316b082cb9" />The bioreactor must be able to sense the temperature.
+- <a id="3fcd65dd82be8055a5c2ff8daa3b542a" />The bioreactor must be able to sense the pH of the media.
+- <a id="3fcd65dd82be80fc9b97d0d13ccdcfbf" />The bioreactor must be able to aerate the contents of the vessel.
+- <a id="3fcd65dd82be807ea348c620cc350456" />The bioreactor must be able to agitate the contents of the vessel.
+- <a id="3fcd65dd82be809aa9b5eff778e4faac" />The user must be able to extract a sample during a growth curve.
+- <a id="3fcd65dd82be8021acd7c8a9f35ee328" />The user must be able to easily assemble the bioreactor.
+- <a id="3fcd65dd82be80bf9204fcf8067079b7" />The user must have a way of releasing pressure build up.
+- <a id="3fcd65dd82be801d80b9c6e05383692f" />The vessel must be airtight when a sample is not being taken.
+- <a id="3fcd65dd82be80e29825d129b639fcfc" />There must be a containment for electronic components.
+- <a id="3fcd65dd82be80519f56c0124d3d41e7" />The user should be able to use the bioreactor without a wall outlet.
+- <a id="3fcd65dd82be801698edf94056d98937" />The bioreactor should be manufactured with a good fit, such that no glue or tape is required to fit parts together.
+- <a id="3fcd65dd82be80d8873bf76ec1db8060" />The bioreactor should be low-cost to assemble.
+- <a id="3fcd65dd82be80c28c1defd2ee7a6587" />The bioreactor must use a mason jar as a vessel.
+
+<a id="3fcd65dd82be8077b85fff335d12e5df" />While these needs are a helpful guide when considering what ideas to incorporate into our bioreactor, they do not allow us to compare components against each other in an objective way. If both a magnetic stir bar and an impeller are able to create agitation, how do we compare them against each other? As such, we translated certain needs into quantitative comparisons of usability which we refer to as requirements.
+
 ## <a id="3f0d65dd82be804a9c2ec6ef3e456461" />Translating Needs to Requirements
+
+<a id="3fcd65dd82be800191f5f6176750b020" />To generate our requirements, we took our needs and added quantitative metrics.
+
+- <a id="3fcd65dd82be80edbb73f41a6e3143cf" />The bioreactor must be able to sense the temperature of the media within 2 degrees of the real temperature and report it to the user within three seconds.
+- <a id="3fcd65dd82be80158d9efa5a81b4e9ba" />The bioreactor must be able to sense the pH of the media within 1 pH unit and report it to the user within one minute.
+- <a id="3fcd65dd82be80f091bfd027a5fccac9" />The bioreactor must be able to aerate the contents of the vessel such that  the *E. Coli* recieve a sufficient amount of oxygen.
+- <a id="3fcd65dd82be807f91e5de33430bb46e" />The bioreactor must be able to agitate the contents of the vessel without generating shear which will damage the *E. Coli* present in the bioreactor.
+- <a id="3fcd65dd82be80a899a8e0047ce7385f" />The user must be able to open the bioreactor to extract a sample during a growth curve with minimum disruption to the data and while maintaining aseptic technique.
+- <a id="3fcd65dd82be80de9f4dc1d6700557f6" />The user should be able to assemble the bioreactor within ten minutes of starting, with limited difficulty.
+- <a id="3fcd65dd82be80d8a58bed56637aea18" />The user should be able to release pressure in a sterile fashion while the bioreactor is in use.
+- <a id="3fcd65dd82be80ed96fcdd7e5783bf70" />The vessel must be airtight when the bioreactor is not open for sampling.
+- <a id="3fcd65dd82be80ceb241e143062d2732" />The electronic components must be housed separately from the rest of the bioreactor such that they will in no way interfere with the
 
 # <a id="3f0d65dd82be80f2a2ebf4267c283938" />Building the Bioreactor
 
@@ -25,6 +53,36 @@ title: "Bioreactor"
 
 <details>
   <summary><a id="3f0d65dd82be80ad97ade1dc85460176" />Concept Sketches</summary>
+
+  <a id="3fcd65dd82be802896d3ffa5fdfed10a" />
+
+  <Img url="https://static.igem.wiki/teams/6279/wiki/assets/e5515d8e108b5cefac7005c5d45389a8.avif" alt="" scale={0} />
+
+  <a id="3fcd65dd82be802cb476d2e1f340a061" />
+
+  ***
+
+  <a id="3fcd65dd82be80a089f8ee1a3bb7b6b7" />
+
+  <Img url="https://static.igem.wiki/teams/6279/wiki/assets/a1a7fa4790195fd7bd677f6795e15ea1.avif" alt="" scale={0} />
+
+  <a id="3fcd65dd82be80ed8e72ed1f7661f777" />
+
+  ***
+
+  <a id="3fcd65dd82be80e0bc61c8133c2470b3" />
+
+  <Img url="https://static.igem.wiki/teams/6279/wiki/assets/cf3759e5a4785ad08f99f502750b30d2.avif" alt="" scale={0} />
+
+  <a id="3fcd65dd82be80ca8bc2d16d36acedf9" />
+
+  ***
+
+  <a id="3fcd65dd82be80e686f8d7793d141199" />
+
+  <Img url="https://static.igem.wiki/teams/6279/wiki/assets/7ca003791938563db55801d7bdd725a8.avif" alt="" scale={0} />
+
+  > <a id="3fcd65dd82be8054b78eead546c50889" />END carousel
 </details>
 
 <details>
@@ -103,7 +161,7 @@ title: "Bioreactor"
 
 <br id="3f0d65dd82be80ac8a2ee21fb6fa28ea" />
 
-<a id="3f0d65dd82be8071849cd6f11806723d" />Growth curves recorded from validation were compared against those produced from standard laboratory methods, giving a practical way to evaluate whether this simplified design could match, or better yet, exceed the expected bacterial growth behaviour. Beyond its engineering success within UBC iGEM 2026’s project scope, the nature of an open-source design marks it as a starting point for smaller teaching laboratories and research groups, or even medical centers in resource-limited environments that want to adapt and expand on this point-of-care device. The main objective of developing the bioreactor is not to replace high-end laboratory equipment, but to showcase that many functions required for bacterial culture can be recreated on a much smaller scale and at a lower cost.
+<a id="3f0d65dd82be8071849cd6f11806723d" />Growth curves recorded from validation were compared against those produced from standard laboratory methods, providing a practical way to evaluate whether this simplified design could match, or better yet, exceed the expected bacterial growth behaviour. Beyond its engineering success within UBC iGEM 2026’s project scope, the nature of an open-source design marks it as a starting point for smaller teaching laboratories and research groups, or even medical centers in resource-limited environments that want to adapt and expand on this point-of-care device. The main objective of developing the bioreactor is not to replace high-end laboratory equipment, but to showcase that many functions required for bacterial culture can be recreated on a much smaller scale and at a lower cost.
 
 ## <a id="3f0d65dd82be80c68508d78b73f509f3" />Instruction for Use
 
@@ -157,7 +215,5 @@ title: "Bioreactor"
 
   <a id="3f9d65dd82be80b585bcf43e20cece99" />Fused deposition modelling (FDM) was well suited for the early stages of rapid prototyping because of its fast manufacturing time and low raw material costs. However, polylactic acid (PLA) based components are more suited for prototyping than repeated long-term use, due to PLA’s weak mechanical structure and lack of durability to heat and environmental stressors. Larger structural components could instead be printed from a tougher and more temperature-resistant material such as polyethylene terephthalate glycol (PETG) or acrylonitrile butadiene styrene (ASA). PETG offers improved temperature and chemical resistance compared with PLA while remaining relatively accessible and easy to manufacture, making it a practical upgrade for many of the current components. Components exposed more directly to the culture, tubing, cleaning solutions, or repeated handling could instead be subtractively manufactured from metals such as aluminum 6061 or even stainless steel for high corrosion resistance. Moving toward more durable materials would increase the lifetime of the system and reduce the likelihood of components deforming, cracking, or requiring frequent replacement.
 </details>
-
-# <a id="3f0d65dd82be8051b917ecc25f84217a" />References
 
 <br id="3f0d65dd82be804a8debc1b76d9a0607" />

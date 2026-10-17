@@ -5,19 +5,43 @@ title: "Venture Values"
 
 # <a id="3e5d65dd82be80e19ebcfa4bf4c6aa2f" />Problem Statement
 
-<a id="3e5d65dd82be8028b89fc49adfa38a4d" />By 2050, a projected 39 million deaths will be due to antimicrobial resistance <Cite refs={[{"n":1,"key":"naghaviGlobalBurdenBacterial2024"}]} />. This is one of the greatest modern healthcare concerns of our time. With increasing resistance within populations, new and deadly mutagenic strains of pathogens are being spread. Common antibiotics are becoming less effective when treating patients, leading to an increased risks of infection and mortality. While antibiotic susceptibility testing is available in clinics, current methods are slow and only used for high-risk diseases.
+<a id="3e5d65dd82be8028b89fc49adfa38a4d" />Between 2025 and 2050, a projected 39 million deaths will be due to antibiotic-resistant infections <Cite refs={[{"n":1,"key":"naghaviGlobalBurdenBacterial2024"}]} />. The misuse of antibiotics is one of the key factors facilitating the rise of resistant strains and is one of the greatest modern healthcare concerns of our time <Cite refs={[{"n":2,"key":"llorAntimicrobialResistanceRisk2014"}]} />. Common antibiotics are becoming less effective when treating patients, leading to increased risks of infection and mortality. At the root of this is an issue with timing: in order to treat patients in a timely fashion, antibiotics are commonly prescribed before anyone knows whether or not they will work against the patient’s infection. While antibiotic susceptibility testing is available in clinics, current methods are slow, with gold-standard tests effectively requiring 2 days to perform and thus being used sparingly <Cite refs={[{"n":3,"key":"smithRapidSusceptibilityTesting2019"}]} /> .
 
-<a id="3e5d65dd82be80bcafadf32c271eee76" />*FAST* aims to decrease the risk of prescribing a patient with a drug that is no longer able to treat the ailment. Utilising a microfluidic chip model, *FAST* is able to identify the resistance of individual pathogens to current antibiotics. Through this, healthcare providers will be able to conduct antibiotic susceptibility testing faster than ever, enabling faster treatment during critical periods of care.
+<a id="3fcd65dd82be80aab592e51678aa6722" />Urinary tract infections (UTIs) are among the most common forms of bacterial infections in both community and hospital settings <Cite refs={[{"n":4,"key":"foxmanEpidemiologyUrinaryTract2010"}]} />. Blind treatment of resistant infections with antibiotics selects for these resistant strains, which exacerbates the problem further. As conventional urine culture and susceptibility testing take roughly 48–72 hours, most patients are started on antibiotic treatment without a test <Cite refs={[{"n":5,"key":"narayanRapidIdentificationSusceptibility"}]} />. In British Columbia, pharmacists have been given the ability to prescribe for uncomplicated UTIs since 2023; however, physicians have raised concerns about how this happens without the laboratory testing which would show if the infection is resistant to the prescribed antibiotics <Cite refs={[{"n":6,"key":"healthPharmacistsCanPrescribe2023"},{"n":7,"key":"emailPharmacistsNowPrescribing2023"}]} />.
+
+<a id="3fcd65dd82be80e19148ed015fc51dd4" />
+
+<IHP>
+  <Fragment slot="people">
+    <div class="ihp-card glow-panel" data-index="0">
+      <div class="ihp-card-body glow-panel-body">
+        <div class="ihp-name">Dr. R.E.W. (Bob) Hancock, OC, OBC, FRSC</div>
+
+        <div class="ihp-profile">
+          <div class="ihp-desc">
+            Dr. Bob Hancock, OC, OBC, FRSC is a Professor of Microbiology and Immunology at the University of British Columbia and Director of the Centre for Microbial Diseases and Immunity Research, where he also holds a UBC Killam Professorship and a Canada Research Chair in Health and Genomics.
+          </div>
+        </div>
+
+        <div class="ihp-content">
+          <a id="3fcd65dd82be80079d52c86a2560c6ac" />We interviewed Dr. Hancock early on in the development of our project, and he provided invaluable insight into the problem of antimicrobial resistance and advice for the direction of our project. Dr. Hancock pointed out that resistance often goes unnoticed. When an antibiotic fails, patients assume they just didn’t get better and clinicians switch drugs, and a real gap exists in being able to detect resistance fast enough to act on. For a specific early application to validate our platform on, he steered us toward UTIs. Urine is easy to collect and rich in bacteria, β-lactams are front-line drugs for serious UTIs, and in British Columbia many UTIs are treated by pharmacists or in remote communities without testing. His advice shaped *FAST*’s direction: we included β-lactams in our testing panel, added plans to support multi-antibiotic testing, and shifted our initial validation to UTIs.
+        </div>
+      </div>
+    </div>
+  </Fragment>
+</IHP>
 
 # <a id="3e5d65dd82be80f0a86df25ee0f39142" />Product Definition
 
-<a id="3e5d65dd82be80cd90d8f5c9dd0abf72" />*FAST* is a microfluidic chip with a fluorescent biosensor that is able to detect when a pathogen is resistant to antibiotics. By leveraging antibiotic-related stress and rapid fluorescent detection, we are able to rapidly decide a suitable treatment for patients with urinary tract infections (UTIs). This allows healthcare providers to prescribe medications with confidence and a decreased risk of complications associated with infection. By creating an affordable and accessible way to test antibiotic sensitivity, *FAST* pioneers as a solution to the growing public health concern.
+<a id="3fcd65dd82be802d8d2df9e96b74c516" />*FAST* is a microfluidic diagnostic platform that detects whether bacteria in a patient sample can inactivate an antibiotic via a fluorescent readout. This enables easy access to susceptibility information close to the point of care. In this system, the patient’s bacteria are first exposed to a candidate antibiotic and allowed to interact for a set incubation duration. After incubation, the mixture of antibiotic and patient bacteria is filtered and the antibiotic flows onwards to wells containing engineered *E. coli* biosensors which report, via fluorescence, whether the antibiotic is still functioning or has been inactivated. These biosensors are engineered to cover a range of cell stress pathways, and thus allow us to obtain a “fingerprint” of the antibiotic’s normal mechanism. In the case of bacterial inactivation of the antibiotic, this “fingerprint” will be modified, allowing us to quickly determine by comparison if a sample is resistant. The core component of this system is shared across multiple classes of antibiotics, facilitating mass production and lower test costs.
 
 # <a id="3e5d65dd82be8056b734c205e978ab21" />Value Proposition
 
+<a id="3fcd65dd82be805f8c0ad3d95875e109" />With the problem defined, we needed to check that *FAST* solves it in a way that matters to the people who would use it, not just in a way that interests us scientifically. To do this, we used the Value Proposition Canvas, a tool developed by Strategyzer that maps what customers need against what a product offers <Cite refs={[{"n":8,"key":"entrepreneurshipValuePropositionCanvas"}]} /> . The canvas has two halves. The customer profile describes the jobs customers are trying to get done, the pains that get in their way, and the gains they hope for. The value map describes FAST’s products and services and how each one relieves a pain or creates a gain <Cite refs={[{"n":9,"key":"ValuePropositionCanvas"}]} /> . We filled in the customer profile first, drawing on our research and expert interviews, and built the value map to answer it. Any customer pain that *FAST* doesn’t address points to a gap in our design, and any feature that doesn’t connect to a customer need is a candidate to cut. This canvas guided which features we prioritized in our MVP, and served as our reference for checking product-market fit as we gather more customer feedback.
+
 <a id="3fad65dd82be8000bfe5edc369bfe75a" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/8ac714b1ddd059338a843482db1ea086.svg" alt="" scale={0} />
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/8ac714b1ddd059338a843482db1ea086.svg" alt="Value proposition diagram {size = +50%}" scale={0} />
 
 ## <a id="3e8d65dd82be8065b683c637ea0ff280" />Customer Perspective
 
@@ -25,7 +49,7 @@ title: "Venture Values"
 
 |                                                          |                                                                                                                                                                                                                                                                                                                                                                                      |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| <a id="3fbd65dd82be800ea06ce3dc8dda3863" />Gains         | Stakeholders in healthcare are finding different ways to prescribe effective treatments to their patients with UTIs. They gain advantages such as reduced testing costs for AST and faster access to results related to antibiotic susceptibility to treat UTIs. This will allow them to treat UTI patients faster and more effectively                                              |
+| <a id="bad1a8cfe3b643c68050fa7e16e285b3" />Gains         | Stakeholders in healthcare are finding different ways to prescribe effective treatments to their patients with UTIs. They gain advantages such as reduced testing costs for AST and faster access to results related to antibiotic susceptibility to treat UTIs. This will allow them to treat UTI patients faster and more effectively.                                             |
 | <a id="3fbd65dd82be8082a4b7cad4f51e2684" />Customer Jobs | Healthcare professionals will need to decide when testing is necessary. They will also have to establish workflows and processes to adhere to provincial guidelines and treatment protocols. Healthcare regions or jurisdictions will need to decide what criteria make a patient eligible for this diagnostic test. Regulatory bodies must also oversee the proper use of the test. |
 | <a id="3fbd65dd82be80a7b004cf290ad39df3" />Pains         | Traditional AST for UTIs takes a long time to test, and UTI patients are treated with suboptimal treatments, allowing bacteria to adapt to antibiotics, expanding antibiotic resistance. UTI patients experience subpar treatment. Bacteria continue to become stronger and spread.                                                                                                  |
 
@@ -33,57 +57,55 @@ title: "Venture Values"
 
 <a id="3fbd65dd82be8012aa63c7b9b1c90173" />
 
-|                                                                |                                                                                                                                                                                                                                                                                                                                              |
-| -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <a id="3fbd65dd82be8013abaedc6dfe32b4bf" />Products + Services | • Quick way to test for antibiotic resistance in UTI treatment<br />• Quantifiable fluorescence output for rapid detection<br />• Minimal Viable Product<br />• Proof of concept for further rapid antibiotic susceptibility testing                                                                                                         |
-| <a id="3fbd65dd82be800dbd29eca258aa2432" />Gain Creators       | • Fast: Compared to traditional AST, our project will give you a result within 24 hours<br />• Small sample: Requires a small amount of sample to test<br />• Modular: E. coli biosensor can be transformed quickly to make biosensors for multiple different types of antibiotics<br />• Cheap: Our solution is project to cost below \$400 |
-| <a id="3fbd65dd82be80c39abbd8f10fe3533c" />Pain Reliever       | • Fast: Reacts faster and produces results faster than traditional AST<br />• Effective: Can apply effective treatment earlier than traditional AST<br />• Low cost: Easy to assemble and requires less money to manufacture                                                                                                                 |
+|                                                                |                                                                                                                                                                                                                                                                                                                                                      |
+| -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <a id="3fbd65dd82be8013abaedc6dfe32b4bf" />Products + Services | • Quick way to test for antibiotic resistance in UTI treatment<br />• Quantifiable fluorescence output for rapid detection<br />• Minimal Viable Product<br />• Proof of concept for further rapid antibiotic susceptibility testing                                                                                                                 |
+| <a id="74b8c754454144d5894090ccc13f8b02" />Gain Creators       | • Fast: Compared to traditional AST, our project will give you a result within 24 hours<br />  • Small sample: Requires a small amount of sample to test<br />  • Modular: E. coli biosensor can be transformed quickly to make biosensors for multiple different types of antibiotics<br />  • Cheap: Our solution is projected to cost below \$400 |
+| <a id="3fbd65dd82be80c39abbd8f10fe3533c" />Pain Reliever       | • Fast: Reacts faster and produces results faster than traditional AST<br />• Effective: Can apply effective treatment earlier than traditional AST<br />• Low cost: Easy to assemble and requires less money to manufacture                                                                                                                         |
 
 # <a id="3e5d65dd82be80f6801efe84750d221f" />MVP Determination
 
+<a id="3fcd65dd82be80b1a104ce47df6eb4bb" />Investors often require assurances that the company they are investing in possess the requisite technical know-how and in-house expertise to deliver on the vision of the company. Here we will outline some of the quantifiable achievements that we believe will be sufficient to prove our capability to realize the Company’s vision.
+
 ## <a id="3e8d65dd82be802c8b17d017f43d49f5" />Wet Lab
 
-<a id="3edd65dd82be809cab1aea9dc5fb2007" />Our Wet Lab team’s goal is to engineer two biosensing strains **(CpxP-GFP and RecA-GFP reporters)** capable of fluorescing in response to antibiotic-induced stress from **beta-lactams** and **aminoglycosides**. Our team determined two conditions to demonstrate a minimum viable product (MVP).
+<a id="3edd65dd82be809cab1aea9dc5fb2007" />Our Wet Lab team’s goal is to engineer two biosensing strains **(CpxP-GFP and RecA-GFP reporters)** capable of fluorescing in response to antibiotic-induced stress from **β-lactams** and **aminoglycosides**. Our team determined two conditions to demonstrate a minimum viable product (MVP).
 
 1. <a id="3edd65dd82be808ea960f36edb0981e5" />**Biosensor Fluorescence Validation**
-
-<a id="3edd65dd82be8066976dd4fda3c3a7fb" />This includes introducing a reporter plasmid to a biosensory strain and confirming uptake without impeding cell growth and viability.
-
-<a id="3edd65dd82be80359cb5ecc7676eae83" />This further includes validating that the biosensor produces fluorescence signals when exposed to degraded antibiotics. The signals should be distinguishable from negative controls.
-
-1. <a id="3edd65dd82be801f89a3dac4b19b1fb4" />**Characterizing the MIC range and maximum threshold of antibiotic exposure**
-
-<a id="3edd65dd82be8049a964c3f6f8dc9444" />This is done by titrating the MIC range of the biosensors and WT Epi300 (no reporter plasmid), thus demonstrating the maximum threshold of antibiotic exposure.
+   1. <a id="3fcd65dd82be8080bf0edc5cb3a78f7c" />This includes introducing a reporter plasmid to a biosensor strain and confirming uptake without impeding cell growth and viability.
+   2. <a id="3fcd65dd82be80b98f6dc73261277130" />This further includes validating that the biosensor produces fluorescence signals when exposed to antibiotics. The signals should be distinguishable from negative controls.
+2. <a id="3edd65dd82be801f89a3dac4b19b1fb4" />**Characterizing the MIC range and maximum threshold of antibiotic exposure**
+   1. <a id="3fcd65dd82be80c587ffca5988918ede" />This is done by titrating the MIC range of the biosensors and WT EPI300 (no reporter plasmid), thus demonstrating the maximum threshold of antibiotic exposure.
 
 ## <a id="3edd65dd82be80bbbccce57df9a74e7f" />Dry Lab
 
 <a id="3edd65dd82be80d29041e03c7e6681da" />Our Dry Lab team is focused on engineering functional **bioreactors** to increase E. coli production and create a **microfluidic chip** and **fluorescence detection system** to support the production and structural deployment of our project. Two key MVP conditions guide our efforts:
 
 1. <a id="3edd65dd82be80169098f73ff71fe0a9" />**Bioreactor Functionality**
-   - <a id="3edd65dd82be80dab54eecc8147f5967" />Culturing E. coli at a rate comparable to or exceeding that of traditional lab flask methods under controlled conditions. This E. coli is then used for the biosensory developmet in antibiotic susceptibility testing.
-   - <a id="3edd65dd82be804a8b46d83afae9ecb0" />Improving the current features of the bioreactor
+   - <a id="3edd65dd82be80dab54eecc8147f5967" />Culturing E. coli at a rate comparable to or exceeding that of traditional lab flask methods under controlled conditions. This E. coli is then used for biosensor development in antibiotic susceptibility testing.
+   - <a id="3edd65dd82be804a8b46d83afae9ecb0" />Improving the current features of the bioreactor. These bioreactor designs will become crucial in scaling up the production of *FAST* chips.
 2. <a id="3edd65dd82be80008039fc636a05a7d0" />**Microfluidic Chip Production**
-   - <a id="3edd65dd82be80b6a06bf4116d18d9b8" />Utilizing PDMS molds to create a microfluidic chip used for precise fluid control.
-   - <a id="3edd65dd82be804684d1d6b54d695494" />The microfluidic chip is designed to process a patient's sample and evaluate bacterial antibiotic susceptibility.
-
-<br id="3e8d65dd82be80be8962cd9ae3fe4cc8" />
+   - <a id="3edd65dd82be80b6a06bf4116d18d9b8" />Utilizing PLA molds to create PDMS microfluidic chips used for precise fluid control and high biocompatibility with biosensor strains.
+   - <a id="3edd65dd82be804684d1d6b54d695494" />The microfluidic chip is designed to process a patient's sample and evaluate bacterial antibiotic susceptibility to a candidate antibiotic.
 
 # <a id="3e5d65dd82be80c2ba69d3416b266baa" />Customer Segment Determination
 
-<a id="3fad65dd82be803e917ee9c7e2d4b589" />The customer segment determination table outlines the customer jobs, pains, and estimated gains across four distinct healthcare and research segments.
+<a id="3fad65dd82be803e917ee9c7e2d4b589" />No diagnostic serves every healthcare setting equally well. A test that fits a hospital microbiology lab may be impractical in a rural clinic or a community pharmacy. To help chart the current market landscape and decide where *FAST* should enter the market first, we mapped the groups involved in diagnosing and treating UTIs and compared each one’s jobs, pains, and expected gains. For each segment, we also separated users and buyers, since in BC’s public healthcare system the clinician running a test is often not the one buying it. This helps us show which segments become reachable as *FAST* improves, such as with a handheld reader or a shorter time to result. The table below summarizes the segments we considered and how well *FAST* fits each one.
 
-<a id="3fad65dd82be802eaa7cdd3cdaa09982" />**Hospitals:** Aim to rapidly identify effective antibiotics, lower turnaround times, and manage high patient throughput. Currently, they struggle with slower traditional antibiotic susceptibility testing, expensive lab infrastructure, and heavy workloads. The faster results enabled by our product will allow for earlier targeted treatment, shorter hospital stays, and reduced costs.
+<a id="3fcd65dd82be80a98174d4d692be45e3" />
 
-<a id="3fad65dd82be80708efcd0138aa8ff75" />**Emergency & Acute/Urgent Care Centre:** Aim to make rapid treatment decisions and verify antibiotic efficacy for individual patients. Their main problems involve prescribing without AST confirmation, rapid infection worsening, and limited lab access. The product will allow for accelerated decision-making, which can improve patient outcomes, reduce the number of inappropriate prescriptions, and allow for portable diagnostic capability.
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/bac29dc31106587fbd26f1802fdd88b0.svg" alt="Identified customer segments { size = +50% }" scale={0} />
 
-<a id="3fad65dd82be80d08cc5f124338ed76b" />**Community Health Centres/Clinics:** Aim to deliver care to underserved populations and prevent unnecessary hospital referrals. The current pains are limited infrastructure, low staffing, and high health burdens in remote areas. Thus, our product will help by providing fast AST results with a portable, low-cost diagnostic solution.
+<a id="3fcd65dd82be8096a0e4d5d12c020551" />**Hospitals:** Aim to rapidly identify effective antibiotics, lower turnaround times, and manage high patient throughput. Currently, they struggle with slower traditional antibiotic susceptibility testing, expensive lab infrastructure, and heavy workloads. The faster results enabled by our product will allow for earlier targeted treatment, shorter hospital stays, and reduced costs.
 
-<a id="3fad65dd82be80898b47ef33c0b11784" />**Academic & Research Institutions:** Aim to study antimicrobial resistance and develop needed diagnostics and treatment approaches. They are hindered by high instrument costs and slow experimental workflows. Therefore, the product acts as a flexible biosensor platform that may be useful for educational and research purposes.
+<a id="3fcd65dd82be80b38f3cfd0d46791a39" />**Emergency & Acute/Urgent Care Centres:** Aim to make rapid treatment decisions and verify antibiotic efficacy for individual patients. Their main problems involve prescribing without AST confirmation, rapid infection worsening, and limited lab access. The product will allow for accelerated decision-making, which can improve patient outcomes, reduce the number of inappropriate prescriptions, and allow for portable diagnostic capability.
 
-<a id="3fad65dd82be80ebad72f144fac4fbdf" />
+<a id="3fcd65dd82be804f8ad8c8c1e0b29b6e" />**Community Health Centres/Clinics:** Aim to deliver care to underserved populations and prevent unnecessary hospital referrals. The current pains are limited infrastructure, low staffing, and high health burdens in remote areas. Thus, our product will help by providing fast AST results with a portable, low-cost diagnostic solution.
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/64c82b9cefaa59eab0e41088354140ec.svg" alt="" scale={0} />
+<a id="3fcd65dd82be80b69d24d3c5b44ad517" />**Academic & Research Institutions:** Aim to study antimicrobial resistance and develop needed diagnostics and treatment approaches. They are hindered by high instrument costs and slow experimental workflows. Therefore, the product acts as a flexible biosensor platform that may be useful for educational and research purposes.
+
+<a id="3fcd65dd82be80deb26df8a345ec381d" />**Community Pharmacists:** Since June 2023, BC pharmacists have been able to assess and prescribe for uncomplicated UTIs <Cite refs={[{"n":6,"key":"healthPharmacistsCanPrescribe2023"}]} /> . Physicians have raised concerns that this happens without the lab testing that would show which antibiotic works best <Cite refs={[{"n":7,"key":"emailPharmacistsNowPrescribing2023"}]} /> . *FAST* would give pharmacists susceptibility information to guide their follow-up with patients, either confirming the prescribed antibiotic or prompting a switch, without needing a laboratory.
 
 # References
 
-<Bibliography refs={[{"n":1,"key":"naghaviGlobalBurdenBacterial2024"}]} />
+<Bibliography refs={[{"n":1,"key":"naghaviGlobalBurdenBacterial2024"},{"n":2,"key":"llorAntimicrobialResistanceRisk2014"},{"n":3,"key":"smithRapidSusceptibilityTesting2019"},{"n":4,"key":"foxmanEpidemiologyUrinaryTract2010"},{"n":5,"key":"narayanRapidIdentificationSusceptibility"},{"n":6,"key":"healthPharmacistsCanPrescribe2023"},{"n":7,"key":"emailPharmacistsNowPrescribing2023"},{"n":8,"key":"entrepreneurshipValuePropositionCanvas"},{"n":9,"key":"ValuePropositionCanvas"}]} />

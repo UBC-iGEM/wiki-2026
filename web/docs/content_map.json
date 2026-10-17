@@ -19,9 +19,18 @@
                     "item": "3ecd65dd82be8081bb4ce8c55cf21a03"
                 },
                 {
-                    "path": "Engineering ",
-                    "type": "page",
-                    "item": "3e5d65dd82be80b1a707f371063052e1"
+                    "path": "Engineering",
+                    "type": "db",
+                    "item": [
+                        {
+                            "path": "Biosensor",
+                            "item": "3fcd65dd82be80808570d7d1ad51ee71"
+                        },
+                        {
+                            "path": "Patient Simulant ",
+                            "item": "3fcd65dd82be80e6b283de8fe367dbd3"
+                        }
+                    ]
                 },
                 {
                     "path": "Parts",
@@ -143,13 +152,50 @@
                         {
                             "path": "Antibiotic Thaw Test v2",
                             "item": "3ead65dd82be80e59cb8c9f077f28eec"
+                        },
+                        {
+                            "path": "Biofactorial Library Screen",
+                            "item": "3fcd65dd82be80d1856fcdc12ac52f19"
+                        },
+                        {
+                            "path": "Biofactorial Simulant Validation",
+                            "item": "3fcd65dd82be80508eacf33e7e0ce89d"
                         }
                     ]
                 },
                 {
                     "path": "Protocols",
-                    "type": "page",
-                    "item": "3ecd65dd82be80a3b774fec46deb00b1"
+                    "type": "db",
+                    "item": [
+                        {
+                            "path": "LB Medium",
+                            "item": "3fcd65dd82be80bdbc58e6d86dd53886"
+                        },
+                        {
+                            "path": "Cloning Workflow",
+                            "item": "3fcd65dd82be80e0b532c31e340d1433"
+                        },
+                        {
+                            "path": "Generating Growth Curves",
+                            "item": "3fcd65dd82be80bc9ff3c7d92a2c8e03"
+                        },
+                        {
+                            "path": "Plasmid Retention Assay",
+                            "item": "3fcd65dd82be8010a88fd9ef5aa86010"
+                        },
+                        {
+                            "path": "MIC Titration Assay",
+                            "item": "3fcd65dd82be80ddbc62dbd2747bf80a"
+                        },
+                        {
+                            "path": "Biosensor Dose Response Assay",
+                            "item": "3fcd65dd82be8097b961dc049711bff5"
+                        },
+                        {
+                            "path": "Antibiotic Degradation Assay",
+                            "item": "3fcd65dd82be802093fac756addffb6c"
+                        }
+                    ]
                 }
             ]
         },
@@ -182,7 +228,7 @@
             "name": "Modelling",
             "entries": [
                 {
-                    "path": "Degradation Model Wiki Page",
+                    "path": "Degradation Model ",
                     "type": "page",
                     "item": "3c0d65dd82be8013bb60fe7bd633c0a7"
                 },
@@ -195,6 +241,11 @@
                     "path": "Promoter Library",
                     "type": "page",
                     "item": "3dfd65dd82be80b789fcc92bd1d8ad53"
+                },
+                {
+                    "path": "Patient Sample DOE",
+                    "type": "page",
+                    "item": "3fcd65dd82be80fda88be44767363ecb"
                 }
             ]
         },
@@ -295,6 +346,11 @@
                     "path": "Human Practices",
                     "type": "page",
                     "item": "3fad65dd82be80019c3dc5829472d6e6"
+                },
+                {
+                    "path": "Best Measurement",
+                    "type": "page",
+                    "item": "3fcd65dd82be802bac08db629d0d6184"
                 }
             ]
         },
@@ -324,6 +380,11 @@
                     "path": "hi",
                     "type": "page",
                     "item": "3f3d65dd82be80bb87bec926aba92089"
+                },
+                {
+                    "path": "Homepage content holder",
+                    "type": "page",
+                    "item": "3fcd65dd82be8075860cd4348bb5401f"
                 }
             ]
         }

@@ -1,6 +1,7 @@
 import { fetchNotebook, parseColabFileId } from "../colab";
 import type { NotionBlock } from "../notion";
 import { fetchFileText, parsePlate, type Plate } from "../platemap";
+import { parseGenbank } from "../seqmap";
 import { ExporterError, isExporterErr, type ExporterResult } from "../utils";
 import { blockContext, convertBlocks, convertItems, type ConvertContext, type Item } from "./blocks";
 import { jsxFlow, jsxInlineBlock, type FlowContent, type JsxAttrs } from "./mdx";
@@ -41,6 +42,7 @@ export const COMPONENT_MAP: Record<string, (input: ComponentInput) => ComponentO
     ihp,
     colab,
     platemap,
+    seqmap,
     skip,
 };
 
@@ -461,29 +463,60 @@ async function platemap({ items, ctx }: ComponentInput): ComponentOutput {
 /** How many distinct category colours `Platemap.astro` has. */
 export const PLATEMAP_PALETTE_SIZE = 12;
 
-/** The text of a heading or paragraph. */
-function blockText(item: Item): string | undefined {
-    switch (item.type) {
-        case "paragraph":
-            return asPlainText(item.paragraph.rich_text).trim();
-        case "heading_1":
-            return asPlainText(item.heading_1.rich_text).trim();
-        case "heading_2":
-            return asPlainText(item.heading_2.rich_text).trim();
-        case "heading_3":
-            return asPlainText(item.heading_3.rich_text).trim();
-        case "heading_4":
-            return asPlainText(item.heading_4.rich_text).trim();
-        default:
-            return undefined;
-    }
-}
-
 function malformedPlatemap(problem: string): ExporterError {
     return new ExporterError(
         `Platemap component could not be understood: ${problem}.` +
             componentDocSuggestion(
                 "https://app.notion.com/p/ubcigem/Wiki-Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#3fad65dd82be807881e6d57ae4ebb25b",
+            ),
+        ["malformed content"],
+    );
+}
+
+// ====================
+// SEQMAP COMPONENT
+// ====================
+
+export interface SeqmapAttrs {
+    title: string;
+    /** The parsed sequence as JSON (`SeqmapSeq`). */
+    seq: string;
+}
+export const SEQMAP_SLOTS = [] as const;
+type SeqmapSlots = SlotRecord<typeof SEQMAP_SLOTS>;
+
+async function seqmap({ items, ctx }: ComponentInput): ComponentOutput {
+    // A title, then an uploaded GenBank file
+    const [title_block, file_block, ...rest] = items.filter((item) => !isBlank(item));
+    const title = title_block === undefined ? undefined : blockText(title_block);
+    if (title === undefined || title === "") return malformedSeqmap("it does not start with a title");
+
+    if (file_block?.type !== "file" || !/\.(?:gb|gbk|genbank)$/i.test(mediaFileName(file_block)))
+        return malformedSeqmap("its title is not followed by an uploaded GenBank (.gb) file");
+    if (rest.length > 0) return malformedSeqmap("it has content after its GenBank file");
+
+    const text = await fetchFileText(file_block);
+    if (isExporterErr(text)) return text;
+
+    const seq = parseGenbank(text, mediaFileName(file_block));
+    if (isExporterErr(seq)) return seq;
+    if (seq.annotations.length === 0)
+        new ExporterError(`Seqmap "${title}" has no annotated features.`, ["malformed content"]).warn(
+            blockContext(ctx, file_block),
+        );
+
+    return generateComponent<SeqmapAttrs, SeqmapSlots>({
+        tag: "Seqmap",
+        attrs: { title, seq: JSON.stringify(seq) },
+        slots: {},
+    });
+}
+
+function malformedSeqmap(problem: string): ExporterError {
+    return new ExporterError(
+        `Seqmap component could not be understood: ${problem}.` +
+            componentDocSuggestion(
+                "https://app.notion.com/p/ubcigem/Wiki-Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#3fcd65dd82be809fb2ffe066841ec5af",
             ),
         ["malformed content"],
     );
@@ -552,6 +585,24 @@ function splitOnDividers(items: Item[]): Item[][] {
         else sections.at(-1)!.push(item);
     }
     return sections.map(trimBlank).filter((section) => section.length > 0);
+}
+
+/** The text of a heading or paragraph. */
+function blockText(item: Item): string | undefined {
+    switch (item.type) {
+        case "paragraph":
+            return asPlainText(item.paragraph.rich_text).trim();
+        case "heading_1":
+            return asPlainText(item.heading_1.rich_text).trim();
+        case "heading_2":
+            return asPlainText(item.heading_2.rich_text).trim();
+        case "heading_3":
+            return asPlainText(item.heading_3.rich_text).trim();
+        case "heading_4":
+            return asPlainText(item.heading_4.rich_text).trim();
+        default:
+            return undefined;
+    }
 }
 
 export function componentDocSuggestion(link: string): string {

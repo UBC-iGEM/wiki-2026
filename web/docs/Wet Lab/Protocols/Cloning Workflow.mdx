@@ -1,0 +1,101 @@
+---
+type: "database"
+title: "Cloning Workflow"
+path: "Wet Lab/Protocols/Cloning Workflow"
+---
+
+# <a id="3fcd65dd82be808a881adbc5f682b1b0" />Purpose
+
+<a id="3fcd65dd82be809b913dd87e6de45500" />This method assembles 2-3 DNA fragments into a single construct using Gibson cloning method for seamless and directional ligation, based on the [NEBuilder® HiFi DNA Assembly Reaction Protocol](https://www.neb.com/en-ca/protocols/2014/11/26/nebuilder-hifi-dna-assembly-reaction-protocol). This is followed by heat shock transformation into DH5a *E. coli*.
+
+# <a id="3fcd65dd82be80648db0e5cd5d953c11" />Materials
+
+- <a id="3fcd65dd82be8021a959f489bf1cd966" />Restriction Enzymes
+- <a id="3fcd65dd82be80699256eeca2b4b5e13" />Miniprep kit
+- <a id="3fcd65dd82be80c3ae0ae1ff039d26c6" />DNA gel extraction kit
+- <a id="3fcd65dd82be8098b87ce414358adb31" />DNA fragments
+- <a id="3fcd65dd82be807380cbdc18cd6762c6" />NEBuilder HiFi DNA Assembly Master Mix (2X)
+- <a id="3fcd65dd82be80e18fceeb2828236cf0" />Molecular grade water
+- <a id="3fcd65dd82be80778f3ddd2a3b0f4520" />PCR tubes
+- <a id="3fcd65dd82be80e9b298e00aab9e1f0e" />Thermocycler
+- <a id="3fcd65dd82be80ea9fb8d08ea99affd9" />SOC media
+- <a id="3fcd65dd82be80098efafae2b154e34a" />Water bath or heat block
+- <a id="3fcd65dd82be808cb6ccf41764d91fb3" />*DH5a E. coli*
+
+# <a id="3fcd65dd82be8065b7bdf32e227b5568" />Methods
+
+### <a id="3fcd65dd82be80259ac3e119ce8a1ad1" />**Step 1: Linearizing Plasmid Backbone**
+
+1. <a id="3fcd65dd82be80fcac6dff9d40b50d32" />Pick bacteria from the glycerol stock and culture in 5 mL of selective LB media overnight while shaking at 250 rpm.
+2. <a id="3fcd65dd82be80db9f84fe3ea8af6adf" />Extract plasmid via Miniprep kit and measure DNA concentration via Nanodrop
+3. <a id="3fcd65dd82be80e7a17cf227d14a8ccb" />Linearize the plasmid using restriction enzymes.
+   - <a id="3fcd65dd82be80e198cbeb5077cae435" />Follow the reagent mixture in Table 1 for linearization
+   - <a id="3fcd65dd82be8070afe5c34e6bf93d01" />Note: Add the reagents in this order: ddH20, plasmid, 10x rCutSmart buffer, restriction enzymes
+
+<a id="3fcd65dd82be80c1aee6ca9021949cea" />**Table 1. Reagent mix and amount**
+
+<a id="3fcd65dd82be80ef9141f3f4d1488855" />
+
+|                                                                               |            |
+| ----------------------------------------------------------------------------- | ---------- |
+| <a id="3fcd65dd82be80308fe5f463cc14c929" />**Plasmid Linearization Reagents** | **Amount** |
+| <a id="3fcd65dd82be801ba680ea1be85be84e" />Plasmid                            | 1 ug       |
+| <a id="3fcd65dd82be80b89dfed71407790fb6" />10x rCutSmart™ Buffer              | 4 uL       |
+| <a id="3fcd65dd82be804c8f61d2dccac7412f" />Restriction enzyme 1               | 0.8 uL     |
+| <a id="3fcd65dd82be80ff9540c9b22d7d72f2" />Restriction enzyme 2               | 0.8 uL     |
+| <a id="3fcd65dd82be80f496a3d1cd53693580" />ddH2O                              | to 40 uL   |
+| <a id="3fcd65dd82be80d58dbdfeaa84571951" />**Total Volume**                   | **40 uL**  |
+
+1. <a id="3fcd65dd82be80ad8d9ee3912efd5245" />Incubate the mixture at 37C for 1 hour.
+2. <a id="3fcd65dd82be80e1bbd6cff61bac0fba" />Run gel electrophoresis on the incubated mixture
+   1. <a id="3fcd65dd82be803082edecafc859cafd" />Gel Preparation
+      1. <a id="3fcd65dd82be801ebf6be44edad8eb91" />500 ug Agarose + 50 mL 1x TAE buffer → 1 min Microwave
+      2. <a id="3fcd65dd82be80e4909ef6a3d228d38c" />Add 10 uL Ethidium Bromide/SYBR Safe into the heated mixture → swirl
+      3. <a id="3fcd65dd82be80eb9068d6d6d081cc49" />Pour into gel casting tray + insert comb (remove all bubbles)
+      4. <a id="3fcd65dd82be802e857cf3559e2a7130" />Let gel sit for 30 min to solidify
+   2. <a id="3fcd65dd82be804bbdfbe206c5188955" />Dilute 6x loading dye to 1x by adding to incubated mixture
+      1. <a id="3fcd65dd82be8011b8f5f36157a9f0f6" />For 40 uL volume, add 8 uL of 6X gel loading dye (scale appropriately)
+   3. <a id="3fcd65dd82be80289010c6e6287a3c69" />Run gel electrophoresis w/ following parameters: 130 V, 400 A, 30 minutes
+      1. <a id="3fcd65dd82be807e96a5ee5a7ba7901c" />You should see 2 bands → linearized plasmid + cut-out fragment
+3. <a id="3fcd65dd82be8057b58ff41f1c17c859" />Extract linearized plasmid via DNA gel extraction kit and Nandrop
+   - <a id="3fcd65dd82be80d78caafd261b509d3f" />Only cut out the linearized plasmid precisely (identify using DNA ladder)
+
+<br id="3fcd65dd82be80dca92ad7733789481e" />
+
+### <a id="3fcd65dd82be80c08602ec7890e8b443" />**Step 2: Insert gBlock into Linearized Plasmid via HIFI Assembly**
+
+1. <a id="3fcd65dd82be806aa565d4a7c21daf29" />Calculate DNA components using the [NEBuilder Protocol Calculator.](https://nebuildercalculator.neb.com/)
+   - <a id="3fcd65dd82be80d38e87e64fd82d5f45" />For 2-3 fragment assembly: 0.03 - 0.2 pmols of DNA
+   - <a id="3fcd65dd82be80d68bf5e5387292b04a" />For 4-6 fragment assembly: 0.2 - 0.5 pmols of DNA
+2. <a id="3fcd65dd82be80748e41f2af453ee9a4" />Insert gBlock via HIFI Assembly
+   - <a id="3fcd65dd82be80a7b347f50e4221e146" />Prepare reaction mixture with the reagents in Table 2 (scale proportionally)
+   - <a id="3fcd65dd82be80a08606cf108d9df753" />For a 2-3 fragment HiFi assembly at a 1:2 vector-insert ratio
+
+<a id="3fcd65dd82be808ab0badddb243023d8" />**Table 2. Reagent Mix and amount**
+
+<a id="3fcd65dd82be80e98035d245818c3a5e" />
+
+|                                                                                |                      |                                                 |
+| ------------------------------------------------------------------------------ | -------------------- | ----------------------------------------------- |
+| <a id="3fcd65dd82be80d88e33fd54916d845c" />**HIFI Assembly Reaction Reagents** | Volume (uL)          | Final Concentration                             |
+| <a id="3fcd65dd82be805e8da6d859e937fe73" />DNA backbone                        | calculated in step 1 | 1:2 vector-insert, for 0.03 - 0.5 pmols *total* |
+| <a id="3fcd65dd82be80f9ac41ccbdb56f57c8" />gBlock                              | calculated in step 1 | 1:2 vector-insert, for 0.03 - 0.5 pmols *total* |
+| <a id="3fcd65dd82be80828e8ff34cab65c09e" />HiFi DNA Assembly Master Mix (2x)   | 10                   | 1x                                              |
+| <a id="3fcd65dd82be80f1847ede8738a21e65" />ddH2O                               | top up               |                                                 |
+| <a id="3fcd65dd82be80e0bffed1cb5831d254" />**Total Volume**                    | **20 uL**            |                                                 |
+
+1. <a id="3fcd65dd82be8035b15ecf05354c52bc" />Incubate the HIFI assembly mixture at 50℃ via Thermocycler
+   1. <a id="3fcd65dd82be80f198f0e57d79c5d4ca" />For 2-3 fragment assembly: 15 minutes
+   2. <a id="3fcd65dd82be8019b9e3ea18f9688baa" />For 4-6 fragment assembly: 60 minutes
+
+<br id="3fcd65dd82be8034a6b1f8bc7c05fd5f" />
+
+### <a id="3fcd65dd82be80739d68e2100e878198" />**Step 3: Bacterial Transformation**
+
+1. <a id="3fcd65dd82be8022a055fbeba0bfb515" />Add 5 uL cloned plasmid and 45 uL *high efficiency competent DH5a E. coli* in a 1:10 volume ratio.
+2. <a id="3fcd65dd82be8043b616c99f39f6b5ae" />Incubate the mixture on ice for 30 min
+3. <a id="3fcd65dd82be806d8c04c46e7916b068" />Heat shock the bacterial mixture at 42˚C for 30 seconds via waterbath or heatblock
+4. <a id="3fcd65dd82be8037b43ed342b23b88dd" />Incubate the mixture on ice for 5 min
+5. <a id="3fcd65dd82be80a481d0f1e23b3a8f61" />Add 100 uL of SOC media and incubate the mixture at 37˚C for 1 hour
+6. <a id="3fcd65dd82be80f3b192ee25ff48c2e0" />Spin down and plate 50 uL of transformed bacteria on a chloramphenicol plate
+7. <a id="3fcd65dd82be8027ab72eba1f3e34a80" />Incubate the plate overnight at 37˚C
