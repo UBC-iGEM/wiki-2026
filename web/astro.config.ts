@@ -2,6 +2,7 @@
 import { CONFIG } from "../exporter/src/config";
 import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
+import linkValidator from "astro-link-validator";
 import { defineConfig, fontProviders } from "astro/config";
 import rehypeKatex from "rehype-katex";
 import remarkBreaks from "remark-breaks";
@@ -50,7 +51,7 @@ export default defineConfig({
             ],
         }),
     },
-    integrations: [mdx()],
+    integrations: [mdx(), linkValidator()],
     vite: {
         build: {
             rollupOptions: {
