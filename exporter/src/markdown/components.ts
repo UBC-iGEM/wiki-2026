@@ -461,29 +461,77 @@ async function platemap({ items, ctx }: ComponentInput): ComponentOutput {
 /** How many distinct category colours `Platemap.astro` has. */
 export const PLATEMAP_PALETTE_SIZE = 12;
 
-/** The text of a heading or paragraph. */
-function blockText(item: Item): string | undefined {
-    switch (item.type) {
-        case "paragraph":
-            return asPlainText(item.paragraph.rich_text).trim();
-        case "heading_1":
-            return asPlainText(item.heading_1.rich_text).trim();
-        case "heading_2":
-            return asPlainText(item.heading_2.rich_text).trim();
-        case "heading_3":
-            return asPlainText(item.heading_3.rich_text).trim();
-        case "heading_4":
-            return asPlainText(item.heading_4.rich_text).trim();
-        default:
-            return undefined;
-    }
-}
-
 function malformedPlatemap(problem: string): ExporterError {
     return new ExporterError(
         `Platemap component could not be understood: ${problem}.` +
             componentDocSuggestion(
                 "https://app.notion.com/p/ubcigem/Wiki-Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#3fad65dd82be807881e6d57ae4ebb25b",
+            ),
+        ["malformed content"],
+    );
+}
+
+
+
+// ====================
+// SeqMap COMPONENT
+// ====================
+
+export interface SeqMapAttrs {
+    title: string;
+}
+export const SEQMAP_SLOTS = [] as const;
+type SeqMapSlots = SlotRecord<typeof SEQMAP_SLOTS>;
+
+async function seqmap({ items, ctx }: ComponentInput): ComponentOutput {
+    // A title, then a subtitle followed by an uploaded CSV for each plate
+    const [title_block, map] = items.filter((item) => !isBlank(item));
+
+    const title = title_block === undefined ? undefined : blockText(title_block);
+    if (title === undefined || title === "") return malformedSeqMap("it does not start with a title");
+
+    const map = map === undefined ? undefined :
+
+
+    const categories: string[] = [];
+    const plates: Plate[] = [];
+    for (let i = 0; i < rest.length; i += 2) {
+        const subtitle_block = rest[i]!;
+        const file_block = rest[i + 1]!;
+        const name = blockText(subtitle_block);
+        if (name === undefined || name === "")
+            return malformedPlatemap(`plate ${i / 2 + 1} does not start with a subtitle`);
+        if (file_block.type !== "file" || !/\.csv$/i.test(mediaFileName(file_block)))
+            return malformedPlatemap(`the subtitle "${name}" is not followed by an uploaded .csv file`);
+
+        const csv = await fetchFileText(file_block);
+        if (isExporterErr(csv)) return csv;
+
+        const parsed = parsePlate(name, csv, categories);
+        if (isExporterErr(parsed)) return parsed;
+        for (const warning of parsed.warnings)
+            new ExporterError(warning, ["malformed content"]).warn(blockContext(ctx, file_block));
+        plates.push(parsed.plate);
+    }
+
+    if (categories.length > PLATEMAP_PALETTE_SIZE)
+        new ExporterError(
+            `Platemap "${title}" has ${categories.length} categories, but only ${PLATEMAP_PALETTE_SIZE} colours; some categories share a colour.`,
+            ["malformed content"],
+        ).warn(ctx);
+
+    return generateComponent<SeqMapAttrs, SeqMapSlots>({
+        tag: "Platemap",
+        attrs: { title, categories, plates: JSON.stringify(plates) },
+        slots: {},
+    });
+}
+
+function malformedSeqMap(problem: string): ExporterError {
+    return new ExporterError(
+        `SeqMap component could not be understood: ${problem}.` +
+            componentDocSuggestion(
+                "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link",
             ),
         ["malformed content"],
     );
@@ -553,6 +601,25 @@ function splitOnDividers(items: Item[]): Item[][] {
     }
     return sections.map(trimBlank).filter((section) => section.length > 0);
 }
+
+/** The text of a heading or paragraph. */
+function blockText(item: Item): string | undefined {
+    switch (item.type) {
+        case "paragraph":
+            return asPlainText(item.paragraph.rich_text).trim();
+        case "heading_1":
+            return asPlainText(item.heading_1.rich_text).trim();
+        case "heading_2":
+            return asPlainText(item.heading_2.rich_text).trim();
+        case "heading_3":
+            return asPlainText(item.heading_3.rich_text).trim();
+        case "heading_4":
+            return asPlainText(item.heading_4.rich_text).trim();
+        default:
+            return undefined;
+    }
+}
+
 
 export function componentDocSuggestion(link: string): string {
     return ` See ${ExporterError.link({ with_label: "this documentation", to: link })} for details.`;

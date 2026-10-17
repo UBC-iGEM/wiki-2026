@@ -31,6 +31,8 @@
         "clean": "rm -rf web/docs && rm -rf exporter/debug"
     },
     "dependencies": {
+        "seqparse": "^0.2.2",
+        "seqviz": "^3.10.25",
         "sharp": "^0.35.4",
         "tsx": "^4.22.3"
     },
