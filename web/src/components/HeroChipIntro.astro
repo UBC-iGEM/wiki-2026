@@ -43,24 +43,20 @@ import InteractiveSection from "./InteractiveSection.astro";
         deaths globally by 2050 are predicted to be associated with bacterial antimicrobial resistance
     </p>
 
-    <!-- Sits in the gap between the top zigzag and the stat circles -
-         rough/eyeballed placement against chip-line as a decorative
-         backdrop, not measured against its exact path coordinates. -->
     <div class="susceptibility-blurb">
         <div class="susceptibility-icon" set:html={pillsSvg} />
         <div class="susceptibility-copy">
             <h2>What is antibiotic susceptibility?</h2>
             <p>
-                We produced a point-of-care device that determines susceptibility of a patient sample to an antibiotic
-                in illnesses such as urinary tract infections (UTIs) by detecting degradation of the antibiotic.
+                Antibiotic susceptibility determines whether a biological organism, mainly cells, can be killed by
+                antibiotics. Through evolution, various species of pathogenic bacteria have acquired antibiotic
+                immunity, rendering them insusceptible to certain antibiotics. As they continue to evolve, we must limit
+                the use of antibiotics and opportunities for resistance by improving susceptibility testing and
+                throughput.
             </p>
         </div>
     </div>
 
-    <!-- Rough/eyeballed placement, same as .susceptibility-blurb above -
-         kept close to the stat captions rather than centered in the
-         remaining space, since chip-line-second-full-final.svg will
-         eventually continue the diagram below this section. -->
     <div class="solution-blurb">
         <div class="solution-copy">
             <h2>Our Solution</h2>
@@ -85,12 +81,6 @@ import InteractiveSection from "./InteractiveSection.astro";
         </div>
     </div>
 
-    <!-- Positioned vertically between chip-line-second's own start marker
-         (top ~5.980*chip-w) and end marker (top ~8.964*chip-w) - see
-         .microfluidics-overlay below. Deliberately NOT width:chip-w-bound
-         like the rest of this file, since MicrofluidicsExplainer's own
-         3-column layout needs real desktop width to not collapse into its
-         750px-breakpoint mobile layout. -->
     <div class="microfluidics-overlay">
         <MicrofluidicsExplainer />
     </div>
@@ -102,18 +92,10 @@ import InteractiveSection from "./InteractiveSection.astro";
         non-specialists to conduct quicker testing.
     </p>
 
-    <!-- Moved in from index.astro, closer to chip-line-second's own bottom
-         edge (top ~7.036*chip-w) instead of sitting far below everything
-         in normal document flow. Same "not chip-w-bound" reasoning as
-         .microfluidics-overlay - InteractiveSection's own case-row layout
-         wants real desktop width. -->
     <div class="interactive-overlay">
         <InteractiveSection />
     </div>
 
-    <!-- Rough/eyeballed, below .interactive-overlay (whose own content
-         height is unpredictable - see its own comment above). No moving
-         dot for this one, per request - just the stroke draw-in. -->
     <div class="chip-line-3" set:html={chipLine3Svg} />
 </div>
 
@@ -165,12 +147,8 @@ import InteractiveSection from "./InteractiveSection.astro";
         .to(".motion-dot", { opacity: 1, duration: 0.6 }, "text-intro+=0.4")
         .addLabel("line-intro", "+=0.3")
         .to(".chip-line", { opacity: 1, duration: 0.01 }, "line-intro")
-        // The 3 stat circles are filled (not stroked) shapes baked into
-        // chip-line, so they appear instantly with it rather than drawing
-        // in - fade the labels in alongside that same moment. Compound
-        // selector so this doesn't also grab .stat-caption (which reuses
-        // .stat-1/.stat-2/.stat-3 only for shared left-offset alignment).
-        .to(".stat.stat-1, .stat.stat-2, .stat.stat-3", { opacity: 1, duration: 0.3 }, "line-intro")
+        // 3 stat circles fade in together
+        .to(".stat.stat-1, .stat.stat-2, .stat.stat-3", { opacity: 1, duration: 0.4 }, "line-intro")
         .to(".susceptibility-blurb", { opacity: 1, duration: 0.3 }, "line-intro");
 
     chipLineSegments.forEach(({ el, reverse }, index) => {
@@ -181,12 +159,9 @@ import InteractiveSection from "./InteractiveSection.astro";
             { drawSVG: reverse ? "0% 100%" : "100%", duration },
         );
 
-        // Segment index 2 is the bridge path - its horizontal run passes
-        // directly over the 3 stat circles (and their connector stubs),
-        // so reveal those partway through its draw-in rather than letting
-        // them just pop in with the rest of chip-line.
+        // fade in alongside chip lines
         if (index === 2) {
-            introTimeline.addLabel("stats-reveal", `<${duration * 0.6}`);
+            introTimeline.addLabel("stats-reveal", `<${duration * 0.8}`);
         }
     });
 
@@ -204,18 +179,13 @@ import InteractiveSection from "./InteractiveSection.astro";
 
     introTimeline.to(".stat-caption", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.3");
     introTimeline.to(".solution-blurb", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.6");
-    // Just a simple fade-in for now - not wired into the draw-in/dot-trace
-    // system chip-line itself has, since that wasn't asked for here.
     introTimeline.to(".chip-line-second", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.9");
     introTimeline.to(".motion-dot-2", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.9");
     introTimeline.to(".microfluidics-overlay", { opacity: 1, duration: 0.5 }, "stats-reveal+=1.2");
     introTimeline.to(".outcome-blurb", { opacity: 1, duration: 0.5 }, "stats-reveal+=1.5");
     introTimeline.to(".interactive-overlay", { opacity: 1, duration: 0.5 }, "stats-reveal+=1.8");
 
-    // chip-line-3 is a single simple path (no multi-segment reverse puzzle
-    // needed) - its authored start (552, 13.3) already matches its own
-    // top marker circle, so a plain forward draw-in reads top-to-bottom.
-    // No moving dot for this one, per request.
+    // chip-line-3 no path added yet
     const chipLine3Path = document.querySelector<SVGGeometryElement>(
         '.chip-line-3 path[stroke="url(#paint0_linear_900_69)"]',
     );
@@ -258,14 +228,7 @@ import InteractiveSection from "./InteractiveSection.astro";
         });
     }
 
-    // A second dot (ball2.svg) chases chip-line-second-full-final.svg the
-    // same way, moving down from its top marker circle to its bottom one.
-    // Traced by hand same as chipLineSegments above: stroke0's end
-    // (~153.5, 51.76) sits at the top marker, so it runs in reverse;
-    // stroke1 picks up from stroke0's start (~1102, 1291) and runs
-    // forward; the unlabeled bridge path's end (2, 1522.59) matches
-    // stroke1's end, so it runs in reverse too, finishing at the bottom
-    // marker circle (551.5, 1752.29).
+    // Second dot traces second chip line, responsive to scroll
     const chipLineSecondSegments = [
         { el: document.querySelector<SVGGeometryElement>(".chip-line-second #stroke0_893_68"), reverse: true },
         { el: document.querySelector<SVGGeometryElement>(".chip-line-second #stroke1_893_68"), reverse: false },
@@ -470,10 +433,7 @@ import InteractiveSection from "./InteractiveSection.astro";
         width: calc(var(--chip-w) * 210 / 594);
     }
 
-    /* Rough/eyeballed placement in the gap between the top zigzag and the
-       stat circles (which start at top: 2.26746*chip-w - see .stat above)
-       - chip-line is a decorative backdrop here, not something this is
-       measured against precisely. Nudge freely. */
+    /* Antibiotic susceptibility blurb positioned between chip lines above stats */
     .susceptibility-blurb {
         align-items: flex-start;
         display: flex;
@@ -501,12 +461,12 @@ import InteractiveSection from "./InteractiveSection.astro";
 
     .susceptibility-copy h2 {
         font-size: 28px;
-        margin: 0 0 1rem;
+        margin: 0 0 2rem;
     }
 
     .susceptibility-copy p {
         margin: 0;
-        max-width: 30rem;
+        max-width: 50rem;
     }
 
     /* Solutions blurb relative to chip line */
@@ -527,11 +487,12 @@ import InteractiveSection from "./InteractiveSection.astro";
 
     .solution-blurb .solution-copy h2 {
         font-size: 28px;
-        margin: 0 0 1rem;
+        margin: 0 0 2rem;
     }
 
     .solution-blurb .solution-copy p {
         margin: 0;
+        max-width: 30rem;
     }
 
     .solution-metric {

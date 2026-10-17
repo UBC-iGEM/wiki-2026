@@ -1,5 +1,8 @@
 ---
 import howItWorksChipSvg from "../assets/hero/how-it-works-chip.svg?raw";
+import aBlurbSvg from "../assets/hero/a_blurb.svg?raw";
+import bBlurbSvg from "../assets/hero/b_blurb.svg?raw";
+import hydrogelBlurbSvg from "../assets/hero/hydrogel_blurb.svg?raw";
 ---
 
 <section class="ast-diagram">
@@ -8,20 +11,32 @@ import howItWorksChipSvg from "../assets/hero/how-it-works-chip.svg?raw";
 
     <div class="diagram-body">
         <div class="diagram-col diagram-col--left">
-            <h3>Hydrogel channel</h3>
-            <p>Allows antibiotics to diffuse slowly in 2 - 3 hours, while preventing cells from passing through</p>
+            <div class="info-trigger info-trigger--right info-trigger--hydrogel" tabindex="0">
+                <div class="info-bubble-art" aria-hidden="true" set:html={hydrogelBlurbSvg} />
+                <h3>Hydrogel channel</h3>
+                <p>Allows antibiotics to diffuse slowly in 2 - 3 hours, while preventing cells from passing through</p>
+            </div>
         </div>
 
         <div class="chip-visual" set:html={howItWorksChipSvg} />
 
         <div class="diagram-col diagram-col--right">
             <div class="chamber">
-                <h3>Chamber A</h3>
-                <p>Where patient sample and antibiotic interacts, and antibiotic degradation occurs within 1-4 hours</p>
+                <div class="info-trigger info-trigger--left info-trigger--chamber-a" tabindex="0">
+                    <div class="info-bubble-art" aria-hidden="true" set:html={aBlurbSvg} />
+                    <h3>Chamber A</h3>
+                    <p>
+                        Where patient sample and antibiotic interacts, and antibiotic degradation occurs within 1-4
+                        hours
+                    </p>
+                </div>
             </div>
             <div class="chamber">
-                <h3>Chamber B</h3>
-                <p>Biosensor E. coli interacts with intact/degraded antibiotic</p>
+                <div class="info-trigger info-trigger--left info-trigger--chamber-b" tabindex="0">
+                    <div class="info-bubble-art" aria-hidden="true" set:html={bBlurbSvg} />
+                    <h3>Chamber B</h3>
+                    <p>Biosensor E. coli interacts with intact/degraded antibiotic</p>
+                </div>
             </div>
         </div>
     </div>
@@ -104,6 +119,88 @@ import howItWorksChipSvg from "../assets/hero/how-it-works-chip.svg?raw";
     .diagram-col p,
     .chamber p {
         margin: 0;
+    }
+
+    /* Hover/focus target wrapping each label + its always-visible
+       description; the bubble art behind them is decorative only and
+       stays hidden until hover/focus. */
+    .info-trigger {
+        cursor: default;
+        position: relative;
+    }
+
+    .info-trigger:focus-visible {
+        outline: 2px solid var(--color-cornflower);
+        outline-offset: 2px;
+    }
+
+    /* :hover/:focus-within already out-specificity MainLayout's global
+       h3/p color rule on their own (pseudo-classes count like a class),
+       no extra qualifier needed here. */
+    .info-trigger h3,
+    .info-trigger p {
+        position: relative;
+        transition: color 0.15s ease;
+        z-index: 1;
+    }
+
+    .info-trigger:hover h3,
+    .info-trigger:hover p,
+    .info-trigger:focus-within h3,
+    .info-trigger:focus-within p {
+        color: var(--color-ebony-clay);
+    }
+
+    .info-bubble-art {
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: opacity 0.15s ease;
+        z-index: 0;
+    }
+
+    /* Each bubble's text content is a different length, so each gets its
+       own width rather than sharing one. */
+    .info-trigger--chamber-a .info-bubble-art {
+        width: 25rem;
+    }
+
+    .info-trigger--hydrogel .info-bubble-art {
+        width: 30rem;
+    }
+
+    .info-trigger--chamber-b .info-bubble-art {
+        width: 20rem;
+    }
+
+    .info-trigger:hover .info-bubble-art,
+    .info-trigger:focus-within .info-bubble-art {
+        opacity: 1;
+    }
+
+    .info-bubble-art :global(svg) {
+        display: block;
+        height: auto;
+        width: 100%;
+    }
+
+    /* Chamber A/B (right column) - tail points left, toward the chip
+       rectangle to their left. */
+    .info-trigger--left .info-bubble-art {
+        right: -1.5rem;
+    }
+
+    /* shift chamber b to left*/
+    .info-trigger--chamber-b .info-bubble-art {
+        right: 1.5rem;
+    }
+
+    /* Hydrogel channel (left column) - tail points right, toward the chip
+       rectangle to its right. */
+    .info-trigger--right .info-bubble-art {
+        left: -1.5rem;
     }
 
     /* how-it-works-chip.svg is 256x720 (tall/narrow) - width-driven, height
