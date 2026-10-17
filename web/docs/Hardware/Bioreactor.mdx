@@ -24,8 +24,7 @@ title: "Bioreactor"
 - <a id="3fcd65dd82be80bf9204fcf8067079b7" />The user must have a way of releasing pressure build up.
 - <a id="3fcd65dd82be801d80b9c6e05383692f" />The vessel must be airtight when a sample is not being taken.
 - <a id="3fcd65dd82be80e29825d129b639fcfc" />There must be a containment for electronic components.
-- <a id="3fcd65dd82be80519f56c0124d3d41e7" />The user should be able to use the bioreactor without a wall outlet.
-- <a id="3fcd65dd82be801698edf94056d98937" />The bioreactor should be manufactured with a good fit, such that no glue or tape is required to fit parts together.
+- <a id="3fcd65dd82be801698edf94056d98937" />The bioreactor should be manufactured with a good fit.
 - <a id="3fcd65dd82be80d8873bf76ec1db8060" />The bioreactor should be low-cost to assemble.
 - <a id="3fcd65dd82be80c28c1defd2ee7a6587" />The bioreactor must use a mason jar as a vessel.
 
@@ -33,7 +32,7 @@ title: "Bioreactor"
 
 ## <a id="3f0d65dd82be804a9c2ec6ef3e456461" />Translating Needs to Requirements
 
-<a id="3fcd65dd82be800191f5f6176750b020" />To generate our requirements, we took our needs and added quantitative metrics.
+<a id="3fcd65dd82be800191f5f6176750b020" />To generate our requirements, we took our needs and added quantitative metrics. Certain needs, such as the requirement for a mason jar as a vessel, are very binary and, as such, were not translated into needs.
 
 - <a id="3fcd65dd82be80edbb73f41a6e3143cf" />The bioreactor must be able to sense the temperature of the media within 2 degrees of the real temperature and report it to the user within three seconds.
 - <a id="3fcd65dd82be80158d9efa5a81b4e9ba" />The bioreactor must be able to sense the pH of the media within 1 pH unit and report it to the user within one minute.
@@ -43,7 +42,11 @@ title: "Bioreactor"
 - <a id="3fcd65dd82be80de9f4dc1d6700557f6" />The user should be able to assemble the bioreactor within ten minutes of starting, with limited difficulty.
 - <a id="3fcd65dd82be80d8a58bed56637aea18" />The user should be able to release pressure in a sterile fashion while the bioreactor is in use.
 - <a id="3fcd65dd82be80ed96fcdd7e5783bf70" />The vessel must be airtight when the bioreactor is not open for sampling.
-- <a id="3fcd65dd82be80ceb241e143062d2732" />The electronic components must be housed separately from the rest of the bioreactor such that they will in no way interfere with the
+- <a id="3fcd65dd82be80ceb241e143062d2732" />The electronic components must be housed separately from the rest of the bioreactor such that wires will not interfere with sampling.
+- <a id="3fcd65dd82be8092ac61dec08f001d77" />The bioreactor will be manufactured and assembled to a high enough quality that no glue, tape, or parafilm is required to hold it together.
+- <a id="3fcd65dd82be804787e4c1fd3c85060f" />The bioreactor should cost no more than 300 CAD to assemble using equipment that is available to the average consumer and costs no more than 1200 CAD.
+
+<a id="3fcd65dd82be80348ee8d2ed45465605" />With our requirements created, we were then able to objectively compare different options based on how well they line up with our requirements. For example, we can now more easily balance between cost and sensitivity in our pH probe, as we know approximately how much we are willing to pay for sensitivity and can opt for a cheaper one instead of a more expensive one.
 
 # <a id="3f0d65dd82be80f2a2ebf4267c283938" />Building the Bioreactor
 
@@ -117,7 +120,7 @@ title: "Bioreactor"
 
     <a id="3f9d65dd82be8090956fe4bb93506601" />**Agitation:** Based on previous iGEM studies and our work, we found that using an impeller or bubbling was difficult to implement. This is due to the high amount of wires and tubing required for the system to operate. By using a magnetic stirring bar and plate, it removes the need of an additional wired input into the vessel. Powering the magnetic stirring bar, the magnetic plate exists as an external system to the bioreactor.
 
-    <a id="3f9d65dd82be80bf8192f4faa39b3cbb" />**Sampling:** Referencing the successes of iGEM team UBC Medusa in 2025, the same sampling method was employed. A dedicated tubing path is created, where the bacteria is only exposed to the external environment when the tube is opened and connected to a pipette for sampling. This creates a rather simple methodology of taking samples for OD measurements at a controlled volume.
+    <a id="3f9d65dd82be80bf8192f4faa39b3cbb" />**Sampling:** Referencing to the successes of iGEM team UBC Medusa in 2025, the same sampling method was employed. A dedicated tubing path is created, where the bacteria is only exposed to the external environment when the tube is opened and connected to a pipette for sampling. This creates a rather simple methodology of taking samples for OD measurements at a controlled volume.
   </Fragment>
 
   <Fragment slot="build">

@@ -233,7 +233,7 @@
                     "item": "3c0d65dd82be8013bb60fe7bd633c0a7"
                 },
                 {
-                    "path": "Computation Screening Pipeline",
+                    "path": "Promoter Selection ",
                     "type": "page",
                     "item": "3dfd65dd82be80ecbb4acf486625c456"
                 },
@@ -303,7 +303,7 @@
             "name": "Administration",
             "entries": [
                 {
-                    "path": "Venture Values",
+                    "path": "Needs Finding",
                     "type": "page",
                     "item": "359d65dd82be815cbffac8cbbcb5df8c"
                 },
@@ -330,17 +330,27 @@
             ]
         },
         {
-            "name": "Judging",
+            "name": "Project",
             "entries": [
                 {
-                    "path": "Contribution",
+                    "path": "Description",
                     "type": "page",
-                    "item": "3fad65dd82be80ffb6d8f8d5c65f8225"
+                    "item": "3fcd65dd82be80f980bce59993e8829c"
                 },
                 {
                     "path": "Engineering Success",
                     "type": "page",
                     "item": "3fad65dd82be8064b4d2fd929f74d04a"
+                },
+                {
+                    "path": "Results",
+                    "type": "page",
+                    "item": "3fcd65dd82be807e9eaafd92041063b4"
+                },
+                {
+                    "path": "Contribution",
+                    "type": "page",
+                    "item": "3fad65dd82be80ffb6d8f8d5c65f8225"
                 },
                 {
                     "path": "Human Practices",

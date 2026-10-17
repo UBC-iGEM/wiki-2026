@@ -7,9 +7,20 @@ import rehypeKatex from "rehype-katex";
 import remarkBreaks from "remark-breaks";
 import remarkMath from "remark-math";
 
+const INTERNAL_LINK_ROOT = CONFIG.internal_link_root;
+
+const projectPage = (ext: string): string => `${INTERNAL_LINK_ROOT}/project/${ext}`;
+
 // https://astro.build/config
 export default defineConfig({
-    base: CONFIG.internal_link_root,
+    base: INTERNAL_LINK_ROOT,
+    redirects: {
+        "/description": projectPage("description"),
+        "/engineering": projectPage("engineering-success"),
+        "/results": projectPage("results"),
+        "/contribution": projectPage("contribution"),
+        "/human-practices": projectPage("human-practices"),
+    },
     fonts: [
         {
             provider: fontProviders.fontsource(),
