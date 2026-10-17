@@ -1,4 +1,4 @@
-import { PageId } from "../notion";
+import { type Id, PageId } from "../notion";
 import { ExporterError, isExporterErr } from "../utils";
 import type { ConvertContext } from "./blocks";
 import { citation } from "./citations";
@@ -16,10 +16,10 @@ import type { PhrasingContent, Text } from "mdast";
 export type NewlineMode = "break" | "jsx" | "space";
 
 /**
- * @property cite the citation key of the literature entry linked text cites
+ * @property cite the literature entry linked text cites, by citation key, and the block the text is in
  */
 interface TextProperties {
-    cite: string | null;
+    cite: { key: string; block?: Id } | null;
     href: string | null;
     bold: boolean;
     italic: boolean;
@@ -78,7 +78,7 @@ async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Prom
                 const href_res = await resolveHref(item.href, ctx);
                 if (isExporterErr(href_res)) href_res.warn(ctx);
                 // Linked text cites the entry it links to
-                else if (href_res.citation) props.cite = href_res.citation.citation_key;
+                else if (href_res.citation) props.cite = { key: href_res.citation.citation_key, block: ctx.block };
                 else props.href = href_res.url;
             }
 
@@ -195,8 +195,8 @@ interface TextProperty {
 
 const PROP_GENERATORS: TextProperty[] = [
     {
-        key: (m) => m.cite,
-        wrap: (m, children) => citation([m.cite!], children),
+        key: (m) => m.cite?.key ?? null,
+        wrap: (m, children) => citation([m.cite!.key], m.cite!.block, children),
         hoist_whitespace: true,
     },
     {

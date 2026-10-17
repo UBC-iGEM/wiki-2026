@@ -47,7 +47,7 @@ title: "Fluorescence Detector"
 
 <a id="3fbd65dd82be80b4baddccfa2fa0bdd6" />Before beginning our journey in designing a fluorescence detector, we researched on some previous iGEM works to see what has been achieved in the past.
 
-<a id="3fbd65dd82be80a2b6c4d594c87938f4" />Team Munich’s design in 2017 inspired us: they came up with a compact fluorescence detector design by integrating magnets to sandwich detection components in between 3D printed parts. We realized the potential of magnets in enhancing user-friendliness and introducing a convenient method of assembly.
+<a id="3fbd65dd82be80a2b6c4d594c87938f4" />Team Munich’s design in 2017 inspired us: they came up with a compact fluorescence detector design by integrating magnets to sandwich detection components in between 3D printed parts \[4]. We realized the potential of magnets in enhancing user-friendliness and introducing a convenient method of assembly.
 
 <a id="3fbd65dd82be80fcbf3dd64607f5505b" />As demonstrated in the 3D model (demonstrate in 3d model), the detector is split into two halves: A and B (label). Part A acts as the bottom, encompassing a sliding track for the microfluidic holder and circuit components that detect fluorescence. Part B will go on top of Part A to create an all dark enclosure; it also contains the Arduino microcontroller, illumination, and user interface for active control and feedback.
 
@@ -84,7 +84,11 @@ title: "Fluorescence Detector"
 
 <a id="3fbd65dd82be80988d13d51f15f40090" />We studied the mechanism of fluorescence detection used in conventional detectors, and simplified them so they get the same task done at a way cheaper cost.
 
-<a id="3fcd65dd82be80b1a2f2eb0a0ccfdead" />Most fluorescence detectors adopt a similar layout, with the illumination component, the sample, and the detection component forming a 90 degrees angle. This arrangement helps improve signal quality
+<a id="3fcd65dd82be80b1a2f2eb0a0ccfdead" />Most fluorescence detectors adopt a similar layout, with the illumination component, the sample, and the detection component forming a 90 degrees angle. This arrangement helps improve signal quality by reducing background noises \[3]. Excitation filters and emission filters permit a narrow band of wavelength, such that only the desired lights are filtered through and shone on the sample or detector \[5 [https://www.thorlabs.com/filters-for-fluorescence-microscopy-tutorial?tabName=Tutorial](https://www.thorlabs.com/filters-for-fluorescence-microscopy-tutorial?tabName=Tutorial)].
+
+<a id="3fcd65dd82be80bea79cf9c45374b2e6" />While this set-up has been widely approved, a critical limitation is the high cost of the filters. Since both filters need to allow a small range of light through, the precision determined their high price. After our research, we found that one excitation filter costs around \$300.
+
+<a id="3fcd65dd82be80199d18ceb6e7dfc17b" />To address this issue, we
 
 <a id="3fcd65dd82be8062a968f9b2f9a77986" />![](https://static.igem.wiki/teams/6279/wiki/assets/f8b2720263995db386f5deee570d3b02.avif)
 

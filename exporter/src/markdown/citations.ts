@@ -1,3 +1,4 @@
+import type { Id } from "../notion";
 import { ExporterError } from "../utils";
 import type { ConvertContext } from "./blocks";
 import { jsxFlow, jsxText } from "./mdx";
@@ -28,10 +29,13 @@ export interface BibliographyAttrs {
 
 /**
  * What a citation cites, before the page is numbered. Kept in the node's `data`, as attributes are only written once numbered.
+ *
+ * @property block the block the citation is in, so warnings about it point there
  */
 interface PendingCite {
     keys: string[];
     prose: boolean;
+    block?: Id;
 }
 
 type CiteNode = MdxJsxTextElement & { data: { cite: PendingCite } };
@@ -39,11 +43,12 @@ type CiteNode = MdxJsxTextElement & { data: { cite: PendingCite } };
 /**
  * A citation of one or more literature entries, numbered by {@link numberCitations} once the page is converted.
  *
+ * @param block the block the citation is in
  * @param prose the text that cites the entries; without it, the citation shows their numbers
  */
-export function citation(keys: string[], prose?: PhrasingContent[]): MdxJsxTextElement {
+export function citation(keys: string[], block: Id | undefined, prose?: PhrasingContent[]): MdxJsxTextElement {
     const node = jsxText("Cite", {}, prose ?? []) as CiteNode;
-    node.data = { cite: { keys, prose: prose !== undefined } };
+    node.data = { cite: { keys, prose: prose !== undefined, block } };
     return node;
 }
 
@@ -114,6 +119,6 @@ function mergeAdjacent(children: Nodes[], ctx: ConvertContext): void {
         new ExporterError(
             `A citation is wrapped in brackets; since brackets are automatically added, they show as doubled.`,
             ["malformed content"],
-        ).warn(ctx);
+        ).warn({ ...ctx, block: node.data.cite.block ?? ctx.block });
     }
 }

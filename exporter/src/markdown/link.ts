@@ -32,7 +32,7 @@ export async function pageMention(
             "malformed content",
         ]);
 
-    return citation([entry.citation_key]);
+    return citation([entry.citation_key], ctx.block);
 }
 
 /**

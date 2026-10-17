@@ -101,9 +101,12 @@ async function dbtl({ items, ctx }: ComponentInput): ComponentOutput {
             ["malformed content"],
         );
 
-    const [design, build, test, learn] = (await Promise.all(
-        sections.map((section) => convertItems(trimBlank(section), ctx)),
-    )) as [FlowContent[], FlowContent[], FlowContent[], FlowContent[]];
+    const [design, build, test, learn] = (await Promise.all(sections.map((section) => convertItems(section, ctx)))) as [
+        FlowContent[],
+        FlowContent[],
+        FlowContent[],
+        FlowContent[],
+    ];
 
     return generateComponent<DbtlAttrs, DbtlSlots>({
         tag: "Dbtl",
@@ -161,7 +164,7 @@ type CarouselSlots = SlotRecord<typeof CAROUSEL_SLOTS>;
 
 async function carousel({ items, ctx }: ComponentInput): ComponentOutput {
     // Each slide starts with an image, followed by its description
-    const sections = splitOnDividers(items).map(trimBlank);
+    const sections = splitOnDividers(items);
 
     const malformed_slide = sections.findIndex((section) => section[0]?.type !== "image");
     if (malformed_slide !== -1)
@@ -205,15 +208,16 @@ type IHPSlots = SlotRecord<typeof IHP_SLOTS>;
 
 async function ihp({ items, ctx }: ComponentInput): ComponentOutput {
     // One or more people separated by dividers, each:
-    // a paragraph with their name, an optional image, a callout describing them, then anything else
-    const sections = splitOnDividers(items).map(trimBlank);
+    // a paragraph or heading with their name, an optional image, a callout describing them, then anything else
+    const sections = splitOnDividers(items);
     const cards: FlowContent[] = [];
 
     for (const [i, section] of sections.entries()) {
         const position = sections.length > 1 ? ` (person ${i + 1})` : "";
         const [name_block, ...rest] = section;
-        const name = name_block?.type === "paragraph" ? asPlainText(name_block.paragraph.rich_text).trim() : "";
-        if (name === "") return malformedIHP(`it does not start with a paragraph holding the person's name${position}`);
+        const name = name_block ? (blockText(name_block) ?? "") : "";
+        if (name === "")
+            return malformedIHP(`it does not start with a paragraph or heading holding the person's name${position}`);
 
         const image_block = rest[0]?.type === "image" ? rest.shift() : undefined;
         const callout_block = rest.shift();
@@ -524,13 +528,17 @@ function trimBlank(items: Item[]): Item[] {
     return items.slice(start, end);
 }
 
+/**
+ * Splits items into sections at each divider, trimming blank paragraphs from each and dropping empty sections,
+ * so doubled or trailing dividers don't add any.
+ */
 function splitOnDividers(items: Item[]): Item[][] {
     const sections: Item[][] = [[]];
     for (const item of items) {
         if (item.type === "divider") sections.push([]);
         else sections.at(-1)!.push(item);
     }
-    return sections;
+    return sections.map(trimBlank).filter((section) => section.length > 0);
 }
 
 export function componentDocSuggestion(link: string): string {

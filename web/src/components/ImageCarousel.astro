@@ -88,10 +88,12 @@ const multiple = slides.length > 1;
 
 <!-- Global, as the descriptions arrive through a slot and don't carry Astro's scoping attribute -->
 <style is:global>
+    /* Capped in width, so on wide screens the neighbours and arrows stay close to the image rather than at the page edges */
     .carousel {
         --slide-width: 70%;
         --frame-height: 34rem;
-        margin: 2rem 0 3rem;
+        margin: 2rem auto 3rem;
+        max-width: 60rem;
     }
 
     /* The arrows sit outside the images, either side of them */
