@@ -1,0 +1,39 @@
+<svg width="145" height="128" viewBox="0 0 145 128" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<use xlink:href="#stroke0_1248_153" fill="url(#paint0_linear_1248_153)"/>
+<use xlink:href="#stroke0_1248_153" fill="black" fill-opacity="0.2"/>
+<use xlink:href="#stroke1_1248_153" fill="url(#paint1_linear_1248_153)"/>
+<use xlink:href="#stroke1_1248_153" fill="black" fill-opacity="0.2"/>
+<use xlink:href="#stroke2_1248_153" fill="url(#paint2_linear_1248_153)"/>
+<use xlink:href="#stroke2_1248_153" fill="black" fill-opacity="0.2"/>
+<use xlink:href="#stroke3_1248_153" fill="url(#paint3_linear_1248_153)"/>
+<use xlink:href="#stroke3_1248_153" fill="black" fill-opacity="0.2"/>
+<use xlink:href="#stroke4_1248_153" fill="url(#paint4_linear_1248_153)"/>
+<use xlink:href="#stroke4_1248_153" fill="black" fill-opacity="0.2"/>
+<defs>
+<linearGradient id="paint0_linear_1248_153" x1="67.3391" y1="82.5942" x2="196.334" y2="48.9807" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E24FDE"/>
+<stop offset="1" stop-color="#FF00F8" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint1_linear_1248_153" x1="67.3391" y1="82.5942" x2="196.334" y2="48.9807" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E24FDE"/>
+<stop offset="1" stop-color="#FF00F8" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint2_linear_1248_153" x1="67.3391" y1="82.5942" x2="196.334" y2="48.9807" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E24FDE"/>
+<stop offset="1" stop-color="#FF00F8" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint3_linear_1248_153" x1="67.3391" y1="82.5942" x2="196.334" y2="48.9807" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E24FDE"/>
+<stop offset="1" stop-color="#FF00F8" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint4_linear_1248_153" x1="67.3391" y1="82.5942" x2="196.334" y2="48.9807" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E24FDE"/>
+<stop offset="1" stop-color="#FF00F8" stop-opacity="0"/>
+</linearGradient>
+<path id="stroke0_1248_153" d="M20.9999 0L86.9995 71.9996L66.4835 87.4834L-4.57764e-05 19.016L20.9999 0Z"/>
+<path id="stroke1_1248_153" d="M96.4834 95.564L90.0963 75.8222L70.1125 90.2415L92.2253 100.112L96.4834 95.564Z"/>
+<path id="stroke2_1248_153" d="M99.822 102.919L98.3221 97.8382L94.4027 101.274L99.822 102.919Z"/>
+<path id="stroke3_1248_153" d="M144.773 0H56.2255V31.8386L62.7577 39.774V5.17739H139.548V122.37H59.419V87.4834L54.7739 83.2254V126.193L144.773 127.064V0Z"/>
+<path id="stroke4_1248_153" d="M128.177 83.2254L105.193 102.919L103.499 103.645V95.564L120.58 80.3706L110.806 68.419L120.58 35.9514L82.2576 26.1773V44.4675H74.7093L79.5963 18.8709L128.177 33.4837L119.128 53.2739L116.661 66.1932L128.177 83.2254Z"/>
+</defs>
+</svg>

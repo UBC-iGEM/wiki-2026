@@ -1,47 +1,132 @@
 ---
 import { DBTL_SLOTS } from "@exporter/markdown/components";
+import DesignIcon from "../../public/assets/dbtl/design.svg";
+import BuildIcon from "../../public/assets/dbtl/build.svg";
+import TestIcon from "../../public/assets/dbtl/test.svg";
+import LearnIcon from "../../public/assets/dbtl/learn.svg";
 
 DBTL_SLOTS satisfies readonly ["design", "build", "test", "learn"];
 ---
 
 <div class="dbtl">
-    <div class="step">
-        <div class="sidebar">Design</div>
-        <div class="content"><slot name="design" /></div>
-    </div>
-    <div class="step">
-        <div class="sidebar">Build</div>
-        <div class="content"><slot name="build" /></div>
-    </div>
-    <div class="step">
-        <div class="sidebar">Test</div>
-        <div class="content"><slot name="test" /></div>
-    </div>
-    <div class="step">
-        <div class="sidebar">Learn</div>
-        <div class="content"><slot name="learn" /></div>
-    </div>
+    <section class="step design">
+        <DesignIcon class="icon" aria-hidden="true" />
+        <h3 class="title">Design</h3>
+        <div class="card"><slot name="design" /></div>
+    </section>
+    <section class="step build">
+        <BuildIcon class="icon" aria-hidden="true" />
+        <h3 class="title">Build</h3>
+        <div class="card"><slot name="build" /></div>
+    </section>
+    <section class="step test">
+        <TestIcon class="icon" aria-hidden="true" />
+        <h3 class="title">Test</h3>
+        <div class="card"><slot name="test" /></div>
+    </section>
+    <section class="step learn">
+        <LearnIcon class="icon" aria-hidden="true" />
+        <h3 class="title">Learn</h3>
+        <div class="card"><slot name="learn" /></div>
+    </section>
 </div>
 
 <style>
-    /* This makes all 4 rows identical in layout */
+    /* Sizes are in rem so the icons scale with the text under zoom; the container query only picks the layout */
+    .dbtl {
+        container-type: inline-size;
+        margin: 2.5rem 0;
+    }
+
     .step {
-        display: flex;
-        gap: 24px;
-        margin-bottom: 20px;
+        padding-left: 12.25rem;
+        position: relative;
     }
 
-    /* Identical sidebar styling */
-    .sidebar {
-        width: 100px;
-        flex-shrink: 0;
-        font-weight: bold;
-        border-right: 2px solid #333;
-        letter-spacing: 0.05em;
+    .step + .step {
+        margin-top: 3rem;
     }
 
-    /* Content styling */
-    .content {
-        flex-grow: 1;
+    /* Each icon sits behind the left edge of its card */
+    .icon {
+        height: auto;
+        left: var(--icon-left);
+        position: absolute;
+        top: var(--icon-top);
+        width: var(--icon-width);
+    }
+
+    .design {
+        --icon-left: 4rem;
+        --icon-top: -0.95rem;
+        --icon-width: 10.7rem;
+        --card-bg: linear-gradient(100deg, #e252df, #c752e0);
+    }
+
+    .build {
+        --icon-left: 5.65rem;
+        --icon-top: -0.15rem;
+        --icon-width: 8.5rem;
+        --card-bg: linear-gradient(to top right, #7c62f9, #5b82ee);
+    }
+
+    .test {
+        --icon-left: 4.85rem;
+        --icon-top: -0.5rem;
+        --icon-width: 10rem;
+        --card-bg: linear-gradient(to top right, #31b0cd, #48d698);
+    }
+
+    .learn {
+        --icon-left: 5.6rem;
+        --icon-top: -0.2rem;
+        --icon-width: 7.8rem;
+        --card-bg: linear-gradient(80deg, #d4c742, #a7cf5c 45%, #93e93c);
+    }
+
+    .step .title {
+        font-family: var(--font-geist);
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        line-height: 1;
+        margin: 0 0 0.6rem;
+        padding-right: 0.5rem;
+        position: relative;
+        text-align: right;
+        text-transform: uppercase;
+    }
+
+    .card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 2rem 2.5rem;
+        position: relative;
+    }
+
+    /* The card supplies its own padding, so the outermost children drop theirs */
+    .card > :global(*:first-child) {
+        margin-top: 0;
+    }
+
+    .card > :global(*:last-child) {
+        margin-bottom: 0;
+    }
+
+    /* Too narrow to give the icons a column of their own: they sit above the card, beside the title */
+    @container (max-width: 40rem) {
+        .step {
+            padding-left: 0;
+        }
+
+        .icon {
+            left: 0;
+            top: -0.5rem;
+            width: calc(var(--icon-width) * 0.45);
+        }
+
+        .card {
+            padding: 1.25rem 1.5rem;
+        }
     }
 </style>
