@@ -6,23 +6,23 @@ import { parse } from "csv-parse/sync";
 /**
  * Reading plate map CSVs at export time.
  *
- * Each CSV is one plate: the header row names the columns (1, 2, 3...), the first column names the rows (A, B, C...),
- * and every other cell is one well, written as `GROUP;WELL NAME;VALUE`.
+ * Each CSV is one plate, with one cell per well: the top-left cell is A1, the cell to its right A2, the first cell of
+ * the second row B1, and so on. A cell is either empty (an empty well) or `CATEGORY;LABEL;BRIGHTNESS`.
  */
 
 export interface Well {
-    /** Index into the component's list of groups, which decides colour. */
-    group: number;
+    /** Index into the component's list of categories, which decides colour. */
+    category: number;
     /** Shown on hover. */
-    name: string;
-    /** 0-1, how strongly the well is filled. */
-    value: number;
+    label: string;
+    /** 0-1, how brightly the well is filled. */
+    brightness: number;
 }
 
 export interface Plate {
     name: string;
-    columns: string[];
-    rows: { label: string; wells: (Well | null)[] }[];
+    columns: number;
+    rows: (Well | null)[][];
 }
 
 type FileBlock = Extract<NotionBlock, { type: "file" }>;
@@ -36,73 +36,69 @@ export async function fetchFileText(block: FileBlock): Promise<ExporterResult<st
 }
 
 /**
- * Parse a plate CSV. Groups are looked up in (and added to) `groups`, so colours stay the same across plates.
+ * Parse a plate CSV. Categories are looked up in (and added to) `categories`, so colours stay the same across plates.
  * Problems with single wells are returned as warnings and the well is left empty.
  */
 export function parsePlate(
     name: string,
     csv: string,
-    groups: string[],
+    categories: string[],
 ): ExporterResult<{ plate: Plate; warnings: string[] }> {
     const records: Result<string[][]> = $unsafeSync(() =>
         parse(csv, {
-            // Spreadsheet exports may start with a byte-order mark, pad cells and leave blank or ragged rows
+            // Spreadsheet exports may start with a byte-order mark, pad cells and leave ragged rows. Rows of empty
+            // cells are rows of empty wells, so only truly blank lines are skipped.
             bom: true,
             trim: true,
             skip_empty_lines: true,
-            skip_records_with_empty_values: true,
             relax_column_count: true,
         }),
     );
     if (isErr(records))
         return new ExporterError(`Plate "${name}" is not a readable CSV file.`, ["malformed content"], records);
+    if (records.length === 0) return new ExporterError(`Plate "${name}" has no wells.`, ["malformed content"]);
 
-    const [header, ...body] = records;
-    if (header === undefined || header.length < 2 || body.length === 0)
-        return new ExporterError(`Plate "${name}" needs a header row of column names and at least one row of wells.`, [
-            "malformed content",
-        ]);
-
-    const columns = header.slice(1);
+    const columns = Math.max(...records.map((cells) => cells.length));
     const warnings: string[] = [];
-    const rows = body.map((cells) => {
-        const label = cells[0] ?? "";
-        const wells = columns.map((column, i) => {
-            const cell = cells[i + 1] ?? "";
+    const rows = records.map((cells, r) =>
+        Array.from({ length: columns }, (_, c) => {
+            const cell = cells[c] ?? "";
             if (cell === "") return null;
 
-            const well = parseWell(cell, groups);
+            const well = parseWell(cell, categories);
             if (typeof well === "string") {
-                warnings.push(`Plate "${name}" well ${label}${column}: ${well}; it was left empty.`);
+                warnings.push(`Plate "${name}" well ${wellId(r, c)}: ${well}; it was left empty.`);
                 return null;
             }
             return well;
-        });
-        if (cells.length > columns.length + 1 && cells.slice(columns.length + 1).some((cell) => cell !== ""))
-            warnings.push(
-                `Plate "${name}" row ${label} has more cells than there are columns; the extras were dropped.`,
-            );
-        return { label, wells };
-    });
+        }),
+    );
 
     return { plate: { name, columns, rows }, warnings };
 }
 
-/** `GROUP;WELL NAME;VALUE`. The name may itself contain `;`. Returns a problem description if malformed. */
-function parseWell(cell: string, groups: string[]): Well | string {
+/** `CATEGORY;LABEL;BRIGHTNESS`. The label may itself contain `;`. Returns a problem description if malformed. */
+function parseWell(cell: string, categories: string[]): Well | string {
     const parts = cell.split(";");
-    if (parts.length < 3) return `"${cell}" is not in the form GROUP;WELL NAME;VALUE`;
+    if (parts.length < 3) return `"${cell}" is not in the form CATEGORY;LABEL;BRIGHTNESS`;
 
-    const group = parts[0]!.trim();
-    const name = parts.slice(1, -1).join(";").trim();
-    const value_text = parts.at(-1)!.trim();
-    if (group === "") return `"${cell}" has no group`;
+    const category = parts[0]!.trim();
+    const label = parts.slice(1, -1).join(";").trim();
+    const brightness_text = parts.at(-1)!.trim();
+    if (category === "") return `"${cell}" has no category`;
 
-    let value = Number(value_text);
-    if (value_text === "" || !Number.isFinite(value)) return `"${value_text}" is not a number`;
-    value = Math.min(1, Math.max(0, value));
+    let brightness = Number(brightness_text);
+    if (brightness_text === "" || !Number.isFinite(brightness)) return `"${brightness_text}" is not a number`;
+    brightness = Math.min(1, Math.max(0, brightness));
 
-    let index = groups.indexOf(group);
-    if (index === -1) index = groups.push(group) - 1;
-    return { group: index, name, value };
+    let index = categories.indexOf(category);
+    if (index === -1) index = categories.push(category) - 1;
+    return { category: index, label, brightness };
+}
+
+/** The usual name of the well at row `r`, column `c` (both from 0): A1, B12, AA3... */
+export function wellId(r: number, c: number): string {
+    let row = "";
+    for (let n = r + 1; n > 0; n = Math.floor((n - 1) / 26)) row = String.fromCharCode(65 + ((n - 1) % 26)) + row;
+    return `${row}${c + 1}`;
 }

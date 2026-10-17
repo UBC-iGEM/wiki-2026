@@ -407,8 +407,8 @@ function blockLink(item: Item): string | undefined {
 
 export interface PlatemapAttrs {
     title: string;
-    /** Group names, in order of first appearance; a well's `group` indexes into this. */
-    groups: string[];
+    /** Category names, in order of first appearance; a well's `category` indexes into this. */
+    categories: string[];
     /** The plates as JSON (`Plate[]`). */
     plates: string;
 }
@@ -424,7 +424,7 @@ async function platemap({ items, ctx }: ComponentInput): ComponentOutput {
     if (rest.length === 0 || rest.length % 2 !== 0)
         return malformedPlatemap("each plate must be a subtitle followed by an uploaded CSV file");
 
-    const groups: string[] = [];
+    const categories: string[] = [];
     const plates: Plate[] = [];
     for (let i = 0; i < rest.length; i += 2) {
         const subtitle_block = rest[i]!;
@@ -438,27 +438,27 @@ async function platemap({ items, ctx }: ComponentInput): ComponentOutput {
         const csv = await fetchFileText(file_block);
         if (isExporterErr(csv)) return csv;
 
-        const parsed = parsePlate(name, csv, groups);
+        const parsed = parsePlate(name, csv, categories);
         if (isExporterErr(parsed)) return parsed;
         for (const warning of parsed.warnings)
             new ExporterError(warning, ["malformed content"]).warn(blockContext(ctx, file_block));
         plates.push(parsed.plate);
     }
 
-    if (groups.length > PLATEMAP_PALETTE_SIZE)
+    if (categories.length > PLATEMAP_PALETTE_SIZE)
         new ExporterError(
-            `Platemap "${title}" has ${groups.length} groups, but only ${PLATEMAP_PALETTE_SIZE} colours; some groups share a colour.`,
+            `Platemap "${title}" has ${categories.length} categories, but only ${PLATEMAP_PALETTE_SIZE} colours; some categories share a colour.`,
             ["malformed content"],
         ).warn(ctx);
 
     return generateComponent<PlatemapAttrs, PlatemapSlots>({
         tag: "Platemap",
-        attrs: { title, groups, plates: JSON.stringify(plates) },
+        attrs: { title, categories, plates: JSON.stringify(plates) },
         slots: {},
     });
 }
 
-/** How many distinct group colours `Platemap.astro` has. */
+/** How many distinct category colours `Platemap.astro` has. */
 export const PLATEMAP_PALETTE_SIZE = 12;
 
 /** The text of a heading or paragraph. */

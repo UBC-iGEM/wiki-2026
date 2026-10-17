@@ -1,23 +1,23 @@
 ---
 import { type PlatemapAttrs, PLATEMAP_SLOTS, PLATEMAP_PALETTE_SIZE } from "@exporter/markdown/components";
-import type { Plate } from "@exporter/platemap";
+import { type Plate, wellId } from "@exporter/platemap";
 type Props = PlatemapAttrs;
 
-const { title, groups, plates: plates_json } = Astro.props;
+const { title, categories, plates: plates_json } = Astro.props;
 PLATEMAP_SLOTS satisfies readonly [];
 
 const plates: Plate[] = JSON.parse(plates_json);
 const first = plates[0]!;
-// Groups share colours across plates, but each plate's legend lists only the groups on it
-const groupsOn = (plate: Plate) =>
-    [...new Set(plate.rows.flatMap((row) => row.wells.flatMap((well) => (well ? [well.group] : []))))].sort(
+// Categories share colours across plates, but each plate's legend lists only the categories on it
+const categoriesOn = (plate: Plate) =>
+    [...new Set(plate.rows.flatMap((row) => row.flatMap((well) => (well ? [well.category] : []))))].sort(
         (a, b) => a - b,
     );
 
-// `<` is escaped so a well name can't close the script tag.
-const data = JSON.stringify({ groups, plates }).replaceAll("<", "\\u003c");
+// `<` is escaped so a well label can't close the script tag.
+const data = JSON.stringify({ categories, plates }).replaceAll("<", "\\u003c");
 
-// Bright enough to read against the dark panel; groups take them in order of first appearance.
+// Bright enough to read against the dark panel; categories take them in order of first appearance.
 // Each is a `.g<n>` class below.
 const PALETTE_SIZE = 12;
 PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
@@ -46,30 +46,25 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
             </figcaption>
             <div class="grid-scroll">
                 <!-- Must match `drawGrid` in the script, which redraws it for other plates -->
-                <div class="grid" style={`--columns: ${first.columns.length}`}>
-                    <span></span>
-                    {first.columns.map((column) => <span class="label">{column}</span>)}
+                <div class="grid" style={`--columns: ${first.columns}`}>
                     {
-                        first.rows.map((row, r) => (
-                            <>
-                                <span class="label">{row.label}</span>
-                                {row.wells.map((well, c) =>
-                                    well === null ? (
-                                        <span class="well empty" />
-                                    ) : (
-                                        <span
-                                            class={`well g${well.group % PALETTE_SIZE}`}
-                                            style={`--fill: ${Math.round(well.value * 100)}%`}
-                                            tabindex="0"
-                                            role="img"
-                                            aria-label={`${row.label}${first.columns[c]}: ${well.name}`}
-                                            data-r={r}
-                                            data-c={c}
-                                        />
-                                    ),
-                                )}
-                            </>
-                        ))
+                        first.rows.map((row, r) =>
+                            row.map((well, c) =>
+                                well === null ? (
+                                    <span class="well empty" />
+                                ) : (
+                                    <span
+                                        class={`well g${well.category % PALETTE_SIZE}`}
+                                        style={`--fill: ${Math.round(well.brightness * 100)}%`}
+                                        tabindex="0"
+                                        role="img"
+                                        aria-label={`${wellId(r, c)}: ${well.label}`}
+                                        data-r={r}
+                                        data-c={c}
+                                    />
+                                ),
+                            ),
+                        )
                     }
                 </div>
             </div>
@@ -78,10 +73,10 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
         <!-- Must match `drawLegend` in the script -->
         <ul class="legend">
             {
-                groupsOn(first).map((i) => (
+                categoriesOn(first).map((i) => (
                     <li>
                         <span class={`swatch g${i % PALETTE_SIZE}`} />
-                        {groups[i]}
+                        {categories[i]}
                     </li>
                 ))
             }
@@ -97,6 +92,13 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
 
     const PALETTE_SIZE = 12;
 
+    /** As `wellId` in the exporter, which can't be imported here: A1, B12, AA3... */
+    function wellId(r: number, c: number): string {
+        let row = "";
+        for (let n = r + 1; n > 0; n = Math.floor((n - 1) / 26)) row = String.fromCharCode(65 + ((n - 1) % 26)) + row;
+        return `${row}${c + 1}`;
+    }
+
     /** Redraw the grid for `plate`, matching the server-rendered markup. */
     function drawGrid(grid: HTMLElement, plate: Plate) {
         const span = (className: string, text = "") => {
@@ -106,29 +108,27 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
             return el;
         };
 
-        const cells: HTMLElement[] = [span("")];
-        for (const column of plate.columns) cells.push(span("label", column));
+        const cells: HTMLElement[] = [];
         plate.rows.forEach((row, r) => {
-            cells.push(span("label", row.label));
-            row.wells.forEach((well, c) => {
+            row.forEach((well, c) => {
                 if (well === null) return cells.push(span("well empty"));
-                const el = span(`well g${well.group % PALETTE_SIZE}`);
-                el.style.setProperty("--fill", `${Math.round(well.value * 100)}%`);
+                const el = span(`well g${well.category % PALETTE_SIZE}`);
+                el.style.setProperty("--fill", `${Math.round(well.brightness * 100)}%`);
                 el.tabIndex = 0;
                 el.setAttribute("role", "img");
-                el.setAttribute("aria-label", `${row.label}${plate.columns[c]}: ${well.name}`);
+                el.setAttribute("aria-label", `${wellId(r, c)}: ${well.label}`);
                 el.dataset.r = `${r}`;
                 el.dataset.c = `${c}`;
                 cells.push(el);
             });
         });
-        grid.style.setProperty("--columns", `${plate.columns.length}`);
+        grid.style.setProperty("--columns", `${plate.columns}`);
         grid.replaceChildren(...cells);
     }
 
-    /** Redraw the legend with the groups on `plate`, matching the server-rendered markup. */
-    function drawLegend(legend: HTMLElement, plate: Plate, groups: string[]) {
-        const on = new Set(plate.rows.flatMap((row) => row.wells.flatMap((well) => (well ? [well.group] : []))));
+    /** Redraw the legend with the categories on `plate`, matching the server-rendered markup. */
+    function drawLegend(legend: HTMLElement, plate: Plate, categories: string[]) {
+        const on = new Set(plate.rows.flatMap((row) => row.flatMap((well) => (well ? [well.category] : []))));
         legend.replaceChildren(
             ...[...on]
                 .sort((a, b) => a - b)
@@ -136,15 +136,15 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
                     const item = document.createElement("li");
                     const swatch = document.createElement("span");
                     swatch.className = `swatch g${i % PALETTE_SIZE}`;
-                    item.append(swatch, groups[i]!);
+                    item.append(swatch, categories[i]!);
                     return item;
                 }),
         );
     }
 
     for (const platemap of document.querySelectorAll<HTMLElement>(".platemap")) {
-        const { groups, plates } = JSON.parse(platemap.querySelector(".platemap-data")!.textContent!) as {
-            groups: string[];
+        const { categories, plates } = JSON.parse(platemap.querySelector(".platemap-data")!.textContent!) as {
+            categories: string[];
             plates: Plate[];
         };
         const grid = platemap.querySelector<HTMLElement>(".grid")!;
@@ -161,7 +161,7 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
             name.textContent = plate.name;
             if (count) count.textContent = `${current + 1} / ${n}`;
             drawGrid(grid, plate);
-            drawLegend(legend, plate, groups);
+            drawLegend(legend, plate, categories);
             close();
         };
         platemap.querySelector(".arrow.prev")?.addEventListener("click", () => show(current - 1));
@@ -169,16 +169,15 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
 
         // One tooltip per platemap, fixed to the viewport so the scrolling grid can't clip it
         const open = (well: HTMLElement) => {
-            const plate = plates[current]!;
-            const row = plate.rows[Number(well.dataset.r)]!;
-            const column = plate.columns[Number(well.dataset.c)]!;
-            const data = row.wells[Number(well.dataset.c)];
+            const r = Number(well.dataset.r);
+            const c = Number(well.dataset.c);
+            const data = plates[current]!.rows[r]![c];
             if (!data) return;
 
             const heading = document.createElement("strong");
-            heading.textContent = data.name || `${row.label}${column}`;
+            heading.textContent = data.label || wellId(r, c);
             const detail = document.createElement("span");
-            detail.textContent = `${row.label}${column} · ${groups[data.group]} · ${data.value.toFixed(2)}`;
+            detail.textContent = `${wellId(r, c)} · ${categories[data.category]} · ${data.brightness.toFixed(2)}`;
             tooltip.replaceChildren(heading, detail);
             tooltip.hidden = false;
 
@@ -319,22 +318,15 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
         align-items: center;
         display: grid;
         gap: 0.35rem;
-        grid-template-columns: 1.5rem repeat(var(--columns), minmax(0.9rem, 2.25rem));
+        grid-template-columns: repeat(var(--columns), minmax(0.9rem, 2.25rem));
         justify-content: center;
     }
 
-    .platemap .label {
-        font-family: var(--font-geist);
-        font-size: 0.75rem;
-        opacity: 0.7;
-        text-align: center;
-    }
-
-    /* The group colour fills the well in proportion to its value */
+    /* The category colour fills the well in proportion to its brightness */
     .platemap .well {
         aspect-ratio: 1;
-        background: color-mix(in srgb, var(--group) var(--fill), var(--color-ebony-clay));
-        border: 1.5px solid var(--group);
+        background: color-mix(in srgb, var(--category) var(--fill), var(--color-ebony-clay));
+        border: 1.5px solid var(--category);
         border-radius: 50%;
         transition: transform 100ms ease;
     }
@@ -351,40 +343,40 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
     }
 
     .platemap .g0 {
-        --group: var(--color-lime-yellow);
+        --category: var(--color-lime-yellow);
     }
     .platemap .g1 {
-        --group: var(--color-orchid);
+        --category: var(--color-orchid);
     }
     .platemap .g2 {
-        --group: var(--color-fluorescence);
+        --category: var(--color-fluorescence);
     }
     .platemap .g3 {
-        --group: var(--color-northern-lights);
+        --category: var(--color-northern-lights);
     }
     .platemap .g4 {
-        --group: var(--color-citrine);
+        --category: var(--color-citrine);
     }
     .platemap .g5 {
-        --group: var(--color-cornflower);
+        --category: var(--color-cornflower);
     }
     .platemap .g6 {
-        --group: #ff8a5c;
+        --category: #ff8a5c;
     }
     .platemap .g7 {
-        --group: #ff5c8a;
+        --category: #ff5c8a;
     }
     .platemap .g8 {
-        --group: #b08cff;
+        --category: #b08cff;
     }
     .platemap .g9 {
-        --group: #5cd6ff;
+        --category: #5cd6ff;
     }
     .platemap .g10 {
-        --group: var(--color-grey-teal);
+        --category: var(--color-grey-teal);
     }
     .platemap .g11 {
-        --group: #f2f2f2;
+        --category: #f2f2f2;
     }
 
     .platemap .legend {
@@ -405,7 +397,7 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
     }
 
     .platemap .swatch {
-        background: var(--group);
+        background: var(--category);
         border-radius: 50%;
         height: 0.8rem;
         width: 0.8rem;
