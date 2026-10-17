@@ -118,10 +118,6 @@
                             "item": "3d6d65dd82be80fc9f19eb0dedc0d19b"
                         },
                         {
-                            "path": "Plasmid Retention Assay v3",
-                            "item": "3ded65dd82be8080a051d37b70718c31"
-                        },
-                        {
                             "path": "Biosensor Challenge Assay",
                             "item": "3e0d65dd82be805881e8fcf23e82411f"
                         },
@@ -148,10 +144,6 @@
                         {
                             "path": "Simulant Degradation Assay v2",
                             "item": "3ead65dd82be80a692f1c26f88e901da"
-                        },
-                        {
-                            "path": "Antibiotic Thaw Test v2",
-                            "item": "3ead65dd82be80e59cb8c9f077f28eec"
                         },
                         {
                             "path": "Biofactorial Library Screen",
@@ -243,7 +235,7 @@
                     "item": "3dfd65dd82be80b789fcc92bd1d8ad53"
                 },
                 {
-                    "path": "Patient Sample DOE",
+                    "path": "Patient Sample Design Of Experiments",
                     "type": "page",
                     "item": "3fcd65dd82be80fda88be44767363ecb"
                 }

@@ -4,7 +4,7 @@ import { ExporterError, isExporterErr, type WarningContext } from "../utils";
 import { COMPONENT_MAP, componentDocSuggestion } from "./components";
 import { pageMention } from "./link";
 import { anchorFlow, anchorText, jsxFlow, jsxInlineBlock, type FlowContent } from "./mdx";
-import { parseImageCaption, uploadMedia } from "./media";
+import { mediaFileName, parseImageCaption, uploadMedia } from "./media";
 import { convertRichText, asPlainText } from "./rich-text";
 import type { RichTextItemResponse } from "@notionhq/client";
 import type { Heading, List, ListItem, Paragraph, PhrasingContent, Table, TableRow } from "mdast";
@@ -269,6 +269,23 @@ async function convertBlock(block: NotionBlock, parent_ctx: ConvertContext): Pro
             // Captions are used as alt text
             const { alt, scale } = parseImageCaption(block, ctx);
             return [anchorFlow(anchor), jsxFlow("Img", { url, alt, scale })];
+        }
+        case "file": {
+            const filename = mediaFileName(block);
+            if (filename.endsWith(".pdf")) {
+                const uploaded_url = await uploadMedia(block, { keep_original_file: true });
+                if (isExporterErr(uploaded_url)) {
+                    uploaded_url.warn(ctx);
+                    return [];
+                }
+                return [
+                    anchorFlow(anchor),
+                    jsxFlow("a", { href: uploaded_url, target: "_blank", rel: "noopener noreferrer" }, [
+                        { type: "paragraph", children: [{ type: "text", value: filename }] },
+                    ]),
+                ];
+            }
+            return [];
         }
         case "table":
             return [anchorFlow(anchor), await convertTable(block, ctx)];

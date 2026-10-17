@@ -41,7 +41,7 @@ title: "Bioreactor"
 
 ## <a id="3f0d65dd82be804a9c2ec6ef3e456461" />Translating Needs to Requirements
 
-<a id="3fcd65dd82be800191f5f6176750b020" />To generate our requirements, we took our needs and added quantitative metrics. Certain needs, such as the requirement for a mason jar as a vessel, are very binary and, as such, were not translated into needs.
+<a id="3fcd65dd82be800191f5f6176750b020" />To generate our requirements, we took our needs and added quantitative metrics. Certain needs, such as the requirement for a mason jar as a vessel, were binary and, as such, were not translated into needs.
 
 - <a id="3fcd65dd82be80edbb73f41a6e3143cf" />The bioreactor must be able to sense the temperature of the media within 2 degrees of the real temperature and report it to the user within three seconds.
 - <a id="3fcd65dd82be80158d9efa5a81b4e9ba" />The bioreactor must be able to sense the pH of the media within 1 pH unit and report it to the user within one minute.
@@ -66,35 +66,19 @@ title: "Bioreactor"
 <details>
   <summary><a id="3f0d65dd82be80ad97ade1dc85460176" />Concept Sketches</summary>
 
-  <a id="3fcd65dd82be802896d3ffa5fdfed10a" />
+  <a id="3fcd65dd82be80bbafdcec17f4c82c6b" />
 
-  <Img url="https://static.igem.wiki/teams/6279/wiki/assets/e5515d8e108b5cefac7005c5d45389a8.avif" alt="" scale={0} />
+  <ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/e5515d8e108b5cefac7005c5d45389a8.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/a1a7fa4790195fd7bd677f6795e15ea1.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/cf3759e5a4785ad08f99f502750b30d2.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/7ca003791938563db55801d7bdd725a8.avif","alt":"","scale":0}]}>
+    <Fragment slot="descriptions">
+      <div class="carousel-desc" data-index="0" />
 
-  <a id="3fcd65dd82be802cb476d2e1f340a061" />
+      <div class="carousel-desc" data-index="1" />
 
-  ***
+      <div class="carousel-desc" data-index="2" />
 
-  <a id="3fcd65dd82be80a089f8ee1a3bb7b6b7" />
-
-  <Img url="https://static.igem.wiki/teams/6279/wiki/assets/a1a7fa4790195fd7bd677f6795e15ea1.avif" alt="" scale={0} />
-
-  <a id="3fcd65dd82be80ed8e72ed1f7661f777" />
-
-  ***
-
-  <a id="3fcd65dd82be80e0bc61c8133c2470b3" />
-
-  <Img url="https://static.igem.wiki/teams/6279/wiki/assets/cf3759e5a4785ad08f99f502750b30d2.avif" alt="" scale={0} />
-
-  <a id="3fcd65dd82be80ca8bc2d16d36acedf9" />
-
-  ***
-
-  <a id="3fcd65dd82be80e686f8d7793d141199" />
-
-  <Img url="https://static.igem.wiki/teams/6279/wiki/assets/7ca003791938563db55801d7bdd725a8.avif" alt="" scale={0} />
-
-  > <a id="3fcd65dd82be8054b78eead546c50889" />END carousel
+      <div class="carousel-desc" data-index="3" />
+    </Fragment>
+  </ImageCarousel>
 </details>
 
 <details>
@@ -177,16 +161,16 @@ title: "Bioreactor"
 
 ## <a id="3f0d65dd82be80c68508d78b73f509f3" />Instruction for Use
 
-- <a id="3f9d65dd82be808489cac13115f1f222" />actual assembly instructions
-- <a id="3f9d65dd82be80fb988dcea7fdc10ddc" />usage and culturing bacteria instructions
-- <a id="3f9d65dd82be8075a42cc60a71bb711e" />sop for ph probe
-- <a id="3f9d65dd82be8010a5afdfd1ce2ba5a8" />sop for od sensor
+- <a id="3f9d65dd82be808489cac13115f1f222" />Actual assembly instructions
+- <a id="3f9d65dd82be80fb988dcea7fdc10ddc" />Usage and culturing bacteria instructions
+- <a id="3f9d65dd82be8075a42cc60a71bb711e" />Sop for ph probe
+- <a id="3f9d65dd82be8010a5afdfd1ce2ba5a8" />Sop for od sensor
 
 ## <a id="3f0d65dd82be80999588f93d7ea51fb9" />Bill of Materials (BOM)
 
 ## <a id="3f9d65dd82be80139ce4f86284af22c1" />Build Files
 
-- <a id="3f9d65dd82be80e685c2c02dbb9195dc" />engineering drawings
+- <a id="3f9d65dd82be80e685c2c02dbb9195dc" />Engineering drawings
 
 # <a id="3f0d65dd82be80a99bf0ea06cce646d7" />Next Steps for the Bioreactor
 
@@ -197,7 +181,7 @@ title: "Bioreactor"
 <details>
   <summary><a id="3f0d65dd82be802790bad2d66bf8a3ff" />Integrated Electronics</summary>
 
-  <a id="3f9d65dd82be8099be52e88f90c77d9e" />The current bioreactor uses several independently connected sensors, pumps, and electronic components, resulting in a large number of wires and separate circuits that must be assembled and debugged individually. Future iterations could integrate these systems onto a custom printed circuit board (PCB), with a microcontroller incorporated directly onto the board to control and communicate with each component. Alternatively, a Raspberry Pi could be added for data storage, visualization, and a more user-friendly interface. However, this would not necessarily replace the microcontroller's role in monitoring and controlling real-time systems and would instead act as an additional feature. Overall, integrating the electronics this way would reduce the hazards of loose wiring and simplify troubleshooting, making the system more reproducible and reliable.
+  <a id="3f9d65dd82be8099be52e88f90c77d9e" />The current bioreactor uses several independently connected sensors, pumps, and electronic components, resulting in a large number of wires and separate circuits that must be assembled and debugged individually. Future iterations could integrate these systems onto a custom printed circuit board (PCB), with a microcontroller incorporated directly onto the board to control and communicate with each component. Alternatively, a Raspberry Pi could be added for data storage, visualization, and increase user-friendly interface. However, this would not necessarily replace the microcontroller's role in monitoring and controlling real-time systems and would instead act as an additional feature. Overall, integrating the electronics this way would reduce the hazards of loose wiring and simplify troubleshooting, making the system more reproducible and reliable.
 </details>
 
 <details>
@@ -211,7 +195,7 @@ title: "Bioreactor"
 <details>
   <summary><a id="3f0d65dd82be8099b972e25ab8ff443f" />Automated Optical Density Sampling</summary>
 
-  <a id="3f9d65dd82be806282faddf53845c22c" />Optical density (OD) measurements currently require a small culture sample to be manually withdrawn through tubing using a syringe before it can be measured by the custom OD sensor. This process could be automated by incorporating a small peristaltic or syringe pump into the sampling line. At pre-set intervals, the controller could draw a fixed volume of culture through the OD measurement chamber, collect the reading, record the result, return the sample, and then prepare the system for the next measurement. *Automated bioreactor sampling systems have been shown to reduce hands-on work, enable measurements at consistent intervals, and improve repeatability compared with manual sampling.* Additionally, this method of sampling maintains a closed system for the bacteria, thus reducing contamination while ensuring biosafety for the operator by adhering to aseptic practices. For this bioreactor, automated sampling would allow a complete growth curve to be recorded with much less operator involvement.
+  <a id="3f9d65dd82be806282faddf53845c22c" />Optical density (OD) measurements currently require a small culture sample to be manually withdrawn through tubing using a syringe before it can be measured by the custom OD sensor. This process could be automated by incorporating a small peristaltic or syringe pump into the sampling line. At pre-set intervals, the controller could draw a fixed volume of culture through the OD measurement chamber, collect the reading, record the result, return the sample, and then prepare the system for the next measurement. *Automated bioreactor sampling systems have been shown to reduce hands-on work, enable measurements at consistent intervals, and improve replicability compared to manual sampling.* Additionally, this method of sampling maintains a closed system for the bacteria, thus reducing contamination while ensuring biosafety for the operator by adhering to aseptic practices. For this bioreactor, automated sampling would allow a complete growth curve to be recorded with much less operator involvement.
 
   <a id="3f9d65dd82be802c95d1d142db810ff6" />*need to cite*
 </details>
@@ -219,7 +203,7 @@ title: "Bioreactor"
 <details>
   <summary><a id="3f0d65dd82be807aa768ca2486d5bcc0" />Improved Sterility and Sampling Design</summary>
 
-  <a id="3f9d65dd82be8057a313efa6f01c2839" />As the system becomes increasingly automated, maintaining a closed and clean culture environment becomes more important. Repeated manual sampling introduces additional connections and handling steps where contamination can occur. Not only does this risk cross-contamination of culturing bacteria, but it also poses a biosafety risk if the operator does not follow proper protocol. Future versions could use permanently connected sampling tubing, sealed fittings, and dedicated sample pathways that minimize the need to open or disconnect the system during an experiment. Examples of this include the use of Luer-Lock syringes and corresponding attachments to tubing — components designed to keep material inside airtight and sterile from the outside environment. Reducing the number of open connections would help maintain sterility throughout experimentation while also making the sampling process safer and more repeatable.
+  <a id="3f9d65dd82be8057a313efa6f01c2839" />As the system becomes increasingly automated, maintaining a closed and clean culture environment becomes more important. Repeated manual sampling introduces additional connections and handling steps where contamination can occur. Not only does this risk cross-contamination of culturing bacteria, but it also poses a biosafety risk if the operator does not follow proper protocol. Future versions could implement permanent, connected sampling tubing, sealed fittings, and dedicated sample pathways that minimize the need to open or disconnect the system during an experiment. Examples of this include the use of Luer-Lock syringes and corresponding attachments to tubing — components designed to keep material inside airtight and sterile from the outside environment. Reducing the number of open connections would help maintain sterility throughout experimentation while also making the sampling process safer and more repeatable.
 </details>
 
 <details>

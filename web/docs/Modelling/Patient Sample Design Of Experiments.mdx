@@ -1,0 +1,143 @@
+---
+type: "page"
+title: "Patient Sample Design Of Experiments"
+---
+
+## <a id="3fcd65dd82be8018b984cd9454040b94" />Abstract
+
+<a id="3fcd65dd82be80abace3f8c39492880e" />Bacterial biosensors have potential applications in detecting biological relevant signals, but their performance may be influenced by the chemical and biological conditions of the environment in which they operate. In our project, an E. coli promoter-GFP biosensor is used without insight to how the biological systems can change the output.
+
+<a id="3fcd65dd82be808db2dcecc17e9642c6" />This study therefore aims to investigate the performance of the E. coli promoter-GFP biosensor under simulated patient-infection conditions and characterize factors that may influence their response including antibiotic concentration, bacterial resistance backgrounds, and environmental conditions such as sodium and glucose concentrations. Using a Design of Experiments approach n collaboration with Biofactorial, an automation facility,  we systematically evaluate biosensor responses across selected experimental conditions.
+
+<a id="3fcd65dd82be80b0acc9e2d268bc80da" />The results showed
+
+## <a id="3fcd65dd82be806eb174ef24ed0cff57" />Background
+
+<a id="3fcd65dd82be80539d4ddcf74a9f3d3f" />To characterize biosensor performance under simulated infection conditions and guide future validation and optimization, an Design of Experiment using the Box Behnken method was used. Our experiment consisted of
+
+<a id="3fcd65dd82be80d39a00d948d7dd42a3" />Urine consists of primarily water, some salts and metabolic byproducts\[citation]. According to our research, we first identified sodium, potassium and urea as predominant waste-product salts \[add the percentages here] that are lab-accessible. We then considered pH, as it was found that the pH of urine varies between a pH of 6.5 to 8\[change].
+
+<a id="3fcd65dd82be80d8a8ffef0d62979a43" />A Design of Experiments is a statistical approach used to systematically the effect of various experimental inputs on the output.
+
+<a id="3fcd65dd82be80d5b905db28da817122" />Biofactorial is an automation facility at the University of British Columbia that allows for autonomous pipetting
+
+<a id="3fcd65dd82be80bcbef4f7809f333908" />The resulting data will help characterize biosensor performance under simulated infection conditions, guiding future validation and optimization.
+
+- <a id="3fcd65dd82be80d7af3be50dfa954877" />add inform wet lab with MIC stuff?
+- <a id="3fcd65dd82be80d392d3c0912b7e5694" />addsignificance about \*\* which factors are most important\*\* in patient sample
+
+## <a id="3fcd65dd82be803a8955e012f9b78687" />Method
+
+<a id="3fcd65dd82be808697e9d3cdfd6317ad" />The objective of the Patient Sensor Design of Experiments (DOE) was to characterize the performance of the bacterial sensors by varying biological and chemical conditions and analyzing the fluorescence data.
+
+#### <a id="3fcd65dd82be8025b37ac129a28557f5" />Experimental Design
+
+<a id="3fcd65dd82be80c29675e2c88c25ae30" />A reduced DOE approach (using Box Behnken design) was developed using JMP in collaboration with Biofactorial to investigate the effects of bacterial and environmental conditions on the promoter-GFP biosensor fluorescence output. This approach was chosen over a full factorial design to reduce the number of experimental conditions while allowing the evaluation of multiple factors.
+
+<a id="3fcd65dd82be80c39299f02761561fde" />The study examined the E. coli biosensors containing //TODO, which were evaluated under different simulated patient-infection conditions.
+
+<a id="3fcd65dd82be8042a8c6edbb57e6f370" />Experimental conditions were established using two liquid-handling systems. The WellMate delivered bacterial cultures and media, while the Echo dispensed chemical treatments. Fluorescence was measured as the reporter readout to assess biosensor responses across the tested conditions.
+
+#### <a id="3fcd65dd82be80ce8084d735fed8e6ea" />Biological Factors -Wellmate Delivery
+
+<a id="3fcd65dd82be80b08b21d4d6054e7d1c" />The biological factors included the biosensor promoter, culture medium, and patient-infection condition. The patient-infection conditions included a no-infection control, untransformed E. coli EPI300, and bacterial cultures representing different antibiotic-resistance backgrounds: β-lactamase, gentamicin resistance (GMR), and kanamycin resistance (KanR). LB and LB-Cm media were used as applicable to the corresponding cultures.
+
+<br id="3fcd65dd82be80abad72c4f8aea748d7" />
+
+#### <a id="3fcd65dd82be8082aaf0cac878ac4230" />Chemical Factors -Echo delivery
+
+<a id="3fcd65dd82be80c5a79bed7909d0b80f" />The chemical factors were introduced using the Echo liquid-handling system. Antibiotic was used as a factor, and was varied as a categorical condition, either with no antibiotic or varying concentrations. Amoxicillin, gentamicin, and tobramycin were the antibiotics used. Sodium and glucose were also used as chemical variables, each with three planned concentration levels.
+
+<a id="3fcd65dd82be80cca393e1e7a73f5ca6" />The experimental factors and their corresponding (levels?? conditions? better word for levels??) are summarized in the table below.
+
+<a id="3fcd65dd82be801786e3cfba187d3de5" />**STOCKS**
+
+- <a id="3fcd65dd82be801cb2f4c9ebd81f07d2" />Sodium 250 µg/µL
+- <a id="3fcd65dd82be802b82e7f84be19a95f6" />Glucose 250 µg/µL
+
+<br id="3fcd65dd82be80fb9a9fee4f9e34b794" />
+
+<Callout icon="💡">
+  <a id="3fcd65dd82be80c0ab31c6410e7b9209" />add table here that would make this easier to read???
+</Callout>
+
+<a id="3fcd65dd82be80238195cc23f6ba1511" />
+
+|                                                               |                                |                                                                                                                              |                 |
+| ------------------------------------------------------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- | --------------- |
+| <a id="3fcd65dd82be80809be1f4a8fcca47cc" />Factor             | Categorical/Discrete Numerical | Levels                                                                                                                       | Delivery Method |
+| <a id="3fcd65dd82be8017bea1fe60d18651c3" />Biological Factors |                                |                                                                                                                              |                 |
+| <a id="3fcd65dd82be80bc8d19d08c37baea88" />Biosensor Promoter | Categorical                    | RecA, CpxP                                                                                                                   | WellMate        |
+| <a id="3fcd65dd82be80b39b73cb31bdd9a300" />Media Type         | Categorical                    | LB, LB-Cm                                                                                                                    | WellMate        |
+| <a id="3fcd65dd82be8075bb9df898a1716bcc" />Patient Infection  | Categorical                    | None (LB media),<br />Untransformed EPI300 (LB media),<br />Resistant:<br />    ◦ B-lactamase<br />    ◦ GMR<br />    ◦ KanR | WellMate        |
+| <a id="3fcd65dd82be8076ad30e10267151d06" />Antibiotics        |                                |                                                                                                                              |                 |
+| <a id="3fcd65dd82be8082a042dd2fa1073586" />Amoxicillin        | Discrete Numerical             | • **Concentration** \[Discrete numeric]<br />    ◦ 2 µg/mL<br />    ◦ 4 µg/mL<br />    ◦ 8 µg/mL                             | Echo            |
+| <a id="3fcd65dd82be801d833de73f0a486896" />Gentamicin         | Discrete Numerical             | • **Concentration** \[Discrete numeric]<br />    ◦ 2 µg/mL<br />    ◦ 4 µg/mL<br />    ◦ 8 µg/mL                             | Echo            |
+| <a id="3fcd65dd82be800786e0d38b9aa4e72a" />Tobramycin         | Discrete Numerical             | • **Concentration** \[Discrete numeric]<br />    ◦ 2 µg/mL<br />    ◦ 4 µg/mL<br />    ◦ 8 µg/mL                             | Echo            |
+| <a id="3fcd65dd82be80b082b9ff8bdd2a9943" />Chemical Factors   |                                |                                                                                                                              |                 |
+| <a id="3fcd65dd82be80cdb07cd31d24ea1b0f" />Sodium             | Discrete Numerical             | • **Concentration** <br />    ◦ 1 µg/µL / 2<br />    ◦ 4 µg/µL / 2<br />    ◦ 16 µg/µL / 2                                   | Echo            |
+| <a id="3fcd65dd82be80c1b0aadda99a93b44d" />Glucose            | Discrete Numerical             | • **Concentration** \[Discrete numeric]<br />    ◦ 0 µg/µL / 2<br />    ◦ 1 µg/µL / 2<br />    ◦ 10 µg/µL / 2                | Echo            |
+
+#### <a id="3fcd65dd82be806d9a93e4bd546df280" />Experimental Design
+
+<Callout icon="">
+  <a id="3fcd65dd82be8060aadbce4372c8c614" />**Factorial Design**
+
+  <a id="3fcd65dd82be80c8860cd6e7378ed988" />let:
+
+  <a id="3fcd65dd82be80348cd2c5ff57f38a7e" />***N*** is the number of experimental conditions
+
+  <a id="3fcd65dd82be80d88c98f92d9e4efc3d" />***L*** is the number of levels per factor
+
+  <a id="3fcd65dd82be8022adb8c2066b697a90" />***F*** is the number of factors
+
+  <a id="3fcd65dd82be805f846de23a2cb4b99e" />then:
+
+  <a id="3fcd65dd82be8008904adcbb07a2b6d0" />$N = L^F$
+
+  <a id="3fcd65dd82be8077860ff1f5a4e55438" />
+
+  ***
+
+  <a id="3fcd65dd82be802ca41bc2bf01f9bda8" />let:
+
+  <a id="3fcd65dd82be80e1849ac8179a869420" />***N*** is the number of experimental conditions
+
+  <a id="3fcd65dd82be803990c3e7cc332a07f6" />$L_n$ is the number of levels for factor *n*
+
+  <a id="3fcd65dd82be80958e53e7a77d9ad5c0" />***F*** is the number of factors
+
+  <a id="3fcd65dd82be80b8852ad817e30f98ed" />then:
+
+  <a id="3fcd65dd82be80d8bbcdd5507251a161" />$N = \Pi^F_{n=1} L_n$
+</Callout>
+
+#### <a id="3fcd65dd82be803dada2cbd379755bac" />Experimental Planning in JMP
+
+<a id="3fcd65dd82be806cb1b8fb8faac57f7b" />JMP automatically generates the middle value as the center of high/low values - mid-level isn’t supposed to be arbitrary math center and needs to be whole number (25nL drop restriction)
+
+<br id="3fcd65dd82be80a9879deacd42dccca3" />
+
+## <a id="3fcd65dd82be806ebb0ff353e1cac3ff" />Results
+
+<br id="3fcd65dd82be80c78b11c105c08f15ff" />
+
+<br id="3fcd65dd82be805d8c01c640994b9b82" />
+
+<br id="3fcd65dd82be802b865cf260e3ac8b4c" />
+
+<br id="3fcd65dd82be80cc830bd97367955674" />
+
+<br id="3fcd65dd82be80eabc16f8023478ac63" />
+
+<br id="3fcd65dd82be806bb2f5ee74f9677ab3" />
+
+<br id="3fcd65dd82be80d6a71cd7a441abb2c8" />
+
+<br id="3fcd65dd82be801c9da8fe151fe745f7" />
+
+<br id="3fcd65dd82be802bb52bf50a725b971b" />
+
+<br id="3fcd65dd82be80aab8d7d7e0998248b6" />
+
+<br id="3fcd65dd82be801788d9d85ddcb90668" />
