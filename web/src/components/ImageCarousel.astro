@@ -18,7 +18,12 @@ const multiple = slides.length > 1;
                     <div class="carousel-slide" data-index={i}>
                         <figure class="carousel-panel glow-panel">
                             <div class="carousel-frame glow-panel-body">
-                                <img src={slide.url} alt={slide.alt} style={imageScaleStyle(slide.scale)} data-lightbox />
+                                <img
+                                    src={slide.url}
+                                    alt={slide.alt}
+                                    style={imageScaleStyle(slide.scale)}
+                                    data-lightbox
+                                />
                             </div>
                         </figure>
                     </div>

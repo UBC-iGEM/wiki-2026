@@ -379,7 +379,7 @@ function malformedColab(problem: string): ExporterError {
     return new ExporterError(
         `Colab component could not be understood: ${problem}.` +
             componentDocSuggestion(
-                "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link",
+                "https://app.notion.com/p/ubcigem/Wiki-Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#3fad65dd82be80a3b8eef58c6bf850ff",
             ),
         ["malformed content"],
     );
@@ -483,7 +483,7 @@ function malformedPlatemap(problem: string): ExporterError {
     return new ExporterError(
         `Platemap component could not be understood: ${problem}.` +
             componentDocSuggestion(
-                "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link",
+                "https://app.notion.com/p/ubcigem/Wiki-Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#3fad65dd82be807881e6d57ae4ebb25b",
             ),
         ["malformed content"],
     );
