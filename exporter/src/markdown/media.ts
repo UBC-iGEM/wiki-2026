@@ -61,7 +61,7 @@ export function mediaFileName(block: MediaBlock): string {
 }
 
 /** A `{scale=<percent>}` argument in an image caption, like `{scale=-35}` or `{scale = 20%}`. */
-const SCALE_ARG = /\{\s*scale\s*=\s*([+-]?\d+(?:\.\d+)?)\s*%?\s*\}/i;
+const SCALE_ARG = /\{\s*(?:scale|size)\s*=\s*([+-]?\d+(?:\.\d+)?)\s*%?\s*\}/i;
 
 /**
  * Splits an image caption into its alt text and the percentage scale given by a {@link SCALE_ARG}, defaulting to 0.

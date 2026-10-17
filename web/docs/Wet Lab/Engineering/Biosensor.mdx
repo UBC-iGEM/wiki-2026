@@ -32,27 +32,51 @@ path: "Wet Lab/Engineering/Biosensor"
 
 # <a id="3fcd65dd82be8007a578d37cd26249d0" />Characterization
 
+## <a id="3fcd65dd82be80ebbe62fd217075e479" />Plasmid Retention
+
+<details>
+  <summary><a id="3fcd65dd82be80969d29c3358f7dafb6" />Iteration 1</summary>
+
+  ### <a id="3fcd65dd82be800a9691d6fe3ef03649" />Iteration 1 [Plasmid Retention Assay v1](/ubc-vancouver/wet-lab/lab-notebook/plasmid-retention-assay-v1)
+</details>
+
+<details>
+  <summary><a id="3fcd65dd82be80bda113cf1ed4b4478b" />Iteration 2</summary>
+
+  ### <a id="3fcd65dd82be800aa42ed9ca516bda0e" />Iteration 2 [Plasmid Retention Assay v2](/ubc-vancouver/wet-lab/lab-notebook/plasmid-retention-assay-v2)
+</details>
+
 ## <a id="3fcd65dd82be80ff8da3c4247b714f89" />Growth Curve
+
+<a id="3fcd65dd82be80e186f2dec24c9b686b" />
+
+<Dbtl>
+  <Fragment slot="design">
+    <a id="3fcd65dd82be80079145cf84a8e845cc" />Before validating our reporter strains, we needed to first generate a curve that measures the baseline growth kinetics of the WT Epi300 strain compared to the biosensor strains. This is helpful for determining the metabolic burden of the plasmid backbone as well as baseline GFP expression.
+
+    <a id="3fcd65dd82be80009fabf31c86522857" />Additionally, for our microfluidic chip application, we needed to characterize bacterial growth and baseline GFP expression at ambient temperature compared to 37˚C.
+  </Fragment>
+
+  <Fragment slot="build">
+    <a id="3fcd65dd82be80058160d278e881f463" />We adapted a growth curve protocol for an automated workflow using the BMG PHERAstar FSX microplate reader to measure optical density at 600 nm and sfGFP fluorescence (485 nm excitation, 510 nm emission).
+
+    <a id="3fcd65dd82be800e91c8c676e59e68ef" />We considered all necessary control conditions to elucidate metabolic burden, including a WT Epi300 strain for baseline growth kinetics, Epi300 transformed with the reporter backbone to determine metabolic burden of the plasmid, as well as the RecA and CpxP biosensor strains to determine the impact of baseline GFP expression on growth.
+  </Fragment>
+
+  <Fragment slot="test">
+    <a id="3fcd65dd82be80a887aed3060df0af91" />We measured OD600 and fluorescence intensity throughout a 24-hour timeframe. For the first 12 hours, we took measurements every 30 minutes for the curve generated at 37˚C and every 60 minutes for the curve generated at ambient temperature. For the last 12 hours, we took measurements every 60 minutes for both curves.
+  </Fragment>
+
+  <Fragment slot="learn">
+    <a id="3fcd65dd82be80729cd8cc1a1b367db7" />We observed that introducing the backbone decreases the growth maximum relative to WT Epi300. However, biosensor growth remains similar at 37˚C and 22˚C. Additionally, we observed basal GFP expression in the CpxP biosensor strain. However, this basal  expression ceases at 22˚C.
+
+    <a id="3fcd65dd82be80da8b12fc40ccc377fa" />Overall, the generated growth curve will serve as a standard to normalize our fluorescent readouts in downstream reporter validation assays, accounting for the impact of bacterial density on GFP expression.
+  </Fragment>
+</Dbtl>
 
 <br id="3fcd65dd82be80029931dfcc589cc7d8" />
 
-## <a id="3fcd65dd82be8044b241c20cb6e62775" />Plasmid Retention
-
-<details>
-  <summary><a id="3fcd65dd82be800d8b0fe1f026963266" />Iteration 1</summary>
-
-  ### <a id="3fcd65dd82be80b58a17dbd33c4d1ea2" />Iteration 1 [Plasmid Retention Assay v1](/ubc-vancouver/wet-lab/lab-notebook/plasmid-retention-assay-v1)
-</details>
-
-<details>
-  <summary><a id="3fcd65dd82be80c0a2eadda927a15d09" />Iteration 2</summary>
-
-  ### <a id="3fcd65dd82be80af861bf93b5a7ba588" />Iteration 2 [Plasmid Retention Assay v2](/ubc-vancouver/wet-lab/lab-notebook/plasmid-retention-assay-v2)
-</details>
-
 <br id="3fcd65dd82be80a89fe2ce6acd7c98db" />
-
-<br id="3fcd65dd82be80acb323c31e9f162681" />
 
 # <a id="3fcd65dd82be803397e6c89a77ff59f8" />Reporter Validation
 
