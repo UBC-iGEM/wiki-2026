@@ -1,0 +1,165 @@
+---
+
+---
+
+<section class="ast-diagram">
+    <h2>How does microfluidics-based AST work?</h2>
+    <p class="diagram-caption">Patient sample and antibiotic are loaded into chamber A</p>
+
+    <div class="diagram-body">
+        <div class="diagram-col diagram-col--left">
+            <h3>Hydrogel channel</h3>
+            <p>Allows antibiotics to diffuse slowly in 2 - 3 hours, while preventing cells from passing through</p>
+        </div>
+
+        <!-- Placeholder for a future 3D model of the chip. -->
+        <div class="model-placeholder">3D img placeholder</div>
+
+        <div class="diagram-col diagram-col--right">
+            <div class="chamber">
+                <h3>Chamber A</h3>
+                <p>Where patient sample and antibiotic interacts, and antibiotic degradation occurs within 1-4 hours</p>
+            </div>
+            <div class="chamber">
+                <h3>Chamber B</h3>
+                <p>Biosensor E. coli interacts with intact/degraded antibiotic</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="legend">
+        <p><mark class="legend-susceptible">Fluorescent output</mark> = sample is susceptible</p>
+        <p>No fluorescence = sample is <mark class="legend-resistant">resistant</mark></p>
+    </div>
+</section>
+
+<style>
+    .ast-diagram {
+        margin: 0 auto;
+        max-width: 70rem;
+        padding: 4rem 2rem;
+    }
+
+    .ast-diagram h2 {
+        color: var(--color-periwinkle);
+        font-family: var(--font-geist);
+        font-size: 36px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin: 0 0 2rem;
+    }
+
+    /* Extra .ast-diagram qualifier needed to out-specificity MainLayout's
+       global ".page-content :global(p)" rule, which otherwise overrides
+       this margin (and would un-center it). */
+    .ast-diagram .diagram-caption {
+        color: var(--color-periwinkle);
+        font-family: var(--font-geist);
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.4;
+        margin: 0 auto 3rem;
+        max-width: 28rem;
+        text-align: center;
+        width: fit-content;
+    }
+
+    .diagram-body {
+        align-items: stretch;
+        display: grid;
+        gap: 2rem;
+        grid-template-columns: 1fr auto 1fr;
+    }
+
+    .diagram-col {
+        display: flex;
+        flex-direction: column;
+        gap: 0rem;
+        margin-left: 4rem;
+        margin-right: 4rem;
+    }
+
+    .diagram-col--left {
+        justify-content: center;
+        text-align: right;
+    }
+
+    .diagram-col--right {
+        justify-content: space-between;
+    }
+
+    .diagram-col h3,
+    .chamber h3 {
+        color: var(--color-periwinkle);
+        font-family: var(--font-geist);
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0 0 0.5rem;
+    }
+
+    .diagram-col p,
+    .chamber p {
+        color: var(--color-periwinkle);
+        font-family: var(--font-source-serif-4);
+        font-size: 16px;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    .model-placeholder {
+        align-items: center;
+        background-color: #ffffff;
+        color: var(--color-ebony-clay);
+        display: flex;
+        font-family: var(--font-geist);
+        font-size: 20px;
+        font-weight: 700;
+        justify-content: center;
+        min-height: 24rem;
+        padding: 1rem;
+        text-align: center;
+        width: min(20rem, 40vw);
+    }
+
+    .legend {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 3rem;
+        text-align: center;
+    }
+
+    .legend p {
+        color: var(--color-periwinkle);
+        font-family: var(--font-geist);
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .legend mark {
+        background-color: var(--color-fluorescence);
+        color: var(--color-ebony-clay);
+        padding: 0 0.3rem;
+    }
+
+    .legend mark.legend-resistant {
+        background-color: var(--color-orchid);
+    }
+
+    @media (max-width: 750px) {
+        .diagram-body {
+            grid-template-columns: 1fr;
+        }
+
+        .diagram-col--left,
+        .diagram-col--right {
+            text-align: center;
+        }
+
+        .model-placeholder {
+            margin: 0 auto;
+            width: 100%;
+        }
+    }
+</style>
