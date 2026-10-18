@@ -2,7 +2,7 @@ import { type Id, PageId } from "../notion";
 import { ExporterError, isExporterErr } from "../utils";
 import type { ConvertContext } from "./blocks";
 import { citation } from "./citations";
-import { pageMention, parseNotionUrl, resolveHref } from "./link";
+import { pageMention, parseNotionUrl, resolveHref, warnGoogleLink } from "./link";
 import { jsxText } from "./mdx";
 import type { RichTextItemResponse } from "@notionhq/client";
 import type { PhrasingContent, Text } from "mdast";
@@ -14,6 +14,9 @@ import type { PhrasingContent, Text } from "mdast";
  * - `space`: a plain space, for places that cannot hold a line break (e.g. headings)
  */
 export type NewlineMode = "break" | "jsx" | "space";
+
+/** Terms that should always be italicized in prose. Keep this list easy to extend. */
+const ITALIC_TERMS = ["E. coli"];
 
 /**
  * @property cite the literature entry linked text cites, by citation key, and the block the text is in
@@ -49,6 +52,7 @@ export async function convertRichText(
 ): Promise<PhrasingContent[]> {
     const leaves = (await Promise.all(items.map((item) => itemLeaves(item, ctx)))).flat();
     trimLeaves(leaves);
+    italicizeTerms(leaves);
 
     const newline_node: PhrasingContent =
         newline === "break" ? { type: "break" } : newline === "jsx" ? jsxText("br") : { type: "text", value: " " };
@@ -100,6 +104,7 @@ async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Prom
             let node: PhrasingContent;
             switch (mention.type) {
                 case "link_mention":
+                    warnGoogleLink(mention.link_mention.href, ctx);
                     node = {
                         type: "link",
                         url: mention.link_mention.href,
@@ -107,6 +112,7 @@ async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Prom
                     };
                     break;
                 case "link_preview":
+                    warnGoogleLink(mention.link_preview.url, ctx);
                     node = {
                         type: "link",
                         url: mention.link_preview.url,
@@ -141,6 +147,81 @@ async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Prom
                     return [];
             }
             return [{ node, props }];
+        }
+    }
+}
+
+/**
+ * Italicizes configured terms across adjacent text leaves, preserving each leaf's own annotations.
+ * Non-text leaves (including inline code and newlines) break a match.
+ */
+function italicizeTerms(leaves: Leaf[]): void {
+    if (ITALIC_TERMS.length === 0) return;
+
+    const escaped = ITALIC_TERMS.map((term) =>
+        term
+            .trim()
+            .split(/\s+/)
+            .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+            .join("\\s+"),
+    ).filter(Boolean);
+    if (escaped.length === 0) return;
+
+    const matcher = new RegExp(`(?<![\\p{L}\\p{N}])(?:${escaped.join("|")})(?![\\p{L}\\p{N}])`, "giu");
+    let start = 0;
+    while (start < leaves.length) {
+        const leaf = leaves[start]!;
+        if (leaf.node === "newline" || leaf.node.type !== "text") {
+            start++;
+            continue;
+        }
+
+        let end = start;
+        while (end < leaves.length) {
+            const next_node = leaves[end]!.node;
+            if (next_node === "newline" || next_node.type !== "text") break;
+            end++;
+        }
+        const run = leaves.slice(start, end);
+        const text = run.map(({ node }) => (node !== "newline" && node.type === "text" ? node.value : "")).join("");
+        const matches = [...text.matchAll(matcher)].map((match) => ({
+            start: match.index!,
+            end: match.index! + match[0].length,
+        }));
+
+        if (matches.length > 0) {
+            const replacement: Leaf[] = [];
+            let run_offset = 0;
+            for (const current of run) {
+                if (current.node === "newline" || current.node.type !== "text") continue;
+                const value = current.node.value;
+                const leaf_start = run_offset;
+                const leaf_end = leaf_start + value.length;
+                const cuts = new Set<number>([0, value.length]);
+                for (const match of matches) {
+                    if (match.start > leaf_start && match.start < leaf_end) cuts.add(match.start - leaf_start);
+                    if (match.end > leaf_start && match.end < leaf_end) cuts.add(match.end - leaf_start);
+                }
+
+                const boundaries = [...cuts].sort((a, b) => a - b);
+                for (let i = 0; i < boundaries.length - 1; i++) {
+                    const part_start = boundaries[i]!;
+                    const part_end = boundaries[i + 1]!;
+                    const absolute_start = leaf_start + part_start;
+                    const is_italic_term = matches.some(
+                        (match) => absolute_start >= match.start && absolute_start < match.end,
+                    );
+                    replacement.push({
+                        node: { type: "text", value: value.slice(part_start, part_end) },
+                        props: is_italic_term ? { ...current.props, italic: true } : current.props,
+                    });
+                }
+                run_offset = leaf_end;
+            }
+            leaves.splice(start, run.length, ...replacement);
+            start += replacement.length;
+        } else {
+            start = end;
         }
     }
 }
