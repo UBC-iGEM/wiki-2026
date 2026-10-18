@@ -2,6 +2,7 @@
 import { ContentMap, type JsonMap } from "@exporter/map";
 import config from "../../docs/content_map.json";
 import { BASE_URL } from "../utils/base-url";
+import logoSvg from "../../public/assets/hero/icon.svg?raw";
 
 const content_map = ContentMap.fromJSON(config as JsonMap);
 
@@ -21,6 +22,8 @@ const static_links = content_map.static_links;
 ---
 
 <nav class="primary" aria-label="Primary navigation">
+    <a class="home-logo" href={BASE_URL} aria-label="Home" set:html={logoSvg} />
+
     <button class="chip menu-toggle" type="button" aria-expanded="false" aria-controls="nav-sections">
         <span>
             <svg class="menu-icon" viewBox="0 0 16 12" aria-hidden="true">
@@ -130,12 +133,39 @@ const static_links = content_map.static_links;
 
 <style>
     nav.primary {
-        --chip-height: 2.25rem;
+        --chip-height: 2.5rem;
         --chip-skew: 20deg;
+        align-items: center;
         background: var(--color-ebony-clay);
         box-sizing: border-box;
+        display: flex;
+        flex-wrap: wrap;
         font-family: var(--font-geist);
+        gap: 1.25rem;
         padding: 1rem var(--page-gutter);
+    }
+
+    /* Pinned to the left, while the chips are pushed to the right */
+    .home-logo {
+        display: block;
+        flex: none;
+        height: calc(var(--chip-height) * 1.25);
+        transition: opacity 120ms ease;
+    }
+
+    .home-logo :global(svg) {
+        display: block;
+        height: 100%;
+        width: auto;
+    }
+
+    .home-logo:hover {
+        opacity: 0.8;
+    }
+
+    .home-logo:focus-visible {
+        outline: 2px solid var(--color-lime-yellow);
+        outline-offset: 3px;
     }
 
     nav.primary ul {
@@ -146,6 +176,7 @@ const static_links = content_map.static_links;
 
     .top-level {
         display: flex;
+        flex: 1;
         flex-wrap: wrap;
         gap: 1.25rem;
         justify-content: flex-end;
@@ -280,17 +311,22 @@ const static_links = content_map.static_links;
     /* The layout stacks its sidebar at this width too, so the bar collapses with it */
     @media (max-width: 1000px) {
         nav.primary {
+            gap: 0 1rem;
             padding: 0.75rem var(--page-gutter);
         }
 
+        /* Shares the first row with the logo */
         .menu-toggle {
             display: block;
+            flex: 1;
+            width: auto;
         }
 
         /* Behind the toggle, so the sections stop owning the top of every page.
            Qualified to beat the margin reset on `nav.primary ul` */
         nav.primary .top-level {
             display: none;
+            flex-basis: 100%;
             flex-direction: column;
             gap: 0.6rem;
             justify-content: flex-start;

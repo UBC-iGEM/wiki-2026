@@ -15,7 +15,6 @@ const { attrs, headings } = Astro.props;
 
 const current_page_path = attrs.path;
 const parent_db_path = new PagePath(PagePath.fromString(attrs.path).components().slice(0, 2)).toString();
-const display_date = formatDate(attrs.date);
 
 function formatDate(value: string | undefined): string | undefined {
     if (!value || Number.isNaN(Date.parse(value))) return;
