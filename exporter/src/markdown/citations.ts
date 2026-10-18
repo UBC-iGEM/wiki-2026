@@ -57,6 +57,13 @@ function isCite(node: Nodes | undefined): node is CiteNode {
 }
 
 /**
+ * Whether `node` is a citation that shows as numbers in brackets, rather than prose.
+ */
+export function isNumberedCite(node: Nodes | undefined): node is CiteNode {
+    return isCite(node) && !node.data.cite.prose;
+}
+
+/**
  * Numbers the entries a page cites in the order they are first cited, and adds the page's bibliography at its end.
  */
 export function numberCitations(tree: Root, ctx: ConvertContext): void {

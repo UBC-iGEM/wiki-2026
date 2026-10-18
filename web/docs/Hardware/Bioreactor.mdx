@@ -99,7 +99,7 @@ title: "Bioreactor"
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3f9d65dd82be8023b7b3e7264488d2d2" />The goal behind building iteration 1 was to create a simple, operational version of the bioreactor to demonstrate that the core components are functional. Only the basic elements were incorporated: aeration, agitation, and sampling. This iteration was intended to be a rapid prototype, aiming to expose any design flaws from the start before complex hardware is added. Not only does it ensure a stable foundation of the design, but it also proves that a simple and compact bioreactor can be constructed without the need of highly technical equipment.
+    <a id="3f9d65dd82be8023b7b3e7264488d2d2" />The goal behind building iteration 1 was to create a simple, operational version of the bioreactor to demonstrate that the core elements are functional. The elements incorporated include: aeration, agitation, and sampling. This iteration was intended to be a rapid prototype, aiming to expose any design flaws from the start before complex hardware is added. The prototype not only provides a baseline on the foundation of the design, but it also proves that a simple and compact bioreactor can be constructed without the need of highly technical equipment. A system that can be built without much space, specialized equipment, or technical support, is one that other teams can realistically reproduce and build on, thus contributing back to the iGEM community. The value also extends beyond the competition. If a working bioreactor can be assembled from common parts and a desktop 3D printer, rural areas and clinics that wish to implement the full FAST device can grow the bacteria the device requires on site, without depending on expensive laboratory infrastructure.
 
     <a id="3f9d65dd82be8066b18be5938f1b4b30" />Assessment of the design was conducted against the following questions:
 
@@ -111,7 +111,7 @@ title: "Bioreactor"
 
     <a id="3f9d65dd82be8093829ddbb0b5913884" />**Aeration:** Using a sparger is most optimal for aeration due to (...)
 
-    <a id="3f9d65dd82be8090956fe4bb93506601" />**Agitation:** Based on previous iGEM studies and our work, we found that using an impeller or bubbling was difficult to implement. This is due to the high amount of wires and tubing required for the system to operate. By using a magnetic stirring bar and plate, it removes the need of an additional wired input into the vessel. Powering the magnetic stirring bar, the magnetic plate exists as an external system to the bioreactor.
+    <a id="3f9d65dd82be8090956fe4bb93506601" />**Agitation:** Based on previous iGEM studies and our work, we found that using an impeller or bubbling was difficult to implement. This is due to the high amount of wires and tubing required for the system to operate. A simple and efficient fix is using magnetic stirring. This is powered by a magnetic plate, external to the bioreactor system, that couples with a magnetic stirring bar inside the vessel.
 
     <a id="3f9d65dd82be80bf8192f4faa39b3cbb" />**Sampling:** Referencing to the successes of iGEM team UBC Medusa in 2025, the same sampling method was employed. A dedicated tubing path is created, where the bacteria is only exposed to the external environment when the tube is opened and connected to a pipette for sampling. This creates a rather simple methodology of taking samples for OD measurements at a controlled volume.
   </Fragment>
@@ -129,19 +129,19 @@ title: "Bioreactor"
 
     - <a id="3f9d65dd82be8041b30ec33319fb9b8c" />The overall structure held together and accommodated the aeration, agitation, and sampling components in a single, compact assembly.
     - <a id="3f9d65dd82be8069b9d1c8d3690c7ec4" />All off-the-shelf parts were sourced from easy-to-access manufacturers, such as McMaster-Carr. Unique components were fabricated in-house via FDM manufacturing with a Bambu Lab P1S 3D printer.
-    - <a id="3f9d65dd82be8005af2ded3ffa81a8c6" />Sampling proved to work and was a simple and effective process.
-    - <a id="3f9d65dd82be80b0bd22ec6f48bc5cf7" />Electronics fit inside the housing with ease, and at no point in the experiment did it risk tipping over.
+    - <a id="3f9d65dd82be8005af2ded3ffa81a8c6" />Sampling proved to work and was a simple and effective process. No leakage was observed during the process of extracting a small volume and transferring to a cuvette. This process, including OD measurement time, took roughly 4 minutes.
+    - <a id="3f9d65dd82be80b0bd22ec6f48bc5cf7" />The electronics compartment occupied nearly the same footprint as the mason jar vessel. No tipping occurred during experimentation, suggesting that the center of gravity was not offset by the electronics.
 
     <a id="3f9d65dd82be80d89fb2cfc2b8a8ff52" />What did not work:
 
     - <a id="3f9d65dd82be80fab39cdff01bdb176c" />There was a bit of leakage observed at the lid-to-cap interface, specifically where the 3D-printed lid met the threads on the mason jar. This resulted in small bits of solution leaking out when testing the vessel with water. Although this issue was mitigated during experimentation by sealing the edges with Parafilm, it is not a long-term solution that should be kept in further iterations. Leakage is a significant concern for a vessel intended to hold a bacterial culture, since it risks both contamination of the bacteria and the user.
-    - <a id="3f9d65dd82be809e90edf65ac071505c" />While all electronic components fit inside the electronics holder, the interior was rather tight, making it difficult to maneuver components. This design is usable for iteration, as it has sufficient space for the level of complexity, but this could pose a problem for further iterations that will incorporate increasingly more parts.
+    - <a id="3f9d65dd82be809e90edf65ac071505c" />While all electronic components fit inside the electronics compartment, the interior was rather tight, making it difficult to maneuver components. This design is usable for iteration, as it has sufficient space for the level of complexity, but this could pose a problem for further iterations that will incorporate increasingly more parts.
   </Fragment>
 
   <Fragment slot="learn">
     <a id="3f9d65dd82be80e1b244e4cd9a38da08" />Based on findings from iteration 1, iteration 2 will focus on improving the problems identified from testing and incorporate more aspects of monitoring for the bioreactor.
 
-    <a id="3f9d65dd82be801d9416c0c5b4413e8e" />To improve the sealing at the interfaces, a tighter seal can be created by refining the model of the threads in the 3D-printed part. This will be done through physical design, but also by adjusting the process of manufacturing: improving print quality by slowing down print speed, adjusting wall thicknesses and infill, as well as the final finish of the product. By creating a tighter lock with fewer gaps, there is less room for both liquids and gases to pass through. The size of the electronics holder will be expanded to house additional components.
+    <a id="3f9d65dd82be801d9416c0c5b4413e8e" />To improve the sealing at the interfaces, a tighter seal can be created by refining the model of the threads in the 3D-printed part. This will be done through physical design, but also by adjusting the process of manufacturing: improving print quality by slowing down print speed, adjusting wall thicknesses and infill, as well as the final finish of the product. By creating a tighter lock with fewer gaps, there is less room for both liquids and gases to pass through. The size of the electronics compartment will be expanded to house additional components.
   </Fragment>
 </Dbtl>
 

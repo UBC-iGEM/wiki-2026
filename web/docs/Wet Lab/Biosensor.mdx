@@ -3,9 +3,7 @@ type: "page"
 title: "Biosensor"
 ---
 
-<a id="3fad65dd82be808ca4dbd348051a966f" />\[Summary + Explanation of aims: 3-4 sentences]
-
-<a id="3fad65dd82be8004a5b2fcd1fd2bde49" />We started by determining 1) the different growth rates between WT (Wild Type) EPI300 *E. coli*, and 2) the basal fluorescence of each culture. This information allowed us to design first set of fluorescence and OD measuring experiments. The first tests were done to screen through a variety of minimal inhibitory concentrations (MIC) in order to determine an optimal antibiotic concentration range to try. These took place over an extremely broad antibiotic concentration range, and allowed us to narrow down our antibiotic concentration values to a smaller range.
+<a id="3fad65dd82be808ca4dbd348051a966f" />We started by determining 1) the different growth rates between WT (Wild Type) EPI300 *E. coli*, and 2) the basal fluorescence of each culture. This information allowed us to design first set of fluorescence and OD measuring experiments. The first tests were done to screen through a variety of minimal inhibitory concentrations (MIC) in order to determine an optimal antibiotic concentration range to try. These took place over an extremely broad antibiotic concentration range, and allowed us to narrow down our antibiotic concentration values to a smaller range.
 
 <a id="3fad65dd82be806db05decded4c5c383" />Our next goals were to characterize dose-response curves, including both OD and fluorescence values after antibiotic stimulation. The end goal for these experiments was to produce a proper calibration curve for our biosensor.
 
@@ -33,8 +31,6 @@ title: "Biosensor"
 
 <a id="3fad65dd82be808c9b7cec57482f7473" />However, building the biosensor was only our first step. We later performed characterization experiments with the biosensor strains in order to better understand their capabilities and limits.
 
-<br id="3fad65dd82be802eaa45eb35a2d7dcce" />
-
 # <a id="3fad65dd82be80178e5af6c8962dca2f" />Characterization
 
 ## <a id="3fad65dd82be8083ab32c2c0a5db3547" />**Growth Curve Experiment**
@@ -53,19 +49,41 @@ title: "Biosensor"
 
 <a id="3fcd65dd82be80e389c1dd17af4c6744" />**Figure 2.** Normalized fluorescence intensity values throughout 25 hours of growth, at 37˚C (left) or room temperature (right).
 
-<a id="3fcd65dd82be80f1836dfc9d65333c73" />We also performed plasmid retention tests to study whether the transformed plasmids are stably retained. This was completed by plating biosensor strains and WT bacteria in various concentrations of Cm LB plates. The result of these experiments showed that it was essential to have Cm selection pressure to retain our plasmids. We used DBTL to improve our ongoing MIC titration experiments, including better data normalization informed by the base fluorescence we observed.
-
-<br id="3fad65dd82be8047b725ff7085a8a22a" />
+<a id="3fcd65dd82be80f1836dfc9d65333c73" />We also performed plasmid retention tests to study whether the transformed plasmids are stably retained. This was completed by plating biosensor strains and WT bacteria in various concentrations of Cm-LB plates. The result of these experiments showed that it was essential to have Cm selection pressure to retain our plasmids. We used this in our DBTL workflow to improve our ongoing MIC titration experiments, including using better data normalization informed by the base fluorescence we observed.
 
 ## <a id="3fad65dd82be8079befbc4c2621d5550" />**Plasmid Retention Experiment**
 
-<br id="3fad65dd82be8078986aceb67f09dcd2" />
+<a id="3fad65dd82be8078986aceb67f09dcd2" />To determine whether Cm selection could be removed during the biosensor experiments, we tested how long the CpxP and RecA strains could retain their reporter plasmids after transfer into Cm-free LB. Removing Cm would be useful for removing the confounding effect that it has on the bacterial stress response, but requiring that the biosensor plasmids remained stable without selection.
+
+<a id="3fdd65dd82be80dcb28ee7850aaeb746" />To test plasmid stability, CpxP and RecA cultures were grown with or without Cm for up to two hours then plated on LB-Cm agar plates. Because the reporter plasmids confer Cm resistance, growth on LB-Cm plates indicated plasmid retention, while WT EPI300 served as a negative control.
+
+<a id="3fdd65dd82be803e9904e4dd89054d4e" />As expected, biosensor strains maintained in LB-Cm grew on LB-Cm plates while WT EPI300 did not. In contrast, biosensors grown without Cm showed no detectable growth after one hour, indicating they rapidly lose their plasmid. These results demonstrated that Cm selection was necessary to maintain the biosensor construct during the experiment, despite its potential influence on the bacterial stress response.
+
+<a id="3fdd65dd82be8017ae68e0a615b9710b" />
+
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/ab73a5567986528585d7aa232bcebdcb.avif" alt="" scale={0} align="left" />
+
+<a id="3fdd65dd82be80cb9513c6ed5cdb189d" />**Figure 3**. Cultures grown in LB-Cm over 3 time intervals, plated on LB-Cm agar plates and incubated for \~18 hours at 37˚C.
+
+<a id="3fdd65dd82be80299246f0e79af600cc" />
+
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/9984330a4e755c7d9f89a1a3696ef8de.avif" alt="" scale={0} align="left" />
+
+<a id="3fdd65dd82be80308d5ae0c6b5707438" />**Figure 4**. Cultures grown in LB over 3 time intervals, plated on LB-Cm agar plates and incubated for \~18 hours at 37˚C.
 
 ## <a id="3fad65dd82be807eb8b0d73c3d0f68ec" />**MIC Titration Experiments**
 
-<br id="3fad65dd82be804bae28fbbe65507270" />
+<a id="3fad65dd82be804bae28fbbe65507270" />Before characterizing fluorescence responses, we need to determine the antibiotic concentrations that inhibited growth of the CpxP and RecA biosensor strains. Establishing the minimum inhibitory concentration (MIC) was important because it identifies the concentration range in which the biosensor could remain viable while still experiencing antibiotic stress, so that we can select sub-inhibitory concentrations to later determine the relationship between fluorescence response and antibiotic concentrations.
 
-<br id="3fad65dd82be80ed812dd5ff39048c38" />
+<a id="3fdd65dd82be80d9821fdb90bd390f41" />To estimate the MIC, CpxP and RecA were exposed ot two-fold serial dilutions of gentamicin, tobramycin, and amoxicillin, and growth after approximately 24 hours was assessed using OD600.
+
+<a id="3fdd65dd82be80919526e64a35ba1a54" />Across the three antibiotic concentrations tested, both biosensor strains showed provisional MIC ranges from approximately 4-8 µg/ml. This range was then used to guide later biosensor titration experiments investigating whether sub-inhibitory antibiotic exposure could produce a measurable fluorescent stress response.
+
+<a id="3fdd65dd82be808eaceedb8164fbbd5c" />
+
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/61623405c6d95ca686f2d530bda5cd87.avif" alt="" scale={0} align="left" />
+
+<a id="3fdd65dd82be80c7a0effb74ebdd0d48" />**Figure 5**. Change in OD600 after 24 hour incubation for RecA and CpxP with varying antibiotic concentrations.
 
 # <a id="3fad65dd82be80c5a420c96e1b62a059" />Validation
 
@@ -85,10 +103,10 @@ title: "Biosensor"
 
 <Img url="https://static.igem.wiki/teams/6279/wiki/assets/220cc0f2bcd95ca595160d5df2c62a7e.avif" alt="" scale={0} align="left" />
 
-<a id="3fcd65dd82be80eea501d24d515d5bd4" />**Figure 3**. Fluorescence intensity relative to the untreated growth controls across concentration titrations.
+<a id="3fcd65dd82be80eea501d24d515d5bd4" />**Figure 6**. Fluorescence intensity relative to the untreated growth controls across concentration titrations.
 
-<a id="3fcd65dd82be80f4a8c1c49bb96416e3" />Future broad screening experiments allowed us to narrow conditions tested in later-dose response experiments and ultimately informed the design of our factorial design approach, where variables like starting OD, antibiotic concentration, and exposure time could be assessed more systematically.
+<a id="3fcd65dd82be80f4a8c1c49bb96416e3" />Future broad screening experiments allowed us to narrow down the conditions tested in later-dose response experiments and ultimately informed the design of our factorial design approach, where variables like starting OD, antibiotic concentration, and exposure time could be assessed more systematically.
 
-<a id="3fcd65dd82be804aa46cd01a62e0f242" />The greater goal of this characterization was to determine whether fluorescence from our CpxP and RecA biosensors could eventually serve as meaningful indicators of bacterial response to antibiotics. Although preliminary experiments did not produce consistent dose-response relationships across every conditions, they established experimental conditions and limitations of our system and provided a foundation for future optimization towards our rapid antibiotic susceptibility testing platform.
+<a id="3fdd65dd82be800c87eae5677662dd9e" />The greater goal of this characterization was to determine whether fluorescence from our CpxP and RecA biosensors could eventually serve as meaningful indicators of bacterial response to antibiotics. Although preliminary experiments did not produce consistent dose-response relationships across every conditions, they established experimental conditions and limitations of our system and provided a foundation for future optimization towards our rapid antibiotic susceptibility testing platform.
 
 <br id="3fcd65dd82be807cb1f5c4189b0a5cc8" />
