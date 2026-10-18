@@ -213,8 +213,20 @@ import howItWorksChipSvg from "../../public/assets/hero/how-it-works-chip.svg?ra
         }
 
         .diagram-col--right {
+            gap: 1rem;
             grid-column: auto;
+            margin: 0;
             text-align: center;
+        }
+
+        /* Stacked full width, so the bubble can't spill past the column
+           edges: pad the text instead and draw the bubble flush with that */
+        .info-trigger {
+            padding: 1rem 1.25rem;
+        }
+
+        .info-bubble-art {
+            inset: 0;
         }
 
         .chip-visual {
