@@ -60,7 +60,7 @@ export function mediaFileName(block: MediaBlock): string {
     return segments.findLast((segment) => segment.includes(".")) ?? segments.pop()!;
 }
 
-/** A `{...}` group of arguments in an image caption, like `{scale=20}` or `{scale=-35%, align=centre}`. */
+/** A `{...}` group of arguments in an image caption, like `{scale=20}` or `{scale=-35%, align=left}`. */
 const CAPTION_ARGS = /\{([^{}]*)\}/g;
 
 /** A `scale=<percent>` argument, like `scale=-35` or `size = 20%`. */
@@ -73,7 +73,7 @@ export interface ImageCaption {
     alt: string;
     /** The percentage scale given by a {@link SCALE_ARG}, defaulting to 0. */
     scale: number;
-    /** The alignment given by an {@link ALIGN_ARG}, defaulting to left. Only standalone images use it. */
+    /** The alignment given by an {@link ALIGN_ARG}, defaulting to centre. Only standalone images use it. */
     align: "left" | "center";
 }
 
@@ -84,7 +84,7 @@ export interface ImageCaption {
  */
 export function parseImageCaption(block: ImageBlockObjectResponse, ctx: ConvertContext): ImageCaption {
     const caption = asPlainText(block.image.caption);
-    const parsed: ImageCaption = { alt: caption.replace(CAPTION_ARGS, "").trim(), scale: 0, align: "left" };
+    const parsed: ImageCaption = { alt: caption.replace(CAPTION_ARGS, "").trim(), scale: 0, align: "center" };
 
     const args = [...caption.matchAll(CAPTION_ARGS)].flatMap((group) => group[1]!.split(","));
     for (const arg of args.map((arg) => arg.trim()).filter((arg) => arg !== "")) {
@@ -94,7 +94,7 @@ export function parseImageCaption(block: ImageBlockObjectResponse, ctx: ConvertC
         else if (align) parsed.align = align[1]!.toLowerCase() === "left" ? "left" : "center";
         else
             new ExporterError(
-                `Unknown image argument {${arg}} was ignored; expected one like {scale=-35%} or {align=centre}.`,
+                `Unknown image argument {${arg}} was ignored; expected one like {scale=-35%} or {align=left}.`,
                 ["malformed content"],
             ).warn(blockContext(ctx, block));
     }

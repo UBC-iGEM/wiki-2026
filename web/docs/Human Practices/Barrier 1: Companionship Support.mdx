@@ -15,7 +15,11 @@ title: "Barrier 1: Companionship Support"
 
 <a id="3ded65dd82be80a28c9ee6941ae617fd" />Putting these together, we understood there's much more to living with AMR than the clinical picture. Trying to put ourselves in the shoes of someone who just received the diagnosis, we realized we needed to build them a safe place, somewhere they could share their experience, somewhere that tells the story in their own voice rather than ours, somewhere people could actually live the experience rather than just read about it. . And, because Dr. Lester told us healthcare providers sometimes simply forget to share enough information with a patient — and that gap causes real stress — we created a tab for patients that they can use for their consults: A set of questions that they might want to ask if unsure where to start.
 
-<a id="3fdd65dd82be80b58ccbc813239c76f2" />## Methodology
+<br id="3fdd65dd82be80cc8350c9cbf4c34470" />
+
+<a id="3fdd65dd82be8076b2e2e4b3774e5c53" />**Methodology**
+
+<br id="3fdd65dd82be80b9a711fa52936eb18a" />
 
 <a id="3ded65dd82be805b9e28d54f0ede9e6e" />Rather than defaulting to a generic AMR-awareness site, each section of the site was scoped to one of these evidenced needs:
 
@@ -29,6 +33,7 @@ title: "Barrier 1: Companionship Support"
 | <a id="3ded65dd82be805f92f5f15ac315c9fc" />Stories          | Curated, attributed patient testimonies which reduce isolation without requiring a live public forum                                    | Norma Washburn & Sunny Loo |
 | <a id="3ded65dd82be80cb8793cc938eecbea3" />Community        | A moderated peer space, responding directly to Norma and Sunny both independently telling us no such patient community currently exists | Norma Washburn & Sunny Loo |
 | <a id="3ded65dd82be8081919ac501d15210f8" />Team / Mission   | States who is asking these questions and why, and what the three-stage IHP process (literature → interviews → action) actually was.     | Dr. Larry Mròz             |
+| <a id="3fdd65dd82be803e9ea8d9b942c928a1" />                 |                                                                                                                                         |                            |
 
 1. <a id="3ded65dd82be800fb2ebc3949e757bfd" />**Evidence gathering:**\
    Physicians, nurses, patients, and organizations were contacted. Interviews were carried out with Dr. Bob Hancock, Dr. Richard Lester, Sunny Loo (patient partner), Dr. Larry Mròz, Dr. Edith Blondel-Hill, Dr. Anthony Liu, Lesley Kooner, and Norma Washburn (patient partner), alongside a structured literature review. Creating the content of the website purely based on the iHP meetings and the literature review.
@@ -39,6 +44,9 @@ title: "Barrier 1: Companionship Support"
    Most importantly the privacy for our website, is by design , meaning no personal information is asked or stored, no tracking the activity or third party embedded. For the Visit-prep section, the document created is not stored anywhere in our data base, it’s fully on the user’s browser. the community forum doesn’t need any accounts, each person is given a made-up username, agrees to our privacy guideline and is warned about sharing any personal information upon any story sharing. more specifically  we used the obscenity library, a  robust, zero-dependency TypeScript and Node.js publicly available library that uses a transformer-based architecture specifically to filter hate speach, offensive terms including Swering and insult, slurs wether racially, ethnitically or anti LGBTQ, Sexual words and body parts, in addition we added a list of words we came up with such as "kill yourself", "leftover antibiotics" or "stop taking your antibiotics”, It checks for them,  if any of them comes up, it is flagged, temporarily removen from the community forum and then checked by the team to permnantly being removed . for control and removal authors can permanently delete their own posts instantly, from the browser they posted from and if anyone lost that browser, they can report that the comment is theirs and they wanted removed. In total the whole website is desinged in a way to collect as little infromation as possible.
 6. <a id="3f9d65dd82be80d6a236ed0a7fe0fff4" />**Validation before wider release**. Before the site reached patients broadly, it was reviewed first by Dr. Mróz,  the person who had proposed building it in the first place, and only after his feedback was incorporated was it shown to an actual AMR patient, Norma Washburn. Detail on both in the DBTL section below.
 7. <a id="3f9d65dd82be80a4a88ec2b7b02265b2" />**Deployment: I**n-canada resident data base due to privacy policies and deployment on Netlify.
+8. <a id="3fdd65dd82be80eda2d5fa074a7e386a" />**Translation** : In order to make the website  more accessible we used machine translation with a combination of native speakers review to translate the website content to French, Punjabi, Farsi,
+
+<br id="3fdd65dd82be8066ac2dee70d8c4ded9" />
 
 <br id="3fdd65dd82be800baaebd5a2d3a30156" />
 
@@ -82,7 +90,7 @@ title: "Barrier 1: Companionship Support"
   <Fragment slot="test">
     <a id="3fdd65dd82be80a596e0d3c893b47e2a" />Dr. Mròz identified audience clarity as a priority. The homepage needed to explicitly address patients, their families, and the general public, rather than expecting visitors to infer its relevance.  He suggested to write why should someone read the narrative, making moving between different parts of the website very intuitive with a short explanation about how to use the website. Also make sure that after finishing the narrative there is different resources easily accessible at the end. \
     He described the community and the idea of sharing story and experience by patients wonderful. However, he mentioned issues  that needs to be addressed : not being clear about who is moderating the website, the disclosure policy and term of use. \
-    at the end He reminded to go over it with a patient since they are the actual audience for this website  .
+    at the end He reminded to go over it with a patient since they are the actual audience for this website.
   </Fragment>
 
   <Fragment slot="learn">
@@ -94,28 +102,34 @@ title: "Barrier 1: Companionship Support"
 
 # <a id="3fdd65dd82be80519b3ffeab8bca37c1" />DBTL with sunny loo (patient)
 
-<a id="3fdd65dd82be80d08c47f7956c5b46ca" />After  incorporating Dr. Mròz’s feedback, we wanted to understand whether the revised website worked from a patient’s perspective. Our focus was on the patient experience while using our website. More explicitly wether the visuals and reading are easy to follow, well representative of the patients, if they are written in a respectful manner, and do they include what the patients really want  everyone to know and  communicated the intended emotions clearly. Most importantly, How the privacy lines should be set, wether should we add the ability to have profiles and direct messages for private chats between users or should we keep in the way it is using a given username and without storing any personal information.
+<a id="3fdd65dd82be80a6806de72f5d6ffeb7" />
 
-<a id="3fdd65dd82be80d6bcebd250c422ea17" />
+<Dbtl>
+  <Fragment slot="design">
+    <a id="3fdd65dd82be80d08c47f7956c5b46ca" />After  incorporating Dr. Mròz’s feedback, we wanted to understand whether the revised website worked from a patient’s perspective. Our focus was on the patient experience while using our website. More explicitly wether the visuals and reading are easy to follow, well representative of the patients, if they are written in a respectful manner, and do they include what the patients really want  everyone to know and  communicated the intended emotions clearly. Most importantly, How the privacy lines should be set, wether should we add the ability to have profiles and direct messages for private chats between users or should we keep in the way it is using a given username and without storing any personal information.
+  </Fragment>
 
-***
+  <Fragment slot="build">
+    <a id="3fdd65dd82be80009f92e071eb963d6b" />The version shown to Sunny contained the partial revisions made after Dr. Mròz’s second interview. It retained the moving narrative and an available still version, allowing us to discuss two ways of presenting the same experiences. The community section was having the recommended guidlines and warnings as well as a glossary for general public for respectfull communication.  At this point we had  added the tool  for reviewing the comments and filtering comments to the website. Thus sunny reviewed a intermediate version of the website while the decisions about the style, privacy and outreach to patients were on the table.
+  </Fragment>
 
-<a id="3fdd65dd82be80009f92e071eb963d6b" />The version shown to Sunny contained the partial revisions made after Dr. Mròz’s second interview. It retained the moving narrative and an available still version, allowing us to discuss two ways of presenting the same experiences. The community section was having the recommended guidlines and warnings as well as a glossary for general public for respectfull communication.  At this point we had  added the tool  for reviewing the comments and filtering comments to the website. Thus sunny reviewed a intermediate version of the website while the decisions about the style, privacy and outreach to patients were on the table.
+  <Fragment slot="test">
+    <a id="3fdd65dd82be8093888bcc339f9f1736" />Sunny ‌was ‌positive ‌about the graphics, the neutral color  combination, and  the way the narrative showed feelings such as fear and isolation. But he kept coming back to one question: how are we making this website inclusive?  He gave examples on how designing the website for older people or for people with vision problems required specific decisions to be made on font size, color contrast and readability.
 
-<a id="3fdd65dd82be80dba84ac35ac1fadb07" />
+    <a id="3fdd65dd82be80a898aacacc7cee9088" />He suggested to increase the font size, adding  words to the images, and to decrease the panning speed and movements to let the audience focus more on the story without distraction. He asked us to elaborate more on what the “still version” was and to make sure the still images were clear and represented what the story was about. Although he liked the colors, he encouraged us to consider how they would look to someone with color blindness.
 
-***
+    <a id="3fdd65dd82be80e3bccaeca0431b5501" />For the community forum, Sunny suggested to make it small for a learning experience. To focus more on the sharing of experiences rather than contact exchange or direct connections and learn from how people use it. He also suggested to have an acknowledgement so that contributors will have to actively confirm they understand what's happening before going any further. Since  Sharing experiences could be the starting point; helping people exchange contact details or connect directly would bring responsibilities we needed to understand before going further. He advised seeking legal and regulatory guidance before expanding those features. He also wanted people to actively acknowledge that they understood what sharing involved, rather than simply being shown a privacy notice.
+  </Fragment>
 
-<a id="3fdd65dd82be8093888bcc339f9f1736" />Sunny ‌was ‌positive ‌about the graphics, the neutral color  combination, and  the way the narrative showed feelings such as fear and isolation. But he kept coming back to one question: how are we making this website inclusive?  He gave examples on how designing the website for older people or for people with vision problems required specific decisions to be made on font size, color contrast and readability.
-
-<a id="3fdd65dd82be80a898aacacc7cee9088" />He suggested to increase the font size, adding  words to the images, and to decrease the panning speed and movements to let the audience focus more on the story without distraction. He asked us to elaborate more on what the “still version” was and to make sure the still images were clear and represented what the story was about. Although he liked the colors, he encouraged us to consider how they would look to someone with color blindness.
-
-<a id="3fdd65dd82be80e3bccaeca0431b5501" />For the community forum, Sunny suggested to make it small for a learning experience. To focus more on the sharing of experiences rather than contact exchange or direct connections and learn from how people use it. He also suggested to have an acknowledgement so that contributors will have to actively confirm they understand what's happening before going any further. Since  Sharing experiences could be the starting point; helping people exchange contact details or connect directly would bring responsibilities we needed to understand before going further. He advised seeking legal and regulatory guidance before expanding those features. He also wanted people to actively acknowledge that they understood what sharing involved, rather than simply being shown a privacy notice.
-
-<a id="3fdd65dd82be8080b779da09fdbe19df" />
-
-***
-
-<br id="3fdd65dd82be80dcaeaff7650f29ca9a" />
+  <Fragment slot="learn">
+    <a id="3fdd65dd82be808e8d25dd14d016caf7" />Sunny's ‌feedback ‌helped ‌us identify things we needed to change to improve the website's user interface and user experience.\
+    \
+    We've made the text bigger and reduced  distracting quick  movements so people can focus on the story. We've ensured that the images depict the experiences they are describing and provided an explanation that the still version of the story is there for those who don't want to experience the 3D narrative and animations. We've added more context at the beginning of the site so users know who the site is for and what to expect. And at the end of the site, we've made it easier to access support resources, including the visit preparation tool.\
+    \
+    For the community section, users can post under a made-up username without creating a full user profile. Before posting, they are informed that what they post will be public and are required to acknowledge the terms before posting. We've added information about community guidelines and how moderation works. Following Sunny's feedback, we've kept the community centered around sharing experiences so we can learn more about how users the space in the future before adding more features for community interaction.\
+    \
+    We applied what we learned from both conversations when we made these changes. Now we'll listen to the users of the revamped website. Did the changes to the story make it easier to follow? Do users understand the implications of sharing something?
+  </Fragment>
+</Dbtl>
 
 <br id="3fdd65dd82be80c1a30eda52861bcafa" />
