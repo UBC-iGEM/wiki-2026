@@ -9,9 +9,11 @@ VEGA_SLOTS satisfies readonly [];
 const data = code.replaceAll("<", "\\u003c");
 ---
 
-<figure class="vega">
-    <div class="vega-host"></div>
-    <script type="application/json" class="vega-data" is:inline set:html={data} />
+<figure class="vega glow-panel">
+    <div class="glow-panel-body">
+        <div class="vega-host"></div>
+        <script type="application/json" class="vega-data" is:inline set:html={data} />
+    </div>
 </figure>
 
 <script>
@@ -24,6 +26,8 @@ const data = code.replaceAll("<", "\\u003c");
             renderer: "svg",
             // No export menu, which links out to the online Vega editor
             actions: false,
+            // Styled below to match the citation popups and tables
+            tooltip: { disableDefaultStyle: true },
         }).catch((error: unknown) => {
             console.error("Vega chart could not be rendered:", error);
             host.textContent = "This chart could not be displayed.";
@@ -38,7 +42,7 @@ const data = code.replaceAll("<", "\\u003c");
         margin: 2rem 0 3rem;
     }
 
-    .vega .vega-body {
+    .vega .glow-panel-body {
         padding: 1.5rem 2.5rem;
     }
 
@@ -58,8 +62,60 @@ const data = code.replaceAll("<", "\\u003c");
         height: auto;
     }
 
+    /* Vega's one tooltip for the page, laid out as the citation popup with the hovered fields as a table */
+    #vg-tooltip-element {
+        background: var(--color-ebony-clay-raised);
+        border: 1px solid var(--color-cornflower);
+        border-radius: 8px;
+        box-shadow: 0 0 1.5rem color-mix(in srgb, var(--color-cornflower) 35%, transparent);
+        color: var(--color-periwinkle);
+        font-family: var(--font-source-serif-4);
+        font-size: 0.875rem;
+        line-height: 1.45;
+        max-width: min(28rem, calc(100vw - 16px));
+        padding: 0.6rem 0.8rem;
+        pointer-events: none;
+        position: fixed;
+        visibility: hidden;
+        white-space: pre-line;
+        z-index: 20;
+    }
+
+    #vg-tooltip-element.visible {
+        visibility: visible;
+    }
+
+    #vg-tooltip-element h2 {
+        font-family: var(--font-geist);
+        font-size: 0.9375rem;
+        margin: 0 0 0.5rem;
+    }
+
+    /* The global table style, tightened to fit */
+    #vg-tooltip-element table {
+        font-size: inherit;
+        margin: 0;
+    }
+
+    #vg-tooltip-element td {
+        overflow-wrap: anywhere;
+        padding: 0.3rem 0.6rem;
+    }
+
+    /* Field names read as the table's header column */
+    #vg-tooltip-element td.key {
+        background-color: var(--color-ebony-clay-raised);
+        font-family: var(--font-geist);
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    #vg-tooltip-element td.value {
+        max-width: 18rem;
+    }
+
     @media (max-width: 700px) {
-        .vega .vega-body {
+        .vega .glow-panel-body {
             padding: 1rem 1.25rem;
         }
 
