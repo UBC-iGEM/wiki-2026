@@ -23,26 +23,30 @@ FIGURE_SLOTS satisfies readonly ["content"];
 
 <style>
     /* The border and glow come from .glow-panel in style.css; the bottom margin clears the outline hanging below */
+    /* As wide as its images, centred, with the caption wrapping to fit */
     .figure {
-        margin: 2rem 0 3rem;
+        margin: 2rem auto 3rem;
+        max-width: 100%;
+        width: fit-content;
     }
 
     .figure-body {
         padding: 0.75rem;
     }
 
-    /* Side by side when there are several, wrapping when they run out of room */
+    /* Side by side when there are several, shrinking together to fit (wrapping on a phone) */
     .figure-imgs {
+        align-items: center;
         display: flex;
-        flex-wrap: wrap;
         gap: 0.75rem;
         justify-content: center;
     }
 
+    /* At their own size (within the height cap), shrinking only to fit */
     .figure-imgs img {
         border-radius: 22px;
         display: block;
-        flex: 1 1 calc(14rem * var(--img-scale, 1));
+        flex: 0 1 auto;
         height: auto;
         max-height: calc(32.5rem * var(--img-scale, 1));
         max-width: min(100%, 100% * var(--img-scale, 1));
@@ -50,11 +54,12 @@ FIGURE_SLOTS satisfies readonly ["content"];
         object-fit: contain;
     }
 
-    /* Body-sized, unlike the page's general small captions; doubled up to outrank `.page-content figcaption` */
+    /* Caption text comes from `.page-content figcaption` */
+    /* Sized out of the panel's width, so a long caption wraps rather than widening it */
     .figure .figure-desc {
-        font-size: inherit;
-        line-height: inherit;
-        padding: 0.25rem 1rem 0.5rem;
+        contain: inline-size;
+        margin-top: 0;
+        padding: 1rem 1rem 0.5rem;
         text-align: center;
     }
 
@@ -74,6 +79,10 @@ FIGURE_SLOTS satisfies readonly ["content"];
     @media (max-width: 700px) {
         .figure-body {
             padding: 0.5rem;
+        }
+
+        .figure-imgs {
+            flex-wrap: wrap;
         }
 
         .figure-imgs img {

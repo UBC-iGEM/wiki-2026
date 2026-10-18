@@ -62,6 +62,23 @@ const multiple = slides.length > 1;
         // in this template) and descriptions (arriving via <slot>) can't silently drift apart
         const indexOf = (el: HTMLElement) => Number(el.dataset.index);
 
+        // The current slide is centred in a stage as tall as the tallest slide;
+        // its caption is lifted into the space below it, so it stays beside it, while the dots stay put
+        const stage = carousel.querySelector<HTMLElement>(".carousel-stage")!;
+        const liftBelow = () => {
+            const active = slides.find((slide) => slide.dataset.role === "active");
+            if (!active) return;
+            const style = getComputedStyle(stage);
+            const content = stage.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+            // Layout sizes, unaffected by the slides' transforms mid-transition
+            const space = Math.max(0, (content - active.offsetHeight) / 2);
+            carousel.style.setProperty("--below-lift", `${-space}px`);
+        };
+        // Images load, and the stage resizes with the window
+        const resizes = new ResizeObserver(liftBelow);
+        resizes.observe(stage);
+        slides.forEach((slide) => resizes.observe(slide));
+
         let current = 0;
         const show = (index: number) => {
             current = (index + n) % n;
@@ -74,6 +91,7 @@ const multiple = slides.length > 1;
             }
             descs.forEach((desc) => desc.classList.toggle("active", indexOf(desc) === current));
             dots.forEach((dot) => dot.classList.toggle("active", indexOf(dot) === current));
+            liftBelow();
         };
 
         carousel.querySelector(".carousel-arrow.prev")?.addEventListener("click", () => show(current - 1));
@@ -109,7 +127,10 @@ const multiple = slides.length > 1;
         gap: 1.25rem;
     }
 
-    /* Every slide in the same grid cell; the bottom padding leaves room for the offset outline */
+    /*
+     * Every slide in the same grid cell, which the tallest sets the height of,
+     * so the page below doesn't move as the slides change; the bottom padding leaves room for the offset outline.
+     */
     .carousel-stage {
         align-items: center;
         display: grid;
@@ -151,7 +172,7 @@ const multiple = slides.length > 1;
 
     .carousel-slide:is([data-role="prev"], [data-role="next"]) {
         cursor: pointer;
-        opacity: 0.2;
+        opacity: 0.1;
         z-index: 1;
     }
 
@@ -203,8 +224,17 @@ const multiple = slides.length > 1;
 
     /* Below the images, above the dots; only the current slide's shows */
     .carousel-descs {
-        margin-top: 0.75rem;
+        font: var(--text-caption);
+        margin-top: 0.5rem;
         text-align: center;
+    }
+
+    /* Lifted up to the current slide (see the script), and painted over any taller neighbour it then overlaps */
+    .carousel-descs {
+        position: relative;
+        transform: translateY(var(--below-lift, 0));
+        transition: transform 300ms ease;
+        z-index: 3;
     }
 
     .carousel-desc p {
@@ -225,7 +255,8 @@ const multiple = slides.length > 1;
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .carousel-slide {
+        .carousel-slide,
+        .carousel-descs {
             transition: none;
         }
     }

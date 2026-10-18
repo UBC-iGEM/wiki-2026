@@ -66,16 +66,14 @@ COLAB_SLOTS satisfies readonly ["notebook", "content"];
 
     .title {
         flex: 1;
-        font-family: var(--font-source-serif-4);
-        font-weight: 700;
+        font: var(--text-subtitle);
     }
 
     .open {
         background: var(--color-cornflower);
         color: var(--color-periwinkle);
         flex-shrink: 0;
-        font-size: 0.9rem;
-        font-weight: 700;
+        font: var(--text-caption);
         padding: 0.4rem 1rem;
         text-decoration: none;
         transition:
@@ -145,6 +143,10 @@ COLAB_SLOTS satisfies readonly ["notebook", "content"];
 
     .notebook :global(.colab-markdown table) {
         font-size: 0.9em;
+    }
+
+    .colab-desc {
+        font: var(--text-caption);
     }
 
     @media (max-width: 700px) {

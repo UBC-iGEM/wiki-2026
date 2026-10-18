@@ -224,18 +224,19 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
     }
 
     .platemap .title {
-        font-family: var(--font-source-serif-4);
-        font-size: 1.15rem;
-        font-weight: 700;
+        font: var(--text-subtitle);
     }
 
     .platemap .plate {
         margin: 0;
     }
 
-    .platemap .plate-header {
+    /* Bold body text rather than the page's caption style; tripled up to outrank `.page-content figcaption` */
+    .platemap .plate .plate-header {
         align-items: center;
         display: flex;
+        font: var(--text-body);
+        font-weight: 700;
         gap: 0.75rem;
         margin-bottom: 1rem;
     }

@@ -18,7 +18,7 @@ const min_depth = headings.reduce((min, h) => Math.min(min, h.depth), 6);
         <ul>
             {
                 headings.map((heading) => (
-                    <li style={`padding-left: ${(heading.depth - min_depth) * 0.75}rem`}>
+                    <li style={`padding-left: ${(heading.depth - min_depth) * 1.5}rem`}>
                         <a href={`#${heading.slug}`} data-toc-slug={heading.slug}>
                             {heading.text}
                         </a>
@@ -101,12 +101,12 @@ const min_depth = headings.reduce((min, h) => Math.min(min, h.depth), 6);
 
 <style>
     .toc {
-        font-size: 0.875rem;
+        font: var(--text-small);
     }
 
     summary {
         cursor: pointer;
-        font-weight: 700;
+        font: var(--text-caption);
         margin-bottom: 0.5rem;
         user-select: none;
     }

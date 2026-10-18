@@ -3,6 +3,25 @@
     --page-gutter: clamp(1rem, 4vw, 3.5rem);
 }
 
+/*
+ * Type scale, as `font` shorthands (set `font: var(--text-…)`, then any colour).
+ * Headings and captions are Geist Bold; subtitles, body and small text are Source Serif 4 Regular.
+ */
+:root {
+    --text-title: 700 3rem / normal var(--font-geist);
+    --text-h1: 700 2.25rem / normal var(--font-geist);
+    --text-h2: 700 1.5rem / normal var(--font-geist);
+    --text-h3: 700 1.25rem / normal var(--font-geist);
+    --text-h4: 700 1rem / normal var(--font-geist);
+    --text-subtitle: 400 1.25rem / normal var(--font-source-serif-4);
+    --text-body: 400 1rem / normal var(--font-source-serif-4);
+    --text-caption: 700 0.875rem / normal var(--font-geist);
+    --text-small: 400 0.75rem / normal var(--font-source-serif-4);
+
+    /* The page title's panel */
+    --gradient-title: linear-gradient(90deg, #c6fb64, #90fb7b 50%, #76fb96);
+}
+
 @media (max-width: 1000px) {
     :root {
         --page-gutter: 1.5rem;
@@ -127,6 +146,12 @@ pre.astro-code {
     width: auto;
     height: auto;
     object-fit: contain;
+}
+
+/* Images outside components sit inline, leaving only the line's descender below them */
+.page-content > img,
+.page-content p > img {
+    margin-bottom: 1rem;
 }
 
 /*
