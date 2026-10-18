@@ -13,6 +13,14 @@ import SoundToggle from "../components/SoundToggle.astro";
     </main>
 </MainLayout>
 
+<script>
+    import { BASE_URL } from "../utils/base-url";
+    import { createBackgroundSound } from "../utils/sfx";
+
+    // Fades in with the sound toggle, and resumes where it left off after being turned off and on again
+    createBackgroundSound(`${BASE_URL}assets/audio/bg-audio.mp3`);
+</script>
+
 <style>
     /* Top-right, under the nav's rightmost chip: .page-layout's right gutter matches the nav's */
     .home-sound-toggle {
