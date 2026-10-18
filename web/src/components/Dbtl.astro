@@ -100,6 +100,7 @@ DBTL_SLOTS satisfies readonly ["design", "build", "test", "learn"];
     .card {
         background: var(--card-bg);
         border-radius: 12px;
+        color: var(--color-ebony-clay);
         padding: 2rem 2.5rem;
         position: relative;
     }
@@ -111,6 +112,30 @@ DBTL_SLOTS satisfies readonly ["design", "build", "test", "learn"];
 
     .card > :global(*:last-child) {
         margin-bottom: 0;
+    }
+
+    /*
+     * All text is the page's background colour, outranking the page's own colours (`.page-content a` and co.).
+     * Anything on its own dark surface keeps its colours: table header cells, glow panels (callouts, figures, Colab, plate maps,
+     * charts), database dropdowns, IHP carousels and the image lightbox.
+     */
+    .step .card
+        :global(
+            :not(
+                th,
+                th *,
+                .glow-panel-body,
+                .glow-panel-body *,
+                .db-dropdown,
+                .db-dropdown *,
+                .ihp,
+                .ihp *,
+                .lightbox,
+                .lightbox *
+            )
+        ) {
+        color: inherit;
+        text-decoration-color: currentColor;
     }
 
     /* Too narrow to give the icons a column of their own: they sit above the card, beside the title */

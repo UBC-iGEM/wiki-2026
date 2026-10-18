@@ -13,7 +13,7 @@ title: "Microfluidic Chip"
 
 <a id="3f8d65dd82be80329f21d5d40ae98bf1" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/8e777445531759f38ecd3f6487d3e5b7.avif" alt="" scale={0} />
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/8e777445531759f38ecd3f6487d3e5b7.avif" alt="" scale={0} align="left" />
 
 <a id="3f8d65dd82be80e9acc5d959143e5f41" />Image from:<Cite refs={[{"n":4,"key":"liuSimpleDirectReading2015"}]} />
 
@@ -31,7 +31,7 @@ title: "Microfluidic Chip"
 
 <a id="3fcd65dd82be8099b0d4f3ba4dade093" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/0f1f3928c10c5e43a63bc357198cf4ad.avif" alt="" scale={0} />
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/0f1f3928c10c5e43a63bc357198cf4ad.avif" alt="" scale={0} align="left" />
 
 <a id="3fcd65dd82be80caa3b2f96253e7673c" />Their hardware:
 
@@ -62,7 +62,7 @@ title: "Microfluidic Chip"
 
 <a id="3fcd65dd82be80e9bacdc6c1e18d9981" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/005154fedf0b55f295b8968f2b717b94.svg" alt="" scale={120} />
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/005154fedf0b55f295b8968f2b717b94.svg" alt="" scale={120} align="left" />
 
 # <a id="3ecd65dd82be80a98a75ed92ac7b1687" />Design Considerations
 
@@ -119,15 +119,13 @@ title: "Microfluidic Chip"
 
 ## <a id="3ecd65dd82be8055a411c64481177a89" />Mark One: Epoxy
 
-<a id="3f9d65dd82be8017b43dfedc79b8094d" />Clean up below images
-
 <a id="3f9d65dd82be80d5935dcce0138b9a32" />
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3f9d65dd82be80039d81efeb55570457" />At this point in the process, we started to develop channel designs and cast them in epoxy to get a sense of how the process would work before we moved onto the more expensive PDMS.
+    <a id="3f9d65dd82be80039d81efeb55570457" />At this point in the process, we started to develop channel designs and cast them in epoxy to establish a baseline of how the process would work before we moved onto the more expensive PDMS. This chip is designed to be an initial model that clearly indicates different important sections to a microfluidic chip, giving us a baseline to improve on for future designs.
 
-    <a id="3fcd65dd82be80a3ad97c680c34c73cf" />Three separate sections were designed to be put into the epoxy chip, corresponding to a fluid mixing section, a degradation section, and an outlet section. All of these steps are needed in order for our sensor bacteria to exhibit fluorescence in response to antibiotic-resistant patient samples, leading to this decision for early chip design philosophy. With this, an inlet hole is added to one end of the chip to signify the area where antibiotic samples will be added for future chip validation and testing.
+    <a id="3fcd65dd82be80a3ad97c680c34c73cf" />Three separate sections were designed to be put into the epoxy chip, corresponding to a fluid mixing section, a degradation section, and an outlet section. All of these steps are needed in order for our sensor bacteria to fluoresce in response to antibiotic-resistant patient samples, leading to this decision for early chip design philosophy. With this, an inlet hole is added to one end of the chip to signify the area where antibiotic samples will be added for future chip validation and testing.
 
     <a id="3fcd65dd82be802088ebd4abe4b7498e" />For this first iteration of chips, a zigzag pattern was chosen to represent the mixing section of the epoxy chip. This design has been previously tested for mixing capability and additionally has a 2 dimensional profile, both allowing for it to be an effective selection for our first chip design <Cite refs={[{"n":7,"key":"leeMicrofluidicMixingReview2011"},{"n":8,"key":"mengeaudMixingProcessesZigzag2002"}]} />.
 
@@ -137,13 +135,18 @@ title: "Microfluidic Chip"
   <Fragment slot="build">
     <a id="3f9d65dd82be80599f4ec9bc6ee3a904" />The first design of the epoxy chip was designed at a larger scale than future iterations to test the effectiveness of casting as a manufacturing method. A chip model was created in SolidWorks in order to act as a negative mold for the epoxy pouring.
 
-    - <a id="3fcd65dd82be8064bc4ac0a3b6ea327f" />The channel dimensions that were chosen have a 1 mm width and 2 mm height, with the inlet and outlet channels having a radius of 5 mm. This was picked to
-    - <a id="3fcd65dd82be807aa438cc1f2c4194c0" />The base of the chip mold was 2 mm, with a height and width of 170mm by 50mm.
-    - <a id="3fcd65dd82be8064b8ffe2c24aa2b27b" />For this first iteration of testing, the side walls of the chip model were chosen to be 1 mm wide and 2 mm tall, as we wanted smaller walls so that it would be easier to move the cured positive mold for the printed chip negative.
+    - <a id="3fcd65dd82be807aa438cc1f2c4194c0" />The base of the chip mold was 2 mm, with a height and width of 170mm by 50mm. These dimensions are both roughly twice the size of the chips we wanted to manufacture after this test.
 
-    <a id="3fcd65dd82be80158747fc1fe5cf5166" />
+    <a id="3fdd65dd82be80b89f7bf1e817ad6f75" />
 
-    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/f3b5eed203695f518b6d3b56a16a1f8a.avif" alt="Figure X: Top view of the SolidWorks model for the Mark One Epoxy mold microfluidic chip" scale={0} />
+    - <a id="3fdd65dd82be802386defe90309e6181" />The channel dimensions that were chosen have a 1 mm width and 2 mm height, with the inlet channel having a radius of 5 mm, and the outlet channels having a radius of 2.5 mm. This was chosen as a rough estimate of what the channel dimensions will be for a normal chip size.  The 3D printer that we used for this prototype has a tolerance of 0.3mm . After downscaling, the channel width would be 0.5mm, which accounts for the listed tolerance and some buffer in case the printer is slightly less accurate than this, as it is not a brand-new printer.
+
+    * <a id="3fcd65dd82be8064b8ffe2c24aa2b27b" />For this first iteration of testing, the side walls of the chip model were chosen to be 1 mm wide and 2 mm tall, as we wanted smaller walls so that it would be easier to move the cured positive mold for the printed chip negative.
+    * <a id="3fdd65dd82be803c881bcb9827a0aca2" />A barrier of 9mm was given on every side of the microfluidic chip to ensure that there would be no leaking on any sides out of the chip.
+
+    <a id="3fdd65dd82be8000b7faf5405889b0ce" />
+
+    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/e000b41ed87950ce9ddf20e1d0b7881b.avif" alt="Figure X: Top view of the SolidWorks model for the Mark One Epoxy mold microfluidic chip" scale={0} align="left" />
   </Fragment>
 
   <Fragment slot="test">
@@ -151,19 +154,17 @@ title: "Microfluidic Chip"
 
     <a id="3fcd65dd82be8021a741c9c60d0a637d" />
 
-    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/d84677fdd3255f1092d03454b22ec682.avif" alt="Figure X: Epoxy microfluidic chip (right) after being removed from the PLA negative mold (left)" scale={0} />
+    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/d84677fdd3255f1092d03454b22ec682.avif" alt="Figure X: Epoxy microfluidic chip (right) after being removed from the PLA negative mold (left)" scale={0} align="left" />
 
-    <br id="3fcd65dd82be80439111e8aa5857c83c" />
+    <a id="3fcd65dd82be80ee9941faca4ee5d45f" />The final microfluidic chip that was removed was clear, and flow channels through the mixing section were well defined, and the channels flowing through these parts mirrored the designs created using SolidWorks. For this section of the chip, the side wall stayed together without any indication of cracking or breaking. This is also true when looking around the outlet channels for the chip.
 
-    <a id="3fcd65dd82be80ee9941faca4ee5d45f" />The final microfluidic chip that was removed was clear;
-
-    <a id="3fcd65dd82be80c2a21dc5873ea80c10" />There were a couple notable issues with this first design, however. It did not sit completely flat on a benchtop, likely because of the bending that was required to separate it. Besides this, some of the pieces of the chip stayed stuck to the sides of the PLA and stayed attached to the mold after removal. This can be seen in the degradation portion of the chip, where some of the epoxy in between the channels is missing.
+    <a id="3fcd65dd82be80c2a21dc5873ea80c10" />There were a couple notable issues with this first design, however. It did not sit completely flat on a benchtop, likely because of the bending that was required to separate it. Besides this, some of the pieces of the chip stayed stuck to the sides of the PLA and stayed attached to the mold after removal. This can be seen in the degradation portion of the chip, where some of the epoxy in between the channels is missing. It should be noted that the cracks that formed along this section of the chip likely happened because of the excessive force that was required to remove specifically this section
   </Fragment>
 
   <Fragment slot="learn">
     <a id="3f9d65dd82be80af8bd8cf7127807d4f" />LEARN:
 
-    <a id="3fcd65dd82be80efb5bae8a5157dfd0d" />The height of the walls on this first design iteration made it difficult to effectively pour epoxy into the mold without spilling any. The final chip has a thin layer of epoxy covering the tops of the walls, and these sections of the chip needed to be removed before the rest of it could be taken out of the mold and analyzed. This problem with our first cycle can be fixed by increasing the height of the side walls.
+    <a id="3fcd65dd82be80efb5bae8a5157dfd0d" />The walls on this first design iteration made it difficult to effectively pour epoxy into the mold without spilling any. The final chip has a thin layer of epoxy covering the tops of the walls, and these sections of the chip needed to be removed before the rest of it could be taken out of the mold and analyzed. We decided that the wall structure needed to change from the original model, such that there would not be as many issues associated with the manufacturing of a new chip.
 
     <a id="3fcd65dd82be80fbb27bf3f237252929" />An additional consideration that was made clear by the first design is that potential cracking or ripping issues could be indicative of future issues with PDMS chips resilience depending on the channel designs that future chips use. In this chip DBTL cycle, epoxy resin works as an adhesive with PLA, and as such, this prototype stuck to the walls of the mold <Cite refs={[{"n":9,"key":"sharmaEvaluationMechanicalAdhesive2026"}]} />. Although the issue of chemical bonding with the PLA mold is not present with PDMS, chip design should still have a plan for effectively removing the positive PDMS chip from the negative PLA mold.
   </Fragment>
@@ -173,7 +174,7 @@ title: "Microfluidic Chip"
 
 <a id="3f9d65dd82be80bd9dfcc6f1ad042ae4" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/c23e24da49d65ee7bd3399cc385ce8eb.avif" alt="" scale={0} />
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/c23e24da49d65ee7bd3399cc385ce8eb.avif" alt="" scale={0} align="left" />
 
 <a id="3f9d65dd82be808db28ed6e5a299f61b" />
 
@@ -188,10 +189,26 @@ title: "Microfluidic Chip"
 
   <Fragment slot="build">
     <a id="3f9d65dd82be80f8af46d108dd8a879a" />Build:
+
+    <br id="3fdd65dd82be807785c5f17d0865f3c9" />
+
+    <a id="3fdd65dd82be807a8096d6032077b3c5" />
+
+    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/c28912568541537fad468a38517e2b4d.avif" alt="" scale={0} align="left" />
+
+    <br id="3fdd65dd82be80d1880bd517a0952c14" />
+
+    <a id="3fdd65dd82be809ca3b5cd3b5ec39eb4" />
+
+    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/6681c423ca225293921fb47027ceb7c2.avif" alt="" scale={0} align="left" />
   </Fragment>
 
   <Fragment slot="test">
     <a id="3f9d65dd82be80e3b457dc8903556158" />We were unable to run any true flow tests on this iteration as our channel floated in the PDMS during the oven step, encasing our channel in set PDMS.  We also noticed that the glass we had used was brittle and prone to cracking, which moved over our channels. This would undoubtedly cause leaking in the future if we did not rectify the problem.
+
+    <a id="3fdd65dd82be80e48b8af701bd1d77eb" />
+
+    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/c23e24da49d65ee7bd3399cc385ce8eb.avif" alt="Figure X: PDMS Based Microfluidic Chip attached to a glass pane" scale={0} align="left" />
   </Fragment>
 
   <Fragment slot="learn">
@@ -212,7 +229,7 @@ title: "Microfluidic Chip"
 
 <a id="3f9d65dd82be801eae01dca176a523fc" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/f8c312fee52b50cf9c6bc7aece2b3b58.avif" alt="" scale={0} />
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/f8c312fee52b50cf9c6bc7aece2b3b58.avif" alt="" scale={0} align="left" />
 
 <br id="3f9d65dd82be8005ae1fcb691df623d2" />
 
@@ -240,7 +257,7 @@ title: "Microfluidic Chip"
 
 <a id="3f9d65dd82be803aa451c4dd65694be7" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/f6af8d03cf765b509e5503c01caa19d2.avif" alt="" scale={0} />
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/f6af8d03cf765b509e5503c01caa19d2.avif" alt="" scale={0} align="left" />
 
 <a id="3f9d65dd82be808193dec1c61f35af51" />
 
@@ -254,7 +271,7 @@ title: "Microfluidic Chip"
 
     <a id="3f9d65dd82be80d39c4cf147f9941688" />
 
-    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/08e43b9056a85298ba8af52a2ce0bedf.avif" alt="" scale={0} />
+    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/08e43b9056a85298ba8af52a2ce0bedf.avif" alt="" scale={0} align="left" />
   </Fragment>
 
   <Fragment slot="test">
@@ -274,7 +291,7 @@ title: "Microfluidic Chip"
 
 <a id="3f9d65dd82be8055b559cc82ddf2433e" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/16d5e688bb6a5b07b284038fac2a9e91.avif" alt="" scale={0} />
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/16d5e688bb6a5b07b284038fac2a9e91.avif" alt="" scale={0} align="left" />
 
 <a id="3f9d65dd82be80bc9085d315f5812221" />
 
@@ -292,13 +309,13 @@ title: "Microfluidic Chip"
 
     <a id="3f9d65dd82be808192dfdfe127f7c470" />
 
-    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/565558afed2256d4b387f59766ec2696.avif" alt="" scale={0} />
+    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/565558afed2256d4b387f59766ec2696.avif" alt="" scale={0} align="left" />
 
     <a id="3f9d65dd82be8079adcedd4547c602ba" />We printed both an ironed (left) and a non-ironed (right) device so that we could use the non-ironed device as a control. As can be seen, the ironed device had no leakage, while the non-ironed device showed significant leakage.
   </Fragment>
 
   <Fragment slot="learn">
-    <a id="3fcd65dd82be8017a0d1c373a5e67a7c" />Our chip was incredibly difficult to design fluorescence detection around. The angle of rotation between wells was incredibly slim, meaning that our movement between wells would have to be incredibly precise in order to differentiate between conditions. As such we began to approach linear chips.
+    <a id="3fcd65dd82be8017a0d1c373a5e67a7c" />Our chip was incredibly difficult to design fluorescence detection in mind. The angle of rotation between wells was incredibly slim, meaning that our movement between wells would have to be incredibly precise in order to differentiate between conditions. As such we began to approach linear chips.
   </Fragment>
 </Dbtl>
 
@@ -311,14 +328,14 @@ title: "Microfluidic Chip"
 <Dbtl>
   <Fragment slot="design">
     <a id="3f9d65dd82be809bb910fd33cfb5f9cd" />Design: We changed the position of our channels to make integration with the fluorescence detector significantly easier.
-
-    <a id="3f9d65dd82be800bae53f5a7bfeca4cd" />
-
-    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/5c224f14c07456a49d3d19034975abb1.avif" alt="" scale={0} />
   </Fragment>
 
   <Fragment slot="build">
-    <a id="3f9d65dd82be800ea3c9ce7cd01f5ec6" />Build
+    <a id="3fdd65dd82be8046af6ec08bbe510b72" />
+
+    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/9c895d0bf2005cf2afdb15d595b84bb2.avif" alt="" scale={0} align="left" />
+
+    <a id="3fdd65dd82be80c3b26cdb1058ad01bc" />Build: The dark circles on this image represent the wells, and the light grey rectangle represents the microfluidic chip.
   </Fragment>
 
   <Fragment slot="test">
@@ -435,11 +452,11 @@ title: "Microfluidic Chip"
 
     <a id="3fdd65dd82be80638303cf04ac758c5f" />Therefore, most of the pressure comes from the outlet. Because the pressure at the outlet is so much larger than the pressure in the main channel, the flow tends to equalize.
 
-    <a id="3fdd65dd82be8081ae26cb5abf2fac45" />We can now compare individual wells to see if there is a difference in that pressure equalization. If there is a significant difference it implies that there is a significant differenec
+    <a id="3fdd65dd82be8081ae26cb5abf2fac45" />We can now compare individual wells to see if there is a difference in that pressure equalization. If there is a significant difference it implies that there is a significant difference in the filling of the wells.
 
     <a id="3f9d65dd82be80a9a10eca9eee04f52f" />
 
-    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/23e58ad9f286528a991fb52031d3cb39.avif" alt="" scale={0} />
+    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/23e58ad9f286528a991fb52031d3cb39.avif" alt="" scale={0} align="left" />
   </Fragment>
 
   <Fragment slot="learn">
@@ -481,13 +498,39 @@ title: "Microfluidic Chip"
 
 <a id="3fcd65dd82be804ea9d8ffca802d5630" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/f3b5eed203695f518b6d3b56a16a1f8a.avif" alt="" scale={0} />
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/f3b5eed203695f518b6d3b56a16a1f8a.avif" alt="" scale={0} align="left" />
+
+## <a id="3fdd65dd82be80609e78c41340f3c689" />PDMS Attempt 1
+
+<a id="3fdd65dd82be80be829ae41b63adb937" />
+
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/c28912568541537fad468a38517e2b4d.avif" alt="" scale={0} align="left" />
+
+## <a id="3fdd65dd82be80049e1fcd2c07b88936" />PDMS Attempt 2 (4 Chips)
+
+<br id="3fdd65dd82be80458ecbf008bb041979" />
+
+## <a id="3fdd65dd82be80348b2bc64b28d6af64" />PDMS Attempt 3
+
+<br id="3fdd65dd82be80d2b59cf02dc5e78f3b" />
+
+## <a id="3fdd65dd82be80f1a396ef722b07a413" />PDMS Attempt 4
+
+<br id="3fdd65dd82be8098942ddbdea804c839" />
+
+## <a id="3fdd65dd82be8047ad17e84549b6bdfa" />Linear Channels
+
+<br id="3fdd65dd82be807a8b54d2eb0d344d6e" />
+
+## <a id="3fdd65dd82be80fe8050ddc7c743b627" />Reduced Channels
+
+<br id="3fdd65dd82be80d4b54fcf0d05a3852f" />
 
 ## <a id="3fcd65dd82be80068e5cc13582d7bc5b" />Snaking Microfluidic Chip
 
 <a id="3fcd65dd82be806cb17af6d1eba7b424" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/0ca0ea25c6725f5b8edc73983c9f2f10.avif" alt="" scale={0} />
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/0ca0ea25c6725f5b8edc73983c9f2f10.avif" alt="" scale={0} align="left" />
 
 <a id="3fcd65dd82be803a9d14f9345d3f758c" />
 
@@ -495,7 +538,7 @@ title: "Microfluidic Chip"
   Snaking Microfluidic Chip 16-10-2026.pdf
 </a>
 
-<br id="3fcd65dd82be8040a5acde1c40c528d7" />
+<br id="3fdd65dd82be80f5af38cb2c1f3eb2d3" />
 
 # References
 

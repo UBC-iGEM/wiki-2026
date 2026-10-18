@@ -11,13 +11,13 @@ title: "Fluorescence Detector"
 
 <a id="3fad65dd82be8071bd8ef8d0ce110715" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/15b7f98abcbc51f2968ee57d7657a2e3.avif" alt="" scale={0} />
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/15b7f98abcbc51f2968ee57d7657a2e3.avif" alt="" scale={0} align="left" />
 
 <a id="3f9d65dd82be802baf5ce7932fffe8fa" />cite\[2] ([https://lumenistics.com/2012/03/19/what-is-full-spectrum-lighting/](https://lumenistics.com/2012/03/19/what-is-full-spectrum-lighting/))
 
 <a id="3fcd65dd82be8054b13ac95c53655d16" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/b67cc0d90a9b5cf1a49c641aa5e6abcf.avif" alt="" scale={0} />
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/b67cc0d90a9b5cf1a49c641aa5e6abcf.avif" alt="" scale={0} align="left" />
 
 <a id="3fcd65dd82be806b8948c357cdb7fcf7" />\[3] [https://www.knauer.net/blog/blog-9/seeing-is-believing-detection-made-easy-part-5-fluorescence-detectors-164](https://www.knauer.net/blog/blog-9/seeing-is-believing-detection-made-easy-part-5-fluorescence-detectors-164)
 
@@ -33,17 +33,7 @@ title: "Fluorescence Detector"
 
 <a id="3fcd65dd82be80868e51fbc00a29dc5b" />To improve the accessibility of our point-of-care detection system, we incorporated several design features into our customized fluorescence detector: a holder tailored to our microfluidic chip, a user-friendly interface, a simplified fluorescence detection circuit to reduce material costs, and an innovative component assembly method that ensures both effective light shielding and ease of use.
 
-<a id="3fcd65dd82be80519f6edb341fb10bad" />With our customized fluorescence detector, we aim to make antibiotic resistance screening more accessible, more rapid, and more affordable.
-
-## <a id="3f9d65dd82be808f844aec659af2f946" />Bill of Materials (move this somewhere else) also dbcheck w Saige
-
-<a id="3fad65dd82be8025b08ec928df6ba23c" />
-
-| <a id="3fad65dd82be80159391e1f59be216b2" />Materials            | Overall Price | Cost for the Project |
-| --------------------------------------------------------------- | ------------- | -------------------- |
-| <a id="3fad65dd82be800aa19ddfc70ef2025e" />3D Printing Filament | \$19.99/1 kg  |                      |
-| <a id="3fbd65dd82be80ee9a06f337958d1ac7" />488nm LED            |               |                      |
-| <a id="3fad65dd82be80de878fff86005eaf7c" />Long Pass Filter     | \$37.00 each  | \$37                 |
+<a id="3fcd65dd82be80519f6edb341fb10bad" />With our customized fluorescence detector, we aim to make antibiotic resistance screening accessible, fast, and affordable.
 
 <br id="3fbd65dd82be80fca1d8c801a0118282" />
 
@@ -100,7 +90,7 @@ title: "Fluorescence Detector"
 
 <a id="3fcd65dd82be8062a968f9b2f9a77986" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/f8b2720263995db386f5deee570d3b02.avif" alt="" scale={0} />
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/f8b2720263995db386f5deee570d3b02.avif" alt="" scale={0} align="left" />
 
 <a id="3fcd65dd82be8068a723c71bce724dd7" />\[3]
 
@@ -160,21 +150,62 @@ title: "Fluorescence Detector"
 
 <a id="3fcd65dd82be8086b9c6dbbb1a24623e" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/498d609f5027593bb8ad1d9cffeff258.avif" alt="" scale={0} />
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/498d609f5027593bb8ad1d9cffeff258.avif" alt="" scale={0} align="left" />
 
 <a id="3fcd65dd82be804daf32d4c29e9f0829" />The image above demonstrates the overall setup of our fluorescence detection system.
 
 <details>
   <summary><a id="3fdd65dd82be80f6938fed3a667dc917" />Illumination</summary>
 
-  <a id="3fdd65dd82be80638f6bf6e882df4e46" />We opted for a single color LED, which has a wavelength of 488nm. This acts as a simplified version of the light source + excitation filter combination. With lights emitted at a specific wavelength,
-
-  <br id="3fdd65dd82be8084932de520c9b03c4f" />
+  <a id="3fdd65dd82be80638f6bf6e882df4e46" />We opted for a single color LED, which has a wavelength of 488nm. This acts as a simplified version of the light source + excitation filter combination. With lights emitted at a specific wavelength, the background noises are reduced and the signal quality is improved. The reason for choosing blue is because it is blue light has a shorter wavelength and higher frequency, which means it has higher energy. This makes it an effective choice for exciting fluorescence.
 </details>
+
+<details>
+  <summary><a id="3fdd65dd82be80aab47ceea8c89c318d" />Filtering</summary>
+
+  <a id="3fdd65dd82be805abe67fcdc440f1f0b" />A long pass filter is used as our emission filter. As its name indicates, a long pass filter blocks off lights of shorter wavelengths and lets lights of longer wavelengths pass through. We implemented a 500nm long pass filter to block off the blue light and permit green fluorescence, which is 510nm.
+</details>
+
+<details>
+  <summary><a id="3fdd65dd82be804e8c33cf20247b7798" />Photodiode</summary>
+
+  <a id="3fdd65dd82be8055b2b9e2b43f7070ed" />A photodiode converts received lights (photons) into electrical current. The signal will then be outputted to indicate if there is fluorescence or no.
+
+  <a id="3fdd65dd82be8040b4c2ca07d7abec08" />
+
+  <Img url="https://static.igem.wiki/teams/6279/wiki/assets/27c3a84fd53d511ea5209bdab40942fe.avif" alt="" scale={0} align="left" />
+
+  <a id="3fdd65dd82be80a794c7e00c30b0c64b" />\[6] [https://www.teamwavelength.com/photodiode-basics/?srsltid=AU7gw4WpgE7HqUTpJtNF9DXKLUG063MMPIi-AgBpWjj-Ubo0S7H-0XY8](https://www.teamwavelength.com/photodiode-basics/?srsltid=AU7gw4WpgE7HqUTpJtNF9DXKLUG063MMPIi-AgBpWjj-Ubo0S7H-0XY8)
+</details>
+
+## <a id="3f9d65dd82be808f844aec659af2f946" />Bill of Materials
+
+<a id="3fad65dd82be8025b08ec928df6ba23c" />
+
+| <a id="3fad65dd82be80159391e1f59be216b2" />Materials            | Overall Price | Cost for the Project |
+| --------------------------------------------------------------- | ------------- | -------------------- |
+| <a id="3fad65dd82be800aa19ddfc70ef2025e" />3D Printing Filament | \$19.99/1 kg  |                      |
+| <a id="3fdd65dd82be80a1b47ac9ca97104267" />Magnets              |               |                      |
+| <a id="3fbd65dd82be80ee9a06f337958d1ac7" />488nm LED            |               |                      |
+| <a id="3fad65dd82be80de878fff86005eaf7c" />Long Pass Filter     | \$37.00 each  | \$37                 |
+| <a id="3fdd65dd82be80d7b3e8d079a0db49ba" />Photodiode           |               |                      |
+| <a id="3fdd65dd82be803fa88ae1b33ab51bfc" />PCB                  |               |                      |
+| <a id="3fdd65dd82be8055b1e7d82044f1b7f2" />Arduino              |               |                      |
+| <a id="3fdd65dd82be80049035f4cd445608fc" />Resistor             |               |                      |
+| <a id="3fdd65dd82be803c8c26cfd964bcfe95" />Switch               |               |                      |
+| <a id="3fdd65dd82be8083bbd8dba2019a7838" />Wiring               |               |                      |
+
+<br id="3fdd65dd82be806cbe84d9f4cbd0f63d" />
 
 # <a id="3fbd65dd82be805ba95ed803ef3c84bf" />Circuitry Schematics
 
 <a id="3fbd65dd82be809da305fb39cbc4728b" />()
+
+<a id="3fdd65dd82be80ac805ef21a63a60766" />pcb 30mm w, 90mm l (mounting holes m3) → photodiode aligns with led
+
+<a id="3fdd65dd82be8063ba5ef6787df04155" />led(middle) + resistor 30x30
+
+<br id="3fdd65dd82be8079b5daf3bd0edbc1a9" />
 
 # <a id="3fbd65dd82be8042b94cfa15b5b4a7f3" />Testing and Validation
 
