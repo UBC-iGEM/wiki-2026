@@ -2,7 +2,6 @@
 import howItWorksChipSvg from "../../public/assets/hero/how-it-works-chip.svg?raw";
 import aBlurbSvg from "../../public/assets/hero/a_blurb.svg?raw";
 import bBlurbSvg from "../../public/assets/hero/b_blurb.svg?raw";
-import hydrogelBlurbSvg from "../../public/assets/hero/hydrogel_blurb.svg?raw";
 ---
 
 <section class="ast-diagram">
@@ -10,14 +9,6 @@ import hydrogelBlurbSvg from "../../public/assets/hero/hydrogel_blurb.svg?raw";
     <p class="diagram-caption">Patient sample and antibiotic are loaded into chamber A</p>
 
     <div class="diagram-body">
-        <div class="diagram-col diagram-col--left">
-            <div class="info-trigger info-trigger--right info-trigger--hydrogel" tabindex="0">
-                <div class="info-bubble-art" aria-hidden="true" set:html={hydrogelBlurbSvg} />
-                <h3>Hydrogel channel</h3>
-                <p>Allows antibiotics to diffuse slowly in 2 - 3 hours, while preventing cells from passing through</p>
-            </div>
-        </div>
-
         <div class="chip-visual" set:html={howItWorksChipSvg} />
 
         <div class="diagram-col diagram-col--right">
@@ -85,7 +76,8 @@ import hydrogelBlurbSvg from "../../public/assets/hero/hydrogel_blurb.svg?raw";
         align-items: stretch;
         display: grid;
         gap: 2rem;
-        grid-template-columns: 1fr auto 1fr;
+        /* Equal side columns whatever the chambers' text needs, so the chip stays centred */
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     }
 
     .diagram-col {
@@ -96,12 +88,8 @@ import hydrogelBlurbSvg from "../../public/assets/hero/hydrogel_blurb.svg?raw";
         margin-right: 4rem;
     }
 
-    .diagram-col--left {
-        justify-content: center;
-        text-align: right;
-    }
-
     .diagram-col--right {
+        grid-column: 3;
         justify-content: space-between;
     }
 
@@ -167,10 +155,6 @@ import hydrogelBlurbSvg from "../../public/assets/hero/hydrogel_blurb.svg?raw";
         width: 25rem;
     }
 
-    .info-trigger--hydrogel .info-bubble-art {
-        width: 30rem;
-    }
-
     .info-trigger--chamber-b .info-bubble-art {
         width: 20rem;
     }
@@ -197,22 +181,20 @@ import hydrogelBlurbSvg from "../../public/assets/hero/hydrogel_blurb.svg?raw";
         right: 1.5rem;
     }
 
-    /* Hydrogel channel (left column) - tail points right, toward the chip
-       rectangle to its right. */
-    .info-trigger--right .info-bubble-art {
-        left: -1.5rem;
-    }
-
     /* how-it-works-chip.svg is 256x720 (tall/narrow) - width-driven, height
        auto so it keeps that aspect ratio instead of the old placeholder
        box's. */
+    /* Kept in the middle column, with the chambers' labels to its right */
     .chip-visual {
+        grid-column: 2;
         width: min(16rem, 30vw);
     }
 
+    /* Flipped upside down to match the descriptions */
     .chip-visual :global(svg) {
         display: block;
         height: auto;
+        transform: scaleY(-1);
         width: 100%;
     }
 
@@ -248,12 +230,13 @@ import hydrogelBlurbSvg from "../../public/assets/hero/hydrogel_blurb.svg?raw";
             grid-template-columns: 1fr;
         }
 
-        .diagram-col--left,
         .diagram-col--right {
+            grid-column: auto;
             text-align: center;
         }
 
         .chip-visual {
+            grid-column: auto;
             margin: 0 auto;
             /* Narrower cap than the desktop min() above - at 100% width
                this tall/narrow image would be very tall on a phone. */
