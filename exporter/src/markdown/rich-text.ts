@@ -27,7 +27,7 @@ type ProseRule = {
 const PROSE_RULES: ProseRule[] = [
     {
         id: "e-coli-italics",
-        term: wholeTerm(/E\.\s+coli/, true),
+        term: wholeTerm(/E\.?\s*coli/, true),
         guidance: "should be italicized",
         italics: "required",
     },
@@ -55,6 +55,23 @@ const PROSE_RULES: ProseRule[] = [
         term: wholeTerm(/EPI-?300/, true),
         guidance: "should be EPI300",
         correct_spelling: "EPI300",
+    },
+    {
+        id: "micro-symbol",
+        term: /(?<=\d\s?)u(?:l|m|amp|k|p)(?![\p{L}\p{N}])/giu,
+        guidance: "should use μ, not u",
+    },
+    // Inline equations aren't scanned, so these only fire on plain-text spellings.
+    { id: "od600-latex", term: wholeTerm(/OD[\s_-]?(?:600|₆₀₀)/, true), guidance: "should be an equation: OD_{600}" },
+    {
+        id: "preca-latex",
+        term: wholeTerm(/P[\s_-]?recA/, true),
+        guidance: "should be an equation: P_\\text{RecA}",
+    },
+    {
+        id: "pcpxp-latex",
+        term: wholeTerm(/P[\s_-]?cpxP/, true),
+        guidance: "should be an equation: P_\\text{CpxP}",
     },
 ];
 

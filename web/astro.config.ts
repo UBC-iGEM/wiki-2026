@@ -39,6 +39,7 @@ export default defineConfig({
         },
     ],
     markdown: {
+        shikiConfig: { theme: "tokyo-night" },
         processor: unified({
             remarkPlugins: [remarkMath, remarkBreaks],
             rehypePlugins: [

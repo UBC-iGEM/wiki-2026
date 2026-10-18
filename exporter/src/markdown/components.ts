@@ -7,6 +7,7 @@ import { blockContext, convertBlocks, convertItems, type ConvertContext, type It
 import { jsxFlow, jsxInlineBlock, type FlowContent, type JsxAttrs } from "./mdx";
 import { mediaFileName, parseImageCaption, uploadMedia } from "./media";
 import { asPlainText, convertRichText } from "./rich-text";
+import type { RichTextItemResponse } from "@notionhq/client";
 import type { Heading, Image, PhrasingContent } from "mdast";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -257,7 +258,7 @@ async function ihp({ items, ctx }: ComponentInput): ComponentOutput {
         cards.push(
             jsxFlow("div", { class: "ihp-card glow-panel", "data-index": `${i}` }, [
                 jsxFlow("div", { class: "ihp-card-body glow-panel-body" }, [
-                    jsxInlineBlock("div", { class: "ihp-name" }, [{ type: "text", value: name }]),
+                    jsxInlineBlock("div", { class: "ihp-name" }, await blockPhrasing(name_block!, ctx)),
                     jsxFlow("div", { class: "ihp-profile" }, [
                         ...(image
                             ? [jsxFlow("img", { class: "ihp-photo", src: image.url, alt: image.alt || name })]
@@ -411,13 +412,15 @@ function blockLink(item: Item): string | undefined {
 // ====================
 
 export interface PlatemapAttrs {
+    /** Plain text, for messages; the styled title is in the `title` slot. */
     title: string;
     /** Category names, in order of first appearance; a well's `category` indexes into this. */
     categories: string[];
     /** The plates as JSON (`Plate[]`). */
     plates: string;
 }
-export const PLATEMAP_SLOTS = [] as const;
+/** `names` holds one `.plate-name[data-index]` per plate, so names keep their Notion styling. */
+export const PLATEMAP_SLOTS = ["title", "names"] as const;
 type PlatemapSlots = SlotRecord<typeof PLATEMAP_SLOTS>;
 
 async function platemap({ items, ctx }: ComponentInput): ComponentOutput {
@@ -431,6 +434,7 @@ async function platemap({ items, ctx }: ComponentInput): ComponentOutput {
 
     const categories: string[] = [];
     const plates: Plate[] = [];
+    const names: FlowContent[] = [];
     for (let i = 0; i < rest.length; i += 2) {
         const subtitle_block = rest[i]!;
         const file_block = rest[i + 1]!;
@@ -448,6 +452,13 @@ async function platemap({ items, ctx }: ComponentInput): ComponentOutput {
         for (const warning of parsed.warnings)
             new ExporterError(warning, ["malformed content"]).warn(blockContext(ctx, file_block));
         plates.push(parsed.plate);
+        names.push(
+            jsxInlineBlock(
+                "span",
+                { class: "plate-name", "data-index": `${i / 2}`, ...(i > 0 ? { hidden: "" } : {}) },
+                await blockPhrasing(subtitle_block, ctx),
+            ),
+        );
     }
 
     if (categories.length > PLATEMAP_PALETTE_SIZE)
@@ -459,7 +470,7 @@ async function platemap({ items, ctx }: ComponentInput): ComponentOutput {
     return generateComponent<PlatemapAttrs, PlatemapSlots>({
         tag: "Platemap",
         attrs: { title, categories, plates: JSON.stringify(plates) },
-        slots: {},
+        slots: { title: [jsxInlineBlock("div", { class: "title" }, await blockPhrasing(title_block!, ctx))], names },
     });
 }
 
@@ -481,11 +492,12 @@ function malformedPlatemap(problem: string): ExporterError {
 // ====================
 
 export interface SeqmapAttrs {
+    /** Plain text, for the label; the styled title is in the `title` slot. */
     title: string;
     /** The parsed sequence as JSON (`SeqmapSeq`). */
     seq: string;
 }
-export const SEQMAP_SLOTS = [] as const;
+export const SEQMAP_SLOTS = ["title"] as const;
 type SeqmapSlots = SlotRecord<typeof SEQMAP_SLOTS>;
 
 async function seqmap({ items, ctx }: ComponentInput): ComponentOutput {
@@ -511,7 +523,7 @@ async function seqmap({ items, ctx }: ComponentInput): ComponentOutput {
     return generateComponent<SeqmapAttrs, SeqmapSlots>({
         tag: "Seqmap",
         attrs: { title, seq: JSON.stringify(seq) },
-        slots: {},
+        slots: { title: [jsxInlineBlock("div", { class: "title" }, await blockPhrasing(title_block!, ctx))] },
     });
 }
 
@@ -634,22 +646,33 @@ function splitOnDividers(items: Item[]): Item[][] {
     return sections.map(trimBlank).filter((section) => section.length > 0);
 }
 
-/** The text of a heading or paragraph. */
-function blockText(item: Item): string | undefined {
+/** The rich text of a heading or paragraph. */
+function blockRichText(item: Item): RichTextItemResponse[] | undefined {
     switch (item.type) {
         case "paragraph":
-            return asPlainText(item.paragraph.rich_text).trim();
+            return item.paragraph.rich_text;
         case "heading_1":
-            return asPlainText(item.heading_1.rich_text).trim();
+            return item.heading_1.rich_text;
         case "heading_2":
-            return asPlainText(item.heading_2.rich_text).trim();
+            return item.heading_2.rich_text;
         case "heading_3":
-            return asPlainText(item.heading_3.rich_text).trim();
+            return item.heading_3.rich_text;
         case "heading_4":
-            return asPlainText(item.heading_4.rich_text).trim();
+            return item.heading_4.rich_text;
         default:
             return undefined;
     }
+}
+
+/** The text of a heading or paragraph. */
+function blockText(item: Item): string | undefined {
+    const rich_text = blockRichText(item);
+    return rich_text && asPlainText(rich_text).trim();
+}
+
+/** The styled text of a heading or paragraph, which must have some (checked with {@link blockText}). */
+async function blockPhrasing(item: Item, ctx: ConvertContext): Promise<PhrasingContent[]> {
+    return convertRichText(blockRichText(item)!, item.type === "component" ? ctx : blockContext(ctx, item));
 }
 
 export function componentDocSuggestion(link: string): string {

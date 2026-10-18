@@ -7,7 +7,7 @@ title: "Needs Finding"
 
 <a id="3e5d65dd82be8028b89fc49adfa38a4d" />Between 2025 and 2050, a projected 39 million deaths will be due to antibiotic-resistant infections <Cite refs={[{"n":1,"key":"naghaviGlobalBurdenBacterial2024"}]} />. The misuse of antibiotics is one of the key factors facilitating the rise of resistant strains and is one of the greatest modern healthcare concerns of our time <Cite refs={[{"n":2,"key":"llorAntimicrobialResistanceRisk2014"}]} />. Common antibiotics are becoming less effective when treating patients, leading to increased risks of infection and mortality. At the root of this is an issue with timing: in order to treat patients in a timely fashion, antibiotics are commonly prescribed before anyone knows whether or not they will work against the patient’s infection. While antibiotic susceptibility testing is available in clinics, current methods are slow, with gold-standard tests effectively requiring 2 days to perform and thus being used sparingly <Cite refs={[{"n":3,"key":"smithRapidSusceptibilityTesting2019"}]} />.
 
-<a id="3fcd65dd82be80aab592e51678aa6722" />Urinary tract infections (UTIs) are among the most common forms of bacterial infections in both community and hospital settings <Cite refs={[{"n":4,"key":"foxmanEpidemiologyUrinaryTract2010"}]} />. Blind treatment of resistant infections with antibiotics selects for these resistant strains, which exacerbates the problem further. As conventional urine culture and susceptibility testing take roughly 48–72 hours, most patients are started on antibiotic treatment without a test <Cite refs={[{"n":5,"key":"narayanRapidIdentificationSusceptibility"}]} />. In British Columbia, pharmacists have been given the ability to prescribe for uncomplicated UTIs since 2023; however, physicians have raised concerns about how this happens without the laboratory testing which would show if the infection is resistant to the prescribed antibiotics <Cite refs={[{"n":6,"key":"healthPharmacistsCanPrescribe2023"},{"n":7,"key":"emailPharmacistsNowPrescribing2023"}]} />.
+<a id="3fcd65dd82be80aab592e51678aa6722" />Urinary tract infections (UTIs) are among the most common forms of bacterial infections in both community and hospital settings <Cite refs={[{"n":4,"key":"foxmanEpidemiologyUrinaryTract2010"}]} />. Blind treatment of resistant infections with antibiotics selects for these resistant strains, which exacerbates the problem. As conventional urine culture and susceptibility testing take 48–72 hours, most patients are started on antibiotic treatment without a completed test <Cite refs={[{"n":5,"key":"narayanRapidIdentificationSusceptibility"}]} />. In British Columbia, pharmacists have been given the ability to prescribe for uncomplicated UTIs since 2023; however, physicians have raised concerns about how this happens without the laboratory testing which would show if the infection is resistant to the prescribed antibiotics <Cite refs={[{"n":6,"key":"healthPharmacistsCanPrescribe2023"},{"n":7,"key":"emailPharmacistsNowPrescribing2023"}]} />.
 
 <a id="3fcd65dd82be80e19148ed015fc51dd4" />
 
@@ -15,7 +15,7 @@ title: "Needs Finding"
   <Fragment slot="people">
     <div class="ihp-card glow-panel" data-index="0">
       <div class="ihp-card-body glow-panel-body">
-        <div class="ihp-name">Dr. R.E.W. (Bob) Hancock, OC, OBC, FRSC</div>
+        <div class="ihp-name">Dr. R.E.W. (Bob) Hancock, **OC, OBC, FRSC**</div>
 
         <div class="ihp-profile">
           <div class="ihp-desc">
@@ -24,7 +24,7 @@ title: "Needs Finding"
         </div>
 
         <div class="ihp-content">
-          <a id="3fcd65dd82be80079d52c86a2560c6ac" />We interviewed Dr. Hancock early on in the development of our project, and he provided invaluable insight into the problem of antimicrobial resistance and advice for the direction of our project. Dr. Hancock pointed out that resistance often goes unnoticed. When an antibiotic fails, patients assume they just didn’t get better and clinicians switch drugs, and a real gap exists in being able to detect resistance fast enough to act on. For a specific early application to validate our platform on, he steered us toward UTIs. Urine is easy to collect and rich in bacteria, β-lactams are front-line drugs for serious UTIs, and in British Columbia many UTIs are treated by pharmacists or in remote communities without testing. His advice shaped *FAST*’s direction: we included β-lactams in our testing panel, added plans to support multi-antibiotic testing, and shifted our initial validation to UTIs.
+          <a id="3fcd65dd82be80079d52c86a2560c6ac" />We interviewed Dr. Hancock early on in the development of our project, and he provided insight into the problem of antimicrobial resistance and advice for the direction of our project. Dr. Hancock pointed out that resistance often goes unnoticed. When an antibiotic fails, patients assume they just didn’t get better and clinicians switch drugs, and a real gap exists in being able to detect resistance fast enough to act on. For a specific early application to validate our platform on, he steered us toward UTIs. Urine is easy to collect and rich in bacteria, β-lactams are front-line drugs for serious UTIs, and in British Columbia many UTIs are treated by pharmacists or in remote communities without testing. His advice shaped *FAST*’s direction: we included β-lactams in our testing panel, added plans to support multi-antibiotic testing, and shifted our initial validation to UTIs.
         </div>
       </div>
     </div>
@@ -33,7 +33,7 @@ title: "Needs Finding"
 
 # <a id="3e5d65dd82be80f0a86df25ee0f39142" />Product Definition
 
-<a id="3fcd65dd82be802d8d2df9e96b74c516" />*FAST* is a microfluidic diagnostic platform that detects whether bacteria in a patient sample can inactivate an antibiotic via a fluorescent readout. This enables easy access to susceptibility information close to the point of care. In this system, the patient’s bacteria are first exposed to a candidate antibiotic and allowed to interact for a set incubation duration. After incubation, the mixture of antibiotic and patient bacteria is filtered and the antibiotic flows onwards to wells containing engineered *E. coli* biosensors which report, via fluorescence, whether the antibiotic is still functioning or has been inactivated. These biosensors are engineered to cover a range of cell stress pathways, and thus allow us to obtain a “fingerprint” of the antibiotic’s normal mechanism. In the case of bacterial inactivation of the antibiotic, this “fingerprint” will be modified, allowing us to quickly determine by comparison if a sample is resistant. The core component of this system is shared across multiple classes of antibiotics, facilitating mass production and lower test costs.
+<a id="3fcd65dd82be802d8d2df9e96b74c516" />*FAST* is a microfluidic diagnostic platform that detects whether bacteria in a patient sample can inactivate an antibiotic via a fluorescent readout. This enables easy access to susceptibility information close to the point of care. In this system, the patient’s bacteria are first exposed to a candidate antibiotic and allowed to interact for a set incubation duration. After incubation, the mixture of antibiotic and patient bacteria is filtered and the antibiotic flows onwards to wells containing engineered *E. coli* biosensors which report, via fluorescence, whether the antibiotic is still functional or has been inactivated. These biosensors are engineered to cover a range of cell stress pathways, and thus allow us to obtain a “fingerprint” of the antibiotic’s normal mechanism. In the case of bacterial inactivation of the antibiotic, this “fingerprint” will be modified, allowing us to quickly determine by comparison if a sample is resistant. The core component of this system is shared across multiple classes of antibiotics, facilitating mass production and lower test costs.
 
 # <a id="3e5d65dd82be8056b734c205e978ab21" />Value Proposition
 
@@ -84,7 +84,7 @@ title: "Needs Finding"
     <tr>
       <th scope="row"><a id="1b8bbe81d3bd4aab91a7a689b1768ebf" />Gain Creators</th>
 
-      <td>• Fast: Compared to traditional AST, our project will give you a result within 24 hours<br />  • Small sample: Requires a small amount of sample to test<br />  • Modular: *E. coli* biosensor can be transformed quickly to make biosensors for multiple different types of antibiotics<br />  • Low cost: Designed to a target device cost below \$400, a threshold suggested by Dr. Hancock</td>
+      <td>• Fast: Compared to traditional AST, our project will give you a result within 24 hours<br />• Small sample: Requires a small amount of sample to test<br />• Modular: *E. coli* biosensor can be transformed quickly to make biosensors for multiple different types of antibiotics<br />• Low cost: Designed to a target device cost below \$400, a threshold suggested by Dr. Hancock</td>
     </tr>
 
     <tr>
@@ -97,11 +97,11 @@ title: "Needs Finding"
 
 # <a id="3e5d65dd82be80f6801efe84750d221f" />MVP Determination
 
-<a id="3fcd65dd82be80b1a104ce47df6eb4bb" />Investors often require assurances that the company they are investing in possess the requisite technical know-how and in-house expertise to deliver on the vision of the company. Here we will outline some of the quantifiable achievements that we believe will be sufficient to prove our capability to realize the Company’s vision.
+<a id="3fcd65dd82be80b1a104ce47df6eb4bb" />Investors often require assurances that the company they are investing in possess the requisite technical know-how and in-house expertise to deliver on the vision of the company. Here we  outline some of the quantifiable achievements that we believe will be sufficient to prove our capability to realize the Company’s vision.
 
 ## <a id="3e8d65dd82be802c8b17d017f43d49f5" />Wet Lab
 
-<a id="3edd65dd82be809cab1aea9dc5fb2007" />Our Wet Lab team’s goal is to engineer two biosensing strains **(CpxP-GFP and RecA-GFP reporters)** capable of fluorescing in response to antibiotic-induced stress from **β-lactams** and **aminoglycosides**. Our team determined two conditions to demonstrate a minimum viable product (MVP).
+<a id="3edd65dd82be809cab1aea9dc5fb2007" />Our Wet Lab team’s goal is to engineer two bio-sensing strains **(CpxP-GFP and RecA-GFP reporters)** capable of fluorescing in response to antibiotic-induced stress from **β-lactams** and **aminoglycosides**. Our team determined two conditions to demonstrate a minimum viable product (MVP).
 
 1. <a id="3edd65dd82be808ea960f36edb0981e5" />**Biosensor Fluorescence Validation**
    1. <a id="3fcd65dd82be8080bf0edc5cb3a78f7c" />This includes introducing a reporter plasmid to a biosensor strain and confirming uptake without impeding cell growth and viability.

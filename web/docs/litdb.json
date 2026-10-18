@@ -1,4 +1,32 @@
 {
+    "healthPharmacistsPrescribingMinor": {
+        "citation_key": "healthPharmacistsPrescribingMinor",
+        "bib": "Health M of. Pharmacists prescribing for minor ailments and contraception - data - Province of British Columbia [Internet]. Province of British Columbia; [cited 2026 Oct 18]. Available from: <a href=\"https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/pharmacare/initiatives/sop/monitoring-evaluation-ppmac\">https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/pharmacare/initiatives/sop/monitoring-evaluation-ppmac</a>"
+    },
+    "UrinaryTractInfection": {
+        "citation_key": "UrinaryTractInfection",
+        "bib": "Global Market Insights Inc. [Internet]. [cited 2026 Oct 18]. Urinary Tract Infection Testing Market Size Report, 2034. Available from: <a href=\"https://www.gminsights.com/industry-analysis/urinary-tract-infection-testing-market\">https://www.gminsights.com/industry-analysis/urinary-tract-infection-testing-market</a>"
+    },
+    "marchand-austinAntibioticSusceptibilityUrine2022": {
+        "citation_key": "marchand-austinAntibioticSusceptibilityUrine2022",
+        "bib": "Marchand-Austin A, Lee SM, Langford BJ, Daneman N, MacFadden DR, Diong C, et al. Antibiotic susceptibility of urine culture specimens in Ontario: a population-based cohort study. CMAJ Open [Internet]. 2022 Dec 6 [cited 2026 Oct 18];10(4):E1044&#x2013;51. Available from: <a href=\"https://www.cmajopen.ca/content/cmajo/10/4/E1044\">https://www.cmajopen.ca/content/cmajo/10/4/E1044</a>"
+    },
+    "mayDemographicTreatmentPatterns2014": {
+        "citation_key": "mayDemographicTreatmentPatterns2014",
+        "bib": "May L, Mullins P, Pines J. Demographic and Treatment Patterns for Infections in Ambulatory Settings in the United States, 2006-2010. Acad Emerg Med [Internet]. 2014 Jan [cited 2026 Oct 18];21(1):17&#x2013;24. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC3930926/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC3930926/</a>"
+    },
+    "AntimicrobialSusceptibilityTesting": {
+        "citation_key": "AntimicrobialSusceptibilityTesting",
+        "bib": "Antimicrobial Susceptibility Testing Market Outlook, Forecast, Companies by 2034 [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://www.delveinsight.com/report-store/antimicrobial-susceptibility-testing-market\">https://www.delveinsight.com/report-store/antimicrobial-susceptibility-testing-market</a>"
+    },
+    "regallaUrineCultureClinical2026a": {
+        "citation_key": "regallaUrineCultureClinical2026a",
+        "bib": "Regalla DKR, Leslie SW. Urine Culture: Clinical Use and Interpretation. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2026 [cited 2026 Oct 18]. Available from: <a href=\"http://www.ncbi.nlm.nih.gov/books/NBK557569/\">http://www.ncbi.nlm.nih.gov/books/NBK557569/</a>"
+    },
+    "ClinicalDiagnosticsMarketa": {
+        "citation_key": "ClinicalDiagnosticsMarketa",
+        "bib": "Clinical Diagnostics Market to Reach USD 234.36 Bn by 2035 [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://www.towardshealthcare.com/insights/clinical-diagnostics-market-sizing\">https://www.towardshealthcare.com/insights/clinical-diagnostics-market-sizing</a>"
+    },
     "zotero-item-1258": {
         "citation_key": "zotero-item-1258",
         "bib": "Technion iGEM. 2016 Technion Israel [Internet]. Available from: <a href=\"https://2016.igem.org/Team:Technion_Israel/Hardware\">https://2016.igem.org/Team:Technion_Israel/Hardware</a>"

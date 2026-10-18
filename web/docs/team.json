@@ -173,7 +173,8 @@
     "members": [
       {
         "name": "Gabriella Marie Gubantes",
-        "role": "Administration"
+        "role": "Administration",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/c5944e738b495fd093db33ea12b47597.avif"
       },
       {
         "name": "Gia Rishi",
@@ -228,6 +229,21 @@
         "name": "Antonio Wong",
         "role": "Instructor",
         "image": "https://static.igem.wiki/teams/6279/wiki/assets/9f33081295c75b529457559be944d064.avif"
+      }
+    ]
+  },
+  "principal-investigators": {
+    "title": "Principal Investigators",
+    "members": [
+      {
+        "name": "Jenna Usprech",
+        "role": "Principal Investigator",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/3af410deaa9957bdba70681787f431f5.avif"
+      },
+      {
+        "name": "Steven Hallam",
+        "role": "Principal Investigator",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/e33e85c1373b5cc382bd366a94616cee.avif"
       }
     ]
   }

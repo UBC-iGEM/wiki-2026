@@ -3,8 +3,8 @@ import { type PlatemapAttrs, PLATEMAP_SLOTS, PLATEMAP_PALETTE_SIZE } from "@expo
 import { type Plate, wellId } from "@exporter/platemap";
 type Props = PlatemapAttrs;
 
-const { title, categories, plates: plates_json } = Astro.props;
-PLATEMAP_SLOTS satisfies readonly [];
+const { categories, plates: plates_json } = Astro.props;
+PLATEMAP_SLOTS satisfies readonly ["title", "names"];
 
 const plates: Plate[] = JSON.parse(plates_json);
 const first = plates[0]!;
@@ -25,11 +25,11 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
 
 <div class="platemap glow-panel">
     <div class="panel glow-panel-body">
-        <div class="title">{title}</div>
+        <slot name="title" />
 
         <figure class="plate">
             <figcaption class="plate-header">
-                <span class="plate-name" aria-live="polite">{first.name}</span>
+                <span class="plate-names" aria-live="polite"><slot name="names" /></span>
                 {
                     plates.length > 1 && (
                         <span class="plate-nav">
@@ -149,7 +149,7 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
         };
         const grid = platemap.querySelector<HTMLElement>(".grid")!;
         const legend = platemap.querySelector<HTMLElement>(".legend")!;
-        const name = platemap.querySelector<HTMLElement>(".plate-name")!;
+        const names = platemap.querySelectorAll<HTMLElement>(".plate-name");
         const count = platemap.querySelector<HTMLElement>(".plate-count");
         const tooltip = platemap.querySelector<HTMLElement>(".tooltip")!;
         const n = plates.length;
@@ -158,7 +158,7 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
         const show = (index: number) => {
             current = (index + n) % n;
             const plate = plates[current]!;
-            name.textContent = plate.name;
+            names.forEach((name) => (name.hidden = Number(name.dataset.index) !== current));
             if (count) count.textContent = `${current + 1} / ${n}`;
             drawGrid(grid, plate);
             drawLegend(legend, plate, categories);
@@ -241,7 +241,7 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
         margin-bottom: 1rem;
     }
 
-    .platemap .plate-name {
+    .platemap .plate-names {
         flex: 1;
         font-weight: 700;
     }

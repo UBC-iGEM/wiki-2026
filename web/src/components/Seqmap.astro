@@ -3,7 +3,7 @@ import { type SeqmapAttrs, SEQMAP_SLOTS } from "@exporter/markdown/components";
 type Props = SeqmapAttrs;
 
 const { title, seq } = Astro.props;
-SEQMAP_SLOTS satisfies readonly [];
+SEQMAP_SLOTS satisfies readonly ["title"];
 
 // `<` is escaped so a feature name can't close the script tag.
 const data = seq.replaceAll("<", "\\u003c");
@@ -11,7 +11,7 @@ const data = seq.replaceAll("<", "\\u003c");
 
 <figure class="seqmap glow-panel">
     <div class="seqmap-body glow-panel-body">
-        <div class="title">{title}</div>
+        <slot name="title" />
         <div class="seqmap-host" aria-label={`Sequence map: ${title}`}></div>
         <script type="application/json" class="seqmap-data" is:inline set:html={data} />
     </div>
