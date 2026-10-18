@@ -22,7 +22,12 @@ const static_links = content_map.static_links;
 
 <nav class="primary" aria-label="Primary navigation">
     <button class="chip menu-toggle" type="button" aria-expanded="false" aria-controls="nav-sections">
-        <span>&#9776; Menu</span>
+        <span>
+            <svg class="menu-icon" viewBox="0 0 16 12" aria-hidden="true">
+                <path d="M0 1h16M0 6h16M0 11h16"></path>
+            </svg>
+            Menu
+        </span>
     </button>
 
     <ul class="top-level" id="nav-sections">
@@ -94,6 +99,33 @@ const static_links = content_map.static_links;
             for (const other of groups) if (other !== group) other.open = false;
         });
     }
+
+    // With a mouse on the full-width bar, the menus open on hover. Touch screens and the collapsed bar keep the click
+    const hover_menus = window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 1001px)");
+
+    for (const group of groups) {
+        const summary = group.querySelector("summary")!;
+        let close_timer: number | undefined;
+
+        group.addEventListener("pointerenter", () => {
+            if (!hover_menus.matches) return;
+            window.clearTimeout(close_timer);
+            group.open = true;
+        });
+
+        // A short grace period, so brushing past the edge on the way to the submenu does not close it
+        group.addEventListener("pointerleave", () => {
+            if (!hover_menus.matches) return;
+            close_timer = window.setTimeout(() => (group.open = false), 150);
+        });
+
+        // Hovering already opened it, so a click on the chip must not close it again under the cursor
+        summary.addEventListener("click", (event) => {
+            if (!hover_menus.matches || !group.matches(":hover")) return;
+            event.preventDefault();
+            group.open = true;
+        });
+    }
 </script>
 
 <style>
@@ -157,12 +189,24 @@ const static_links = content_map.static_links;
         width: 100%;
     }
 
+    /* Drawn rather than the ☰ character, which some phones render as an emoji */
+    .menu-icon {
+        fill: none;
+        height: 0.7em;
+        margin-right: 0.4rem;
+        stroke: currentcolor;
+        stroke-linecap: round;
+        stroke-width: 2;
+        vertical-align: 0.05em;
+        width: 0.95em;
+    }
+
     /* The mock widens the chip in play and leaves the others alone */
     .chip:hover,
     .nav-group[open] > .chip {
         background: var(--color-lime-yellow);
         color: var(--color-ebony-clay);
-        padding-inline: 3rem;
+        padding-inline: 3.25rem;
     }
 
     /* Above its submenu, whose shadow would otherwise darken the chip's lower edge */
@@ -182,15 +226,21 @@ const static_links = content_map.static_links;
         background: #1d3631;
         border: 1px solid var(--color-lime-yellow);
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-        max-height: min(60vh, 24rem);
-        min-width: 100%;
+        box-sizing: border-box;
+        max-height: auto;
         overflow-y: auto;
         padding: 0.4rem;
         position: absolute;
         right: calc(var(--chip-height) / 2 * tan(var(--chip-skew)));
         top: calc(100% - 1px);
-        width: max-content;
+        /* Exactly as wide as the chip's bottom edge, which `right` lines it up with; long names wrap */
+        width: 100%;
         z-index: 10;
+    }
+
+    /* Wrapped names would otherwise run into the next page's */
+    .submenu li + li {
+        margin-top: 0.2rem;
     }
 
     .submenu a {
@@ -198,16 +248,23 @@ const static_links = content_map.static_links;
         display: block;
         font-size: 0.8rem;
         font-weight: 700;
+        overflow-wrap: break-word;
         padding: 0.35rem 0.6rem;
         text-align: right;
         text-decoration: none;
     }
 
     /* The mock marks the page under the cursor with a caret; it sits inline so it stays beside the right-aligned label */
+    /* Drawn rather than the ▶ character, which phones render as an emoji */
     .submenu a::before {
-        content: "\25b6";
+        background: currentcolor;
+        clip-path: polygon(0 0, 100% 50%, 0 100%);
+        content: "";
+        display: inline-block;
+        height: 0.6em;
         margin-right: 0.5rem;
         opacity: 0;
+        width: 0.55em;
     }
 
     .submenu a:hover::before,
@@ -230,8 +287,9 @@ const static_links = content_map.static_links;
             display: block;
         }
 
-        /* Behind the toggle, so the sections stop owning the top of every page */
-        .top-level {
+        /* Behind the toggle, so the sections stop owning the top of every page.
+           Qualified to beat the margin reset on `nav.primary ul` */
+        nav.primary .top-level {
             display: none;
             flex-direction: column;
             gap: 0.6rem;

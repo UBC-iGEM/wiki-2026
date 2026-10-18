@@ -146,21 +146,25 @@ title: "Microfluidic Chip"
     * <a id="3fcd65dd82be8064b8ffe2c24aa2b27b" />For this first iteration of testing, the side walls of the chip model were chosen to be 1 mm wide and 2 mm tall, as we wanted smaller walls so that it would be easier to move the cured positive mold for the printed chip negative.
     * <a id="3fdd65dd82be803c881bcb9827a0aca2" />A barrier of 9mm was given on every side of the microfluidic chip to ensure that there would be no leaking on any sides out of the chip.
 
-    <a id="3fdd65dd82be8000b7faf5405889b0ce" />
+    <a id="3fdd65dd82be80f288e5d1127076db3d" />
 
-    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/e000b41ed87950ce9ddf20e1d0b7881b.avif" alt="" scale={0} align="center" />
-
-    <a id="3fdd65dd82be80d98a4afa97a42ea788" />Figure X: Top view of the SolidWorks model for the Mark One Epoxy mold microfluidic chip
+    <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/e000b41ed87950ce9ddf20e1d0b7881b.avif","alt":"","scale":0}]}>
+      <Fragment slot="content">
+        <a id="3fdd65dd82be80d98a4afa97a42ea788" />Top view of the SolidWorks model for the Mark One Epoxy mold microfluidic chip
+      </Fragment>
+    </Figure>
   </Fragment>
 
   <Fragment slot="test">
     <a id="3fcd65dd82be80afb5e7f90168e26265" />The primary goal of designing and manufacturing this chip was to create direction for optimal chip requirements in the future to allow for more practical manufacturing with respect to CAD modelling and design. This includes 3D printing settings, as well as curing practices and improvements to the side walls and channel geometries in future chips. After an STL file was created from the above SolidWorks file, the resulting CAD model was 3D printed using a Prusa i3 Mk3 printer on default settings. After printing was complete, epoxy resin was mixed and then poured into the mold to the top (2mm) and left to cure for 72 hours. After this, we attempted to remove the chip from the model; however, the cured chip was stuck to the side walls of the PLA. To take the chip out, cuts were made along the edges in order to take off the walls, and then the chip was bent and peeled off of the bottom plate of the chip.
 
-    <a id="3fcd65dd82be8021a741c9c60d0a637d" />
+    <a id="3fdd65dd82be809e9a12c39d9903ba9e" />
 
-    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/d84677fdd3255f1092d03454b22ec682.avif" alt="" scale={0} align="center" />
-
-    <a id="3fdd65dd82be80d2acb6cc2be574ea27" />Figure X: Epoxy microfluidic chip (right) after being removed from the PLA negative mold (left)
+    <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/d84677fdd3255f1092d03454b22ec682.avif","alt":"","scale":0}]}>
+      <Fragment slot="content">
+        <a id="3fdd65dd82be80d2acb6cc2be574ea27" />Figure X: Epoxy microfluidic chip (right) after being removed from the PLA negative mold (left)
+      </Fragment>
+    </Figure>
 
     <a id="3fcd65dd82be80ee9941faca4ee5d45f" />The final microfluidic chip that was removed was clear, and flow channels through the mixing section were well defined, and the channels flowing through these parts mirrored the designs created using SolidWorks. For this section of the chip, the side wall stayed together without any indication of cracking or breaking. This is also true when looking around the outlet channels for the chip.
 
@@ -190,7 +194,7 @@ title: "Microfluidic Chip"
 
     <br id="3fdd65dd82be805c9949eafc8438c8bd" />
 
-    <a id="3fcd65dd82be8000aa5ecd4233d0f0ba" />Many of the adjustments that were made to this chip were related to the issues with removing the Epoxy chip in DBTL cycle 1. In order to remedy the issue with the cured chip bonding with the sides and base of the mold container, we attempted to make a microfluidic design without including any walls directly attached to the chip.
+    <a id="3fcd65dd82be8000aa5ecd4233d0f0ba" />Many of the adjustments that were made to this chip were related to the issues with removing the Epoxy chip in DBTL cycle 1. In order to remedy the issue with the cured chip bonding with the sides and base of the mold container, we attempted to make a microfluidic design without including any walls directly attached to the chip. Within the PDMS
 
     <br id="3fdd65dd82be80bda051f7adf3c0cb7e" />
 
@@ -200,17 +204,17 @@ title: "Microfluidic Chip"
   <Fragment slot="build">
     <a id="3f9d65dd82be80f8af46d108dd8a879a" />Build:
 
-    <br id="3fdd65dd82be80878a9bfdb57df63d8b" />
+    <a id="3fdd65dd82be80878a9bfdb57df63d8b" />This iteration of the chip used primarily the same CAD techniques as the previous iteration of the chip. A slight chamfer has been added to the edges of each of the channels. This was chosen, for this iteration, as 0.1mm of each of the side lengths cut off at the top corners of each of the channels
 
-    <br id="3fdd65dd82be808caae6ed4bce95d7bb" />
+    <a id="3fdd65dd82be808caae6ed4bce95d7bb" />Each one of these “herringbone” patterns works to jostle all the laminar fluid streams together semi-randomly such that there are many small antibiotic streamlines flowing adjacent to the patient sample. This is done such that diffusion that happens along the course of the chip will result in the mixing of these two fluids in laminar flow, and the effectiveness of this pattern has previously been tested for its mixing capabilities at low Re <Cite refs={[{"n":11,"key":"liuTwofluidMixingMicrochannel2004"}]} /> . The design was appealing due to its flat base, meaning it is compatible with our manufacturing process with PDMS pouring.
 
-    <a id="3fdd65dd82be80d7aeb9e5a92a21de91" />
+    <a id="3fdd65dd82be80e18287e8ebf55fec4e" />
 
-    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/cba1ff646ce95472906809a1f8a9106f.avif" alt="" scale={0} align="center" />
-
-    <a id="3fdd65dd82be800ba303e281f1cedc71" />Figure X: Herringbone structure dimensions
-
-    <a id="3fdd65dd82be807eb09bf2047d97b87f" />Each one of these “herringbone” patterns works to jostle all the laminar fluid streams together semi-randomly such that there are many small antibiotic streamlines flowing adjacent to the patient sample. This is done such that diffusion that happens along the course of the chip will result in the mixing of these two fluids in laminar flow, and the effectiveness of this pattern has previously been tested for its mixing capabilities at low Re <Cite refs={[{"n":11,"key":"liuTwofluidMixingMicrochannel2004"}]} /> . The design was appealing due to its flat base, meaning it is compatible with our manufacturing process with PDMS pouring.
+    <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/cba1ff646ce95472906809a1f8a9106f.avif","alt":"","scale":0}]}>
+      <Fragment slot="content">
+        <a id="3fdd65dd82be800ba303e281f1cedc71" />Herringbone structure dimensions
+      </Fragment>
+    </Figure>
 
     <a id="3fdd65dd82be8055bdbddd8520620e11" />This resulted in the width of these channels being reduced to 0.8 mm. The reason that this was not reduced any further is that we wanted the herringbone design to have space to print properly. The tolerance of the printer that we are using led us to picking a wider base such that this herringbone design is able to print properly, and each of the sections clearly prints the geometry displayed in the CAD models for the chip.
 
@@ -220,7 +224,7 @@ title: "Microfluidic Chip"
 
     <a id="3fdd65dd82be808d878cf2cae8f014ab" />Figure X: Herringbone 1 microfluidic chip design viewed from above
 
-    <a id="3fdd65dd82be8059996bdd68e08b58fc" />The resulting CAD model was 3D printed again using the same setup as in the epoxy prototype. For this iteration of the chip, we would use PDMS and plasma bonding to design the new chip
+    <a id="3fdd65dd82be8059996bdd68e08b58fc" />The resulting CAD model was 3D printed again using the same setup as in the epoxy prototype. For this iteration of the chip, we would use PDMS and plasma bonding to design the new chip. This iteration deviates slightly from the general PDMS casting protocol due to the lack of walls. In this instance of the design, the chip mold was placed into a Petri dish for casting to act as a substitute wall. All other protocol for the casting for this chip is identical to other iterations.
   </Fragment>
 
   <Fragment slot="test">
@@ -349,15 +353,17 @@ title: "Microfluidic Chip"
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3f9d65dd82be809bb910fd33cfb5f9cd" />Design: We changed the position of our channels to make integration with the fluorescence detector significantly easier.
+    <a id="3f9d65dd82be809bb910fd33cfb5f9cd" />We changed the position of our channels to make integration with the fluorescence detector significantly easier as the angle between the wells on the half circle approach led to a very small angular difference in the wells and would require complex and highly accurate mechanics to differentiate between different wells.
   </Fragment>
 
   <Fragment slot="build">
-    <a id="3fdd65dd82be8046af6ec08bbe510b72" />
+    <a id="3fdd65dd82be805db712e3a689d208d4" />
 
-    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/9c895d0bf2005cf2afdb15d595b84bb2.avif" alt="" scale={0} align="center" />
-
-    <a id="3fdd65dd82be80c3b26cdb1058ad01bc" />Build: The dark circles on this image represent the wells, and the light grey rectangle represents the microfluidic chip.
+    <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/1b29d447260c5009836ad07894bba3b8.avif","alt":"","scale":0}]}>
+      <Fragment slot="content">
+        <a id="3fdd65dd82be80c3b26cdb1058ad01bc" />The dark circles on this image represent the wells, and the light grey rectangle represents the microfluidic chip. Our dimensions are visualized using the brackets.
+      </Fragment>
+    </Figure>
   </Fragment>
 
   <Fragment slot="test">
@@ -366,7 +372,7 @@ title: "Microfluidic Chip"
     <a id="3fcd65dd82be8039a978d3d2041a6d15" />Assumptions:
 
     - <a id="3fcd65dd82be805a8dbfd8e8767fe941" />main channel is 1\*1 mm\*2
-    - <a id="3fcd65dd82be8096822ec1c247ed5f22" />outlets (8) are 0.5\*0.5 mm^2
+    - <a id="3fcd65dd82be8096822ec1c247ed5f22" />outlets (7) are 0.5\*0.5 mm^2
     - <a id="3fcd65dd82be8034a073d6607e9ab062" />outlet length is 15 mm
     - <a id="3fcd65dd82be80a7a9c5ec76a30d78c6" />outlet spacing 8 mm apart
     - <a id="3fcd65dd82be8025bc32fe9c9bcc6e2f" />identical outlets
@@ -381,9 +387,9 @@ title: "Microfluidic Chip"
     $$
     \mu: \text{dynamic viscosity},
     L: \text{Length} \\ 
-    R_{M} = \frac{28.4 \mu*L}{h^{4}} \\
-    R_{M} = \frac{28.4 (0.001)*(0.008)}{(0.001)^{4}} \\
-    R_{M} = 2.3 * 10^{3} \frac{Pa*s}{m^{3}}
+    R_{M} = \frac{28.4 \mu \cdot L}{h^{4}} \\
+    R_{M} = \frac{28.4 (0.001) \cdot(0.008)}{(0.001)^{4}} \\
+    R_{M} = 2.3 \cdot 10^8 \frac{Pa\cdot s}{m^{3}}
 
     $$
 
@@ -393,8 +399,8 @@ title: "Microfluidic Chip"
 
     $$
     R_{O} = \frac{28.4 \mu*L}{h^{4}} \\
-    R_{O} = \frac{28.4 (0.001)*(0.0015)}{(0.0005)^{4}} \\
-    R_{O} = 6.8 * 10^{9} \frac{Pa*s}{m^{3}}
+    R_{O} = \frac{28.4 (0.001)\cdot(0.0015)}{(0.0005)^{4}} \\
+    R_{O} = 6.8 \cdot 10^{9} \frac{Pa \cdot s}{m^{3}}
 
     $$
 
@@ -403,7 +409,7 @@ title: "Microfluidic Chip"
     <a id="3fcd65dd82be803da847db7267f7b901" />
 
     $$
-    \frac{R_{O}}{R_{M}} = 300
+    \frac{R_{O}}{R_{M}} = 30
     $$
 
     <a id="3fcd65dd82be80f5804fe717aa249165" />To split our flow equally between wells we must divide the flow between the eight wells.
@@ -411,7 +417,7 @@ title: "Microfluidic Chip"
     <a id="3fcd65dd82be80ca97e1d6f6cd32db2d" />
 
     $$
-    Q_{i}=\frac{Q_{O}}{8} = 0.125 Q_{O}
+    Q_{i}=\frac{Q_{O}}{7} = 0.143 Q_{O}
     $$
 
     <a id="3fcd65dd82be80a098ccd61c547c2ae9" />In the main channel, the flow will drop as it passes each successive well.
@@ -419,7 +425,7 @@ title: "Microfluidic Chip"
     <a id="3fcd65dd82be801184acd1a733986ae7" />
 
     $$
-    Q= 1 \text{,} \frac{7}{8} \text{,} \frac{6}{8} \text{,} \frac{5}{8}\text{,} \frac{1}{2}\text{,} \frac{3}{8}\text{,}\frac{1}{4}\text{,}\frac{1}{8}
+    Q= 1 \text{,} \frac{6}{7} \text{,} \frac{5}{7} \text{,} \frac{4}{7}\text{,} \frac{3}{7}\text{,} \frac{2}{7}\text{,}\frac{1}{7}
     $$
 
     <a id="3fcd65dd82be8041a2c7dfd8af79e1cf" />In the main channel, there were therefore be a pressure loss as the volume of fluid pushing forward will be lessened:
@@ -428,17 +434,17 @@ title: "Microfluidic Chip"
 
     $$
     \Delta P = QR_{M} \\
-    \begin{array}{c|c|c}
+    \begin{array}{|c|c|c|}
     \hline
     \text{Well} & \text{Flow Rate} & \text{Pressure Drop} \\
     \hline
     1 & Q & QR_m \\
-    2 & \frac{7}{8}Q & \frac{7}{8}QR_m \\
-    3 & \frac{6}{8}Q & \frac{6}{8}QR_m \\
-    4 & \frac{5}{8}Q & \frac{5}{8}QR_m \\
-    5 & \frac{4}{8}Q & \frac{4}{8}QR_m \\
-    6 & \frac{3}{8}Q & \frac{3}{8}QR_m \\
-    7 & \frac{2}{8}Q & \frac{2}{8}QR_m \\
+    2 & \frac{6}{7}Q & \frac{6}{7}QR_m \\
+    3 & \frac{5}{7}Q & \frac{5}{7}QR_m \\
+    4 & \frac{4}{7}Q & \frac{4}{7}QR_m \\
+    5 & \frac{3}{7}Q & \frac{3}{7}QR_m \\
+    6 & \frac{2}{7}Q & \frac{2}{7}QR_m \\
+    7 & \frac{1}{7}Q & \frac{1}{7}QR_m \\
     \hline
     \end{array}
     $$
@@ -449,8 +455,8 @@ title: "Microfluidic Chip"
 
     $$
     \sum_{i=P_{1}}^{P_{8}} \Delta P_{Mi} = Q_{i}R_{M} \\
-    \sum_{i=P_{1}}^{P_{8}} \Delta P_{Mi} = (1+\frac{7}{8}+\frac{3}{4}+\frac{5}{8}+\frac{1}{2}+\frac{3}{8}+\frac{1}{4}+\frac{1}{8})QR_{M} \\ \text{Assuming } Q=1\frac{m^{3}}{s} \\
-    \Delta P_M = 1*10^{9} Pa
+    \sum_{i=P_{1}}^{P_{8}} \Delta P_{Mi} = (1+\frac{6}{7}+\frac{5}{7}+\frac{4}{7}+\frac{3}{7}+\frac{2}{7}+\frac{1}{7})QR_{M} \\
+    \Delta P_M =  9.2\cdot 10^8 Q Pa
     $$
 
     <a id="3fcd65dd82be80858440d9eae070c516" />To find the pressure drops across the outlets as fluid moves in we then:
@@ -458,9 +464,9 @@ title: "Microfluidic Chip"
     <a id="3fcd65dd82be8058a844d5f4fdc4bbed" />
 
     $$
-    R_{O}=6.8*10^{9} \\
-    \Delta P_O = (8)(R_{O})(\frac{Q} {8})\\
-    \Delta P_O = 6.8*10^{9} Pa
+    R_{O}=6.8 \cdot 10^{9} \\
+    \Delta P_O = (7)(R_{O})(\frac{Q} {7})\\
+    \Delta P_O = 6.8 \cdot 10^{9} Q Pa
     $$
 
     <a id="3fcd65dd82be80129549e5c56d71678f" />We can then compare the pressure difference across the main channel to into the outlets to find whether there is an unequal push.
@@ -468,41 +474,54 @@ title: "Microfluidic Chip"
     <a id="3fcd65dd82be8070addff8c6b0f05683" />
 
     $$
-    \frac{\Delta P_M}{\Delta P_O}=\frac{1*10^{9}}{6.8*10^{9}} \\
-    \frac{\Delta P_M}{\Delta P_O}= 0.15 \\
+    \frac{\Delta P_M}{\Delta P_O}=\frac{9.2\cdot 10^8}{6.8 \cdot10^{9}} \\
+    \frac{\Delta P_M}{\Delta P_O}= 0.14\\
     $$
 
-    <a id="3fdd65dd82be80638303cf04ac758c5f" />Therefore, most of the pressure comes from the outlet. Because the pressure at the outlet is so much larger than the pressure in the main channel, the flow tends to equalize.
+    <a id="3fdd65dd82be80638303cf04ac758c5f" />Therefore, most of the pressure comes from the outlet. Because the pressure at the outlet is so much larger than the pressure in the main channel, the flow tends to equalize.4\\
 
     <a id="3fdd65dd82be8081ae26cb5abf2fac45" />We can now compare individual wells to see if there is a difference in that pressure equalization. If there is a significant difference it implies that there is a significant difference in the filling of the wells.
 
     <a id="3fdd65dd82be80afb6abdcb439ecee95" />
 
     $$
-    \frac{ \Delta P_Mx}{\Delta P_{Ox}}=\frac{(Q/8)R_M}{R_OQ} \\
-    \frac{\Delta P_{Mx}}{\Delta P_{Ox}}=\frac{R_M}{8R_O} \\
-    \frac{\Delta P_{Mx}}{\Delta P_{Ox}}=0.000417
+    \frac{ \Delta P_{M}}{\Delta P_{O7}}=\frac{(Q/7)R_M}{R_OQ} \\
+    \frac{\Delta P_{M}}{\Delta P_{O7}}=\frac{R_M}{7R_O} \\
+    \frac{\Delta P_{M}}{\Delta P_{O7}}=0.00476
 
     $$
 
-    <a id="3fdd65dd82be804da412cad0f9c2b3bf" />We can now determine the relative variation:
+    <a id="3fdd65dd82be808182aed902a1bf1d5a" />We then do this for each outlet:
+
+    <a id="3fdd65dd82be800e97ebf7d9a43c5a13" />
+
+    $$
+    \begin{array}{|c|c|}
+    \hline
+    \text{Section} &
+    \text{Pressure Difference With Main Channel} \\
+    \hline
+    1 & 0.0333\\
+    2 &  0.0167\\
+    3 &  0.0111\\
+    4 &  0.0083 \\
+    5 &  0.0067\\
+    6 &  0.0056\\
+    7 &  0.0048\\
+    8 &   0.0042\\
+    \hline
+    \end{array}
+    $$
+
+    <a id="3fdd65dd82be804da412cad0f9c2b3bf" />We can now determine the relative variation between the first outlet and the last outlet:
 
     <a id="3fdd65dd82be8049ba6af6653ee9eb7d" />
 
     $$
-    P_O = \frac{1}{8}\\
-    \frac{0.01167}{0.125}=9.37%
+    \frac{P_{O7}}{P_{O1}}=\frac{0.0042}{0.0333} = 0.13
     $$
 
-    <br id="3fdd65dd82be80a3bce7cef3dbcdc4cb" />
-
-    <br id="3fdd65dd82be80448d15ec64b73ad4de" />
-
-    <br id="3fdd65dd82be801b9aadffec6964062a" />
-
-    <a id="3f9d65dd82be80a9a10eca9eee04f52f" />
-
-    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/23e58ad9f286528a991fb52031d3cb39.avif" alt="" scale={0} align="center" />
+    <a id="3fdd65dd82be80a3bce7cef3dbcdc4cb" />Therefore, the relative difference between the first well and the last well is 13% since pressure and flow have a direct relationship.
   </Fragment>
 
   <Fragment slot="learn">

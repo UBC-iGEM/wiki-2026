@@ -1,7 +1,5 @@
 ---
 import howItWorksChipSvg from "../../public/assets/hero/how-it-works-chip.svg?raw";
-import aBlurbSvg from "../../public/assets/hero/a_blurb.svg?raw";
-import bBlurbSvg from "../../public/assets/hero/b_blurb.svg?raw";
 ---
 
 <section class="ast-diagram">
@@ -14,7 +12,7 @@ import bBlurbSvg from "../../public/assets/hero/b_blurb.svg?raw";
         <div class="diagram-col diagram-col--right">
             <div class="chamber">
                 <div class="info-trigger info-trigger--left info-trigger--chamber-a" tabindex="0">
-                    <div class="info-bubble-art" aria-hidden="true" set:html={aBlurbSvg} />
+                    <div class="info-bubble-art" aria-hidden="true"></div>
                     <h3>Chamber A</h3>
                     <p>
                         Where patient sample and antibiotic interacts, and antibiotic degradation occurs within 1-4
@@ -24,7 +22,7 @@ import bBlurbSvg from "../../public/assets/hero/b_blurb.svg?raw";
             </div>
             <div class="chamber">
                 <div class="info-trigger info-trigger--left info-trigger--chamber-b" tabindex="0">
-                    <div class="info-bubble-art" aria-hidden="true" set:html={bBlurbSvg} />
+                    <div class="info-bubble-art" aria-hidden="true"></div>
                     <h3>Chamber B</h3>
                     <p>Biosensor E. coli interacts with intact/degraded antibiotic</p>
                 </div>
@@ -139,46 +137,30 @@ import bBlurbSvg from "../../public/assets/hero/b_blurb.svg?raw";
         color: var(--color-ebony-clay);
     }
 
+    /* Wraps the label and description with a margin on every side, so it
+       fits whatever width the column gives the text */
     .info-bubble-art {
+        border-radius: 20px;
+        inset: -1rem -1.25rem;
         opacity: 0;
         pointer-events: none;
         position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
         transition: opacity 0.15s ease;
         z-index: 0;
     }
 
-    /* Each bubble's text content is a different length, so each gets its
-       own width rather than sharing one. */
+    /* The gradients of the old a_blurb.svg and b_blurb.svg */
     .info-trigger--chamber-a .info-bubble-art {
-        width: 25rem;
+        background: linear-gradient(120deg, #bbd1ff, var(--color-cornflower));
     }
 
     .info-trigger--chamber-b .info-bubble-art {
-        width: 20rem;
+        background: linear-gradient(135deg, #bbd1ff, #e650db);
     }
 
     .info-trigger:hover .info-bubble-art,
     .info-trigger:focus-within .info-bubble-art {
         opacity: 1;
-    }
-
-    .info-bubble-art :global(svg) {
-        display: block;
-        height: auto;
-        width: 100%;
-    }
-
-    /* Chamber A/B (right column) - tail points left, toward the chip
-       rectangle to their left. */
-    .info-trigger--left .info-bubble-art {
-        right: -1.5rem;
-    }
-
-    /* shift chamber b to left*/
-    .info-trigger--chamber-b .info-bubble-art {
-        right: 1.5rem;
     }
 
     /* how-it-works-chip.svg is 256x720 (tall/narrow) - width-driven, height

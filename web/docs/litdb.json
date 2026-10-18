@@ -1,4 +1,16 @@
 {
+    "wuAntimicrobialResistanceAnalysis2021": {
+        "citation_key": "wuAntimicrobialResistanceAnalysis2021",
+        "bib": "Wu D, Ding Y, Yao K, Gao W, Wang Y. Antimicrobial Resistance Analysis of Clinical Escherichia coli Isolates in Neonatal Ward. Front Pediatr [Internet]. 2021 May 25 [cited 2026 July 17];9:670470. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC8185016/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC8185016/</a>"
+    },
+    "kohanskiHowAntibioticsKill2010a": {
+        "citation_key": "kohanskiHowAntibioticsKill2010a",
+        "bib": "Kohanski MA, Dwyer DJ, Collins JJ. How antibiotics kill bacteria: from targets to networks. Nat Rev Microbiol [Internet]. 2010 June [cited 2026 Oct 18];8(6):423&#x2013;35. Available from: <a href=\"https://www.nature.com/articles/nrmicro2333\">https://www.nature.com/articles/nrmicro2333</a>"
+    },
+    "baharogluIdentificationGenesInvolved2014": {
+        "citation_key": "baharogluIdentificationGenesInvolved2014",
+        "bib": "Baharoglu Z, Babosan A, Mazel D. Identification of genes involved in low aminoglycoside-induced SOS response in Vibrio cholerae: a role for transcription stalling and Mfd helicase. Nucleic Acids Res [Internet]. 2014 Feb 1 [cited 2026 Oct 18];42(4):2366&#x2013;79. Available from: <a href=\"https://doi.org/10.1093/nar/gkt1259\">https://doi.org/10.1093/nar/gkt1259</a>"
+    },
     "zotero-item-3786": {
         "citation_key": "zotero-item-3786",
         "bib": "Jakobsen L, Jensen VF, Sandvang DH, Seyfarth AM, Frimodt-M&#xF6;ller N, Hammerum AM. Gentamicin susceptibility in Escherichia coli related to the genetic background: problems with breakpoints. CMI. 2007 Aug;13(8):830&#x2013;2."
@@ -262,10 +274,6 @@
     "researchFDARationaleRecognitionThu10/23/2025-08:55": {
         "citation_key": "researchFDARationaleRecognitionThu10/23/2025-08:55",
         "bib": "Research C for DE and. FDA Rationale for Recognition Decision: Gentamicin, Tobramycin, and Amikacin for Enterobacterales and P. aeruginosa. FDA [Internet]. 2025 Oct 23 [cited 2026 July 17]; Available from: <a href=\"https://www.fda.gov/drugs/development-resources/fda-rationale-recognition-decision-gentamicin-tobramycin-and-amikacin-enterobacterales-and-p\">https://www.fda.gov/drugs/development-resources/fda-rationale-recognition-decision-gentamicin-tobramycin-and-amikacin-enterobacterales-and-p</a>"
-    },
-    "wuAntimicrobialResistanceAnalysis2021": {
-        "citation_key": "wuAntimicrobialResistanceAnalysis2021",
-        "bib": "Wu D, Ding Y, Yao K, Gao W, Wang Y. Antimicrobial Resistance Analysis of Clinical Escherichia coli Isolates in Neonatal Ward. Front Pediatr [Internet]. 2021 May 25 [cited 2026 July 17];9:670470. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC8185016/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC8185016/</a>"
     },
     "nguyenCephalothinSusceptibilityTesting2013": {
         "citation_key": "nguyenCephalothinSusceptibilityTesting2013",
