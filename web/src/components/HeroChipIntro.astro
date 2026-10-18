@@ -109,7 +109,11 @@ import InteractiveSection from "./InteractiveSection.astro";
 
     const hero = document.querySelector(".home-hero");
     if (!hero) throw new Error("'.home-hero' not found");
-    const shiftLeft = hero.clientWidth / 4;
+    // On phones the stage is a single centered column (see the max-width:
+    // 600px styles), so there's no side-by-side composition to re-center,
+    // and the chip lines/dots are display: none, so their path work is skipped.
+    const isPhone = window.matchMedia("(max-width: 600px)").matches;
+    const shiftLeft = isPhone ? 0 : hero.clientWidth / 4;
 
     // traces chip line in 4 segments
     const chipLineSegments = [
@@ -120,7 +124,7 @@ import InteractiveSection from "./InteractiveSection.astro";
             reverse: false,
         },
         { el: document.querySelector<SVGGeometryElement>(".chip-line #stroke0_208_2980"), reverse: true },
-    ].filter((segment): segment is { el: SVGGeometryElement; reverse: boolean } => segment.el !== null);
+    ].filter((segment): segment is { el: SVGGeometryElement; reverse: boolean } => !isPhone && segment.el !== null);
 
     const chipLineTotalLength = chipLineSegments.reduce((sum, { el }) => sum + el.getTotalLength(), 0);
     // Total seconds the whole line takes to draw itself in - tune this,
@@ -189,7 +193,7 @@ import InteractiveSection from "./InteractiveSection.astro";
     const chipLine3Path = document.querySelector<SVGGeometryElement>(
         '.chip-line-3 path[stroke="url(#paint0_linear_900_69)"]',
     );
-    if (chipLine3Path) {
+    if (chipLine3Path && !isPhone) {
         introTimeline
             .to(".chip-line-3", { opacity: 1, duration: 0.01 }, "stats-reveal+=2.1")
             .fromTo(chipLine3Path, { drawSVG: "0%" }, { drawSVG: "100%", duration: 1.2 }, "<");
@@ -238,7 +242,7 @@ import InteractiveSection from "./InteractiveSection.astro";
             ),
             reverse: true,
         },
-    ].filter((segment): segment is { el: SVGGeometryElement; reverse: boolean } => segment.el !== null);
+    ].filter((segment): segment is { el: SVGGeometryElement; reverse: boolean } => !isPhone && segment.el !== null);
 
     const dot2 = document.querySelector<HTMLElement>(".motion-dot-2");
 
@@ -581,5 +585,135 @@ import InteractiveSection from "./InteractiveSection.astro";
         position: absolute;
         top: calc(var(--chip-w) * 8.6);
         width: calc(var(--chip-w) * 1150 / 594);
+    }
+
+    /* Phone-only: the composition above is ~2x --chip-w wide with
+       fixed-px text in wide absolute boxes, so it can't shrink to a phone
+       and stay readable. Below 600px the stage becomes a single-column
+       grid instead: everything drops back into flow in reading order and
+       the decorative chip lines/dots are removed. display: none, not
+       visibility: hidden - hidden elements still take up layout space, and
+       these extend past the right edge, which lets mobile
+       browsers widen the viewport past 600px and fall back to the desktop
+       layout. The script skips their path work on phones to match.
+       Desktop is untouched - every rule here is inside this query. */
+    @media (max-width: 600px) {
+        .chip-stage {
+            --chip-w: min(70vw, 320px);
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            justify-items: center;
+            min-height: 0;
+            row-gap: 2.5rem;
+            width: 100%;
+        }
+
+        .connector-line,
+        .chip-line,
+        .chip-line-second,
+        .chip-line-3,
+        .motion-dot,
+        .motion-dot-2 {
+            display: none;
+        }
+
+        .chip,
+        .fast-text-final,
+        .stat,
+        .stat-caption,
+        .susceptibility-blurb,
+        .solution-blurb,
+        .microfluidics-overlay,
+        .outcome-blurb,
+        .interactive-overlay {
+            position: static;
+        }
+
+        /* All three chips share one cell so they still cross-fade on top of each other */
+        .chip {
+            grid-area: 1 / 1;
+        }
+
+        .fast-text-final {
+            grid-row: 2;
+            width: 100%;
+        }
+
+        .susceptibility-blurb {
+            flex-direction: column;
+            gap: 1rem;
+            grid-row: 3;
+            width: 100%;
+        }
+
+        /* No baked-in circles behind them here, so swap the dark text for a brand accent */
+        .stat {
+            color: var(--color-lime-yellow);
+            font-size: 40px;
+            height: auto;
+            line-height: 1.1;
+            width: auto;
+        }
+
+        .stat-caption {
+            margin-top: -2rem;
+            max-width: 22rem;
+            width: 100%;
+        }
+
+        .stat.stat-1 {
+            grid-row: 4;
+        }
+        .stat-caption.stat-1 {
+            grid-row: 5;
+        }
+        .stat.stat-2 {
+            grid-row: 6;
+        }
+        .stat-caption.stat-2 {
+            grid-row: 7;
+        }
+        .stat.stat-3 {
+            grid-row: 8;
+        }
+        .stat-caption.stat-3 {
+            grid-row: 9;
+        }
+
+        .solution-blurb {
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            grid-row: 10;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        .solution-copy {
+            flex-basis: 100%;
+        }
+
+        .solution-metric {
+            width: 40%;
+        }
+
+        .microfluidics-overlay,
+        .interactive-overlay {
+            transform: none;
+            width: 100%;
+        }
+
+        .microfluidics-overlay {
+            grid-row: 11;
+        }
+
+        .outcome-blurb {
+            grid-row: 12;
+            margin: 0;
+            width: 100%;
+        }
+
+        .interactive-overlay {
+            grid-row: 13;
+        }
     }
 </style>

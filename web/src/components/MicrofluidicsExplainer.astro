@@ -250,7 +250,28 @@ import hydrogelBlurbSvg from "../assets/hero/hydrogel_blurb.svg?raw";
 
         .diagram-col--left,
         .diagram-col--right {
+            gap: 1rem;
+            margin: 0;
             text-align: center;
+        }
+
+        /* The bubble art is sized/offset (and its tail pointed) for the
+           side-by-side layout, so once stacked it sits off-center. Swap it
+           for a full-width card in the same periwinkle -> cornflower
+           gradient as the bubble SVGs. */
+        .info-bubble-art {
+            display: none;
+        }
+
+        .info-trigger {
+            border-radius: 1rem;
+            padding: 1rem 1.25rem;
+            transition: background-color 0.15s ease;
+        }
+
+        .info-trigger:hover,
+        .info-trigger:focus-within {
+            background: linear-gradient(var(--color-periwinkle), var(--color-cornflower));
         }
 
         .chip-visual {
