@@ -6,7 +6,7 @@ import type { Nodes, Root } from "mdast";
 
 /**
  * Typographic checks on a converted page, for mistakes that render but read badly: spacing, periods and brackets around
- * citations, and unmatched brackets.
+ * citations, unmatched brackets, and headings that skip a level.
  */
 
 /** Stands in for a numbered citation in flattened text. */
@@ -34,6 +34,8 @@ const PAIRS: Record<string, string> = { ")": "(", "]": "[", "}": "{" };
  */
 export function proofread(tree: Root, ctx: ConvertContext): void {
     let block: Id | undefined = ctx.block;
+    // The last heading's level; the next may go at most one deeper, so a page starts with heading 1
+    let heading_depth = 0;
 
     const visit = (node: Nodes, in_table: boolean): void => {
         const anchor = anchorId(node);
@@ -45,8 +47,23 @@ export function proofread(tree: Root, ctx: ConvertContext): void {
             const first_anchor = first && anchorId(first);
             if (first_anchor) block = first_anchor;
 
+            const flattened = flatten(node);
+            if (node.type === "heading") {
+                if (node.depth > heading_depth + 1) {
+                    const expected =
+                        heading_depth === 0
+                            ? "the page's first heading should be heading 1"
+                            : `it follows a heading ${heading_depth}`;
+                    new ExporterError(
+                        `Heading ${node.depth} skips a level, as ${expected}: “${excerpt(flattened.text, 0)}”`,
+                        ["malformed content"],
+                    ).warn({ ...ctx, block });
+                }
+                heading_depth = node.depth;
+            }
+
             const sentence = node.type === "paragraph" && !in_table;
-            checkPhrasing(flatten(node), sentence, { ...ctx, block });
+            checkPhrasing(flattened, sentence, { ...ctx, block });
             return;
         }
         if (node.type === "code" || node.type === "math" || node.type === "html") return;
