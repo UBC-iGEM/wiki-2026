@@ -10,6 +10,7 @@ import Navbar from "../components/Navbar.astro";
 import SponsorFooter from "../components/SponsorFooter.astro";
 import TableOfContents from "../components/TableOfContents.astro";
 import { BASE_URL } from "../utils/base-url";
+import Gemy from "../components/Gemy.astro";
 
 interface Props {
     title?: string;
@@ -61,6 +62,9 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
         </div>
         <SponsorFooter />
         <Lightbox />
+
+        <!-- A special surprise 👀 -->
+        <Gemy />
     </body>
 </html>
 

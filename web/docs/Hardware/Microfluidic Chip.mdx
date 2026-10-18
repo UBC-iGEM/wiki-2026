@@ -25,27 +25,15 @@ title: "Microfluidic Chip"
 
 ## <a id="3edd65dd82be805b9410f31bfdcf29d8" />Historical Use of FDM-PDMS Microfluidic chips in iGEM
 
-### <a id="3fcd65dd82be8049a699d2bf4feea03c" />Technion Israel
-
 <a id="3f9d65dd82be80208170cf080c45e8ac" />[Team:Technion Israel/Hardware - 2016.igem.org](https://2016.igem.org/Team:Technion_Israel/Hardware)
 
 <a id="3fcd65dd82be8099b0d4f3ba4dade093" />
 
 <Img url="https://static.igem.wiki/teams/6279/wiki/assets/0f1f3928c10c5e43a63bc357198cf4ad.avif" alt="" scale={0} align="center" />
 
-<a id="3fcd65dd82be80caa3b2f96253e7673c" />Their hardware:
+<a id="3fdd65dd82be8001a8e1ce05acdc033e" />Their hardware design used PDMS cast in a two-part 3D-printed mold, with a microscope slide incorporated into the chip. The microscope slide allowed the chip to be positioned under a microscope for imaging. In contrast, we prioritized the practicality and safety of our design by minimizing exposed glass edges that could crack during handling.
 
-- <a id="3fcd65dd82be803eace5cd8469a971bc" />They used PDMS and a microscope slide
-- <a id="3fcd65dd82be805e8d80f6bef3a8e0b7" />They used a 3D printer with which they created a two part mold
-- <a id="3fcd65dd82be80ef82f9d7fbf1172157" />They used a microscope slide so that they would be able to fit their chip under a microscope, whereas we chose a microscope for the practicality of having no external glass edges that can crack
-
-<a id="3fcd65dd82be80ac84f2c10ce73a30a3" />How ours improves on it
-
-- <a id="3fcd65dd82be80ae9666ee8df2bdc879" />Using updated 3D printing technology, we were able to smooth out the surface finish of our chips and plasma bond microscope slides to the bottom of our PDMS chips
-- <a id="3fcd65dd82be80ff9195da01360772cd" />Our molds use one part instead of two
-  - <a id="3fcd65dd82be809f9f74c5c7880da666" />They don’t specify if theirs is reusable, whereas currently ours are not, as we have to cut the edges to get our chips out safely
-- <a id="3fcd65dd82be8060a412ead571907205" />Their design modifies a commercially available chip, whereas every design we present is novel to iGEM and unique to our team
-- <a id="3fcd65dd82be8022be86e72eba8e03bf" />They did not validate the flow of liquid through their chip, as they are using silicone glue, I suspect they may have had undisclosed leaking issues
+<a id="3fdd65dd82be80f48e0cfd8dbf53d5e4" />Building on their approach, we used updated 3D-printing technology to improve mold surface finish and plasma-bond microscope slides to the bottom of our PDMS chips. Our molds also use a single-part design rather than two parts, although they are not currently reusable because the edges must be cut to safely remove the finished chips. Additionally, while their design modifies a commercially available chip, all the designs we present are novel to iGEM and unique to our team. Finally, their work does not report validation of liquid flow through the chip. Although we cannot confirm whether leakage was an issue, their use of silicone glue raises questions about the reliability of the seal that would benefit from experimental validation.
 
 ## <a id="3ecd65dd82be80da9a8fcc670521c91a" />How does a microfluidic chip integrate into our project?
 
@@ -190,11 +178,13 @@ title: "Microfluidic Chip"
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3fcd65dd82be8000aa5ecd4233d0f0ba" />Many of the adjustments that were made to this chip were related to the issues with removing the Epoxy chip in DBTL cycle 1. In order to remedy the issue with the cured chip bonding with the sides and base of the mold container, we attempted to make a microfluidic design without including any walls directly attached to the chip. This both removed the potentail bonding issues that we anticipated with PDMS, and also decreased printing time, allowing for a quicker build time for this chip.
+    <a id="3fcd65dd82be8000aa5ecd4233d0f0ba" />Many of the adjustments that were made to this chip were related to the issues with removing the Epoxy chip in DBTL cycle 1. In order to remedy the issue with the cured chip bonding with the sides and base of the mold container, we attempted to make a microfluidic design without including any walls directly attached to the chip. This both removed the potential bonding issues that we anticipated with PDMS and also decreased printing time, allowing for a quicker build time for this chip. As an additional feature to attempt to lessen the effects of sticking, all of the microfluidic channels were chamfered at the top.
 
-    <br id="3fdd65dd82be80bda051f7adf3c0cb7e" />
+    <a id="3fdd65dd82be8050a157f28d08862e1a" />With this new iteration of the chip, we wanted to experiment with alternative channel shapes and how effective they would be for manufacturing purposes. With this, both the mixing and degradation sections of the chips were altered.
 
-    <a id="3fcd65dd82be8029b603d0f647df50d4" />**ADD DIFFERENT DESIGNS HERE AND EXPLAIN THE LOGIC**
+    <a id="3fdd65dd82be80f7b0f7f533bfadde31" />For the mixing section, a repeated L-shaped herringbone intrusion was added instead of the original zigzag section. Each of these herringbone patterns works to jostle all the laminar fluid streams together semi-randomly such that there are many small antibiotic streamlines flowing adjacent to the patient sample. This is done such that diffusion that happens along the course of the chip will result in the mixing of these two fluids in laminar flow, and the effectiveness of this pattern has previously been tested for its mixing capabilities at low Re<Cite refs={[{"n":11,"key":"liuTwofluidMixingMicrochannel2004"}]} />. The design was appealing due to its flat base, meaning it is compatible with our manufacturing process with PDMS pouring.
+
+    <a id="3fdd65dd82be80d283f4d2bb9a99a256" />The degradation section was changed to split into 4 separate sections.
   </Fragment>
 
   <Fragment slot="build">
@@ -202,7 +192,7 @@ title: "Microfluidic Chip"
 
     <a id="3fdd65dd82be80878a9bfdb57df63d8b" />This iteration of the chip used primarily the same CAD techniques as the previous iteration of the chip. A slight chamfer has been added to the edges of each of the channels. This was chosen, for this iteration, as 0.1mm of each of the side lengths cut off at the top corners of each of the channels
 
-    <a id="3fdd65dd82be808caae6ed4bce95d7bb" />Each one of these “herringbone” patterns works to jostle all the laminar fluid streams together semi-randomly such that there are many small antibiotic streamlines flowing adjacent to the patient sample. This is done such that diffusion that happens along the course of the chip will result in the mixing of these two fluids in laminar flow, and the effectiveness of this pattern has previously been tested for its mixing capabilities at low Re<Cite refs={[{"n":11,"key":"liuTwofluidMixingMicrochannel2004"}]} />. The design was appealing due to its flat base, meaning it is compatible with our manufacturing process with PDMS pouring.
+    <br id="3fdd65dd82be808caae6ed4bce95d7bb" />
 
     <a id="3fdd65dd82be80e18287e8ebf55fec4e" />
 
@@ -266,6 +256,8 @@ title: "Microfluidic Chip"
     <a id="3f9d65dd82be808c8c37f1336cc4a8d1" />Design:
 
     <a id="3fdd65dd82be8001bbd6cdc5092cf609" />At this point, we designed several different channel possibilities and developed a PDMS protocol (**HERE**).
+
+    <a id="3fdd65dd82be801d86e7d0f2684f1ea1" />**ADD DIFFERENT DESIGNS HERE AND EXPLAIN THE LOGIC**
   </Fragment>
 
   <Fragment slot="build">

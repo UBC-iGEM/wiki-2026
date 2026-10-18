@@ -1,0 +1,90 @@
+---
+import Gemy from "../../public/assets/Gemy.svg?raw";
+---
+
+<div id="gemy" aria-hidden="true">
+    <Fragment set:html={Gemy} />
+</div>
+
+<style>
+    #gemy {
+        position: fixed;
+        width: 120px;
+        z-index: 1000;
+        pointer-events: none;
+        display: none;
+        transition: transform 0.4s ease;
+    }
+    #gemy :global(svg) {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+</style>
+
+<script>
+    const GEMY_CHANCE = 1 / 8;
+    const WOBBLE_DEGREES = 7.5;
+
+    const should_show = Math.random() < GEMY_CHANCE;
+    if (should_show) {
+        const gemy = document.getElementById("gemy")!;
+        const corners = [
+            { top: "-20px", left: "-20px", angle: 135, dx: -1, dy: -1 },
+            { top: "-20px", right: "-20px", angle: -135, dx: 1, dy: -1 },
+            { bottom: "-20px", left: "-20px", angle: 45, dx: -1, dy: 1 },
+            { bottom: "-20px", right: "-20px", angle: -45, dx: 1, dy: 1 },
+        ];
+        const c = corners[Math.floor(Math.random() * corners.length)]!;
+
+        // Start off screen
+        const hidden = `translate(${c.dx * 150}%, ${c.dy * 150}%) rotate(${c.angle}deg)`;
+        const shown = `translate(0, 0) rotate(${c.angle}deg)`;
+
+        Object.assign(gemy.style, {
+            top: c.top ?? "auto",
+            bottom: c.bottom ?? "auto",
+            left: c.left ?? "auto",
+            right: c.right ?? "auto",
+            display: "block",
+            transform: hidden,
+        });
+
+        const wobble = () =>
+            gemy.animate(
+                [
+                    { transform: `translate(0, 0) rotate(${c.angle}deg)` },
+                    { transform: `translate(0, 0) rotate(${c.angle + WOBBLE_DEGREES}deg)` },
+                    { transform: `translate(0, 0) rotate(${c.angle - WOBBLE_DEGREES}deg)` },
+                    { transform: `translate(0, 0) rotate(${c.angle}deg)` },
+                ],
+                {
+                    duration: 350,
+                    iterations: 2,
+                    // easing: "ease-in-out",
+                },
+            );
+
+        const peek = () => {
+            const slideIn = gemy.animate([{ transform: hidden }, { transform: shown }], {
+                duration: 800,
+                delay: 500,
+                easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+                fill: "forwards",
+            });
+
+            slideIn.finished.then(() => {
+                // Save the end position as inline style, then drop the held animation
+                slideIn.commitStyles();
+                slideIn.cancel();
+                wobble();
+            });
+        };
+
+        if (document.readyState === "complete") {
+            peek();
+        } else {
+            window.addEventListener("load", peek, { once: true });
+        }
+    }
+</script>
