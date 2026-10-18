@@ -2,17 +2,19 @@
 import Gemy from "../../public/assets/Gemy.svg?raw";
 ---
 
-<div id="gemy" aria-hidden="true">
+<div id="gemy" role="button" tabindex="0" aria-label="Pet Gemy">
     <Fragment set:html={Gemy} />
 </div>
+<!-- Outside #gemy so it isn't rotated with him -->
+<div id="gemy-tip" aria-hidden="true">Pet Gemy</div>
 
 <style>
     #gemy {
         position: fixed;
         width: 120px;
         z-index: 1000;
-        pointer-events: none;
         display: none;
+        cursor: pointer;
         transition: transform 0.4s ease;
     }
     #gemy :global(svg) {
@@ -20,9 +22,23 @@ import Gemy from "../../public/assets/Gemy.svg?raw";
         height: auto;
         display: block;
     }
+    #gemy-tip {
+        background: var(--color-ebony-clay-raised);
+        border: 1px solid var(--color-cornflower);
+        border-radius: 8px;
+        display: none;
+        font-size: 1rem;
+        padding: 0.4rem 0.7rem;
+        pointer-events: none;
+        position: fixed;
+        white-space: nowrap;
+        z-index: 1001;
+    }
 </style>
 
 <script>
+    import { BASE_URL } from "../utils/base-url";
+
     const GEMY_CHANCE = 1 / 8;
     const WOBBLE_DEGREES = 7.5;
 
@@ -30,8 +46,6 @@ import Gemy from "../../public/assets/Gemy.svg?raw";
     if (should_show) {
         const gemy = document.getElementById("gemy")!;
         const corners = [
-            { top: "-20px", left: "-20px", angle: 135, dx: -1, dy: -1 },
-            { top: "-20px", right: "-20px", angle: -135, dx: 1, dy: -1 },
             { bottom: "-20px", left: "-20px", angle: 45, dx: -1, dy: 1 },
             { bottom: "-20px", right: "-20px", angle: -45, dx: 1, dy: 1 },
         ];
@@ -42,7 +56,6 @@ import Gemy from "../../public/assets/Gemy.svg?raw";
         const shown = `translate(0, 0) rotate(${c.angle}deg)`;
 
         Object.assign(gemy.style, {
-            top: c.top ?? "auto",
             bottom: c.bottom ?? "auto",
             left: c.left ?? "auto",
             right: c.right ?? "auto",
@@ -80,6 +93,34 @@ import Gemy from "../../public/assets/Gemy.svg?raw";
                 wobble();
             });
         };
+
+        // Petting him: a tooltip that follows the cursor, then a squeak and a wiggle on click
+        const tip = document.getElementById("gemy-tip")!;
+        // Plays even with the site's sound turned off
+        const squeak = new Audio(`${BASE_URL}assets/audio/gemy.mp3`);
+        const TIP_OFFSET = 14;
+        gemy.addEventListener("pointermove", (event) => {
+            tip.style.display = "block";
+
+            // Flip to the other side of the cursor near the right/bottom edges, since Gemy lives in a corner
+            const flip_x = event.clientX + TIP_OFFSET + tip.offsetWidth > window.innerWidth;
+            const flip_y = event.clientY + TIP_OFFSET + tip.offsetHeight > window.innerHeight;
+            tip.style.left = `${flip_x ? event.clientX - TIP_OFFSET - tip.offsetWidth : event.clientX + TIP_OFFSET}px`;
+            tip.style.top = `${flip_y ? event.clientY - TIP_OFFSET - tip.offsetHeight : event.clientY + TIP_OFFSET}px`;
+        });
+        gemy.addEventListener("pointerleave", () => (tip.style.display = "none"));
+
+        const pet = () => {
+            squeak.currentTime = 0;
+            squeak.play().catch(() => undefined);
+            wobble();
+        };
+        gemy.addEventListener("click", pet);
+        gemy.addEventListener("keydown", (event) => {
+            if (event.key !== "Enter" && event.key !== " ") return;
+            event.preventDefault();
+            pet();
+        });
 
         if (document.readyState === "complete") {
             peek();
