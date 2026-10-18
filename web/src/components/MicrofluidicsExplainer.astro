@@ -1,5 +1,5 @@
 ---
-import howItWorksChipSvg from "../../public/assets/hero/how-it-works-chip.svg?raw";
+import { BASE_URL } from "../utils/base-url";
 ---
 
 <section class="ast-diagram">
@@ -7,7 +7,9 @@ import howItWorksChipSvg from "../../public/assets/hero/how-it-works-chip.svg?ra
     <p class="diagram-caption">Patient sample and antibiotic are loaded into chamber A</p>
 
     <div class="diagram-body">
-        <div class="chip-visual" set:html={howItWorksChipSvg} />
+        <div class="chip-visual">
+            <img src={`${BASE_URL}assets/hero/how-it-works-chip.webp`} alt="" width="337" height="948" loading="lazy" />
+        </div>
 
         <div class="diagram-col diagram-col--right">
             <div class="chamber">
@@ -163,7 +165,7 @@ import howItWorksChipSvg from "../../public/assets/hero/how-it-works-chip.svg?ra
         opacity: 1;
     }
 
-    /* how-it-works-chip.svg is 256x720 (tall/narrow) - width-driven, height
+    /* how-it-works-chip.webp is 256x720 (tall/narrow) - width-driven, height
        auto so it keeps that aspect ratio instead of the old placeholder
        box's. */
     /* Kept in the middle column, with the chambers' labels to its right */
@@ -173,9 +175,12 @@ import howItWorksChipSvg from "../../public/assets/hero/how-it-works-chip.svg?ra
     }
 
     /* Flipped upside down to match the descriptions */
-    .chip-visual :global(svg) {
+    .chip-visual img {
         display: block;
         height: auto;
+        /* Opt out of the .page-content img size caps */
+        max-height: none;
+        max-width: none;
         transform: scaleY(-1);
         width: 100%;
     }
