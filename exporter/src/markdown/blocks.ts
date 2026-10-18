@@ -1,7 +1,7 @@
 import type { ContentMap } from "../map";
 import { Id, PageId, type NotionBlock } from "../notion";
 import { ExporterError, isExporterErr, type WarningContext } from "../utils";
-import { COMPONENT_MAP, componentDocSuggestion } from "./components";
+import { COMPONENT_MAP, componentDocSuggestion, type ImgAttrs } from "./components";
 import { pageMention } from "./link";
 import { anchorFlow, anchorText, jsxFlow, jsxInlineBlock, type FlowContent } from "./mdx";
 import { mediaFileName, parseImageCaption, uploadMedia } from "./media";
@@ -267,8 +267,8 @@ async function convertBlock(block: NotionBlock, parent_ctx: ConvertContext): Pro
                 return [];
             }
             // Captions are used as alt text
-            const { alt, scale } = parseImageCaption(block, ctx);
-            return [anchorFlow(anchor), jsxFlow("Img", { url, alt, scale })];
+            const { alt, scale, align } = parseImageCaption(block, ctx);
+            return [anchorFlow(anchor), jsxFlow("Img", { url, alt, scale, align } satisfies ImgAttrs)];
         }
         case "file": {
             const filename = mediaFileName(block);

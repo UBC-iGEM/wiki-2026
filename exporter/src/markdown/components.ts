@@ -62,8 +62,10 @@ export interface ImageAttrs {
     scale: number;
 }
 
-/** A standalone image. */
-export type ImgAttrs = ImageAttrs;
+/** A standalone image, which can be centred. */
+export interface ImgAttrs extends ImageAttrs {
+    align: "left" | "center";
+}
 
 export interface FigureAttrs {
     imgs: ImageAttrs[];
@@ -597,7 +599,9 @@ async function imageAttr(block: ImageBlock, ctx: ConvertContext): Promise<ImageA
         url.warn(image_ctx);
         return null;
     }
-    return { url, ...parseImageCaption(block, ctx) };
+    // Alignment only applies to standalone images
+    const { alt, scale } = parseImageCaption(block, ctx);
+    return { url, alt, scale };
 }
 
 function isBlank(item: Item): boolean {

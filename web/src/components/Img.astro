@@ -3,8 +3,9 @@ import { type ImgAttrs } from "@exporter/markdown/components";
 import { imageScaleStyle } from "../utils/image-scale";
 type Props = ImgAttrs;
 
-const { url, alt, scale } = Astro.props;
+const { url, alt, scale, align } = Astro.props;
+const style = [imageScaleStyle(scale), align === "center" && "display: block; margin-inline: auto"].filter(Boolean).join("; ");
 ---
 
 <!-- Sized by `.page-content img` in style.css, like a markdown image -->
-<img src={url} alt={alt} style={imageScaleStyle(scale)} />
+<img src={url} alt={alt} style={style} />
