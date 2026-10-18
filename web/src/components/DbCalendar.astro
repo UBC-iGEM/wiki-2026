@@ -235,14 +235,14 @@ function buildMonth(key: string): CalendarMonth {
     .db-calendar {
         background: var(--color-ebony-clay);
         display: block;
-        border: 1px solid var(--color-northern-lights);
+        border: 1px solid var(--color-periwinkle);
         border-radius: 8px;
         font-family: var(--font-geist);
         padding: 0.6rem;
         position: relative;
     }
 
-    summary {
+    .db-calendar > summary {
         color: var(--color-periwinkle);
         cursor: pointer;
         display: none;
@@ -261,6 +261,8 @@ function buildMonth(key: string): CalendarMonth {
         border-collapse: separate;
         border-spacing: 2px;
         display: table;
+        /* style.css spaces content tables below; the calendar's own padding is enough */
+        margin-bottom: 0;
         table-layout: fixed;
         width: 100%;
     }
@@ -281,7 +283,7 @@ function buildMonth(key: string): CalendarMonth {
     }
 
     th {
-        color: var(--color-northern-lights);
+        color: var(--color-periwinkle);
         font-size: 0.6rem;
         font-weight: 500;
         letter-spacing: 0.04em;
@@ -326,8 +328,8 @@ function buildMonth(key: string): CalendarMonth {
 
     td.marked > a:hover,
     td.marked > .day-menu > summary:hover {
-        background: var(--color-northern-lights);
-        color: var(--color-ebony-clay);
+        background: var(--color-cornflower);
+        color: white;
     }
 
     td.current > a,
@@ -365,7 +367,7 @@ function buildMonth(key: string): CalendarMonth {
 
     .day-panel {
         background: var(--color-ebony-clay);
-        border: 1px solid var(--color-northern-lights);
+        border: 1px solid var(--color-periwinkle);
         border-radius: 8px;
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
         left: 50%;
@@ -390,7 +392,7 @@ function buildMonth(key: string): CalendarMonth {
     }
 
     .day-panel-date {
-        color: var(--color-northern-lights);
+        color: var(--color-periwinkle);
         font-size: 0.65rem;
         letter-spacing: 0.05em;
         margin: 0 0 0.3rem 0.15rem;
@@ -415,15 +417,16 @@ function buildMonth(key: string): CalendarMonth {
         transition: background 120ms ease;
     }
 
+    /* Matches the database dropdown's items */
     .day-panel a:hover {
-        background: var(--color-northern-lights);
+        background: var(--color-periwinkle);
         color: var(--color-ebony-clay);
     }
 
     .day-panel a.active {
-        background: var(--color-periwinkle);
-        color: var(--color-ebony-clay);
-        font-weight: 600;
+        background: var(--color-cornflower);
+        color: white;
+        font-weight: 700;
     }
 
     .months-nav {
@@ -436,9 +439,9 @@ function buildMonth(key: string): CalendarMonth {
 
     .months-nav button {
         background: none;
-        border: 1px solid var(--color-northern-lights);
+        border: 1px solid var(--color-periwinkle);
         border-radius: 5px;
-        color: var(--color-northern-lights);
+        color: var(--color-periwinkle);
         cursor: pointer;
         font-size: 0.75rem;
         line-height: 1;
@@ -447,19 +450,20 @@ function buildMonth(key: string): CalendarMonth {
     }
 
     .months-nav button:hover:not(:disabled) {
-        background: var(--color-northern-lights);
-        color: var(--color-ebony-clay);
+        background: var(--color-cornflower);
+        border-color: var(--color-cornflower);
+        color: white;
     }
 
     .months-nav button:disabled {
-        border-color: color-mix(in srgb, var(--color-northern-lights) 40%, transparent);
-        color: color-mix(in srgb, var(--color-northern-lights) 40%, transparent);
+        border-color: color-mix(in srgb, var(--color-cornflower) 40%, transparent);
+        color: color-mix(in srgb, var(--color-cornflower) 40%, transparent);
         cursor: default;
     }
 
     /* Only a narrow screen collapses the calendar, so only it needs the toggle */
     @media (max-width: 1000px) {
-        summary {
+        .db-calendar > summary {
             display: list-item;
         }
 

@@ -25,7 +25,6 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
 
 <details class="db-dropdown">
     <summary>
-        <span class="db-name">{database_title}</span>
         <span class="page-name">{current_page_title}</span>
         <span class="marker" aria-hidden="true">▾</span>
     </summary>
@@ -79,15 +78,14 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
 
     summary {
         align-items: center;
-        background: var(--color-northern-lights);
-        border: 1px solid var(--color-northern-lights);
+        background: var(--color-cornflower);
         border-radius: 8px;
-        color: var(--color-ebony-clay);
+        color: var(--color-periwinkle);
         cursor: pointer;
         display: flex;
         flex-wrap: wrap;
         list-style: none;
-        padding: 0.5rem 0.7rem;
+        padding: 0.7rem;
         transition:
             background 120ms ease,
             border-color 120ms ease;
@@ -96,25 +94,19 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
 
     summary:hover {
         background: var(--color-periwinkle);
-        border-color: var(--color-periwinkle);
+    }
+
+    summary:hover :is(.page-name, .marker) {
+        color: var(--color-ebony-clay);
     }
 
     summary:focus-visible {
-        outline: 2px solid var(--color-cornflower);
+        outline: 2px solid var(--color-periwinkle);
         outline-offset: 2px;
     }
 
-    .db-name {
-        color: var(--color-ebony-clay);
-        font-size: 0.65rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        width: 100%;
-    }
-
     .page-name {
-        color: var(--color-ebony-clay);
+        color: white;
         flex: 1;
         font-size: 0.9rem;
         font-weight: 700;
@@ -122,7 +114,7 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
     }
 
     .marker {
-        color: var(--color-ebony-clay);
+        color: white;
         display: inline-block;
         font-size: 0.7rem;
         padding-left: 0.5rem;
@@ -135,7 +127,7 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
 
     nav {
         background: var(--color-ebony-clay);
-        border: 1px solid var(--color-northern-lights);
+        border: 1px solid var(--color-periwinkle);
         border-radius: 8px;
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
         max-height: min(60vh, 24rem);
@@ -166,8 +158,9 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
             color 120ms ease;
     }
 
+    /* Items match the button: hovered like a hovered button, the current page like the button at rest */
     a:hover {
-        background: var(--color-northern-lights);
+        background: var(--color-periwinkle);
         color: var(--color-ebony-clay);
     }
 
@@ -177,8 +170,8 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
     }
 
     a.active {
-        background: var(--color-periwinkle);
-        color: var(--color-ebony-clay);
+        background: var(--color-cornflower);
+        color: white;
         font-weight: 700;
     }
 

@@ -41,24 +41,5 @@ function formatDate(value: string | undefined): string | undefined {
     <DbCalendar slot="sidebar" parent_db_path={parent_db_path} current_page_path={current_page_path} />
     <DbDropdown slot="sidebar" parent_db_path={parent_db_path} current_page_path={current_page_path} />
 
-    {
-        display_date && (
-            <time class="db-date" datetime={attrs.date}>
-                {display_date}
-            </time>
-        )
-    }
-
     <slot />
 </MainLayout>
-
-<style>
-    .db-date {
-        color: var(--color-periwinkle);
-        display: block;
-        font-family: var(--font-source-serif-4);
-        font-size: 0.9375rem;
-        line-height: 1.5;
-        margin-bottom: 1rem;
-    }
-</style>
