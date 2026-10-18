@@ -7,23 +7,29 @@ IHP_SLOTS satisfies readonly ["people"];
 
 <!-- The controls stay hidden unless the script finds more than one card -->
 <div class="ihp">
-    <div class="ihp-stage">
-        <!-- Cards arrive pre-built as `.ihp-card[data-index]` from the exporter -->
-        <slot name="people" />
+    <div class="ihp-row">
         <button class="ihp-arrow nav-arrow prev" aria-label="Previous person"></button>
+        <div class="ihp-stage">
+            <!-- Cards arrive pre-built as `.ihp-card[data-index]` from the exporter -->
+            <slot name="people" />
+        </div>
         <button class="ihp-arrow nav-arrow next" aria-label="Next person"></button>
     </div>
     <div class="ihp-dots nav-dots"></div>
 </div>
 
 <script>
-    // Fade the bottom of a description or a card's text only when it has more to scroll to
-    const markOverflow = () => {
-        for (const box of document.querySelectorAll<HTMLElement>(".ihp-desc, .ihp-content"))
-            box.classList.toggle("overflowing", box.scrollHeight > box.clientHeight + 1);
+    // Fade the bottom of a description or a card's text while there is more below to scroll to,
+    // and the top once it has been scrolled down
+    const boxes = Array.from(document.querySelectorAll<HTMLElement>(".ihp-desc, .ihp-content"));
+    const markBox = (box: HTMLElement) => {
+        box.classList.toggle("overflowing", box.scrollHeight > box.scrollTop + box.clientHeight + 1);
+        box.classList.toggle("scrolled", box.scrollTop > 1);
     };
+    const markOverflow = () => boxes.forEach(markBox);
     markOverflow();
     addEventListener("resize", markOverflow, { passive: true });
+    for (const box of boxes) box.addEventListener("scroll", () => markBox(box), { passive: true });
 
     for (const ihp of document.querySelectorAll<HTMLElement>(".ihp")) {
         const cards = Array.from(ihp.querySelectorAll<HTMLElement>(".ihp-card"));
@@ -81,14 +87,22 @@ IHP_SLOTS satisfies readonly ["people"];
         margin: 2rem 0 3rem;
     }
 
+    /* The arrows sit outside the cards, either side of them */
+    .ihp-row {
+        align-items: center;
+        display: flex;
+        position: relative;
+    }
+
     /* No-JS fallback, and a single person: cards one after another */
     .ihp-stage {
         display: flex;
+        flex: 1;
         flex-direction: column;
         gap: 3rem;
+        min-width: 0;
         /* Room for each card's offset outline */
         padding: 0 1rem 1rem 0;
-        position: relative;
     }
 
     /* The carousel: every card in the same grid cell, so the stage is as tall as the tallest */
@@ -172,9 +186,7 @@ IHP_SLOTS satisfies readonly ["people"];
         border-radius: 18px;
         box-sizing: border-box;
         flex: 1;
-        font-family: var(--font-geist);
-        font-size: 0.85rem;
-        line-height: 1.5;
+        font: var(--text-caption);
         max-height: var(--photo-height);
         min-height: 5rem;
         min-width: 0;
@@ -182,8 +194,23 @@ IHP_SLOTS satisfies readonly ["people"];
         padding: 1rem 1.25rem;
     }
 
+    /* Each edge fades only while there is more to scroll to beyond it */
+    .ihp :is(.ihp-desc, .ihp-content):is(.overflowing, .scrolled) {
+        mask-image: linear-gradient(
+            to bottom,
+            transparent,
+            black var(--fade-top, 0px),
+            black calc(100% - var(--fade-bottom, 0px)),
+            transparent
+        );
+    }
+
+    .ihp :is(.ihp-desc, .ihp-content).scrolled {
+        --fade-top: 2rem;
+    }
+
     .ihp :is(.ihp-desc, .ihp-content).overflowing {
-        mask-image: linear-gradient(to bottom, black calc(100% - 2rem), transparent);
+        --fade-bottom: 2rem;
     }
 
     .ihp-desc > :first-child,
@@ -217,24 +244,25 @@ IHP_SLOTS satisfies readonly ["people"];
         margin: 0 0 1em;
     }
 
-    /* Beside the card in front, level with the middle of the photo; the look comes from .nav-arrow */
+    /* Only once there is more than one person; the look comes from .nav-arrow */
+    /* Over the peeking neighbours, a short way out from the card in front */
     .ihp .ihp-arrow {
         display: none;
         position: absolute;
-        top: calc(5.5rem + var(--photo-height) / 2);
+        top: calc(50% - 1.375rem);
         z-index: 3;
+    }
+
+    .ihp-arrow.prev {
+        left: max(0px, calc(50% - var(--card-width) / 2 - 6rem));
+    }
+
+    .ihp-arrow.next {
+        right: max(0px, calc(50% - var(--card-width) / 2 - 6.5rem));
     }
 
     .ihp.js-ready .ihp-arrow {
         display: block;
-    }
-
-    .ihp-arrow.prev {
-        left: calc(50% - var(--card-width) / 2 - 1.2rem);
-    }
-
-    .ihp-arrow.next {
-        right: calc(50% - var(--card-width) / 2 - 1.2rem);
     }
 
     /* Clear of the cards' offset outline and glow */
@@ -253,13 +281,22 @@ IHP_SLOTS satisfies readonly ["people"];
         }
     }
 
-    /* Too narrow for the neighbours to peek: one card, with the arrows on its edges */
+    /* Too narrow for the neighbours to peek: one card */
     @media (max-width: 700px) {
         .ihp {
             --card-width: 100%;
             --photo-width: 7.5rem;
             --photo-height: 9rem;
             --card-pad-x: 1.25rem;
+        }
+
+        .ihp-row {
+            gap: 0.5rem;
+        }
+
+        /* The card fills the stage here, so the arrows sit beside it instead */
+        .ihp .ihp-arrow {
+            position: static;
         }
 
         .ihp-card:is([data-role="prev"], [data-role="next"]) {
@@ -282,19 +319,6 @@ IHP_SLOTS satisfies readonly ["people"];
 
         .ihp-desc {
             flex: none;
-        }
-
-        .ihp .ihp-arrow {
-            top: 1.75rem;
-        }
-
-        .ihp-arrow.prev {
-            left: auto;
-            right: 3rem;
-        }
-
-        .ihp-arrow.next {
-            right: 1rem;
         }
     }
 </style>
