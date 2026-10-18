@@ -109,11 +109,33 @@ import InteractiveSection from "./InteractiveSection.astro";
 
     const hero = document.querySelector(".home-hero");
     if (!hero) throw new Error("'.home-hero' not found");
-    // On phones the stage is a single centered column (see the max-width:
-    // 600px styles), so there's no side-by-side composition to re-center,
-    // and the chip lines/dots are display: none, so their path work is skipped.
-    const isPhone = window.matchMedia("(max-width: 600px)").matches;
-    const shiftLeft = isPhone ? 0 : hero.clientWidth / 4;
+    // Narrow windows get the stacked layout (keep in sync with the
+    // max-width: 1250px styles): a single centered column, so there's no
+    // side-by-side composition to shift, and the chip lines/dots are
+    // display: none, so their path work is skipped.
+    const stackedQuery = window.matchMedia("(max-width: 1250px)");
+    const isStacked = stackedQuery.matches;
+    const stage = document.querySelector<HTMLElement>(".chip-stage");
+
+    // How far the stage slides left to make room for the FAST text: a quarter
+    // of the hero, but never so far the chip leaves the left edge once
+    // --chip-w shrinks in a narrower window.
+    function stageShift(): number {
+        if (stackedQuery.matches || !hero || !stage) return 0;
+        return Math.min(hero.clientWidth / 4, (hero.clientWidth - stage.offsetWidth) / 2);
+    }
+
+    // Keeps the shift right while the window is resized, once the intro has applied it
+    let stageShifted = false;
+    window.addEventListener("resize", () => {
+        if (stageShifted) gsap.set(".chip-stage", { x: -stageShift() });
+    });
+
+    // Widening out of the stacked layout needs the chip lines/dots, which
+    // weren't set up at load - reloading is the simplest way to get them.
+    stackedQuery.addEventListener("change", (event) => {
+        if (isStacked && !event.matches) location.reload();
+    });
 
     // traces chip line in 4 segments
     const chipLineSegments = [
@@ -124,7 +146,7 @@ import InteractiveSection from "./InteractiveSection.astro";
             reverse: false,
         },
         { el: document.querySelector<SVGGeometryElement>(".chip-line #stroke0_208_2980"), reverse: true },
-    ].filter((segment): segment is { el: SVGGeometryElement; reverse: boolean } => !isPhone && segment.el !== null);
+    ].filter((segment): segment is { el: SVGGeometryElement; reverse: boolean } => !isStacked && segment.el !== null);
 
     const chipLineTotalLength = chipLineSegments.reduce((sum, { el }) => sum + el.getTotalLength(), 0);
     // Total seconds the whole line takes to draw itself in - tune this,
@@ -138,7 +160,10 @@ import InteractiveSection from "./InteractiveSection.astro";
         .to(".chip-2", { opacity: 1, duration: 0.1 }, "+=0.2")
         .to(".chip-3", { opacity: 1, duration: 0.2 }, "+=0.2")
         .to(".chip-1, .chip-2", { opacity: 0, duration: 0.3 }, "+=0.1")
-        .to(".chip-stage", { x: -shiftLeft, duration: 0.6, ease: "power2.inOut" }, "+=0.2")
+        .to(".chip-stage", { x: () => -stageShift(), duration: 0.6, ease: "power2.inOut" }, "+=0.2")
+        .call(() => {
+            stageShifted = true;
+        })
         .addLabel("text-intro", "+=0.2")
         .to(".connector-line", { opacity: 1, duration: 0.6 }, "text-intro")
         .to(".fast-text-final", { opacity: 1, duration: 0.01 }, "text-intro")
@@ -193,7 +218,7 @@ import InteractiveSection from "./InteractiveSection.astro";
     const chipLine3Path = document.querySelector<SVGGeometryElement>(
         '.chip-line-3 path[stroke="url(#paint0_linear_900_69)"]',
     );
-    if (chipLine3Path && !isPhone) {
+    if (chipLine3Path && !isStacked) {
         introTimeline
             .to(".chip-line-3", { opacity: 1, duration: 0.01 }, "stats-reveal+=2.1")
             .fromTo(chipLine3Path, { drawSVG: "0%" }, { drawSVG: "100%", duration: 1.2 }, "<");
@@ -242,7 +267,7 @@ import InteractiveSection from "./InteractiveSection.astro";
             ),
             reverse: true,
         },
-    ].filter((segment): segment is { el: SVGGeometryElement; reverse: boolean } => !isPhone && segment.el !== null);
+    ].filter((segment): segment is { el: SVGGeometryElement; reverse: boolean } => !isStacked && segment.el !== null);
 
     const dot2 = document.querySelector<HTMLElement>(".motion-dot-2");
 
@@ -280,7 +305,10 @@ import InteractiveSection from "./InteractiveSection.astro";
        text: 548x386, chip-line: 1150x3027, chip-line-second: 1104x1765)
        so everything scales together. */
     .chip-stage {
-        --chip-w: min(598px, 90vw);
+        /* Full size on a wide window, shrinking with a narrower one so the
+           ~2.06x --chip-w wide composition still fits beside the gutters and
+           .home-hero's padding, down to the stacked-layout breakpoint below. */
+        --chip-w: min(598px, calc((100vw - 2 * var(--page-gutter) - 4rem) / 2.1));
         /* Reserves real normal-flow height for the chip's full visual
            extent, all the way down through chip-line-3's bottom edge
            (.chip-line-3's own top 8.6 + height 0.42623 - see it below) -
@@ -396,11 +424,12 @@ import InteractiveSection from "./InteractiveSection.astro";
         color: var(--color-ebony-clay);
         display: flex;
         font-family: var(--font-geist);
-        font-size: 48px;
+        /* 48px/50px at full size, scaling with the bubble so the number stays inside it */
+        font-size: calc(var(--chip-w) * 48 / 598);
         font-weight: 700;
         height: calc(var(--chip-w) * 210 / 594);
         justify-content: center;
-        line-height: 50px;
+        line-height: calc(var(--chip-w) * 50 / 598);
         opacity: 0;
         position: absolute;
         text-align: center;
@@ -587,17 +616,16 @@ import InteractiveSection from "./InteractiveSection.astro";
         width: calc(var(--chip-w) * 1150 / 594);
     }
 
-    /* Phone-only: the composition above is ~2x --chip-w wide with
-       fixed-px text in wide absolute boxes, so it can't shrink to a phone
-       and stay readable. Below 600px the stage becomes a single-column
-       grid instead: everything drops back into flow in reading order and
-       the decorative chip lines/dots are removed. display: none, not
+    /* Narrow windows and phones: the composition above is ~2x --chip-w
+       wide with fixed-px text in wide absolute boxes, so below about 1250px
+       its text starts overlapping. The stage becomes a single-column grid
+       instead: everything drops back into flow in reading order and the
+       decorative chip lines/dots are removed. display: none, not
        visibility: hidden - hidden elements still take up layout space, and
-       these extend past the right edge, which lets mobile
-       browsers widen the viewport past 600px and fall back to the desktop
-       layout. The script skips their path work on phones to match.
-       Desktop is untouched - every rule here is inside this query. */
-    @media (max-width: 600px) {
+       these extend past the right edge, which lets mobile browsers widen
+       the viewport and fall back to the desktop layout. The script skips
+       their path work in this layout to match (keep its max-width in sync). */
+    @media (max-width: 1250px) {
         .chip-stage {
             --chip-w: min(70vw, 320px);
             display: grid;
@@ -605,7 +633,8 @@ import InteractiveSection from "./InteractiveSection.astro";
             justify-items: center;
             min-height: 0;
             row-gap: 2.5rem;
-            width: 100%;
+            /* A readable column on a narrow desktop window; full width on a phone */
+            width: min(100%, 40rem);
         }
 
         .connector-line,
@@ -636,7 +665,7 @@ import InteractiveSection from "./InteractiveSection.astro";
 
         .fast-text-final {
             grid-row: 2;
-            width: 100%;
+            width: min(100%, 26rem);
         }
 
         .susceptibility-blurb {
@@ -696,10 +725,13 @@ import InteractiveSection from "./InteractiveSection.astro";
             width: 40%;
         }
 
+        /* Wider than the text column when there's room - both have their
+           own side-by-side layouts. Centered grid items overflow the column
+           evenly on both sides. */
         .microfluidics-overlay,
         .interactive-overlay {
             transform: none;
-            width: 100%;
+            width: min(100vw - 2 * var(--page-gutter), 70rem);
         }
 
         .microfluidics-overlay {

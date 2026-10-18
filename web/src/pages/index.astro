@@ -1,27 +1,15 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import HeroChipIntro from "../components/HeroChipIntro.astro";
-import SoundToggle from "../components/SoundToggle.astro";
 ---
 
 <MainLayout>
     <main class="home-hero">
-        <div class="home-sound-toggle">
-            <SoundToggle />
-        </div>
         <HeroChipIntro />
     </main>
 </MainLayout>
 
 <style>
-    /* Top-right, under the nav's rightmost chip: .page-layout's right gutter matches the nav's */
-    .home-sound-toggle {
-        position: absolute;
-        right: 0;
-        top: 0;
-        z-index: 5;
-    }
-
     .home-hero {
         align-items: center;
         display: flex;
@@ -34,8 +22,6 @@ import SoundToggle from "../components/SoundToggle.astro";
            scroll container, so ScrollTrigger still uses the page scroll. */
         overflow-x: clip;
         padding: 2rem;
-        /* Anchors .home-sound-toggle */
-        position: relative;
     }
 
     /* .page-layout already supplies the side gutter on phones */

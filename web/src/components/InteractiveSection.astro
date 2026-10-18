@@ -233,17 +233,23 @@ import chip_light_up from "../assets/hero_interactive/chip_light_up.svg?raw";
         align-items: center;
         display: flex;
         flex-wrap: wrap;
-        gap: 2rem 3rem;
+        /* Gap, prompt and chips shrink with a narrower window so the row
+           stays on one line; all hit their caps (3rem/14rem/14.5rem) from
+           about 1410px up. */
+        gap: 2rem min(3rem, 3.4vw);
         justify-content: center;
         margin: 0 auto;
         max-width: 90rem;
     }
 
+    /* Capped at the chip's width so a long caption ("No Fluorescence")
+       wraps instead of widening the row onto a second line */
     .case {
         align-items: center;
         display: flex;
         flex-direction: column;
         gap: 1rem;
+        max-width: min(14.5rem, 18vw);
     }
 
     .case-heading {
@@ -252,12 +258,12 @@ import chip_light_up from "../assets/hero_interactive/chip_light_up.svg?raw";
     }
 
     .prompt-text {
-        max-width: 14rem;
+        max-width: min(14rem, 16vw);
         text-align: center;
     }
 
     .chip-visual {
-        width: 14.5rem;
+        width: min(14.5rem, 18vw);
     }
 
     .overlay-stack {
@@ -313,6 +319,7 @@ import chip_light_up from "../assets/hero_interactive/chip_light_up.svg?raw";
 
         .case {
             gap: 0.5rem;
+            max-width: min(6.5rem, 26vw);
         }
 
         .chip-visual {

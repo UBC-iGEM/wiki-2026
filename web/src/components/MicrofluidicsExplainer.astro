@@ -1,8 +1,5 @@
 ---
 import howItWorksChipSvg from "../assets/hero/how-it-works-chip.svg?raw";
-import aBlurbSvg from "../assets/hero/a_blurb.svg?raw";
-import bBlurbSvg from "../assets/hero/b_blurb.svg?raw";
-import hydrogelBlurbSvg from "../assets/hero/hydrogel_blurb.svg?raw";
 ---
 
 <section class="ast-diagram">
@@ -11,8 +8,7 @@ import hydrogelBlurbSvg from "../assets/hero/hydrogel_blurb.svg?raw";
 
     <div class="diagram-body">
         <div class="diagram-col diagram-col--left">
-            <div class="info-trigger info-trigger--right info-trigger--hydrogel" tabindex="0">
-                <div class="info-bubble-art" aria-hidden="true" set:html={hydrogelBlurbSvg} />
+            <div class="info-trigger info-trigger--hydrogel" tabindex="0">
                 <h3>Hydrogel channel</h3>
                 <p>Allows antibiotics to diffuse slowly in 2 - 3 hours, while preventing cells from passing through</p>
             </div>
@@ -22,8 +18,7 @@ import hydrogelBlurbSvg from "../assets/hero/hydrogel_blurb.svg?raw";
 
         <div class="diagram-col diagram-col--right">
             <div class="chamber">
-                <div class="info-trigger info-trigger--left info-trigger--chamber-a" tabindex="0">
-                    <div class="info-bubble-art" aria-hidden="true" set:html={aBlurbSvg} />
+                <div class="info-trigger info-trigger--chamber-a" tabindex="0">
                     <h3>Chamber A</h3>
                     <p>
                         Where patient sample and antibiotic interacts, and antibiotic degradation occurs within 1-4
@@ -32,8 +27,7 @@ import hydrogelBlurbSvg from "../assets/hero/hydrogel_blurb.svg?raw";
                 </div>
             </div>
             <div class="chamber">
-                <div class="info-trigger info-trigger--left info-trigger--chamber-b" tabindex="0">
-                    <div class="info-bubble-art" aria-hidden="true" set:html={bBlurbSvg} />
+                <div class="info-trigger info-trigger--chamber-b" tabindex="0">
                     <h3>Chamber B</h3>
                     <p>Biosensor E. coli interacts with intact/degraded antibiotic</p>
                 </div>
@@ -122,8 +116,8 @@ import hydrogelBlurbSvg from "../assets/hero/hydrogel_blurb.svg?raw";
     }
 
     /* Hover/focus target wrapping each label + its always-visible
-       description; the bubble art behind them is decorative only and
-       stays hidden until hover/focus. */
+       description; the bubble behind them (::before below) is decorative
+       only and stays hidden until hover/focus. */
     .info-trigger {
         cursor: default;
         position: relative;
@@ -151,56 +145,42 @@ import hydrogelBlurbSvg from "../assets/hero/hydrogel_blurb.svg?raw";
         color: var(--color-ebony-clay);
     }
 
-    .info-bubble-art {
+    /* The hover bubble: a rounded gradient card drawn behind the label and
+       text (same 20px corners and colours as the old a/b/hydrogel blurb
+       SVGs). As a pseudo-element inset from the text block it always takes
+       the text's shape, however a narrow window wraps it. */
+    .info-trigger::before {
+        background: linear-gradient(to bottom right, var(--color-periwinkle), var(--bubble-end));
+        border-radius: 20px;
+        content: "";
+        inset: -1rem -1.25rem;
         opacity: 0;
         pointer-events: none;
         position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
         transition: opacity 0.15s ease;
         z-index: 0;
     }
 
-    /* Each bubble's text content is a different length, so each gets its
-       own width rather than sharing one. */
-    .info-trigger--chamber-a .info-bubble-art {
-        width: 25rem;
-    }
-
-    .info-trigger--hydrogel .info-bubble-art {
-        width: 30rem;
-    }
-
-    .info-trigger--chamber-b .info-bubble-art {
-        width: 20rem;
-    }
-
-    .info-trigger:hover .info-bubble-art,
-    .info-trigger:focus-within .info-bubble-art {
+    .info-trigger:hover::before,
+    .info-trigger:focus-within::before {
         opacity: 1;
     }
 
-    .info-bubble-art :global(svg) {
-        display: block;
-        height: auto;
-        width: 100%;
+    .info-trigger--chamber-a {
+        --bubble-end: var(--color-cornflower);
     }
 
-    /* Chamber A/B (right column) - tail points left, toward the chip
-       rectangle to their left. */
-    .info-trigger--left .info-bubble-art {
-        right: -1.5rem;
+    .info-trigger--chamber-b {
+        --bubble-end: var(--color-orchid);
     }
 
-    /* shift chamber b to left*/
-    .info-trigger--chamber-b .info-bubble-art {
-        right: 1.5rem;
+    /* Mirrored, like the original - it sits on the chip's other side */
+    .info-trigger--hydrogel {
+        --bubble-end: var(--color-lime-yellow);
     }
 
-    /* Hydrogel channel (left column) - tail points right, toward the chip
-       rectangle to its right. */
-    .info-trigger--right .info-bubble-art {
-        left: -1.5rem;
+    .info-trigger--hydrogel::before {
+        background: linear-gradient(to bottom left, var(--color-periwinkle), var(--bubble-end));
     }
 
     /* how-it-works-chip.svg is 256x720 (tall/narrow) - width-driven, height
@@ -255,23 +235,14 @@ import hydrogelBlurbSvg from "../assets/hero/hydrogel_blurb.svg?raw";
             text-align: center;
         }
 
-        /* The bubble art is sized/offset (and its tail pointed) for the
-           side-by-side layout, so once stacked it sits off-center. Swap it
-           for a full-width card in the same periwinkle -> cornflower
-           gradient as the bubble SVGs. */
-        .info-bubble-art {
-            display: none;
-        }
-
+        /* Stacked full width, so the bubble can't spill past the column
+           edges: pad the text instead and draw the bubble flush with that */
         .info-trigger {
-            border-radius: 1rem;
             padding: 1rem 1.25rem;
-            transition: background-color 0.15s ease;
         }
 
-        .info-trigger:hover,
-        .info-trigger:focus-within {
-            background: linear-gradient(var(--color-periwinkle), var(--color-cornflower));
+        .info-trigger::before {
+            inset: 0;
         }
 
         .chip-visual {
