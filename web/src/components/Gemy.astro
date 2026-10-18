@@ -1,9 +1,6 @@
----
-import Gemy from "../../public/assets/Gemy.svg?raw";
----
-
+<!-- The image src is set by the script below, so it only downloads on the visits where Gemy appears -->
 <div id="gemy" role="button" tabindex="0" aria-label="Pet Gemy">
-    <Fragment set:html={Gemy} />
+    <img alt="" width="360" height="519" />
 </div>
 <!-- Outside #gemy so it isn't rotated with him -->
 <div id="gemy-tip" aria-hidden="true">Pet Gemy</div>
@@ -17,7 +14,7 @@ import Gemy from "../../public/assets/Gemy.svg?raw";
         cursor: pointer;
         transition: transform 0.4s ease;
     }
-    #gemy :global(svg) {
+    #gemy img {
         width: 100%;
         height: auto;
         display: block;
@@ -39,7 +36,7 @@ import Gemy from "../../public/assets/Gemy.svg?raw";
 <script>
     import { BASE_URL } from "../utils/base-url";
 
-    const GEMY_CHANCE = 1 / 8;
+    const GEMY_CHANCE = 1 / 2;
     const WOBBLE_DEGREES = 7.5;
 
     const should_show = Math.random() < GEMY_CHANCE;
@@ -122,10 +119,14 @@ import Gemy from "../../public/assets/Gemy.svg?raw";
             pet();
         });
 
-        if (document.readyState === "complete") {
-            peek();
-        } else {
-            window.addEventListener("load", peek, { once: true });
-        }
+        // Peek once both the page and Gemy's image have loaded
+        const img = gemy.querySelector("img")!;
+        const img_loaded = new Promise((resolve) => img.addEventListener("load", resolve, { once: true }));
+        img.src = `${BASE_URL}assets/gemy.png`;
+        const page_loaded =
+            document.readyState === "complete"
+                ? Promise.resolve()
+                : new Promise((resolve) => window.addEventListener("load", resolve, { once: true }));
+        void Promise.all([img_loaded, page_loaded]).then(peek);
     }
 </script>

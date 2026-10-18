@@ -1,7 +1,6 @@
 ---
 import chip1Svg from "../../public/assets/hero/home-page-chip-1.svg?raw";
 import chip2Svg from "../../public/assets/hero/home-page-chip-2.svg?raw";
-import chip3Svg from "../../public/assets/hero/home-page-chip-3.svg?raw";
 import connectorLineSvg from "../../public/assets/hero/home-start-line.svg?raw";
 import fastTextFinalSvg from "../../public/assets/hero/FAST-text-final.svg?raw";
 import chipLineSvg from "../../public/assets/hero/chip-line-first-full-final.svg?raw";
@@ -14,12 +13,20 @@ import bottleSvg from "../../public/assets/hero/bottle.svg?raw";
 import petriDishSvg from "../../public/assets/hero/petri-dish.svg?raw";
 import MicrofluidicsExplainer from "./MicrofluidicsExplainer.astro";
 import InteractiveSection from "./InteractiveSection.astro";
+import { BASE_URL } from "../utils/base-url";
 ---
 
 <div class="chip-stage">
     <div class="chip chip-1" set:html={chip1Svg} />
     <div class="chip chip-2" set:html={chip2Svg} />
-    <div class="chip chip-3" set:html={chip3Svg} />
+    <img
+        class="chip chip-3"
+        src={`${BASE_URL}assets/hero/home-page-chip-3.webp`}
+        alt=""
+        width="1016"
+        height="1001"
+        fetchpriority="high"
+    />
     <div class="connector-line" set:html={connectorLineSvg} />
     <div class="fast-text-final" set:html={fastTextFinalSvg} />
     <div class="chip-line" set:html={chipLineSvg} />
@@ -153,12 +160,20 @@ import InteractiveSection from "./InteractiveSection.astro";
     // not the per-segment durations below (those stay proportional).
     const chipLineDrawInTotalDuration = 2.4;
 
+    const chip3 = document.querySelector<HTMLImageElement>(".chip-3");
+    // A failed load or decode still resolves, so the intro never stalls
+    const chip3Ready = chip3 ? chip3.decode().catch(() => undefined) : Promise.resolve();
+
     const introTimeline = gsap
         .timeline()
         .addLabel("chip-intro")
         .to(".chip-1", { opacity: 1, duration: 0.9 })
         .to(".chip-2", { opacity: 1, duration: 0.1 }, "+=0.2")
-        .to(".chip-3", { opacity: 1, duration: 0.2 }, "+=0.2")
+        // chip-3 is a separate image (not inline SVG), so hold here until it can actually be shown
+        .addPause("+=0.2", () => {
+            void chip3Ready.then(() => introTimeline.resume());
+        })
+        .to(".chip-3", { opacity: 1, duration: 0.2 })
         .to(".chip-1, .chip-2", { opacity: 0, duration: 0.3 }, "+=0.1")
         .to(".chip-stage", { x: () => -stageShift(), duration: 0.6, ease: "power2.inOut" }, "+=0.2")
         .call(() => {
@@ -335,6 +350,13 @@ import InteractiveSection from "./InteractiveSection.astro";
     /* Explicit chip-w-based sizing (not height/width: 100%) so chip-stage's
        min-height above (needed to reserve layout space for the line below)
        doesn't stretch these to fill that much taller box. */
+    /* chip-3 is an <img>: opt out of the .page-content img size caps (style.css)
+       so it fills exactly the box the chip lines are laid out around */
+    img.chip {
+        max-height: none;
+        max-width: none;
+    }
+
     .chip {
         height: calc(var(--chip-w) * 585 / 594);
         left: 0;
