@@ -47,6 +47,7 @@ type ResolvedHref = { url: string; citation?: undefined } | { citation: LitEntry
  * - another URL, then return it unchanged
  */
 export async function resolveHref(href: string, ctx: ConvertContext): Promise<ExporterResult<ResolvedHref>> {
+    warnGoogleLink(href, ctx);
     const target = parseNotionUrl(href);
     if (!target) return { url: href };
 
@@ -65,6 +66,29 @@ export async function resolveHref(href: string, ctx: ConvertContext): Promise<Ex
         `A link to ${target_link} does not point to a known wiki page or literature entry; the link was ignored.`,
         ["malformed content"],
     );
+}
+
+/** Warns when an authored link points to Google Drive or Docs while leaving the link usable. */
+export function warnGoogleLink(href: string, ctx: ConvertContext): void {
+    let hostname: string;
+    try {
+        hostname = new URL(href).hostname.toLowerCase();
+    } catch {
+        return;
+    }
+
+    if (
+        hostname !== "drive.google.com" &&
+        hostname !== "docs.google.com" &&
+        hostname !== "sheets.google.com" &&
+        hostname !== "slides.google.com"
+    )
+        return;
+
+    const link = ExporterError.link({ with_label: hostname, to: href });
+    new ExporterError(`A Google Drive or Docs link (${link}) was found; check that it is appropriate to publish.`, [
+        "malformed content",
+    ]).warn(ctx);
 }
 
 /**

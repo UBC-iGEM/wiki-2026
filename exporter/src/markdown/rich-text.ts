@@ -2,7 +2,7 @@ import { type Id, PageId } from "../notion";
 import { ExporterError, isExporterErr } from "../utils";
 import type { ConvertContext } from "./blocks";
 import { citation } from "./citations";
-import { pageMention, parseNotionUrl, resolveHref } from "./link";
+import { pageMention, parseNotionUrl, resolveHref, warnGoogleLink } from "./link";
 import { jsxText } from "./mdx";
 import type { RichTextItemResponse } from "@notionhq/client";
 import type { PhrasingContent, Text } from "mdast";
@@ -14,6 +14,56 @@ import type { PhrasingContent, Text } from "mdast";
  * - `space`: a plain space, for places that cannot hold a line break (e.g. headings)
  */
 export type NewlineMode = "break" | "jsx" | "space";
+
+type ProseRule = {
+    id: string;
+    term: RegExp;
+    guidance: string;
+    italics?: "required" | "forbidden";
+    correct_spelling?: string;
+};
+
+/** Add prose checklist terms here. Gene and protein spellings are intentionally case-sensitive. */
+const PROSE_RULES: ProseRule[] = [
+    {
+        id: "e-coli-italics",
+        term: wholeTerm(/E\.\s+coli/, true),
+        guidance: "should be italicized",
+        italics: "required",
+    },
+    {
+        id: "escherichia-coli-italics",
+        term: wholeTerm(/Escherichia\s+coli/, true),
+        guidance: "should be italicized",
+        italics: "required",
+    },
+    { id: "cpxp-italics", term: wholeTerm(/cpxP/), guidance: "should be italicized", italics: "required" },
+    { id: "reca-italics", term: wholeTerm(/recA/), guidance: "should be italicized", italics: "required" },
+    { id: "CpxP-plain", term: wholeTerm(/CpxP/), guidance: "should not be italicized", italics: "forbidden" },
+    { id: "RecA-plain", term: wholeTerm(/RecA/), guidance: "should not be italicized", italics: "forbidden" },
+    { id: "beta-lactam", term: wholeTerm(/Beta-lactam/, true), guidance: "should be β-lactam" },
+    {
+        id: "caulobacter",
+        term: wholeTerm(/Caulobacter/, true),
+        guidance: "did you copy content from last year?",
+    },
+    { id: "crescentus", term: wholeTerm(/crescentus/, true), guidance: "did you copy content from last year?" },
+    { id: "utex", term: wholeTerm(/UTEX/, true), guidance: "did you copy content from last year?" },
+    { id: "k-12-spelling", term: wholeTerm(/K-?12/, true), guidance: "should be K-12", correct_spelling: "K-12" },
+    {
+        id: "epi300-spelling",
+        term: wholeTerm(/EPI-?300/, true),
+        guidance: "should be EPI300",
+        correct_spelling: "EPI300",
+    },
+];
+
+/** Regex matches complete terms, including terms split across Notion rich-text segments. */
+function wholeTerm(term: RegExp, ignore_case = false): RegExp {
+    return new RegExp("(?<![\\p{L}\\p{N}])(?:" + term.source + ")(?![\\p{L}\\p{N}])", ignore_case ? "giu" : "gu");
+}
+
+const WARNED_PROSE_ISSUES = new Set<string>();
 
 /**
  * @property cite the literature entry linked text cites, by citation key, and the block the text is in
@@ -49,6 +99,7 @@ export async function convertRichText(
 ): Promise<PhrasingContent[]> {
     const leaves = (await Promise.all(items.map((item) => itemLeaves(item, ctx)))).flat();
     trimLeaves(leaves);
+    warnProseIssues(leaves, ctx);
 
     const newline_node: PhrasingContent =
         newline === "break" ? { type: "break" } : newline === "jsx" ? jsxText("br") : { type: "text", value: " " };
@@ -100,6 +151,7 @@ async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Prom
             let node: PhrasingContent;
             switch (mention.type) {
                 case "link_mention":
+                    warnGoogleLink(mention.link_mention.href, ctx);
                     node = {
                         type: "link",
                         url: mention.link_mention.href,
@@ -107,6 +159,7 @@ async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Prom
                     };
                     break;
                 case "link_preview":
+                    warnGoogleLink(mention.link_preview.url, ctx);
                     node = {
                         type: "link",
                         url: mention.link_preview.url,
@@ -141,6 +194,50 @@ async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Prom
                     return [];
             }
             return [{ node, props }];
+        }
+    }
+}
+
+/**
+ * Reports prose checklist issues without changing the exported text or its annotations.
+ * Text leaves can be split by Notion formatting, so scan contiguous text as one string.
+ */
+function warnProseIssues(leaves: Leaf[], ctx: ConvertContext): void {
+    let position = 0;
+    while (position < leaves.length) {
+        const first = leaves[position]!.node;
+        if (first === "newline" || first.type !== "text") {
+            position++;
+            continue;
+        }
+
+        const spans: { start: number; end: number; italic: boolean }[] = [];
+        let text = "";
+        while (position < leaves.length) {
+            const leaf = leaves[position]!;
+            if (leaf.node === "newline" || leaf.node.type !== "text") break;
+            const start = text.length;
+            text += leaf.node.value;
+            spans.push({ start, end: text.length, italic: leaf.props.italic });
+            position++;
+        }
+
+        for (const rule of PROSE_RULES) {
+            for (const match of text.matchAll(rule.term)) {
+                const found = match[0];
+                if (found === rule.correct_spelling) continue;
+
+                const start = match.index!;
+                const end = start + found.length;
+                const covered = spans.filter((span) => span.start < end && span.end > start);
+                if (rule.italics === "required" && covered.every((span) => span.italic)) continue;
+                if (rule.italics === "forbidden" && covered.every((span) => !span.italic)) continue;
+
+                const issue_key = [ctx.page.toString(), ctx.block?.toString() ?? "", rule.id].join(":");
+                if (WARNED_PROSE_ISSUES.has(issue_key)) continue;
+                WARNED_PROSE_ISSUES.add(issue_key);
+                new ExporterError("[" + found + ": " + rule.guidance + "]", ["malformed content"]).warn(ctx);
+            }
         }
     }
 }

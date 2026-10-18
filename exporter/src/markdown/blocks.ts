@@ -2,7 +2,7 @@ import type { ContentMap } from "../map";
 import { Id, PageId, type NotionBlock } from "../notion";
 import { ExporterError, isExporterErr, type WarningContext } from "../utils";
 import { COMPONENT_MAP, componentDocSuggestion, type ImgAttrs } from "./components";
-import { pageMention } from "./link";
+import { pageMention, warnGoogleLink } from "./link";
 import { anchorFlow, anchorText, jsxFlow, jsxInlineBlock, type FlowContent } from "./mdx";
 import { mediaFileName, parseImageCaption, uploadMedia } from "./media";
 import { convertRichText, asPlainText } from "./rich-text";
@@ -310,6 +310,7 @@ async function convertBlock(block: NotionBlock, parent_ctx: ConvertContext): Pro
             return [{ type: "paragraph", children: [anchorText(anchor), link] }];
         }
         case "link_preview": {
+            warnGoogleLink(block.link_preview.url, ctx);
             return [
                 {
                     type: "paragraph",
