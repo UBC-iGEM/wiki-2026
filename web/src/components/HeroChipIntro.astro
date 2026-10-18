@@ -1,0 +1,592 @@
+---
+import chip1Svg from "../../public/assets/hero/home-page-chip-1.svg?raw";
+import chip2Svg from "../../public/assets/hero/home-page-chip-2.svg?raw";
+import chip3Svg from "../../public/assets/hero/home-page-chip-3.svg?raw";
+import connectorLineSvg from "../../public/assets/hero/home-start-line.svg?raw";
+import fastTextFinalSvg from "../../public/assets/hero/FAST-text-final.svg?raw";
+import chipLineSvg from "../../public/assets/hero/chip-line-first-full-final.svg?raw";
+import chipLineSecondSvg from "../../public/assets/hero/chip-line-second-full-final.svg?raw";
+import chipLine3Svg from "../../public/assets/hero/chip-line-3.svg?raw";
+import dotSvg from "../../public/assets/hero/dot.svg?raw";
+import ball2Svg from "../../public/assets/hero/ball2.svg?raw";
+import pillsSvg from "../../public/assets/hero/pills.svg?raw";
+import bottleSvg from "../../public/assets/hero/bottle.svg?raw";
+import petriDishSvg from "../../public/assets/hero/petri-dish.svg?raw";
+import MicrofluidicsExplainer from "./MicrofluidicsExplainer.astro";
+import InteractiveSection from "./InteractiveSection.astro";
+---
+
+<div class="chip-stage">
+    <div class="chip chip-1" set:html={chip1Svg} />
+    <div class="chip chip-2" set:html={chip2Svg} />
+    <div class="chip chip-3" set:html={chip3Svg} />
+    <div class="connector-line" set:html={connectorLineSvg} />
+    <div class="fast-text-final" set:html={fastTextFinalSvg} />
+    <div class="chip-line" set:html={chipLineSvg} />
+    <div class="chip-line-second" set:html={chipLineSecondSvg} />
+    <div class="motion-dot" set:html={dotSvg} />
+    <div class="motion-dot-2" set:html={ball2Svg} />
+
+    <div class="stat stat-1">4.7 million</div>
+    <div class="stat stat-2">1 in 6</div>
+    <div class="stat stat-3">8.22 million</div>
+
+    <!-- Reuses .stat-1/.stat-2/.stat-3 for the same horizontal centering
+         as the bubbles above, so these stay aligned with them. Real <p>s
+         (not <div>s) so the global ".page-content :global(p)" color rule
+         applies automatically. -->
+    <p class="stat-caption stat-1">deaths globally in 2021 were associated with bacterial antimicrobial resistance</p>
+    <p class="stat-caption stat-2">
+        laboratory-confirmed bacterial infections worldwide were resistant to antibiotics in 2023
+    </p>
+    <p class="stat-caption stat-3">
+        deaths globally by 2050 are predicted to be associated with bacterial antimicrobial resistance
+    </p>
+
+    <div class="susceptibility-blurb">
+        <div class="susceptibility-icon" set:html={pillsSvg} />
+        <div class="susceptibility-copy">
+            <h2>What is antibiotic susceptibility?</h2>
+            <p>
+                Antibiotic susceptibility determines whether a biological organism, mainly cells, can be killed by
+                antibiotics. Through evolution, various species of pathogenic bacteria have acquired antibiotic
+                immunity, rendering them insusceptible to certain antibiotics. As they continue to evolve, we must limit
+                the use of antibiotics and opportunities for resistance by improving susceptibility testing and
+                throughput.
+            </p>
+        </div>
+    </div>
+
+    <div class="solution-blurb">
+        <div class="solution-copy">
+            <h2>Our Solution</h2>
+            <p>
+                We produced a point-of-care device that determines susceptibility of a patient sample to an antibiotic
+                in illnesses such as urinary tract infections (UTIs) by detecting degradation of the antibiotic.
+            </p>
+        </div>
+        <div class="solution-metric">
+            <div class="solution-icon-frame">
+                <div class="solution-icon" set:html={bottleSvg} />
+            </div>
+            <p class="solution-time">4 - 24 hrs</p>
+            <p class="solution-caption">Testing time <em>with</em> bacterial growup</p>
+        </div>
+        <div class="solution-metric">
+            <div class="solution-icon-frame">
+                <div class="solution-icon" set:html={petriDishSvg} />
+            </div>
+            <p class="solution-time">&lt;20 mins</p>
+            <p class="solution-caption">Testing time <em>after</em> bacterial growup</p>
+        </div>
+    </div>
+
+    <div class="microfluidics-overlay">
+        <MicrofluidicsExplainer />
+    </div>
+
+    <!-- Outcome blurb - positioned below the microfluidics diagram -->
+    <p class="outcome-blurb">
+        Using microfluidic technology, we can reduce the amount of patient sample needed or perform more tests using the
+        same amount of sample. Combined with user-friendliness and accessibility at point-of-care, we can enable
+        non-specialists to conduct quicker testing.
+    </p>
+
+    <div class="interactive-overlay">
+        <InteractiveSection />
+    </div>
+
+    <div class="chip-line-3" set:html={chipLine3Svg} />
+</div>
+
+<script>
+    import { gsap } from "gsap";
+    import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+    import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(DrawSVGPlugin, MotionPathPlugin, ScrollTrigger);
+
+    const hero = document.querySelector(".home-hero");
+    if (!hero) throw new Error("'.home-hero' not found");
+    const shiftLeft = hero.clientWidth / 4;
+
+    // traces chip line in 4 segments
+    const chipLineSegments = [
+        { el: document.querySelector<SVGGeometryElement>(".chip-line #stroke2_208_2980"), reverse: false },
+        { el: document.querySelector<SVGGeometryElement>(".chip-line #stroke1_208_2980"), reverse: true },
+        {
+            el: document.querySelector<SVGGeometryElement>('.chip-line path[stroke="url(#paint2_linear_208_2980)"]'),
+            reverse: false,
+        },
+        { el: document.querySelector<SVGGeometryElement>(".chip-line #stroke0_208_2980"), reverse: true },
+    ].filter((segment): segment is { el: SVGGeometryElement; reverse: boolean } => segment.el !== null);
+
+    const chipLineTotalLength = chipLineSegments.reduce((sum, { el }) => sum + el.getTotalLength(), 0);
+    // Total seconds the whole line takes to draw itself in - tune this,
+    // not the per-segment durations below (those stay proportional).
+    const chipLineDrawInTotalDuration = 2.4;
+
+    const introTimeline = gsap
+        .timeline()
+        .addLabel("chip-intro")
+        .to(".chip-1", { opacity: 1, duration: 0.9 })
+        .to(".chip-2", { opacity: 1, duration: 0.1 }, "+=0.2")
+        .to(".chip-3", { opacity: 1, duration: 0.2 }, "+=0.2")
+        .to(".chip-1, .chip-2", { opacity: 0, duration: 0.3 }, "+=0.1")
+        .to(".chip-stage", { x: -shiftLeft, duration: 0.6, ease: "power2.inOut" }, "+=0.2")
+        .addLabel("text-intro", "+=0.2")
+        .to(".connector-line", { opacity: 1, duration: 0.6 }, "text-intro")
+        .to(".fast-text-final", { opacity: 1, duration: 0.01 }, "text-intro")
+        .fromTo(
+            ".fast-text-final",
+            { clipPath: "inset(0% 100% 0% 0%)" },
+            { clipPath: "inset(0% 0% 0% 0%)", duration: 0.6 },
+            "<",
+        )
+        .to(".motion-dot", { opacity: 1, duration: 0.6 }, "text-intro+=0.4")
+        .addLabel("line-intro", "+=0.3")
+        .to(".chip-line", { opacity: 1, duration: 0.01 }, "line-intro")
+        // 3 stat circles fade in together
+        .to(".stat.stat-1, .stat.stat-2, .stat.stat-3", { opacity: 1, duration: 0.4 }, "line-intro")
+        .to(".susceptibility-blurb", { opacity: 1, duration: 0.3 }, "line-intro");
+
+    chipLineSegments.forEach(({ el, reverse }, index) => {
+        const duration = chipLineDrawInTotalDuration * (el.getTotalLength() / chipLineTotalLength);
+        introTimeline.fromTo(
+            el,
+            { drawSVG: reverse ? "100% 100%" : "0%" },
+            { drawSVG: reverse ? "0% 100%" : "100%", duration },
+        );
+
+        // fade in alongside chip lines
+        if (index === 2) {
+            introTimeline.addLabel("stats-reveal", `<${duration * 0.8}`);
+        }
+    });
+
+    introTimeline.fromTo(
+        [
+            ...document.querySelectorAll(".chip-line rect"),
+            ...document.querySelectorAll('.chip-line path[fill^="url(#paint9"]'),
+            ...document.querySelectorAll('.chip-line path[fill^="url(#paint10"]'),
+            ...document.querySelectorAll('.chip-line path[fill^="url(#paint11"]'),
+        ],
+        { clipPath: "inset(0% 0% 100% 0%)" },
+        { clipPath: "inset(0% 0% 0% 0%)", duration: 0.8, stagger: 0.05 },
+        "stats-reveal",
+    );
+
+    introTimeline.to(".stat-caption", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.3");
+    introTimeline.to(".solution-blurb", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.6");
+    introTimeline.to(".chip-line-second", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.9");
+    introTimeline.to(".motion-dot-2", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.9");
+    introTimeline.to(".microfluidics-overlay", { opacity: 1, duration: 0.5 }, "stats-reveal+=1.2");
+    introTimeline.to(".outcome-blurb", { opacity: 1, duration: 0.5 }, "stats-reveal+=1.5");
+    introTimeline.to(".interactive-overlay", { opacity: 1, duration: 0.5 }, "stats-reveal+=1.8");
+
+    // Someone scrolling straight away shouldn't wait on the intro to reveal what they've scrolled to,
+    // so it plays out faster from the first scroll (or at once, if the page loads already scrolled)
+    const introScrolledTimeScale = 4;
+    const hurryIntro = () => gsap.to(introTimeline, { timeScale: introScrolledTimeScale, duration: 0.3 });
+    if (window.scrollY > 0) hurryIntro();
+    else window.addEventListener("scroll", hurryIntro, { once: true, passive: true });
+
+    // chip-line-3 no path added yet
+    const chipLine3Path = document.querySelector<SVGGeometryElement>(
+        '.chip-line-3 path[stroke="url(#paint0_linear_900_69)"]',
+    );
+    if (chipLine3Path) {
+        introTimeline
+            .to(".chip-line-3", { opacity: 1, duration: 0.01 }, "stats-reveal+=2.1")
+            .fromTo(chipLine3Path, { drawSVG: "0%" }, { drawSVG: "100%", duration: 1.2 }, "<");
+    }
+
+    // A dot chases the line as the user scrolls, via MotionPathPlugin
+    // walking the same 4 path segments (in the same order/direction) used
+    // for the draw-in reveal above.
+    const dot = document.querySelector<HTMLElement>(".motion-dot");
+
+    if (dot && chipLineSegments.length > 0) {
+        const dotTimeline = gsap.timeline({ paused: true });
+        for (const { el, reverse } of chipLineSegments) {
+            dotTimeline.to(dot, {
+                duration: el.getTotalLength(),
+                ease: "none",
+                motionPath: {
+                    align: el,
+                    alignOrigin: [0.5, 0.5],
+                    path: el,
+                    start: reverse ? 1 : 0,
+                    end: reverse ? 0 : 1,
+                },
+            });
+        }
+
+        // Controls how much scroll distance maps to the full dot path -
+        // lower = less scrolling needed = dot feels faster.
+        const scrollDistanceFactor = 0.27;
+        ScrollTrigger.create({
+            animation: dotTimeline,
+            end: `+=${dotTimeline.duration() * scrollDistanceFactor}`,
+            scrub: true,
+            start: "top top",
+            trigger: ".chip-stage",
+        });
+    }
+
+    // Second dot traces second chip line, responsive to scroll
+    const chipLineSecondSegments = [
+        { el: document.querySelector<SVGGeometryElement>(".chip-line-second #stroke0_893_68"), reverse: true },
+        { el: document.querySelector<SVGGeometryElement>(".chip-line-second #stroke1_893_68"), reverse: false },
+        {
+            el: document.querySelector<SVGGeometryElement>(
+                '.chip-line-second path[stroke="url(#paint0_linear_893_68)"]',
+            ),
+            reverse: true,
+        },
+    ].filter((segment): segment is { el: SVGGeometryElement; reverse: boolean } => segment.el !== null);
+
+    const dot2 = document.querySelector<HTMLElement>(".motion-dot-2");
+
+    if (dot2 && chipLineSecondSegments.length > 0) {
+        const dot2Timeline = gsap.timeline({ paused: true });
+        for (const { el, reverse } of chipLineSecondSegments) {
+            dot2Timeline.to(dot2, {
+                duration: el.getTotalLength(),
+                ease: "none",
+                motionPath: {
+                    align: el,
+                    alignOrigin: [0.5, 0.5],
+                    path: el,
+                    start: reverse ? 1 : 0,
+                    end: reverse ? 0 : 1,
+                },
+            });
+        }
+
+        // Same control as scrollDistanceFactor above, for this second dot.
+        const scrollDistanceFactor2 = 0.27;
+        ScrollTrigger.create({
+            animation: dot2Timeline,
+            end: `+=${dot2Timeline.duration() * scrollDistanceFactor2}`,
+            scrub: true,
+            start: "top top",
+            trigger: ".chip-line-second",
+        });
+    }
+</script>
+
+<style>
+    /* --chip-w drives every measurement below; the ratios come from the
+       source SVGs' own viewBoxes (chip: 594x585, connector: 94x36,
+       text: 548x386, chip-line: 1150x3027, chip-line-second: 1104x1765)
+       so everything scales together. */
+    .chip-stage {
+        --chip-w: min(598px, 90vw);
+        /* Reserves real normal-flow height for the chip's full visual
+           extent, all the way down through chip-line-3's bottom edge
+           (.chip-line-3's own top 8.6 + height 0.42623 - see it below) -
+           everything below the chip image itself is position:absolute and
+           wouldn't otherwise push a following section down at all. */
+        min-height: calc(var(--chip-w) * 9.02623);
+        position: relative;
+        width: var(--chip-w);
+    }
+
+    .chip-stage :global(svg) {
+        display: block;
+        height: 100%;
+        width: 100%;
+    }
+
+    /* Explicit chip-w-based sizing (not height/width: 100%) so chip-stage's
+       min-height above (needed to reserve layout space for the line below)
+       doesn't stretch these to fill that much taller box. */
+    .chip {
+        height: calc(var(--chip-w) * 585 / 594);
+        left: 0;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        width: var(--chip-w);
+    }
+
+    .connector-line {
+        height: calc(var(--chip-w) * 36 / 594);
+        left: calc(var(--chip-w) * 1);
+        opacity: 0;
+        position: absolute;
+        top: calc(var(--chip-w) * 0.248);
+        width: calc(var(--chip-w) * 94 / 594);
+    }
+
+    .fast-text-final {
+        height: auto;
+        left: calc(var(--chip-w) * 1.14);
+        opacity: 0;
+        position: absolute;
+        top: calc(var(--chip-w) * 0.2);
+        width: calc(var(--chip-w) * 548 / 594);
+    }
+
+    /* Replaces the old init-line + line-full pair with one unified asset.
+       Anchor estimate carried over from init-line's old position (its own
+       entry point sits at a similar ~80% across its width) - likely needs
+       a visual nudge once checked in a browser. */
+    .chip-line {
+        height: calc(var(--chip-w) * 3027 / 594);
+        left: calc(var(--chip-w) * 0.094);
+        opacity: 0;
+        position: absolute;
+        top: calc(var(--chip-w) * 0.7944);
+        width: calc(var(--chip-w) * 1150 / 594);
+    }
+
+    /* Forced to the same rendered width as .chip-line above (not its own
+       native 1104-wide scale) so the two lines join up at the same
+       horizontal span, per request. Height follows from that width via
+       chip-line-second's own aspect ratio (1150/594 * 1765/1104 =
+       3.09563). Positioned flush under chip-line's own bottom edge
+       (0.7944 + 3027/594 = 5.8904) - same left, immediate continuation. */
+    .chip-line-second {
+        height: calc(var(--chip-w) * 3.09563);
+        left: calc(var(--chip-w) * 0.094);
+        opacity: 0;
+        position: absolute;
+        top: calc(var(--chip-w) * 3.94);
+        width: calc(var(--chip-w) * 1150 / 594);
+    }
+
+    /* The 3 stat-circle connector stubs (<rect>) and the 3 stat circles
+       themselves (<path>, selected by fill since they have no id) start
+       clipped away regardless of chip-line's own opacity, so the GSAP
+       "stats-reveal" wipe (script above) has something to animate from. */
+    .chip-line :global(rect),
+    .chip-line :global(path[fill^="url(#paint9"]),
+    .chip-line :global(path[fill^="url(#paint10"]),
+    .chip-line :global(path[fill^="url(#paint11"]) {
+        clip-path: inset(0% 0% 100% 0%);
+    }
+
+    /* chip asset */
+    .motion-dot {
+        height: calc(var(--chip-w) * 25 / 594);
+        left: 0;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        width: calc(var(--chip-w) * 25 / 594);
+    }
+
+    /* ball2.svg, chases chip-line-second the same way .motion-dot chases
+       chip-line. */
+    .motion-dot-2 {
+        height: calc(var(--chip-w) * 25 / 594);
+        left: 0;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        width: calc(var(--chip-w) * 25 / 594);
+    }
+
+    /* Centered over each of chip-line's 3 baked-in stat circles (each
+       r=105 at cy=980, cx=212/575/929 in chip-line's own 1150x3027
+       coordinate space) - left offsets below are chip-line's own 0.094
+       left plus each circle's own left edge (cx - r), divided by 594. */
+    .stat {
+        align-items: center;
+        color: var(--color-ebony-clay);
+        display: flex;
+        font-family: var(--font-geist);
+        font-size: 48px;
+        font-weight: 700;
+        height: calc(var(--chip-w) * 210 / 594);
+        justify-content: center;
+        line-height: 50px;
+        opacity: 0;
+        position: absolute;
+        text-align: center;
+        top: calc(var(--chip-w) * 2.26746);
+        width: calc(var(--chip-w) * 210 / 594);
+    }
+
+    .stat-1 {
+        left: calc(var(--chip-w) * 0.27413);
+    }
+
+    .stat-2 {
+        left: calc(var(--chip-w) * 0.88525);
+    }
+
+    .stat-3 {
+        left: calc(var(--chip-w) * 1.48121);
+    }
+
+    /* Same width as .stat (so lines wrap the same) and centered directly
+       below it (stat top 2.26746 + stat height 210/594 + a small gap). The
+       .stat-1/.stat-2/.stat-3 classes above are reused for left offset
+       only, so these line up with their corresponding bubble.
+       color/font-family/font-size/line-height all already come from being
+       a real <p> inside .page-content (global rule + inheritance) - only
+       margin (resetting the global p's bottom margin) and the positioning
+       below are actually needed here. */
+    .stat-caption {
+        margin: 0;
+        opacity: 0;
+        position: absolute;
+        text-align: center;
+        top: calc(var(--chip-w) * 2.674);
+        width: calc(var(--chip-w) * 210 / 594);
+    }
+
+    /* Antibiotic susceptibility blurb positioned between chip lines above stats */
+    .susceptibility-blurb {
+        align-items: flex-start;
+        display: flex;
+        gap: 2rem;
+        left: calc(var(--chip-w) * 0.4);
+        opacity: 0;
+        position: absolute;
+        top: calc(var(--chip-w) * 1.6);
+        width: calc(var(--chip-w) * 1.5);
+    }
+
+    .susceptibility-icon {
+        flex-shrink: 0;
+        width: calc(var(--chip-w) * 0.22);
+    }
+
+    /* Overrides the generic ".chip-stage :global(svg)" 100%/100% rule
+       above - this one should keep pills.svg's own aspect ratio rather
+       than being stretched to match an explicit box. */
+    .susceptibility-icon :global(svg) {
+        display: block;
+        height: auto;
+        width: 100%;
+    }
+
+    .susceptibility-copy h2 {
+        font-size: 28px;
+        margin: 0 0 2rem;
+    }
+
+    .susceptibility-copy p {
+        margin: 0;
+        max-width: 50rem;
+    }
+
+    /* Solutions blurb relative to chip line */
+    .solution-blurb {
+        align-items: flex-start;
+        display: flex;
+        gap: 2.5rem;
+        left: calc(var(--chip-w) * 0.35);
+        opacity: 0;
+        position: absolute;
+        top: calc(var(--chip-w) * 3.4);
+        width: calc(var(--chip-w) * 1.6);
+    }
+
+    .solution-copy {
+        flex: 1;
+    }
+
+    .solution-blurb .solution-copy h2 {
+        font-size: 28px;
+        margin: 0 0 2rem;
+    }
+
+    .solution-blurb .solution-copy p {
+        margin: 0;
+        max-width: 30rem;
+    }
+
+    .solution-metric {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        text-align: center;
+        width: calc(var(--chip-w) * 0.3);
+    }
+
+    /* Fixed height shared by both icons */
+    .solution-icon-frame {
+        align-items: flex-end;
+        display: flex;
+        height: calc(var(--chip-w) * 0.28);
+        justify-content: center;
+        margin-bottom: 0.75rem;
+    }
+
+    .solution-icon {
+        height: 100%;
+    }
+
+    .solution-icon :global(svg) {
+        display: block;
+        height: 100%;
+        width: auto;
+    }
+
+    /* override font styling */
+    .solution-blurb .solution-time {
+        font-family: var(--font-geist);
+        font-size: 32px;
+        font-weight: 700;
+        margin: 0 0 0.25rem;
+    }
+
+    .solution-blurb .solution-caption {
+        font-size: 14px;
+        margin: 0;
+    }
+
+    /* How it works microfluidics component */
+    .microfluidics-overlay {
+        left: calc(var(--chip-w) * 1.062);
+        opacity: 0;
+        position: absolute;
+        top: calc(var(--chip-w) * 4.2);
+        transform: translateX(-50%);
+        width: min(70rem, 92vw);
+    }
+
+    .outcome-blurb {
+        left: calc(var(--chip-w) * 0.3);
+        opacity: 0;
+        position: absolute;
+        text-align: left;
+        top: calc(var(--chip-w) * 6.5);
+        width: calc(var(--chip-w) * 1.4);
+    }
+
+    /* Same horizontal centering as .microfluidics-overlay (chip-line's own
+       visual midpoint), positioned just under chip-line-second's own
+       bottom edge (3.94 + 3.09563 = 7.03563). Width independent of
+       --chip-w for the same reason as .microfluidics-overlay - its own
+       case-row layout (max-width: 90rem) wants real desktop width. */
+    .interactive-overlay {
+        left: calc(var(--chip-w) * 1.062);
+        opacity: 0;
+        position: absolute;
+        top: calc(var(--chip-w) * 7.1);
+        transform: translateX(-50%);
+        width: min(85rem, 94vw);
+    }
+
+    /* Matched to chip-line's rendered width (not its own native 1104-wide
+       scale), same as .chip-line-second - width 1150/594, height follows
+       via chip-line-3's own aspect ratio (1150/594 * 243/1104 = 0.42623).
+       top is a rough/eyeballed guess at clearing .interactive-overlay's
+       own (unpredictable) content height. */
+    .chip-line-3 {
+        height: calc(var(--chip-w) * 0.42623);
+        left: calc(var(--chip-w) * 0.094);
+        opacity: 0;
+        position: absolute;
+        top: calc(var(--chip-w) * 8.6);
+        width: calc(var(--chip-w) * 1150 / 594);
+    }
+</style>

@@ -1,5 +1,20 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
+import HeroChipIntro from "../components/HeroChipIntro.astro";
 ---
 
-<MainLayout title="Homepage"> This is the WIP version of the UBC iGEM 2026 wiki. </MainLayout>
+<MainLayout>
+    <main class="home-hero">
+        <HeroChipIntro />
+    </main>
+</MainLayout>
+
+<style>
+    .home-hero {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        min-height: calc(100vh - 4rem);
+        padding: 2rem;
+    }
+</style>

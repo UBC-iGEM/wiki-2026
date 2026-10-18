@@ -37,27 +37,33 @@ title: "Conceptualization"
 
 ## <a id="3f3d65dd82be80faba2ffe21d3402e90" />*cpxP* promoter
 
-<a id="3f3d65dd82be80eca7b1fc9d538bf532" />Antibiotic exposure can trigger bacterial stress responses when antibiotics disrupt essential cellular processes. The CpxP envelope stress response is a bacterial stress-response pathway that is activated when the integrity of the cell envelope is disrupted. This makes it a particularly relevant stress response when detecting the effects of β-lactam antibiotics, which act by binding to to and inactivating enzymes required for bacterial cell wall synthesis.
+<a id="3f3d65dd82be80eca7b1fc9d538bf532" />Antibiotic exposure can trigger bacterial stress responses when antibiotics disrupt essential cellular processes. The CpxP envelope stress response is a bacterial stress-response pathway that is activated when the integrity of the cell envelope is disrupted <Cite refs={[{"n":1,"key":"raivioCpxEnvelopeStress1999"}]} />. This makes it a particularly relevant stress response when detecting the effects of β-lactam antibiotics, which act by binding to to and inactivating enzymes required for bacterial cell wall synthesis.
 
-<a id="3f3d65dd82be8090adb9cb16046b4b34" />When envelope stress is sensed, the Cpx defense system is activated in Gram-negative bacteria through the CpxA/CpxR two-component system. **CpxA** is a sensor kinase in the membrane and **CpxR** is a response regulator in the cytoplasm. Under normal, unstressed conditions, CpxP (a small periplasmic protein) interacts with CpxA and helps keep the pathway in an inactive state, preventing unneeded responses. During envelope stress, CpxP is degraded, allowing CpxA to autophosphorylate and transfer a phosphate group to the response regulator CpxR. Phosphorylated CpxR then activates downstream stress-response genes, including *cpxP*.
+<a id="3f3d65dd82be8090adb9cb16046b4b34" />When envelope stress is sensed, the Cpx defense system is activated in Gram-negative bacteria through the CpxA/CpxR two-component system <Cite refs={[{"n":2,"key":"surmannMolecularProteomeAnalyses2016"}]} />. **CpxA** is a sensor kinase in the membrane and **CpxR** is a response regulator in the cytoplasm. Under normal, unstressed conditions, CpxP (a small periplasmic protein) interacts with CpxA and helps keep the pathway in an inactive state, preventing unneeded responses. During envelope stress, CpxP is degraded, allowing CpxA to autophosphorylate and transfer a phosphate group to the response regulator CpxR. Phosphorylated CpxR then activates downstream stress-response genes, including *cpxP*.
 
 <a id="3fcd65dd82be80f78f37f4fad5052e0f" />
 
 <Img url="https://static.igem.wiki/teams/6279/wiki/assets/7b4e54f8dde75825b9af85f34fc5548f.svg" alt="" scale={0} align="left" />
 
-<a id="3f3d65dd82be80a6857df9cad611de32" />We leverage this bacterial response to construct a **CpxP-sfGFP stress reporter**. The reporter contains the *cpxP* promoter (pCpxP) upstream of the **superfolder GFP (sfGFP)** gene. When β-lactam exposure causes envelope stress and activates the Cpx pathway, increased *cpxP* promoter activity results in sfGFP production and a measurable increase in fluorescence.
+<br id="3fdd65dd82be8094a83fdef34dfd3998" />
 
-<a id="3f3d65dd82be80e69266c05d6f3be264" />This construct provides an indirect method of detecting the bacterial response to β-lactam antibiotics and aminoglycosides. Rather than detecting the antibiotic molecule itself, our reporter measures the cellular stress resulting from antibiotic exposure. Because β-lactams disrupt cell-wall synthesis, they can trigger the envelope stress response and consequently activate the CpxP-sfGFP reporter.
+<a id="3f3d65dd82be80a6857df9cad611de32" />We leverage this bacterial response to construct a **CpxP-sfGFP stress reporter**. The reporter contains the *cpxP* promoter ( $P_\text{CpxP}$) upstream of the **superfolder GFP (sfGFP)** gene. When β-lactam exposure causes envelope stress and activates the Cpx pathway, increased *cpxP* promoter activity results in sfGFP production and a measurable increase in fluorescence.
 
-<a id="3f3d65dd82be806aa375ff13d922b9ca" />Our CpxP reporter is therefore intended to provide a rapid readout of β-lactam ad aminoglycoside susceptibility as part of our point-of-care UTI diagnostic platform.
+<a id="3f3d65dd82be80e69266c05d6f3be264" />This construct provides an indirect method of detecting the bacterial response to β-lactam antibiotics and aminoglycosides <Cite refs={[{"n":3,"key":"kohanskiHowAntibioticsKill2010"}]} />. Rather than detecting the antibiotic molecule itself, our reporter measures the cellular stress resulting from antibiotic exposure. Because β-lactams disrupt cell-wall synthesis, they can trigger the envelope stress response and consequently activate the CpxP-sfGFP reporter <Cite refs={[{"n":4,"key":"FineTuningCpxEnvelope"}]} />.
 
-<a id="3fad65dd82be80078ac8e15d7b89794c" />
+<a id="3f3d65dd82be806aa375ff13d922b9ca" />Our CpxP reporter is therefore intended to provide a rapid readout of β-lactam and aminoglycoside susceptibility as part of our point-of-care UTI diagnostic platform.
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/d4505c3c81f8560eaddaff2956c6082a.avif" alt="" scale={0} align="left" />
+<a id="3fdd65dd82be802eb46acb7e89709e2d" />
+
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/dae1a057498553ed925aab2a0c17f697.svg" alt="" scale={0} align="left" />
+
+<br id="3fdd65dd82be8075963fda43a11d62bd" />
 
 ## <a id="3f3d65dd82be809cb1f4dab13feb11a0" />*recA* promoter
 
 <a id="3f3d65dd82be80a38b60cad0c7824b9b" />The cellular stress caused by antibiotic exposure can ultimately damage bacterial DNA. To detect DNA damage, we developed another reporter, the RecA-GFP reporter, based on the bacterial SOS response. The bacterial SOS response is a conserved global DNA-damage response mechanism that allows bacteria to detect and respond to disruptions in DNA replication and repair, and RecA is the central protein sensor that activates it.
+
+<br id="3fdd65dd82be80a78460cc1f228c0b83" />
 
 <a id="3fad65dd82be80b0958adf6c173ca394" />When DNA damage occurs due to the accumulation of reactive metabolites, which produce reactive oxygen species (ROS), regions of single-stranded DNA (ssDNA) accumulate. RecA binds to to this ssDNA and forms an active nucleoprotein filament known as RecA\*. This activated RecA\* promotes the self-cleavage of the LexA protein, which is the transcriptional repressor that is normally bound to DNA and keeps SOS-response genes at low expression. LexA cleavage causes it to be released from its operator, which removes its repression on downstream LexA-regulated genes (e.g. *recA* gene).
 
@@ -75,6 +81,10 @@ title: "Conceptualization"
 
 <a id="3f3d65dd82be808b889ff1d30d46cdbe" />Together with the CpxP-sfGFP reporter, the RecA-sfGFP reporter allows us connect antibiotic exposure to different cellular stress responses. While CpxP reports envelope stress, RecA reports DNA damage and activation of the SOS response.
 
-<a id="3fad65dd82be80bd9976cd506af7dd2a" />
+<a id="3fdd65dd82be803f97a0ca6eddc6654e" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/0c6225c9021f55959b60fed72ad8dea5.avif" alt="" scale={0} align="left" />
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/7b3b92df84e15269b3e67b0440bf7e11.svg" alt="" scale={0} align="left" />
+
+# References
+
+<Bibliography refs={[{"n":1,"key":"raivioCpxEnvelopeStress1999"},{"n":2,"key":"surmannMolecularProteomeAnalyses2016"},{"n":3,"key":"kohanskiHowAntibioticsKill2010"},{"n":4,"key":"FineTuningCpxEnvelope"}]} />

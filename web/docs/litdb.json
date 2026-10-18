@@ -1,4 +1,20 @@
 {
+    "FineTuningCpxEnvelope": {
+        "citation_key": "FineTuningCpxEnvelope",
+        "bib": "Fine-Tuning of the Cpx Envelope Stress Response Is Required for Cell Wall Homeostasis in Escherichia coli. mBio [Internet]. [cited 2026 Oct 18]; Available from: <a href=\"https://journals.asm.org/doi/10.1128/mbio.00047-16\">https://journals.asm.org/doi/10.1128/mbio.00047-16</a>"
+    },
+    "kohanskiHowAntibioticsKill2010": {
+        "citation_key": "kohanskiHowAntibioticsKill2010",
+        "bib": "Kohanski MA, Dwyer DJ, Collins JJ. How antibiotics kill bacteria: from targets to networks. Nat Rev Microbiol [Internet]. 2010 June [cited 2026 Oct 18];8(6):423&#x2013;35. Available from: <a href=\"https://www.nature.com/articles/nrmicro2333\">https://www.nature.com/articles/nrmicro2333</a>"
+    },
+    "surmannMolecularProteomeAnalyses2016": {
+        "citation_key": "surmannMolecularProteomeAnalyses2016",
+        "bib": "Surmann K, &#x106;udi&#x107; E, Hammer E, Hunke S. Molecular and proteome analyses highlight the importance of the Cpx envelope stress system for acid stress and cell wall stability in Escherichia coli. MicrobiologyOpen [Internet]. 2016 [cited 2026 Oct 18];5(4):582&#x2013;96. Available from: <a href=\"https://onlinelibrary.wiley.com/doi/abs/10.1002/mbo3.353\">https://onlinelibrary.wiley.com/doi/abs/10.1002/mbo3.353</a>"
+    },
+    "raivioCpxEnvelopeStress1999": {
+        "citation_key": "raivioCpxEnvelopeStress1999",
+        "bib": "Raivio TL, Popkin DL, Silhavy TJ. The Cpx Envelope Stress Response Is Controlled by Amplification and Feedback Inhibition. Journal of Bacteriology [Internet]. 1999 Sept [cited 2026 Oct 18];181(17):5263&#x2013;72. Available from: <a href=\"https://journals.asm.org/doi/10.1128/jb.181.17.5263-5272.1999\">https://journals.asm.org/doi/10.1128/jb.181.17.5263-5272.1999</a>"
+    },
     "FAQFrequentlyAsked2026": {
         "citation_key": "FAQFrequentlyAsked2026",
         "bib": "FAQ - Frequently Asked Questions | Prusa Knowledge Base [Internet]. 2026 [cited 2026 Oct 18]. Available from: <a href=\"https://help.prusa3d.com/article/faq-frequently-asked-questions_1932\">https://help.prusa3d.com/article/faq-frequently-asked-questions_1932</a>"
