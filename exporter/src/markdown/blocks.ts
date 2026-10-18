@@ -8,6 +8,7 @@ import { mediaFileName, parseImageCaption, uploadMedia } from "./media";
 import { convertRichText, asPlainText } from "./rich-text";
 import type { RichTextItemResponse } from "@notionhq/client";
 import type { Heading, List, ListItem, Paragraph, PhrasingContent, Table, TableRow } from "mdast";
+import type { MdxJsxFlowElement } from "mdast-util-mdx-jsx";
 
 export interface ConvertContext extends WarningContext {
     routes: ContentMap;
@@ -361,33 +362,65 @@ async function convertList(kind: ListKind, blocks: NotionBlock[], ctx: ConvertCo
     return { type: "list", ordered, start: ordered ? 1 : undefined, spread: false, children: items };
 }
 
-async function convertTable(block: Extract<NotionBlock, { type: "table" }>, ctx: ConvertContext): Promise<Table> {
+async function convertTable(
+    block: Extract<NotionBlock, { type: "table" }>,
+    ctx: ConvertContext,
+): Promise<Table | MdxJsxFlowElement> {
     const width = block.table.table_width;
 
     const rows = await Promise.all(
-        block.children.map(async (row): Promise<TableRow> => {
-            if (row.type !== "table_row") return { type: "tableRow", children: [] };
+        block.children.map(async (row): Promise<PhrasingContent[][]> => {
+            if (row.type !== "table_row") return [];
 
             const row_ctx = blockContext(ctx, row);
             const cells = await Promise.all(row.table_row.cells.map((cell) => convertRichText(cell, row_ctx, "jsx")));
-            return {
-                type: "tableRow",
-                children: cells.map((children, i) => ({
-                    type: "tableCell",
-                    // Rows get an anchor in their first cell
-                    children: i === 0 ? [anchorText(row_ctx.block!), ...children] : children,
-                })),
-            };
+            // Rows get an anchor in their first cell
+            return cells.map((children, i) => (i === 0 ? [anchorText(row_ctx.block!), ...children] : children));
         }),
     );
 
+    if (block.table.has_row_header) return jsxTable(rows, block.table.has_column_header);
+
+    const table_rows = rows.map((cells): TableRow => ({
+        type: "tableRow",
+        children: cells.map((children) => ({ type: "tableCell", children })),
+    }));
     if (!block.table.has_column_header) {
         // Markdown tables require a header row, so insert a blank one if missing
-        rows.unshift({
+        table_rows.unshift({
             type: "tableRow",
             children: Array.from({ length: width }, () => ({ type: "tableCell", children: [] })),
         });
     }
 
-    return { type: "table", align: Array.from({ length: width }, () => null), children: rows };
+    return { type: "table", align: Array.from({ length: width }, () => null), children: table_rows };
+}
+
+/**
+ * A table whose first column is a header, which Markdown tables can't express, so it is written as JSX.
+ */
+function jsxTable(rows: PhrasingContent[][][], has_column_header: boolean): MdxJsxFlowElement {
+    const tableRow = (cells: PhrasingContent[][], header_row: boolean): MdxJsxFlowElement =>
+        jsxFlow(
+            "tr",
+            {},
+            cells.map((children, i) =>
+                header_row
+                    ? jsxInlineBlock("th", { scope: "col" }, children)
+                    : i === 0
+                      ? jsxInlineBlock("th", { scope: "row" }, children)
+                      : jsxInlineBlock("td", {}, children),
+            ),
+        );
+
+    const head = has_column_header ? rows.slice(0, 1) : [];
+    const body = has_column_header ? rows.slice(1) : rows;
+    return jsxFlow("table", {}, [
+        ...head.map((cells) => jsxFlow("thead", {}, [tableRow(cells, true)])),
+        jsxFlow(
+            "tbody",
+            {},
+            body.map((cells) => tableRow(cells, false)),
+        ),
+    ]);
 }

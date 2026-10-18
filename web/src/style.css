@@ -27,8 +27,11 @@ table {
     margin: 1.5rem 0;
 }
 
-/* Notion tables without a header row still export an empty one */
-table:has(th:empty) thead {
+/*
+ * Notion tables without a header row still export an empty one.
+ * A real row always has an anchor in its first cell, so only the blank row has that cell empty.
+ */
+table:has(thead th:first-child:empty) thead {
     display: none;
 }
 
@@ -67,12 +70,12 @@ table td {
 
 /* Cell backgrounds would otherwise square off the rounded outline */
 table thead tr:first-child > :first-child,
-table:is(:has(th:empty), :not(:has(thead))) tbody tr:first-child > :first-child {
+table:is(:has(thead th:first-child:empty), :not(:has(thead))) tbody tr:first-child > :first-child {
     border-top-left-radius: 7px;
 }
 
 table thead tr:first-child > :last-child,
-table:is(:has(th:empty), :not(:has(thead))) tbody tr:first-child > :last-child {
+table:is(:has(thead th:first-child:empty), :not(:has(thead))) tbody tr:first-child > :last-child {
     border-top-right-radius: 7px;
 }
 
