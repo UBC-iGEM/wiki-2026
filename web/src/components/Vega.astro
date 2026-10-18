@@ -1,0 +1,70 @@
+---
+import { type VegaAttrs, VEGA_SLOTS } from "@exporter/markdown/components";
+type Props = VegaAttrs;
+
+const { code } = Astro.props;
+VEGA_SLOTS satisfies readonly [];
+
+// `<` is escaped so a string in the spec can't close the script tag.
+const data = code.replaceAll("<", "\\u003c");
+---
+
+<figure class="vega">
+    <div class="vega-host"></div>
+    <script type="application/json" class="vega-data" is:inline set:html={data} />
+</figure>
+
+<script>
+    import embed from "vega-embed";
+
+    for (const vega of document.querySelectorAll<HTMLElement>(".vega")) {
+        const spec = JSON.parse(vega.querySelector(".vega-data")!.textContent!);
+        const host = vega.querySelector<HTMLElement>(".vega-host")!;
+        embed(host, spec, {
+            renderer: "svg",
+            // No export menu, which links out to the online Vega editor
+            actions: false,
+        }).catch((error: unknown) => {
+            console.error("Vega chart could not be rendered:", error);
+            host.textContent = "This chart could not be displayed.";
+        });
+    }
+</script>
+
+<!-- Global, as the chart is created by Vega and doesn't carry Astro's scoping attribute -->
+<style is:global>
+    /* The border and glow come from .glow-panel in style.css; the bottom margin clears the outline hanging below */
+    .vega {
+        margin: 2rem 0 3rem;
+    }
+
+    .vega .vega-body {
+        padding: 1.5rem 2.5rem;
+    }
+
+    /* Vega draws dark text by default, so the chart sits on a light card */
+    .vega .vega-host {
+        background: #fff;
+        border-radius: 22px;
+        color: #000;
+        display: flex;
+        justify-content: center;
+        overflow-x: auto;
+        padding: 1rem;
+    }
+
+    .vega .vega-host svg {
+        max-width: 100%;
+        height: auto;
+    }
+
+    @media (max-width: 700px) {
+        .vega .vega-body {
+            padding: 1rem 1.25rem;
+        }
+
+        .vega .vega-host {
+            border-radius: 14px;
+        }
+    }
+</style>

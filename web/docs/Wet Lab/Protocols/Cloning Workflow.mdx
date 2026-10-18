@@ -27,10 +27,11 @@ path: "Wet Lab/Protocols/Cloning Workflow"
 ### <a id="3fcd65dd82be80259ac3e119ce8a1ad1" />**Step 1: Linearizing Plasmid Backbone**
 
 1. <a id="3fcd65dd82be80fcac6dff9d40b50d32" />Pick bacteria from the glycerol stock and culture in 5 mL of selective LB media overnight while shaking at 250 rpm.
-2. <a id="3fcd65dd82be80db9f84fe3ea8af6adf" />Extract plasmid via Miniprep kit and measure DNA concentration via Nanodrop
-3. <a id="3fcd65dd82be80e7a17cf227d14a8ccb" />Linearize the plasmid using restriction enzymes.
+2. <a id="3fcd65dd82be80db9f84fe3ea8af6adf" />Extract plasmid via Miniprep kit
+3. <a id="3fcd65dd82be80949448fae4cee0c416" />Quantitate the purified DNA by ~~Nanodrop~~ UV-Vis spectroscopy.
+4. <a id="3fcd65dd82be80e7a17cf227d14a8ccb" />Linearize the plasmid using two restriction enzymes.
    - <a id="3fcd65dd82be80e198cbeb5077cae435" />Follow the reagent mixture in Table 1 for linearization
-   - <a id="3fcd65dd82be8070afe5c34e6bf93d01" />Note: Add the reagents in this order: ddH20, plasmid, 10x rCutSmart buffer, restriction enzymes
+   - <a id="3fcd65dd82be8070afe5c34e6bf93d01" />Note: Add the reagents in this order: ddH2O, plasmid, 10x rCutSmart buffer, restriction enzymes
 
 <a id="3fcd65dd82be80c1aee6ca9021949cea" />**Table 1. Reagent mix and amount**
 
@@ -46,19 +47,23 @@ path: "Wet Lab/Protocols/Cloning Workflow"
 | <a id="3fcd65dd82be80f496a3d1cd53693580" />ddH2O                              | to 40 uL   |
 | <a id="3fcd65dd82be80d58dbdfeaa84571951" />**Total Volume**                   | **40 uL**  |
 
-1. <a id="3fcd65dd82be80ad8d9ee3912efd5245" />Incubate the mixture at 37C for 1 hour.
+1. <a id="3fcd65dd82be80ad8d9ee3912efd5245" />Incubate the mixture at 37ºC for 1 hour.
 2. <a id="3fcd65dd82be80e1bbd6cff61bac0fba" />Run gel electrophoresis on the incubated mixture
    1. <a id="3fcd65dd82be803082edecafc859cafd" />Gel Preparation
       1. <a id="3fcd65dd82be801ebf6be44edad8eb91" />500 ug Agarose + 50 mL 1x TAE buffer → 1 min Microwave
-      2. <a id="3fcd65dd82be80e4909ef6a3d228d38c" />Add 10 uL Ethidium Bromide/SYBR Safe into the heated mixture → swirl
-      3. <a id="3fcd65dd82be80eb9068d6d6d081cc49" />Pour into gel casting tray + insert comb (remove all bubbles)
-      4. <a id="3fcd65dd82be802e857cf3559e2a7130" />Let gel sit for 30 min to solidify
-   2. <a id="3fcd65dd82be804bbdfbe206c5188955" />Dilute 6x loading dye to 1x by adding to incubated mixture
-      1. <a id="3fcd65dd82be8011b8f5f36157a9f0f6" />For 40 uL volume, add 8 uL of 6X gel loading dye (scale appropriately)
-   3. <a id="3fcd65dd82be80289010c6e6287a3c69" />Run gel electrophoresis w/ following parameters: 130 V, 400 A, 30 minutes
-      1. <a id="3fcd65dd82be807e96a5ee5a7ba7901c" />You should see 2 bands → linearized plasmid + cut-out fragment
-3. <a id="3fcd65dd82be8057b58ff41f1c17c859" />Extract linearized plasmid via DNA gel extraction kit and Nandrop
-   - <a id="3fcd65dd82be80d78caafd261b509d3f" />Only cut out the linearized plasmid precisely (identify using DNA ladder)
+      2. <a id="3fcd65dd82be80e4909ef6a3d228d38c" />Add 10 µL Ethidium Bromide/SYBR Safe into the heated mixture → swirl
+      3. <a id="3fcd65dd82be80eb9068d6d6d081cc49" />Pour into gel casting tray
+      4. <a id="3fcd65dd82be80fabc4aed2cf17dc4e6" />Remove air bubbles, if any persists
+      5. <a id="3fcd65dd82be800a9c14dbd1a6925bcf" />Insert the gel comb
+      6. <a id="3fcd65dd82be802e857cf3559e2a7130" />Rest the mixture for 30 min to solidify
+   2. <a id="3fcd65dd82be804bbdfbe206c5188955" />Dilute 6x loading dye to 1x by adding to the digested DNA
+      1. <a id="3fcd65dd82be8011b8f5f36157a9f0f6" />For 40 µL volume, add 8 µL of 6X gel loading dye (scale appropriately)
+      2. <a id="3fcd65dd82be80b69642ef8e50645878" />Load DNA ladder for sizing
+   3. <a id="3fcd65dd82be80289010c6e6287a3c69" />Run gel electrophoresis w/ following parameters: 130 V, 400 A, 30 min
+      1. <a id="3fcd65dd82be807e96a5ee5a7ba7901c" />Expect 2 bands: linearized plasmid + excised fragment
+3. <a id="3fcd65dd82be8057b58ff41f1c17c859" />Extract linearized plasmid via DNA gel extraction kit and quantify by UV-Vis spectroscopy.
+   - <a id="3fcd65dd82be807587a4f6cfe5357aa5" />Identify the band of interest by making reference to the molecular ladder
+   - <a id="3fcd65dd82be80d78caafd261b509d3f" />Excise the linearized plasmid and trim off excess agarose
 
 <br id="3fcd65dd82be80dca92ad7733789481e" />
 
@@ -84,7 +89,7 @@ path: "Wet Lab/Protocols/Cloning Workflow"
 | <a id="3fcd65dd82be80f1847ede8738a21e65" />ddH2O                               | top up               |                                                 |
 | <a id="3fcd65dd82be80e0bffed1cb5831d254" />**Total Volume**                    | **20 uL**            |                                                 |
 
-1. <a id="3fcd65dd82be8035b15ecf05354c52bc" />Incubate the HIFI assembly mixture at 50℃ via Thermocycler
+1. <a id="3fcd65dd82be8035b15ecf05354c52bc" />Incubate the HIFI assembly mixture at 50℃
    1. <a id="3fcd65dd82be80f198f0e57d79c5d4ca" />For 2-3 fragment assembly: 15 minutes
    2. <a id="3fcd65dd82be8019b9e3ea18f9688baa" />For 4-6 fragment assembly: 60 minutes
 
@@ -92,10 +97,10 @@ path: "Wet Lab/Protocols/Cloning Workflow"
 
 ### <a id="3fcd65dd82be80739d68e2100e878198" />**Step 3: Bacterial Transformation**
 
-1. <a id="3fcd65dd82be8022a055fbeba0bfb515" />Add 5 uL cloned plasmid and 45 uL *high efficiency competent DH5a E. coli* in a 1:10 volume ratio.
+1. <a id="3fcd65dd82be8022a055fbeba0bfb515" />Add 5 µL cloned plasmid and 45 µL *high efficiency competent DH5a E. coli* in a 1:10 volume ratio.
 2. <a id="3fcd65dd82be8043b616c99f39f6b5ae" />Incubate the mixture on ice for 30 min
-3. <a id="3fcd65dd82be806d8c04c46e7916b068" />Heat shock the bacterial mixture at 42˚C for 30 seconds via waterbath or heatblock
+3. <a id="3fcd65dd82be806d8c04c46e7916b068" />Heat shock the bacterial mixture at 42ºC for 30 seconds via waterbath or heatblock
 4. <a id="3fcd65dd82be8037b43ed342b23b88dd" />Incubate the mixture on ice for 5 min
-5. <a id="3fcd65dd82be80a481d0f1e23b3a8f61" />Add 100 uL of SOC media and incubate the mixture at 37˚C for 1 hour
-6. <a id="3fcd65dd82be80f3b192ee25ff48c2e0" />Spin down and plate 50 uL of transformed bacteria on a chloramphenicol plate
+5. <a id="3fcd65dd82be80a481d0f1e23b3a8f61" />Add 100 µL SOC media and incubate the mixture at 37˚C for 1 hour
+6. <a id="3fcd65dd82be80f3b192ee25ff48c2e0" />Spin down and plate 50 µL of transformed bacteria on a chloramphenicol plate
 7. <a id="3fcd65dd82be8027ab72eba1f3e34a80" />Incubate the plate overnight at 37˚C

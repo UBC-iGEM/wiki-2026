@@ -5,9 +5,9 @@ title: "Fluorescence Detector"
 
 # <a id="3f9d65dd82be8075b6b2f8a74de1c8fd" />Principles of Fluorescence
 
-<a id="3f9d65dd82be8050867be53a9a577c19" />Fluorescence is critical to many experiments and research, such as flow cytometry, fluorescence immunoassay, and more. The glow helps us identify cell-structures, quantify colonies, and even acts as a signal for cell susceptibility to antibiotics.
+<a id="3f9d65dd82be8050867be53a9a577c19" />Fluorescence is critical to many experiments and research applications, such as flow cytometry, fluorescence immunoassays, and more. Fluorescence helps us identify cellular structures, quantify colonies, and even detect cell susceptibility to antibiotics.
 
-<a id="3fad65dd82be80059b4bf8b57504d9bd" />Cells fluoresce when a fluorophore absorbs light energy (a photon), causing its electrons to reach excited state (s1) from ground state (s0). As some of the energy is lost during the process, the emitted photon contains lower energy, meaning the fluoresced light is of a longer wavelength as shown in figure 1. This phenomenon is known as the Stokes shift. \[1] [https://pmc.ncbi.nlm.nih.gov/articles/PMC4711767/](https://pmc.ncbi.nlm.nih.gov/articles/PMC4711767/) This indicates that, if blue light is absorbed, green light of lower energy will be emitted by the cell, inducing fluorescence.
+<a id="3fad65dd82be80059b4bf8b57504d9bd" />Cells fluoresce when a fluorophore absorbs light energy (a photon), causing its electrons to transition from the ground state (s0) to an excited state (s1). As some energy is lost during this process, the emitted photon carries less energy and therefore has a longer wavelength, as shown in Figure 1. This phenomenon is known as the Stokes shift. \[1] [https://pmc.ncbi.nlm.nih.gov/articles/PMC4711767/](https://pmc.ncbi.nlm.nih.gov/articles/PMC4711767/) This indicates that when blue light is absorbed, green light of lower energy may be emitted, producing fluorescence.
 
 <a id="3fad65dd82be8071bd8ef8d0ce110715" />
 
@@ -25,15 +25,15 @@ title: "Fluorescence Detector"
 
 # <a id="3f9d65dd82be8054b0a7da2a0caffc89" />Motivation for Fluorescence Detector
 
-<a id="3f9d65dd82be8073989bff903243bc0c" />Our microfluidic chips utilize fluorescence primarily to output binary information on antibiotic resistance, allowing for a quick preliminary screening before further assessments are assigned. However, we realized that the detection of fluorescence still requires equipment that is rather difficult to access at the hospital, which counteracts our goal of point-of-care rapid detection. To address the problem, we further iterated and brainstormed, and eventually decided to create a complimentary fluorescence detector.
+<a id="3fcd65dd82be80ef9515d6d95b2206a7" />Our microfluidic chips primarily utilize fluorescence to provide binary information on antibiotic resistance, enabling rapid preliminary screening before further assessments are conducted. However, we realized that detecting fluorescence still requires equipment that may be difficult to access in hospital settings, contradicting our goal of rapid, point-of-care detection. To address this limitation, we further refined our design through iterative development and brainstorming, eventually deciding to create a complementary fluorescence detector.
 
 ## <a id="3f9d65dd82be80b4bb54d4d68e2b0c45" />Conventional vs. Our Fluorescence Detector
 
-<a id="3fad65dd82be8060b66ec7bc55f0ed97" />To determine the limitations of current fluorescence detectors, we conducted an initial market research. Based on the information we gathered, the price of a fluorescence detector ranges from hundreds (i.e. \$630.39 [https://www.amazon.ca/Ultraviolet-Analyzer-Fluorescence-Wavelength-Observation/dp/B0G2YH4WD5](https://www.amazon.ca/Ultraviolet-Analyzer-Fluorescence-Wavelength-Observation/dp/B0G2YH4WD5)) to tens of thousands (i.e. \$42191 [https://www.labnics.com/fluorescence-spectrophotometer/nfs-100?srsltid=AU7gw4U\_AwaKeXBQpkJ9ssq\_yOg4ckLq\_kfEVxtzd-Au4IueHhTj49xR-Dg](https://www.labnics.com/fluorescence-spectrophotometer/nfs-100?srsltid=AU7gw4U_AwaKeXBQpkJ9ssq_yOg4ckLq_kfEVxtzd-Au4IueHhTj49xR-Dg)). It is inaccessible and budget-wise unreasonable to require the equipment of fluorescence detector in each doctor’s office for only preliminary screenings. Additionally, while both hand-held and benchtop detectors are found in the market, both designs are incompatible with our microfluidics, and some may have trouble detecting fluorescence from the little amount of samples present.
+<a id="3fad65dd82be8060b66ec7bc55f0ed97" />To identify the limitations of existing fluorescence detectors, we conducted preliminary market research. Based on our findings, fluorescence detection equipment can range in price from hundreds of dollars (i.e. \$630.39 [https://www.amazon.ca/Ultraviolet-Analyzer-Fluorescence-Wavelength-Observation/dp/B0G2YH4WD5](https://www.amazon.ca/Ultraviolet-Analyzer-Fluorescence-Wavelength-Observation/dp/B0G2YH4WD5)) to tens of thousands of dollars (i.e. \$42191 [https://www.labnics.com/fluorescence-spectrophotometer/nfs-100?srsltid=AU7gw4U\_AwaKeXBQpkJ9ssq\_yOg4ckLq\_kfEVxtzd-Au4IueHhTj49xR-Dg](https://www.labnics.com/fluorescence-spectrophotometer/nfs-100?srsltid=AU7gw4U_AwaKeXBQpkJ9ssq_yOg4ckLq_kfEVxtzd-Au4IueHhTj49xR-Dg)). Such costs make it financially impractical to equip every doctor’s office with a fluorescence detector used only for preliminary screening. Furthermore, although both handheld and benchtop detectors are available on the market, their designs are not compatible with our microfluidic chips. Some may also struggle to detect fluorescence from the small sample volumes used in our system.
 
-<a id="3f9d65dd82be80e1b5f4d658e543124a" />To increase the accessibility of our point-of-care detection, the following adjustments are made: a holder tailored to our microfluidic chip design, convenient user interface, simplified fluorescence detection circuit to minimize the material cost, and a novel component assembly method to ensure both dark enclosure and ease of use.
+<a id="3fcd65dd82be80868e51fbc00a29dc5b" />To improve the accessibility of our point-of-care detection system, we incorporated several design features into our customized fluorescence detector: a holder tailored to our microfluidic chip, a user-friendly interface, a simplified fluorescence detection circuit to reduce material costs, and an innovative component assembly method that ensures both effective light shielding and ease of use.
 
-<a id="3f9d65dd82be80ed8deed7516467b47d" />With our customized fluorescence detector, we make antibiotic resistance detection easier, quicker, and cheaper than ever.
+<a id="3fcd65dd82be80519f6edb341fb10bad" />With our customized fluorescence detector, we aim to make antibiotic resistance screening more accessible, more rapid, and more affordable.
 
 ## <a id="3f9d65dd82be808f844aec659af2f946" />Bill of Materials (move this somewhere else) also dbcheck w Saige
 
@@ -106,10 +106,6 @@ title: "Fluorescence Detector"
 
 <br id="3fcd65dd82be800db03ef75ba20cc219" />
 
-<a id="3fcd65dd82be8061b2b1f5d1a7f40436" />
-
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/a46c84fb19b15d48a9f2b5c58aaf772e.avif" alt="" scale={0} />
-
 <br id="3fcd65dd82be8015bc54f7185fa14180" />
 
 # <a id="3fbd65dd82be80ca8eb3c43119c51ce4" />Design Breakdown
@@ -136,15 +132,49 @@ title: "Fluorescence Detector"
 
 <a id="3fcd65dd82be8032b15dc40cb0f8a936" />Anti-lifting? structure close up
 
-- <a id="3fcd65dd82be80e2b309caaef1472ee5" />
+- <a id="3fcd65dd82be805cae07dc568a4404d9" />input
+
+<a id="3fcd65dd82be8023885df38872aa26c4" />Grid pattern
+
+- <a id="3fcd65dd82be80629cb0d378b6a65b2b" />Wires that connect different circuit components can feed through the grid pattern
+
+<a id="3fcd65dd82be8032af95e3344878fa6e" />cover and longpass filter
+
+- <a id="3fcd65dd82be80269087fd77569c2fe2" />A black rectangular box covers the photodetector to better ensure the clarity of collected signals. This is also done through magnetic attachment. The longpass filter sit on top of the circular hollow to block out unwanted lights.
 
 ## <a id="3fcd65dd82be80679f69c5d39ed7906b" />Top Part
 
-<br id="3fcd65dd82be80aa95e1c1a61665ff79" />
+<a id="3fcd65dd82be80aa95e1c1a61665ff79" />pcb holder
 
-<a id="3fbd65dd82be805ba95ed803ef3c84bf" />circuitry
+- <a id="3fcd65dd82be80db9f46f33494e24351" />The illumination PCB board will be slotted in and held securely in place.
 
-<br id="3fbd65dd82be809da305fb39cbc4728b" />
+<a id="3fcd65dd82be80ce8c90f7d9cb1187d4" />switch
+
+- <a id="3fcd65dd82be80a68099d4d2c89121fa" />The switch acts as the user interface. Users can flip on the LED before beginning fluorescence detection, and turn it off when they are done. This saves energy and prolongs the lifetime of the implemented LED.
+
+<a id="3fcd65dd82be80578c85cf5b5557c942" />arduino on the side wall
+
+- <a id="3fcd65dd82be8093b664e9834909baa2" />Arduino is fixed onto the side wall for easier wire connections as it controls both illumination and detection. Heat-set inserts are used to secure the Arduino. Additionally, it will be connected to a computer through the opening next to the Arduino. This way, the user can collect all the outputs efficiently.
+
+## <a id="3fcd65dd82be80e6a372d84ab00a5116" />Fluorescence Detection System
+
+<a id="3fcd65dd82be8086b9c6dbbb1a24623e" />
+
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/498d609f5027593bb8ad1d9cffeff258.avif" alt="" scale={0} />
+
+<a id="3fcd65dd82be804daf32d4c29e9f0829" />The image above demonstrates the overall setup of our fluorescence detection system.
+
+<details>
+  <summary><a id="3fdd65dd82be80f6938fed3a667dc917" />Illumination</summary>
+
+  <a id="3fdd65dd82be80638f6bf6e882df4e46" />We opted for a single color LED, which has a wavelength of 488nm. This acts as a simplified version of the light source + excitation filter combination. With lights emitted at a specific wavelength,
+
+  <br id="3fdd65dd82be8084932de520c9b03c4f" />
+</details>
+
+# <a id="3fbd65dd82be805ba95ed803ef3c84bf" />Circuitry Schematics
+
+<a id="3fbd65dd82be809da305fb39cbc4728b" />()
 
 # <a id="3fbd65dd82be8042b94cfa15b5b4a7f3" />Testing and Validation
 

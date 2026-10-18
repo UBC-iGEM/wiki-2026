@@ -11,7 +11,7 @@ title: "Degradation Model "
 
 #### <a id="3c7d65dd82be8051a3a4e0d61ddbaca6" />**Introduction**
 
-<a id="3cfd65dd82be8070af6dea5c845650eb" />Distinguishing antibiotic-resistant from antibiotic-susceptible bacterial strains within a clinically useful timeframe is a main challenge for many point-of-care diagnostics. Conventional antimicrobial susceptibility testing (AST) typically requires bacterial growth to be measured following antibiotic exposure, which can delay results ([Hattab et al., 2024](https://doi.org/10.3390/antibiotics13080786); Mahrous et al., 2026). An alternative approach is to investigate resistance mechanisms directly, including the enzymatic degradation of antibiotics, rather than relying solely on bacterial growth.
+<a id="3cfd65dd82be8070af6dea5c845650eb" />Distinguishing antibiotic-resistant from antibiotic-susceptible bacterial strains within a clinically useful timeframe is a main challenge for many point-of-care diagnostics. Conventional antimicrobial susceptibility testing (AST) typically requires bacterial growth to be measured following antibiotic exposure, which can delay results ([Hattab et al., 2024](https://doi.org/10.3390/antibiotics13080786); [Mahrous et al., 2026](https://doi.org/10.3390/diagnostics16081239)). An alternative approach is to investigate resistance mechanisms directly, including the enzymatic degradation of antibiotics, rather than relying solely on bacterial growth.
 
 <a id="3d6d65dd82be80d5b0c2f2e1d19de0d8" />Predicting this timescale through a simulated degradation model, prior to wet-lab experimentation, can help guide the process of designing and testing the experiment by informing decisions such as the expected assay duration and which enzyme-antibiotic pairs are favourable to test. Ultimately, we developed a kinetic model to simulate antibiotic degradation dynamics under enzyme activity, coupling enzyme expression, substrate degradation, and downstream bacterial response into a single dynamical system.
 
@@ -19,11 +19,11 @@ title: "Degradation Model "
 
 #### <a id="3c7d65dd82be80e2af31e3a846c72227" />**Background**
 
-<a id="3ddd65dd82be80a79c86ceda39261c75" />Antibiotic resistance poses a challenge for rapid antimicrobial susceptibility testing because conventional testing relies on  observing bacterial growth or inhibition following antibiotic exposure (Hattab et al., 2024; Mahrous et al., 2026).
+<a id="3ddd65dd82be80a79c86ceda39261c75" />Antibiotic resistance poses a challenge for rapid antimicrobial susceptibility testing because conventional testing relies on  observing bacterial growth or inhibition following antibiotic exposure ([Hattab et al., 2024](https://doi.org/10.3390/antibiotics13080786); [Mahrous et al., 2026](https://doi.org/10.3390/diagnostics16081239)).
 
-<a id="3ddd65dd82be800b81c2cd53b0ee5003" />An alternative approach detects resistance mechanisms more directly. Because enzymatic degradation is an important mechanism of bacterial resistance, changes in antibiotic concentration over time can serve as an indicator of resistance enzyme activity. Resistance enzymes can chemically modify or hydrolyze antibiotic molecules, thereby reducing the concentration of active antibiotic. Measuring this degradation provides an alternative way to assess resistance without relying solely on bacterial growth.
+<a id="3ddd65dd82be800b81c2cd53b0ee5003" />An alternative approach detects resistance mechanisms more directly. Because enzymatic degradation is an important mechanism of bacterial resistance, changes in antibiotic concentration over time can serve as an indicator of resistance enzyme activity. Resistance enzymes can chemically modify or hydrolyze antibiotic molecules, thereby reducing the concentration of active antibiotic ([Wright, 2005](https://www.sciencedirect.com/science/article/pii/S0169409X05000980?via%3Dihub=)). Measuring this degradation provides an alternative way to assess resistance without relying solely on bacterial growth.
 
-<a id="3ddd65dd82be803dbd1fc0f0d357f93a" />To carry out this approach experimentally, the timescale of antibiotic degradation must be studied. There must be a measurable change produced when the antibiotic is degraded by the resistance enzyme, while still maintaining an assay duration suitable for rapid detection. The rate of degradation can depend on several factors, including enzyme concentration, enzyme production, catalytic activity, and the starting antibiotic concentration. Predicting how these factors influence antibiotic concentration over time can help determine experimental incubation periods before Wet Lab are conducted, improving experimental efficiency.
+<a id="3ddd65dd82be803dbd1fc0f0d357f93a" />To carry out this approach experimentally, the timescale of antibiotic degradation must be studied. There must be a measurable change produced when the antibiotic is degraded by the resistance enzyme, while still maintaining an assay duration suitable for rapid detection. The rate of degradation can depend on several factors, including enzyme concentration, enzyme production, catalytic activity, and the starting antibiotic concentration ([Johnson, 2013](https://febs.onlinelibrary.wiley.com/doi/10.1016/j.febslet.2013.07.012)). Predicting how these factors influence antibiotic concentration over time can help determine experimental incubation periods before Wet Lab experiments are conducted, improving experimental efficiency.
 
 <a id="3ddd65dd82be80d2a265fdbe47e3474b" />Enzyme production and antibiotic degradation can be modelled mathematically to predict how quickly antibiotic concentration is expected to decrease under different kinetic conditions. These predictions can help Wet Lab select appropriate incubation times and evaluate whether a particular enzyme-antibiotic pair is likely to produce a measurable change.
 
@@ -35,7 +35,7 @@ title: "Degradation Model "
 
 <a id="3cfd65dd82be804b9a2dce9fdfbab5e1" />The system utilizes three coupled, first-order ordinary differential equations tracking enzyme concentration, antibiotic concentration, and normalized bacterial population as functions of time.
 
-<a id="3d6d65dd82be80fc9cebe0f4ef1a7414" />Following antibiotic exposure, the resistance system is assumed to produce an enzyme capable of degrading the antibiotic, with the rate of antibiotic degradation increasing as enzyme concentration increases. Degradation subsequently decreases the antibiotic concentration, reducing its inhibitory effect on bacterial growth.
+<a id="3d6d65dd82be80fc9cebe0f4ef1a7414" />Following antibiotic exposure, the resistance system is assumed to produce an enzyme capable of degrading the antibiotic, with the rate of antibiotic degradation increasing as enzyme concentration increases. This assumption is relevant to inducible resistance systems, in which antibiotic exposure can increase resistance enzyme production, such as certain AmpC β-lactamases ([Tamma et al., 2019](https://academic.oup.com/cid/article/69/8/1446/5369903)). Degradation subsequently decreases the antibiotic concentration, reducing its inhibitory effect on bacterial growth.
 
 <a id="3d6d65dd82be80b5be48f83676b7fcc3" />Thus, the system can be represented conceptually as
 
@@ -57,11 +57,11 @@ $$
 
 <a id="3d6d65dd82be8043a313deed52d13f02" />These processes were then coupled mathematically such that the output of one process becomes an input to another. This allowed us to simulate the progression of the system rather than treating each biological process independently.
 
-<a id="3e9d65dd82be80d88553c25d15067c45" />For example, antibiotic concentration affects enzyme induction, enzyme concentration determines the rate of antibiotic degradation, and the remaining antibiotic concentration determines the magnitude of bacterial killing.
+<a id="3e9d65dd82be80d88553c25d15067c45" />For example, antibiotic concentration affects enzyme induction, enzyme concentration determines the rate of antibiotic degradation, and the remaining antibiotic concentration determines the magnitude of bacterial killing. The model therefore links enzyme induction and antibiotic degradation through a feedback relationship, while bacterial population is represented as a downstream response to antibiotic concentration.
 
 <a id="3d6d65dd82be80bab6e6f1fbed2a5f62" />**Mathematical Models**
 
-<a id="3d6d65dd82be8083b763c41411d9cca7" />The model consists of three first-order ordinary differential equations describing change in enzyme concentration (E) , antibiotic concentration (A),  and normalized bacterial population (N) as functions of time.
+<a id="3d6d65dd82be8083b763c41411d9cca7" />The model consists of three first-order ordinary differential equations describing changes in enzyme concentration (E) , antibiotic concentration (A),  and normalized bacterial population (N) as functions of time.
 
 <a id="3cfd65dd82be8060ad71dcd927f1acb5" />**Enzyme Induction using Hill Kinetics**
 
@@ -71,9 +71,11 @@ $$
 \frac{dE}{dt}= \alpha \cdot \frac{A^{n_{hill}}}{K_{ind}^{n_{hill}} + A^{n_{hill}}} - \delta \cdot E
 $$
 
-<a id="3d6d65dd82be806ebfb0fb949cab3e7b" />The first term is a Hill activation function describing enzyme production as a sigmoidal function of antibiotic concentration. $\alpha$ represents the maximum enzyme production rate, $K_{ind} $ represents the antibiotic concentration associated with half-maximal induction, $n_{hill}$ describes the steepness of the induction response, and $\delta$ represents enzyme decay.
+<a id="3d6d65dd82be806ebfb0fb949cab3e7b" />The first term is a Hill activation function describing enzyme production as a saturating function of antibiotic concentration, which becomes sigmoidal when the Hill coefficient is greater than one ([Likhoshvai & Ratushny, 2007](https://www.worldscientific.com/doi/abs/10.1142/S0219720007002837)). $\alpha$ represents the maximum enzyme production rate, $K_{ind} $ represents the antibiotic concentration associated with half-maximal induction, $n_{hill}$ describes the steepness of the induction response, and $\delta$ represents enzyme decay.
 
 <a id="3e9d65dd82be80038474cdd4040a7182" />When $A = K_{ind}$, the activation fraction is exactly 0.5, regardless of $n_{hill}$.
+
+<a id="3fcd65dd82be80898947f64f5e7363eb" />This equation provides a simplified representation of antibiotic-dependent enzyme production rather than a detailed description of the molecular mechanisms regulating enzyme expression.
 
 <a id="3cfd65dd82be8017a631ed97798b99e9" />**Antibiotic Degradation using Michaelis-Menten Kinetics**
 
@@ -83,7 +85,7 @@ $$
 \frac{dA}{dt} = -k_{cat} \cdot \frac{E \cdot A}{K_m + A}
 $$
 
-<a id="3e9d65dd82be803e9a37fe40e2742e71" />This is the standard Michaelis-Menten rate law for enzyme-catalyzed substrate turnover, applied to enzymatic antibiotic degradation. ($k_{cat}$) has units of inverse time and represents the catalytic turnover rate of the enzyme, and ($K_m$) is the Michaelis constant with the same concentration unit as (A).
+<a id="3e9d65dd82be803e9a37fe40e2742e71" />This is the standard Michaelis-Menten rate law for enzyme-catalyzed substrate turnover, applied to enzymatic antibiotic degradation ([Johnson, 2013](https://febs.onlinelibrary.wiley.com/doi/10.1016/j.febslet.2013.07.012)). ($k_{cat}$) has units of inverse time and represents the catalytic turnover rate of the enzyme, and ($K_m$) is the Michaelis constant with the same concentration unit as A. The equation assumes that E represents the concentration of catalytically active enzyme and that enzymatic degradation is the primary mechanism responsible for the decrease in antibiotic concentration.
 
 <a id="3e9d65dd82be801e99b0c502698535ea" />At low substrate concentration, the degradation rate is approximately proportional to antibiotic concentration, whereas at high concentrations, the enzyme approaches saturation.
 

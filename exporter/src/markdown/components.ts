@@ -43,6 +43,7 @@ export const COMPONENT_MAP: Record<string, (input: ComponentInput) => ComponentO
     colab,
     platemap,
     seqmap,
+    vega,
     skip,
 };
 
@@ -517,6 +518,48 @@ function malformedSeqmap(problem: string): ExporterError {
         `Seqmap component could not be understood: ${problem}.` +
             componentDocSuggestion(
                 "https://app.notion.com/p/ubcigem/Wiki-Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#3fcd65dd82be809fb2ffe066841ec5af",
+            ),
+        ["malformed content"],
+    );
+}
+
+// ====================
+// VEGA COMPONENT
+// ====================
+
+export interface VegaAttrs {
+    /** The compiled Vega JSON. */
+    code: string;
+}
+export const VEGA_SLOTS = [] as const;
+type VegaSlots = SlotRecord<typeof VEGA_SLOTS>;
+
+async function vega({ items }: ComponentInput): ComponentOutput {
+    // A single code block containing the compiled Vega
+    const [code_block, ...rest] = items.filter((item) => !isBlank(item));
+    const code_block_text = code_block?.type === "code" ? code_block.code : undefined;
+    const vega_json = code_block_text?.language === "json" ? asPlainText(code_block_text.rich_text) : undefined;
+
+    if (vega_json === undefined || vega_json === "") return malformedVega("it does not start with a JSON code block");
+    if (rest.length > 0) return malformedVega("it has content after the JSON block");
+    try {
+        JSON.parse(vega_json);
+    } catch (error) {
+        return malformedVega(`its JSON block is not valid JSON (${(error as Error).message})`);
+    }
+
+    return generateComponent<VegaAttrs, VegaSlots>({
+        tag: "Vega",
+        attrs: { code: vega_json },
+        slots: {},
+    });
+}
+
+function malformedVega(problem: string): ExporterError {
+    return new ExporterError(
+        `Vega component could not be understood: ${problem}.` +
+            componentDocSuggestion(
+                "https://app.notion.com/p/ubcigem/Wiki-Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#3fcd65dd82be80dfb0ecf8c6a65123e7",
             ),
         ["malformed content"],
     );
