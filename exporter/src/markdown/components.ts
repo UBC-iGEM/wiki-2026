@@ -671,17 +671,24 @@ export const VEGA_SLOTS = [] as const;
 type VegaSlots = SlotRecord<typeof VEGA_SLOTS>;
 
 async function vega({ items }: ComponentInput): ComponentOutput {
-    // A single code block containing the compiled Vega
-    const [code_block, ...rest] = items.filter((item) => !isBlank(item));
-    const code_block_text = code_block?.type === "code" ? code_block.code : undefined;
-    const vega_json = code_block_text?.language === "json" ? asPlainText(code_block_text.rich_text) : undefined;
+    // A single uploaded file of compiled Vega
+    const [file_block, ...rest] = trimBlank(items);
+    if (file_block?.type !== "file" || !/\.json$/i.test(mediaFileName(file_block)))
+        return malformedVega("it does not start with an uploaded .json file");
+    if (rest.length > 0) return malformedVega("it has content after its JSON file");
 
-    if (vega_json === undefined || vega_json === "") return malformedVega("it does not start with a JSON code block");
-    if (rest.length > 0) return malformedVega("it has content after the JSON block");
+    const data = await fetchMedia(file_block);
+    if (isExporterErr(data)) return data;
+
+    // Editors may save a byte-order mark, which JSON.parse rejects
+    const vega_json = data
+        .toString()
+        .replace(/^\uFEFF/, "")
+        .trim();
     try {
         JSON.parse(vega_json);
     } catch (error) {
-        return malformedVega(`its JSON block is not valid JSON (${(error as Error).message})`);
+        return malformedVega(`"${mediaFileName(file_block)}" is not valid JSON (${(error as Error).message})`);
     }
 
     return generateComponent<VegaAttrs, VegaSlots>({
