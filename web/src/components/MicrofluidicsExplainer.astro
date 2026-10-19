@@ -8,7 +8,7 @@ import { BASE_URL } from "../utils/base-url";
 
     <div class="diagram-body">
         <div class="chip-visual">
-            <img src={`${BASE_URL}assets/hero/how-it-works-chip.webp`} alt="" width="337" height="948" loading="lazy" />
+            <img src={`${BASE_URL}assets/hero/how-it-works-chip.svg`} alt="" width="256" height="720" loading="lazy" />
         </div>
 
         <div class="diagram-col diagram-col--right">
@@ -48,8 +48,9 @@ import { BASE_URL } from "../utils/base-url";
     /* color/font-family/font-weight come from MainLayout's global
        ".page-content :global(:is(h1..h6))" rule - only the parts that
        actually diverge from it need stating here. */
+    /* 40px, easing down to 28px on a phone so long words don't overflow */
     .ast-diagram h2 {
-        font-size: 36px;
+        font-size: clamp(28px, 7vw, 40px);
         line-height: 1.2;
         margin: 0 0 2rem;
         text-align: center;
@@ -63,7 +64,7 @@ import { BASE_URL } from "../utils/base-url";
        this. */
     .ast-diagram .diagram-caption {
         font-family: var(--font-geist);
-        font-size: 20px;
+        font-size: 24px;
         font-weight: 700;
         line-height: 1.4;
         margin: 0 auto 3rem;
@@ -93,19 +94,20 @@ import { BASE_URL } from "../utils/base-url";
         justify-content: space-between;
     }
 
-    /* Real <h3>s - color/font-family/font-weight AND font-size (global h3
-       is 1.25rem = exactly 20px) all already match the global rule; only
-       the margin actually needs overriding here. */
+    /* Real <h3>s - color/font-family/font-weight come from the global
+       rule; the home page's labels are 24px rather than the global 20px. */
     .diagram-col h3,
     .chamber h3 {
+        font-size: 24px;
         margin: 0 0 0.5rem;
     }
 
-    /* Real <p>s - color/font-family/font-size/line-height all already
-       match (or are inherited from) MainLayout's global type scale; only
-       the margin needs overriding (global p has a 1em bottom margin). */
+    /* Real <p>s - color/font-family/line-height come from MainLayout's
+       global type scale; home page body text is 20px rather than 16px, and
+       global p's 1em bottom margin is dropped. */
     .diagram-col p,
     .chamber p {
+        font-size: 20px;
         margin: 0;
     }
 
@@ -165,7 +167,7 @@ import { BASE_URL } from "../utils/base-url";
         opacity: 1;
     }
 
-    /* how-it-works-chip.webp is 256x720 (tall/narrow) - width-driven, height
+    /* how-it-works-chip.svg is 256x720 (tall/narrow) - width-driven, height
        auto so it keeps that aspect ratio instead of the old placeholder
        box's. */
     /* Kept in the middle column, with the chambers' labels to its right */
@@ -197,7 +199,7 @@ import { BASE_URL } from "../utils/base-url";
        diverge (bold Geist, not running serif body text) so those stay. */
     .legend p {
         font-family: var(--font-geist);
-        font-size: 20px;
+        font-size: 24px;
         font-weight: 700;
         margin: 0;
     }
@@ -212,7 +214,9 @@ import { BASE_URL } from "../utils/base-url";
         background-color: var(--color-orchid);
     }
 
-    @media (max-width: 750px) {
+    /* Stacks and centres the chambers under the chip from ~3/4 of a
+       typical laptop width, before the side column gets cramped */
+    @media (max-width: 1100px) {
         .diagram-body {
             grid-template-columns: 1fr;
         }
@@ -220,7 +224,9 @@ import { BASE_URL } from "../utils/base-url";
         .diagram-col--right {
             gap: 1rem;
             grid-column: auto;
-            margin: 0;
+            /* Centred and capped, so the text doesn't run the full width of a wide window */
+            margin: 0 auto;
+            max-width: 36rem;
             text-align: center;
         }
 

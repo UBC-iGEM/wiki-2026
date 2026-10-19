@@ -21,10 +21,10 @@ import { BASE_URL } from "../utils/base-url";
     <div class="chip chip-2" set:html={chip2Svg} />
     <img
         class="chip chip-3"
-        src={`${BASE_URL}assets/hero/home-page-chip-3.webp`}
+        src={`${BASE_URL}assets/hero/home-page-chip-3.svg`}
         alt=""
-        width="1016"
-        height="1001"
+        width="536"
+        height="525"
         fetchpriority="high"
     />
     <div class="connector-line" set:html={connectorLineSvg} />
@@ -191,8 +191,6 @@ import { BASE_URL } from "../utils/base-url";
         .to(".motion-dot", { opacity: 1, duration: 0.6 }, "text-intro+=0.4")
         .addLabel("line-intro", "+=0.3")
         .to(".chip-line", { opacity: 1, duration: 0.01 }, "line-intro")
-        // 3 stat circles fade in together
-        .to(".stat.stat-1, .stat.stat-2, .stat.stat-3", { opacity: 1, duration: 0.4 }, "line-intro")
         .to(".susceptibility-blurb", { opacity: 1, duration: 0.3 }, "line-intro");
 
     chipLineSegments.forEach(({ el, reverse }, index) => {
@@ -209,19 +207,6 @@ import { BASE_URL } from "../utils/base-url";
         }
     });
 
-    introTimeline.fromTo(
-        [
-            ...document.querySelectorAll(".chip-line rect"),
-            ...document.querySelectorAll('.chip-line path[fill^="url(#paint9"]'),
-            ...document.querySelectorAll('.chip-line path[fill^="url(#paint10"]'),
-            ...document.querySelectorAll('.chip-line path[fill^="url(#paint11"]'),
-        ],
-        { clipPath: "inset(0% 0% 100% 0%)" },
-        { clipPath: "inset(0% 0% 0% 0%)", duration: 0.8, stagger: 0.05 },
-        "stats-reveal",
-    );
-
-    introTimeline.to(".stat-caption", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.3");
     introTimeline.to(".solution-blurb", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.6");
     introTimeline.to(".chip-line-second", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.9");
     introTimeline.to(".motion-dot-2", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.9");
@@ -235,6 +220,45 @@ import { BASE_URL } from "../utils/base-url";
     const hurryIntro = () => gsap.to(introTimeline, { timeScale: introScrolledTimeScale, duration: 0.3 });
     if (window.scrollY > 0) hurryIntro();
     else window.addEventListener("scroll", hurryIntro, { once: true, passive: true });
+
+    // The 3 stat bubbles reveal on their own once scrolled into view, rather
+    // than with the intro: left, then middle, then right, each wiping in
+    // downwards (connector stub, then circle) before its number and caption
+    // fade in. In chip-line's SVG the stubs sit at x=209/569/929 and the
+    // circles are filled with paint11/paint10/paint9, left to right.
+    const statBubbles = [
+        { stub: 'rect[x="209"]', circle: "paint11", stat: "stat-1" },
+        { stub: 'rect[x="569"]', circle: "paint10", stat: "stat-2" },
+        { stub: 'rect[x="929"]', circle: "paint9", stat: "stat-3" },
+    ];
+    // Seconds between one bubble starting and the next
+    const statBubbleStagger = 0.7;
+    const statsTimeline = gsap.timeline({
+        scrollTrigger: {
+            // "top 70%": waits until the bubbles are well into the viewport
+            start: "top 70%",
+            toggleActions: "play none none none",
+            trigger: ".stat.stat-1",
+        },
+    });
+    statBubbles.forEach(({ stub, circle, stat }, index) => {
+        const at = index * statBubbleStagger;
+        statsTimeline
+            .fromTo(
+                `.chip-line ${stub}`,
+                { clipPath: "inset(0% 0% 100% 0%)" },
+                { clipPath: "inset(0% 0% 0% 0%)", duration: 0.3, ease: "none" },
+                at,
+            )
+            .fromTo(
+                `.chip-line path[fill^="url(#${circle}_"]`,
+                { clipPath: "inset(0% 0% 100% 0%)" },
+                { clipPath: "inset(0% 0% 0% 0%)", duration: 0.7, ease: "power1.out" },
+                ">",
+            )
+            .to(`.stat.${stat}`, { opacity: 1, duration: 0.5 }, "<0.3")
+            .to(`.stat-caption.${stat}`, { opacity: 1, duration: 0.5 }, "<0.2");
+    });
 
     // chip-line-3 no path added yet
     const chipLine3Path = document.querySelector<SVGGeometryElement>(
@@ -315,7 +339,10 @@ import { BASE_URL } from "../utils/base-url";
             animation: dot2Timeline,
             end: `+=${dot2Timeline.duration() * scrollDistanceFactor2}`,
             scrub: true,
-            start: "top top",
+            // Starts once chip-line-second's top is halfway up the viewport, not
+            // at the very top, so the dot is already moving as the line scrolls in.
+            // Higher % = earlier ("top 60%" starts sooner, "top 30%" later).
+            start: "top 50%",
             trigger: ".chip-line-second",
         });
     }
@@ -382,6 +409,9 @@ import { BASE_URL } from "../utils/base-url";
         position: absolute;
         top: calc(var(--chip-w) * 0.2);
         width: calc(var(--chip-w) * 548 / 594);
+        /* chip-line (and so .motion-dot's resting spot) starts inside this
+           box, so the text sits on top of the dot until it scrolls away */
+        z-index: 1;
     }
 
     /* Replaces the old init-line + line-full pair with one unified asset.
@@ -423,14 +453,15 @@ import { BASE_URL } from "../utils/base-url";
         clip-path: inset(0% 0% 100% 0%);
     }
 
-    /* chip asset */
+    /* dot.svg is 45x45 (the r=12.5 circle plus room for its glow), so the
+       circle itself still renders at the same 25-unit size as before */
     .motion-dot {
-        height: calc(var(--chip-w) * 25 / 594);
+        height: calc(var(--chip-w) * 45 / 594);
         left: 0;
         opacity: 0;
         position: absolute;
         top: 0;
-        width: calc(var(--chip-w) * 25 / 594);
+        width: calc(var(--chip-w) * 45 / 594);
     }
 
     /* ball2.svg, chases chip-line-second the same way .motion-dot chases
@@ -503,7 +534,7 @@ import { BASE_URL } from "../utils/base-url";
         left: calc(var(--chip-w) * 0.4);
         opacity: 0;
         position: absolute;
-        top: calc(var(--chip-w) * 1.6);
+        top: calc(var(--chip-w) * 1.5);
         width: calc(var(--chip-w) * 1.5);
     }
 
@@ -521,12 +552,15 @@ import { BASE_URL } from "../utils/base-url";
         width: 100%;
     }
 
+    /* Section questions: 40px, easing down to 28px on a phone so long
+       words don't overflow the column */
     .susceptibility-copy h2 {
-        font-size: 28px;
+        font-size: clamp(28px, 7vw, 40px);
         margin: 0 0 2rem;
     }
 
     .susceptibility-copy p {
+        font-size: 20px;
         margin: 0;
         max-width: 50rem;
     }
@@ -548,11 +582,12 @@ import { BASE_URL } from "../utils/base-url";
     }
 
     .solution-blurb .solution-copy h2 {
-        font-size: 28px;
+        font-size: clamp(28px, 7vw, 40px);
         margin: 0 0 2rem;
     }
 
     .solution-blurb .solution-copy p {
+        font-size: 20px;
         margin: 0;
         max-width: 30rem;
     }
@@ -563,7 +598,14 @@ import { BASE_URL } from "../utils/base-url";
         flex-direction: column;
         flex-shrink: 0;
         text-align: center;
-        width: calc(var(--chip-w) * 0.3);
+        /* Wide enough for "4 - 24 hrs" on one line at full size; the
+           solution copy beside them gives up the space */
+        width: calc(var(--chip-w) * 0.38);
+    }
+
+    /* A little extra room between the two icons, on top of the blurb's gap */
+    .solution-metric + .solution-metric {
+        margin-left: 1.5rem;
     }
 
     /* Fixed height shared by both icons */
@@ -588,13 +630,14 @@ import { BASE_URL } from "../utils/base-url";
     /* override font styling */
     .solution-blurb .solution-time {
         font-family: var(--font-geist);
-        font-size: 32px;
+        font-size: clamp(28px, 7vw, 40px);
         font-weight: 700;
         margin: 0 0 0.25rem;
+        white-space: nowrap;
     }
 
     .solution-blurb .solution-caption {
-        font-size: 14px;
+        font-size: 20px;
         margin: 0;
     }
 
@@ -615,6 +658,14 @@ import { BASE_URL } from "../utils/base-url";
         text-align: left;
         top: calc(var(--chip-w) * 6.5);
         width: calc(var(--chip-w) * 1.4);
+    }
+
+    /* Home page body text is 20px rather than the global 16px. The
+       .chip-stage qualifier out-specificities MainLayout's global p rule,
+       which a lone class can't. */
+    .chip-stage .stat-caption,
+    .chip-stage .outcome-blurb {
+        font-size: 20px;
     }
 
     /* Same horizontal centering as .microfluidics-overlay (chip-line's own
@@ -752,6 +803,11 @@ import { BASE_URL } from "../utils/base-url";
 
         .solution-metric {
             width: 40%;
+        }
+
+        /* space-around already spaces these out here */
+        .solution-metric + .solution-metric {
+            margin-left: 0;
         }
 
         /* Wider than the text column when there's room - both have their
