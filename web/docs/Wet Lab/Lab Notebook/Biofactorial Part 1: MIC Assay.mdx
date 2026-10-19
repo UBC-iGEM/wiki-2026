@@ -1,0 +1,343 @@
+---
+type: "database"
+title: "Biofactorial Part 1: MIC Assay"
+path: "Wet Lab/Lab Notebook/Biofactorial Part 1: MIC Assay"
+date: "2026-10-13"
+---
+
+# <a id="3fdd65dd82be80c89a7ef392b2f7f2d0" />Objective
+
+<Callout icon="🗣">
+  <a id="3fdd65dd82be802684dbefc8bf62cd5c" />**What is MIC for cells in the promoter library?**
+</Callout>
+
+# <a id="3fdd65dd82be80169b01fcd51b4e1252" />Experiment
+
+## <a id="3fdd65dd82be80888862d5fd3f9a5f0f" />Materials and Equipment
+
+- <a id="3fdd65dd82be807fbf95d3ce87e6c847" />LB agar plates
+- <a id="3fdd65dd82be80129663de5824e229a7" />LB broth
+- <a id="3fdd65dd82be8097b38bfae3eb9b684e" />Eight *E. coli* strains
+- <a id="3fdd65dd82be801aafd8e514747006e4" />Four antibiotic stock solutions
+
+<a id="3fdd65dd82be80a48e26d2f07836159b" />
+
+| <a id="3fdd65dd82be80ce8b58f706a90ee67a" />Antibiotic  | Stock concentration | Prepare  |
+| ------------------------------------------------------ | ------------------- | -------- |
+| <a id="3fdd65dd82be80ad8b1bdc76e11e1382" />Amoxicillin | 125 µg/mL           | >0.25 mL |
+| <a id="3fdd65dd82be8093a6ebe669b2f51131" />Cephalexin  | 250 µg/mL           | >0.25 mL |
+| <a id="3fdd65dd82be809d9b34db2c0ca1c9eb" />Gentamicin  | 15.625 µg/mL        | >0.25 mL |
+| <a id="3fdd65dd82be804f9993e444b879c02e" />Tobramycin  | 31.25 µg/mL         | >0.25 mL |
+
+- <a id="3fdd65dd82be80f98859c80301827c4c" />One 384-well flat-bottom clear destination plate with lid
+- <a id="3fdd65dd82be808abfb3d7a1da9fb6e3" />One 384-well antibiotic source plate
+- <a id="3fdd65dd82be801790a4e0818dadc5b6" />Nine culture tubes, one per *E. coli* strain and media only blank
+- <a id="3fdd65dd82be807597e1c74f05289e0e" />Echo acoustic liquid handler
+- <a id="3fdd65dd82be808fac53e395ec1ad13d" />Access Workstation
+
+## <a id="3fdd65dd82be807c9854f08f4c43f7f5" />Antibiotic Source Plate Layout
+
+<a id="3fdd65dd82be809c85f7e250c0e1e857" />Use one antibiotic source plate with 12 source wells.
+
+<a id="3fdd65dd82be8034abaff84768f2ce46" />
+
+| <a id="3fdd65dd82be8075b931f2e5824372ca" />Source wells | Antibiotic  |
+| ------------------------------------------------------- | ----------- |
+| <a id="3fdd65dd82be80d3aa2ceaca283c10ff" />A1 B1 C1     | Amoxicillin |
+| <a id="3fdd65dd82be806eb496efa060a51de4" />D1 E1 F1     | Cephalexin  |
+| <a id="3fdd65dd82be80c697cdc1eda28c3587" />G1 H1 I1     | Gentamicin  |
+| <a id="3fdd65dd82be800181d2d8f01c222b0a" />J1 K1 L1     | Tobramycin  |
+
+## <a id="3fdd65dd82be80298838dab3685f933e" />Destination Plate Layout
+
+<a id="3fdd65dd82be8015995fd1d4090bae77" />Use one plate, with three adjacent columns (referred to here as X, Y, Z) per *E. coli* strain.
+
+<a id="3fdd65dd82be80ac99aaf821b7510421" />
+
+| <a id="3fdd65dd82be802fbef2c4f531689e50" />Destination wells | Contents                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <a id="3fdd65dd82be8063b772fcc6eedbc749" />AX–HX             | Amoxicillin, lowest to highest concentration                 |
+| <a id="3fdd65dd82be80ce81e8fa60a9ffd029" />IX–PX             | Cephalexin, lowest to highest concentration                  |
+| <a id="3fdd65dd82be804a856cf97bf8477889" />AY–HY             | Gentamicin, lowest to highest concentration                  |
+| <a id="3fdd65dd82be80a985f2c8644c7d1b33" />IY–PY             | Tobramycin, lowest to highest concentration                  |
+| <a id="3fdd65dd82be80399bf6c63f17fce320" />AZ                | *E. coli* growth control without antibiotic (one per strain) |
+| <a id="3fdd65dd82be809385d3eaef2609ee98" />P24               | Media-only blank without *E. coli* or antibiotic (one only)  |
+
+## <a id="3fdd65dd82be80d08179d591e6f6bc56" />Antibiotic Transfer Volumes
+
+<a id="3fdd65dd82be8093ac6ac8bb6cdaf559" />Each antibiotic stock is 500× its lowest target concentration.
+
+<a id="3fdd65dd82be804e92d6d63a0764bcf6" />
+
+| <a id="3fdd65dd82be80888bc3e9a25510ec0b" />Concentration level | Echo transfer volume |
+| -------------------------------------------------------------- | -------------------- |
+| <a id="3fdd65dd82be801cba62df43824e3857" />1                   | 50 nL                |
+| <a id="3fdd65dd82be800884fad66dba327ff7" />2                   | 100 nL               |
+| <a id="3fdd65dd82be8078a7b4f37a8d5e5374" />3                   | 200 nL               |
+| <a id="3fdd65dd82be80a99e5ff1ea8cc69b86" />4                   | 400 nL               |
+| <a id="3fdd65dd82be808a82eded9ddd96b964" />5                   | 800 nL               |
+| <a id="3fdd65dd82be80e5ab6dd985158b7786" />6                   | 1,600 nL             |
+| <a id="3fdd65dd82be80528520fa5642c63170" />7                   | 3,200 nL             |
+| <a id="3fdd65dd82be807e89ddf900418446b3" />8                   | 6,400 nL             |
+
+<a id="3fdd65dd82be80c69de4c35462981b89" />The 6,400 nL transfers are split into 5,000 nL and 1,400 nL entries in the Echo import CSV.
+
+## <a id="3fdd65dd82be804181f3e887ddfc33e2" />Procedure
+
+### <a id="3fdd65dd82be807197b1e08a5218b529" />Day 1 — Culture and antibiotic stock preparation
+
+1. <a id="3fdd65dd82be803e9942f36ef4cbe2a5" />Scrape each *E. coli* strain from library plates into separate tubes containing 10 mL LB broth.
+2. <a id="3fdd65dd82be80d79ca3cd6cd04b5b2b" />Incubate overnight at 37 °C.
+3. <a id="3fdd65dd82be803ebdb0c6676f4c81e0" />Prepare the four antibiotic stocks at the listed concentrations.
+
+### <a id="3fdd65dd82be8041a4fec363d3c8034a" />Day 2 — Plate setup and inoculation
+
+1. <a id="3fdd65dd82be80c29ae9feded608c6b0" />Load antibiotic stocks into the Echo source plate according to the antibiotic source plate layout.
+2. <a id="3fdd65dd82be8043bda9f4903c4e7639" />Use the Echo to dispense antibiotics into the destination (experimental) plate according to the CSV program (see below).
+3. <a id="3fdd65dd82be80f1ba18d6be33bfcf2d" />Subculture the overnight culture strains into 2mL tubes, and grow up over \~1-3 hours.
+4. <a id="3fdd65dd82be800bb8e7c1ce60e24541" />Prepare one diluted *E. coli* tube per subculture with >1 mL total volume at OD 0.01:
+   - <a id="3fdd65dd82be809793fefe010ceba7f4" />825 µL for 33 dispenses of 25 µL
+5. <a id="3fdd65dd82be809595daeb01f5dc03d8" />For each strain, use a multichannel pipette to dispense 25 µL into each of the 32 antibiotic test wells and the AZ control well.
+6. <a id="3fdd65dd82be8085a540cb1eb22fe5ca" />Prepare the P24 media control well with 25 µL LB.
+
+| <a id="3fdd65dd82be80e0a489e473d26f484a" />Source Plate | Source Well | Destination Plate  | Destination Well | Transfer Volume |
+| ------------------------------------------------------- | ----------- | ------------------ | ---------------- | --------------- |
+| Antibiotic Plate                                        | A1          | Experimental Plate | A1               | 50              |
+| Antibiotic Plate                                        | A1          | Experimental Plate | B1               | 100             |
+| Antibiotic Plate                                        | A1          | Experimental Plate | C1               | 200             |
+| Antibiotic Plate                                        | A1          | Experimental Plate | D1               | 400             |
+| Antibiotic Plate                                        | A1          | Experimental Plate | E1               | 800             |
+| Antibiotic Plate                                        | A1          | Experimental Plate | F1               | 1600            |
+| Antibiotic Plate                                        | A1          | Experimental Plate | G1               | 3200            |
+| Antibiotic Plate                                        | A1          | Experimental Plate | H1               | 5000            |
+| Antibiotic Plate                                        | A1          | Experimental Plate | H1               | 1400            |
+| Antibiotic Plate                                        | D1          | Experimental Plate | I1               | 50              |
+| Antibiotic Plate                                        | D1          | Experimental Plate | J1               | 100             |
+| Antibiotic Plate                                        | D1          | Experimental Plate | K1               | 200             |
+| Antibiotic Plate                                        | D1          | Experimental Plate | L1               | 400             |
+| Antibiotic Plate                                        | D1          | Experimental Plate | M1               | 800             |
+| Antibiotic Plate                                        | D1          | Experimental Plate | N1               | 1600            |
+| Antibiotic Plate                                        | D1          | Experimental Plate | O1               | 3200            |
+| Antibiotic Plate                                        | D1          | Experimental Plate | P1               | 5000            |
+| Antibiotic Plate                                        | D1          | Experimental Plate | P1               | 1400            |
+| Antibiotic Plate                                        | G1          | Experimental Plate | A2               | 50              |
+| Antibiotic Plate                                        | G1          | Experimental Plate | B2               | 100             |
+| Antibiotic Plate                                        | G1          | Experimental Plate | C2               | 200             |
+| Antibiotic Plate                                        | G1          | Experimental Plate | D2               | 400             |
+| Antibiotic Plate                                        | G1          | Experimental Plate | E2               | 800             |
+| Antibiotic Plate                                        | G1          | Experimental Plate | F2               | 1600            |
+| Antibiotic Plate                                        | G1          | Experimental Plate | G2               | 3200            |
+| Antibiotic Plate                                        | G1          | Experimental Plate | H2               | 5000            |
+| Antibiotic Plate                                        | G1          | Experimental Plate | H2               | 1400            |
+| Antibiotic Plate                                        | J1          | Experimental Plate | I2               | 50              |
+| Antibiotic Plate                                        | J1          | Experimental Plate | J2               | 100             |
+| Antibiotic Plate                                        | J1          | Experimental Plate | K2               | 200             |
+| Antibiotic Plate                                        | J1          | Experimental Plate | L2               | 400             |
+| Antibiotic Plate                                        | J1          | Experimental Plate | M2               | 800             |
+| Antibiotic Plate                                        | J1          | Experimental Plate | N2               | 1600            |
+| Antibiotic Plate                                        | J1          | Experimental Plate | O2               | 3200            |
+| Antibiotic Plate                                        | J1          | Experimental Plate | P2               | 5000            |
+| Antibiotic Plate                                        | J1          | Experimental Plate | P2               | 1400            |
+| Antibiotic Plate                                        | A1          | Experimental Plate | A4               | 50              |
+| Antibiotic Plate                                        | A1          | Experimental Plate | B4               | 100             |
+| Antibiotic Plate                                        | A1          | Experimental Plate | C4               | 200             |
+| Antibiotic Plate                                        | A1          | Experimental Plate | D4               | 400             |
+| Antibiotic Plate                                        | A1          | Experimental Plate | E4               | 800             |
+| Antibiotic Plate                                        | A1          | Experimental Plate | F4               | 1600            |
+| Antibiotic Plate                                        | A1          | Experimental Plate | G4               | 3200            |
+| Antibiotic Plate                                        | A1          | Experimental Plate | H4               | 5000            |
+| Antibiotic Plate                                        | A1          | Experimental Plate | H4               | 1400            |
+| Antibiotic Plate                                        | D1          | Experimental Plate | I4               | 50              |
+| Antibiotic Plate                                        | D1          | Experimental Plate | J4               | 100             |
+| Antibiotic Plate                                        | D1          | Experimental Plate | K4               | 200             |
+| Antibiotic Plate                                        | D1          | Experimental Plate | L4               | 400             |
+| Antibiotic Plate                                        | D1          | Experimental Plate | M4               | 800             |
+| Antibiotic Plate                                        | D1          | Experimental Plate | N4               | 1600            |
+| Antibiotic Plate                                        | D1          | Experimental Plate | O4               | 3200            |
+| Antibiotic Plate                                        | D1          | Experimental Plate | P4               | 5000            |
+| Antibiotic Plate                                        | D1          | Experimental Plate | P4               | 1400            |
+| Antibiotic Plate                                        | G1          | Experimental Plate | A5               | 50              |
+| Antibiotic Plate                                        | G1          | Experimental Plate | B5               | 100             |
+| Antibiotic Plate                                        | G1          | Experimental Plate | C5               | 200             |
+| Antibiotic Plate                                        | G1          | Experimental Plate | D5               | 400             |
+| Antibiotic Plate                                        | G1          | Experimental Plate | E5               | 800             |
+| Antibiotic Plate                                        | G1          | Experimental Plate | F5               | 1600            |
+| Antibiotic Plate                                        | G1          | Experimental Plate | G5               | 3200            |
+| Antibiotic Plate                                        | G1          | Experimental Plate | H5               | 5000            |
+| Antibiotic Plate                                        | G1          | Experimental Plate | H5               | 1400            |
+| Antibiotic Plate                                        | J1          | Experimental Plate | I5               | 50              |
+| Antibiotic Plate                                        | J1          | Experimental Plate | J5               | 100             |
+| Antibiotic Plate                                        | J1          | Experimental Plate | K5               | 200             |
+| Antibiotic Plate                                        | J1          | Experimental Plate | L5               | 400             |
+| Antibiotic Plate                                        | J1          | Experimental Plate | M5               | 800             |
+| Antibiotic Plate                                        | J1          | Experimental Plate | N5               | 1600            |
+| Antibiotic Plate                                        | J1          | Experimental Plate | O5               | 3200            |
+| Antibiotic Plate                                        | J1          | Experimental Plate | P5               | 5000            |
+| Antibiotic Plate                                        | J1          | Experimental Plate | P5               | 1400            |
+| Antibiotic Plate                                        | A1          | Experimental Plate | A7               | 50              |
+| Antibiotic Plate                                        | A1          | Experimental Plate | B7               | 100             |
+| Antibiotic Plate                                        | A1          | Experimental Plate | C7               | 200             |
+| Antibiotic Plate                                        | A1          | Experimental Plate | D7               | 400             |
+| Antibiotic Plate                                        | A1          | Experimental Plate | E7               | 800             |
+| Antibiotic Plate                                        | A1          | Experimental Plate | F7               | 1600            |
+| Antibiotic Plate                                        | A1          | Experimental Plate | G7               | 3200            |
+| Antibiotic Plate                                        | A1          | Experimental Plate | H7               | 5000            |
+| Antibiotic Plate                                        | A1          | Experimental Plate | H7               | 1400            |
+| Antibiotic Plate                                        | D1          | Experimental Plate | I7               | 50              |
+| Antibiotic Plate                                        | D1          | Experimental Plate | J7               | 100             |
+| Antibiotic Plate                                        | D1          | Experimental Plate | K7               | 200             |
+| Antibiotic Plate                                        | D1          | Experimental Plate | L7               | 400             |
+| Antibiotic Plate                                        | D1          | Experimental Plate | M7               | 800             |
+| Antibiotic Plate                                        | D1          | Experimental Plate | N7               | 1600            |
+| Antibiotic Plate                                        | D1          | Experimental Plate | O7               | 3200            |
+| Antibiotic Plate                                        | D1          | Experimental Plate | P7               | 5000            |
+| Antibiotic Plate                                        | D1          | Experimental Plate | P7               | 1400            |
+| Antibiotic Plate                                        | G1          | Experimental Plate | A8               | 50              |
+| Antibiotic Plate                                        | G1          | Experimental Plate | B8               | 100             |
+| Antibiotic Plate                                        | G1          | Experimental Plate | C8               | 200             |
+| Antibiotic Plate                                        | G1          | Experimental Plate | D8               | 400             |
+| Antibiotic Plate                                        | G1          | Experimental Plate | E8               | 800             |
+| Antibiotic Plate                                        | G1          | Experimental Plate | F8               | 1600            |
+| Antibiotic Plate                                        | G1          | Experimental Plate | G8               | 3200            |
+| Antibiotic Plate                                        | G1          | Experimental Plate | H8               | 5000            |
+| Antibiotic Plate                                        | G1          | Experimental Plate | H8               | 1400            |
+| Antibiotic Plate                                        | J1          | Experimental Plate | I8               | 50              |
+| Antibiotic Plate                                        | J1          | Experimental Plate | J8               | 100             |
+| Antibiotic Plate                                        | J1          | Experimental Plate | K8               | 200             |
+| Antibiotic Plate                                        | J1          | Experimental Plate | L8               | 400             |
+| Antibiotic Plate                                        | J1          | Experimental Plate | M8               | 800             |
+| Antibiotic Plate                                        | J1          | Experimental Plate | N8               | 1600            |
+| Antibiotic Plate                                        | J1          | Experimental Plate | O8               | 3200            |
+| Antibiotic Plate                                        | J1          | Experimental Plate | P8               | 5000            |
+| Antibiotic Plate                                        | J1          | Experimental Plate | P8               | 1400            |
+| Antibiotic Plate                                        | B1          | Experimental Plate | A10              | 50              |
+| Antibiotic Plate                                        | B1          | Experimental Plate | B10              | 100             |
+| Antibiotic Plate                                        | B1          | Experimental Plate | C10              | 200             |
+| Antibiotic Plate                                        | B1          | Experimental Plate | D10              | 400             |
+| Antibiotic Plate                                        | B1          | Experimental Plate | E10              | 800             |
+| Antibiotic Plate                                        | B1          | Experimental Plate | F10              | 1600            |
+| Antibiotic Plate                                        | B1          | Experimental Plate | G10              | 3200            |
+| Antibiotic Plate                                        | B1          | Experimental Plate | H10              | 5000            |
+| Antibiotic Plate                                        | B1          | Experimental Plate | H10              | 1400            |
+| Antibiotic Plate                                        | E1          | Experimental Plate | I10              | 50              |
+| Antibiotic Plate                                        | E1          | Experimental Plate | J10              | 100             |
+| Antibiotic Plate                                        | E1          | Experimental Plate | K10              | 200             |
+| Antibiotic Plate                                        | E1          | Experimental Plate | L10              | 400             |
+| Antibiotic Plate                                        | E1          | Experimental Plate | M10              | 800             |
+| Antibiotic Plate                                        | E1          | Experimental Plate | N10              | 1600            |
+| Antibiotic Plate                                        | E1          | Experimental Plate | O10              | 3200            |
+| Antibiotic Plate                                        | E1          | Experimental Plate | P10              | 5000            |
+| Antibiotic Plate                                        | E1          | Experimental Plate | P10              | 1400            |
+| Antibiotic Plate                                        | H1          | Experimental Plate | A11              | 50              |
+| Antibiotic Plate                                        | H1          | Experimental Plate | B11              | 100             |
+| Antibiotic Plate                                        | H1          | Experimental Plate | C11              | 200             |
+| Antibiotic Plate                                        | H1          | Experimental Plate | D11              | 400             |
+| Antibiotic Plate                                        | H1          | Experimental Plate | E11              | 800             |
+| Antibiotic Plate                                        | H1          | Experimental Plate | F11              | 1600            |
+| Antibiotic Plate                                        | H1          | Experimental Plate | G11              | 3200            |
+| Antibiotic Plate                                        | H1          | Experimental Plate | H11              | 5000            |
+| Antibiotic Plate                                        | H1          | Experimental Plate | H11              | 1400            |
+| Antibiotic Plate                                        | K1          | Experimental Plate | I11              | 50              |
+| Antibiotic Plate                                        | K1          | Experimental Plate | J11              | 100             |
+| Antibiotic Plate                                        | K1          | Experimental Plate | K11              | 200             |
+| Antibiotic Plate                                        | K1          | Experimental Plate | L11              | 400             |
+| Antibiotic Plate                                        | K1          | Experimental Plate | M11              | 800             |
+| Antibiotic Plate                                        | K1          | Experimental Plate | N11              | 1600            |
+| Antibiotic Plate                                        | K1          | Experimental Plate | O11              | 3200            |
+| Antibiotic Plate                                        | K1          | Experimental Plate | P11              | 5000            |
+| Antibiotic Plate                                        | K1          | Experimental Plate | P11              | 1400            |
+| Antibiotic Plate                                        | B1          | Experimental Plate | A13              | 50              |
+| Antibiotic Plate                                        | B1          | Experimental Plate | B13              | 100             |
+| Antibiotic Plate                                        | B1          | Experimental Plate | C13              | 200             |
+| Antibiotic Plate                                        | B1          | Experimental Plate | D13              | 400             |
+| Antibiotic Plate                                        | B1          | Experimental Plate | E13              | 800             |
+| Antibiotic Plate                                        | B1          | Experimental Plate | F13              | 1600            |
+| Antibiotic Plate                                        | B1          | Experimental Plate | G13              | 3200            |
+| Antibiotic Plate                                        | B1          | Experimental Plate | H13              | 5000            |
+| Antibiotic Plate                                        | B1          | Experimental Plate | H13              | 1400            |
+| Antibiotic Plate                                        | E1          | Experimental Plate | I13              | 50              |
+| Antibiotic Plate                                        | E1          | Experimental Plate | J13              | 100             |
+| Antibiotic Plate                                        | E1          | Experimental Plate | K13              | 200             |
+| Antibiotic Plate                                        | E1          | Experimental Plate | L13              | 400             |
+| Antibiotic Plate                                        | E1          | Experimental Plate | M13              | 800             |
+| Antibiotic Plate                                        | E1          | Experimental Plate | N13              | 1600            |
+| Antibiotic Plate                                        | E1          | Experimental Plate | O13              | 3200            |
+| Antibiotic Plate                                        | E1          | Experimental Plate | P13              | 5000            |
+| Antibiotic Plate                                        | E1          | Experimental Plate | P13              | 1400            |
+| Antibiotic Plate                                        | H1          | Experimental Plate | A14              | 50              |
+| Antibiotic Plate                                        | H1          | Experimental Plate | B14              | 100             |
+| Antibiotic Plate                                        | H1          | Experimental Plate | C14              | 200             |
+| Antibiotic Plate                                        | H1          | Experimental Plate | D14              | 400             |
+| Antibiotic Plate                                        | H1          | Experimental Plate | E14              | 800             |
+| Antibiotic Plate                                        | H1          | Experimental Plate | F14              | 1600            |
+| Antibiotic Plate                                        | H1          | Experimental Plate | G14              | 3200            |
+| Antibiotic Plate                                        | H1          | Experimental Plate | H14              | 5000            |
+| Antibiotic Plate                                        | H1          | Experimental Plate | H14              | 1400            |
+| Antibiotic Plate                                        | K1          | Experimental Plate | I14              | 50              |
+| Antibiotic Plate                                        | K1          | Experimental Plate | J14              | 100             |
+| Antibiotic Plate                                        | K1          | Experimental Plate | K14              | 200             |
+| Antibiotic Plate                                        | K1          | Experimental Plate | L14              | 400             |
+| Antibiotic Plate                                        | K1          | Experimental Plate | M14              | 800             |
+| Antibiotic Plate                                        | K1          | Experimental Plate | N14              | 1600            |
+| Antibiotic Plate                                        | K1          | Experimental Plate | O14              | 3200            |
+| Antibiotic Plate                                        | K1          | Experimental Plate | P14              | 5000            |
+| Antibiotic Plate                                        | K1          | Experimental Plate | P14              | 1400            |
+| Antibiotic Plate                                        | B1          | Experimental Plate | A16              | 50              |
+| Antibiotic Plate                                        | B1          | Experimental Plate | B16              | 100             |
+| Antibiotic Plate                                        | B1          | Experimental Plate | C16              | 200             |
+| Antibiotic Plate                                        | B1          | Experimental Plate | D16              | 400             |
+| Antibiotic Plate                                        | B1          | Experimental Plate | E16              | 800             |
+| Antibiotic Plate                                        | B1          | Experimental Plate | F16              | 1600            |
+| Antibiotic Plate                                        | B1          | Experimental Plate | G16              | 3200            |
+| Antibiotic Plate                                        | B1          | Experimental Plate | H16              | 5000            |
+| Antibiotic Plate                                        | B1          | Experimental Plate | H16              | 1400            |
+| Antibiotic Plate                                        | E1          | Experimental Plate | I16              | 50              |
+| Antibiotic Plate                                        | E1          | Experimental Plate | J16              | 100             |
+| Antibiotic Plate                                        | E1          | Experimental Plate | K16              | 200             |
+| Antibiotic Plate                                        | E1          | Experimental Plate | L16              | 400             |
+| Antibiotic Plate                                        | E1          | Experimental Plate | M16              | 800             |
+| Antibiotic Plate                                        | E1          | Experimental Plate | N16              | 1600            |
+| Antibiotic Plate                                        | E1          | Experimental Plate | O16              | 3200            |
+| Antibiotic Plate                                        | E1          | Experimental Plate | P16              | 5000            |
+| Antibiotic Plate                                        | E1          | Experimental Plate | P16              | 1400            |
+| Antibiotic Plate                                        | H1          | Experimental Plate | A17              | 50              |
+
+## <a id="3fdd65dd82be808ebe3ff9e48a6a91a5" />Data Collection
+
+<a id="3fdd65dd82be80468184d32b858d8a66" />
+
+| <a id="3fdd65dd82be806badd2f42a603d7c16" />Measurement      | Settings                           |
+| ----------------------------------------------------------- | ---------------------------------- |
+| <a id="50d0e62924944d25af96c59b47e2a1e4" />$OD_{600}$       | Every 30 minutes                   |
+| <a id="3fdd65dd82be8033b808d8e173563c15" />GFP fluorescence | 488 nm excitation, 510 nm emission |
+| <a id="3fdd65dd82be806bab2bee482f0b984c" />Total duration   | 8 hours                            |
+
+## <a id="3fdd65dd82be80eeb3dfec2354fd9409" />Results
+
+### <a id="3fdd65dd82be805eb2d8c2ef86149e40" />Subsample ODs
+
+<a id="3fdd65dd82be803399b7c14f0480209c" />
+
+| <a id="3fdd65dd82be80908de2cc55c1f79aa7" />**Source well** | **OD** |
+| ---------------------------------------------------------- | ------ |
+| <a id="3fdd65dd82be80d6b217c325b59f7e48" />5               | 0.49   |
+| <a id="3fdd65dd82be805ba430c8f9fefda737" />1b              | 0.35   |
+| <a id="3fdd65dd82be80a7add7e56a32a941c1" />1t              | 0.45   |
+| <a id="3fdd65dd82be80c3b3d3ef04a113cbb4" />2t              | 0.53   |
+
+<a id="3fdd65dd82be80ba967af6d640dd50dd" />All were diluted to a starting OD of \~0.02 (measured via photospectrometer). PHERAStar read a starting OD of \~0.01 for all.
+
+### <a id="3fdd65dd82be80999182d331a2fd66ed" />Plate layout
+
+<a id="3fdd65dd82be80b4a73aeb3b392fafb5" />
+
+| <a id="3fdd65dd82be804090eded22630f18ee" />**Source well** | **Columns**        |
+| ---------------------------------------------------------- | ------------------ |
+| <a id="3fdd65dd82be806ea19cc59ddc5453d3" />1b              | 1/2/3, 13/14/15    |
+| <a id="3fdd65dd82be802491a4e68cd1784436" />1t              | 4/5/6, 16/17/18    |
+| <a id="3fdd65dd82be8066b35fff2a0be103e7" />2t              | 7/8/9, 19/20/21    |
+| <a id="3fdd65dd82be805a9273f6b0cce6c550" />5               | 10/11/12, 22/23/24 |
+
+<a id="3fdd65dd82be8045958cf48ffa45560b" />**What is the maximum amount of antibiotic we can use as an input for our patient samples?**
+
+<br id="3fed65dd82be80f7b467c75f60527b62" />

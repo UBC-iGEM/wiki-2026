@@ -3,7 +3,7 @@ type: "page"
 title: "Biosensor"
 ---
 
-<a id="3fdd65dd82be80359477e04d64399077" />Our overarching goal was to develop biosensor strains capable of detecting the presence of antibiotics through stress-responsive reporter systems that generate a fluorescent signal. Specifically, our experiments generated and characterized the CpxP and RecA biosensor strains, as well as produced OD₆₀₀  calibration curves to normalize fluorescent measurements from our biosensor readouts.
+<a id="3fdd65dd82be80359477e04d64399077" />Our overarching goal was to develop biosensor strains capable of detecting the presence of antibiotics through stress-responsive reporter systems that generate a fluorescent signal. Specifically, our experiments generated and characterized the CpxP and RecA biosensor strains, as well as produced OD600 calibration curves to normalize fluorescent measurements from our biosensor readouts.
 
 <a id="3fdd65dd82be80c79ecfd36364e544c1" />To achieve these objectives, we transformed EPI300 *E. coli* with the CpxP and RecA reporter plasmids. To characterize the growth kinetics and baseline GFP expression of our engineered strains, we performed a growth curve experiment. Subsequently, to determine a subinhibitory range of antibiotics for our biosensors, we performed a minimal inhibitory concentrations (MIC) assay. These results narrowed down an optimal antibiotic concentration range to validate the the GFP expression sensitivity of our biosensor strains.
 
@@ -15,11 +15,9 @@ title: "Biosensor"
 
 # <a id="3fad65dd82be802e8b2ae06e4c514213" />**Biosensor Constructs**
 
-<a id="3fdd65dd82be80a78313caf68bfa742c" />Both reporter plasmids were constructed using the pSB1C3\_J04450 backbone, which provides chloramphenicol (Cm) resistance for selection. Alternative selectable markers, such as ampicillin or kanamycin resistance, would not be compatible with our intended applications as they confer resistance to β-lactam and aminoglycoside antibiotics, respectively.
+<a id="3fdd65dd82be80a78313caf68bfa742c" />Both reporter constructs utilized the pSB1C3 backbone, which confers chloramphenicol (Cm) resistance for selection. Alternative selectable markers, such as ampicillin or kanamycin resistance, would not be compatible with our intended applications as they confer resistance to β-lactam and aminoglycoside antibiotics, respectively.
 
-<a id="3fdd65dd82be8057b500f4b038cdf605" />To linearize this backbone for the insertion of our reporter [Parts](/ubc-vancouver/wet-lab/parts), the EcoRI and PstI restriction enzymes were selected for downstream HiFi assembly. This confers the ability to express superfolder GFP (sfGFP) when the cell experiences antibioitc-related stress, particularly cell wall stress with the CpxP reporter construct and DNA damage with the RecA reporter construct.
-
-<br id="3fdd65dd82be8064adc3d972a95fcab8" />
+<a id="3fdd65dd82be8057b500f4b038cdf605" />To linearize this backbone for the insertion of our reporter [Parts](/ubc-vancouver/wet-lab/parts), EcoRI and PstI restriction enzymes can be used to enable downstream HiFi assembly. The assembled reporter plasmids confer the ability to express superfolder green fluorescent protein (sfGFP) when the cell experiences antibioitc-related stress, particularly cell wall stress with the CpxP reporter construct and DNA damage with the RecA reporter construct. This is a fast maturing protein which folds within 13.6 minutes, allowing for rapid fluorescence output detection <Cite refs={[{"n":1,"key":"lambertSuperfolderGFPFPbasea"}]} />.
 
 <a id="3fcd65dd82be8096ac8bde3fc11178a8" />
 
@@ -45,13 +43,9 @@ title: "Biosensor"
 
 <a id="3fdd65dd82be80589f80f638849e334a" />To establish baseline performance, we generated growth curves for the biosensor strains in the absence of the target antibiotic. Simultaneously, we measured fluorescence intensity at 485 nm (excitation) and 510 nm (emission) for each growth curve time point.
 
-<a id="3fdd65dd82be80f6a9bbeca29a9d5af5" />Spectrophotometric measurements revealed substantially higher basal GFP expression in the CpxP reporter strain compared with both the WT EPI300 and RecA reporter strains, reaching approximately 18–20-fold higher levels after 25 hours.
+<a id="3fdd65dd82be802a903ccaaab0ac8ad6" />OD600 measurements reveal that the maximum cell densities of the biosensor strains were approximately 35% lower than that of the WT strain. This suggests that the plasmids may impose a metabolic burden on the transformed strains. However, there is minimal difference in biosensor growth maximum at 22˚C compared to 37˚C.
 
-<br id="3fdd65dd82be8027a4a9f137396bde33" />
-
-<a id="3fdd65dd82be80708847f39e67e31675" />Additionally, the maximum densities for bacterial growth for the biosensor strains were approximately 35% lower than WT. These differences may reflect a degree of stress associated with the plasmid or the Cm media used.
-
-<a id="3fdd65dd82be80188850fd31efe07c4a" />In addition, the maximum cell densities of the biosensor strains were approximately 35% lower than that of the WT strain. These observations suggest that the biosensor constructs may impose a metabolic burden or that the chloramphenicol (Cm)-containing growth medium may contribute to cellular stress. These baseline differences were considered when evaluating the responses of the biosensor strains to antibiotic stimulation.
+<a id="3fdd65dd82be80ddaeadd9d647fb675e" />Spectrometric measurements revealed substantially higher basal GFP expression in the CpxP reporter strain compared with both the WT EPI300 and RecA reporter strains, reaching approximately 18–20-fold higher levels after 25 hours. However, basal GFP expression ceases at 22˚C.
 
 <a id="3fcd65dd82be80c68481ee431536735e" />
 
@@ -65,8 +59,6 @@ title: "Biosensor"
 
 <a id="3fcd65dd82be80e389c1dd17af4c6744" />**Figure 2.** Normalized fluorescence intensity values throughout 25 hours of growth, at 37˚C (left) or room temperature (right).
 
-<a id="3fcd65dd82be80f1836dfc9d65333c73" />We also performed plasmid retention tests to study whether the transformed plasmids are stably retained. This was completed by plating biosensor strains and WT bacteria in various concentrations of Cm-LB plates. The result of these experiments showed that it was essential to have Cm selection pressure to retain our plasmids. We used this in our DBTL workflow to improve our ongoing MIC titration experiments, including using better data normalization informed by the base fluorescence we observed.
-
 ## <a id="3fad65dd82be8079befbc4c2621d5550" />**Plasmid Retention Experiment**
 
 <a id="3fad65dd82be8078986aceb67f09dcd2" />To determine whether Cm selection could be removed during the biosensor experiments, we tested how long the CpxP and RecA strains could retain their reporter plasmids after transfer into Cm-free LB. Removing Cm would be useful for removing the confounding effect that it has on the bacterial stress response, but requiring that the biosensor plasmids remained stable without selection.
@@ -75,25 +67,27 @@ title: "Biosensor"
 
 <a id="3fdd65dd82be803e9904e4dd89054d4e" />As expected, biosensor strains maintained in LB-Cm grew on LB-Cm plates while WT EPI300 did not. In contrast, biosensors grown without Cm showed no detectable growth after one hour, indicating they rapidly lose their plasmid. These results demonstrated that Cm selection was necessary to maintain the biosensor construct during the experiment, despite its potential influence on the bacterial stress response.
 
-<a id="3fdd65dd82be8017ae68e0a615b9710b" />
+<a id="3fdd65dd82be8057ab95f31cff112d4b" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/ab73a5567986528585d7aa232bcebdcb.avif" alt="" scale={0} align="center" />
+<ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/ab73a5567986528585d7aa232bcebdcb.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/9984330a4e755c7d9f89a1a3696ef8de.avif","alt":"","scale":0}]}>
+  <Fragment slot="descriptions">
+    <div class="carousel-desc" data-index="0">
+      <a id="3fdd65dd82be80cb9513c6ed5cdb189d" />**Figure 3**. Cultures grown in LB-Cm over 3 time intervals, plated on LB-Cm agar plates and incubated for \~18 hours at 37˚C.
+    </div>
 
-<a id="3fdd65dd82be80cb9513c6ed5cdb189d" />**Figure 3**. Cultures grown in LB-Cm over 3 time intervals, plated on LB-Cm agar plates and incubated for \~18 hours at 37˚C.
-
-<a id="3fdd65dd82be80299246f0e79af600cc" />
-
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/9984330a4e755c7d9f89a1a3696ef8de.avif" alt="" scale={0} align="center" />
-
-<a id="3fdd65dd82be80308d5ae0c6b5707438" />**Figure 4**. Cultures grown in LB over 3 time intervals, plated on LB-Cm agar plates and incubated for \~18 hours at 37˚C.
+    <div class="carousel-desc" data-index="1">
+      <a id="3fdd65dd82be8030bcced825191c5b06" />**Figure 4**. Cultures grown in LB over 3 time intervals, plated on LB-Cm agar plates and incubated for \~18 hours at 37˚C.
+    </div>
+  </Fragment>
+</ImageCarousel>
 
 ## <a id="3fad65dd82be807eb8b0d73c3d0f68ec" />**MIC Titration Experiments**
 
-<a id="3fad65dd82be804bae28fbbe65507270" />Before characterizing fluorescence responses, we need to determine the antibiotic concentrations that inhibited growth of the CpxP and RecA biosensor strains. Establishing the minimum inhibitory concentration (MIC) was important because it identifies the concentration range in which the biosensor could remain viable while still experiencing antibiotic stress, so that we can select sub-inhibitory concentrations to later determine the relationship between fluorescence response and antibiotic concentrations.
+<a id="3fad65dd82be804bae28fbbe65507270" />Before characterizing fluorescence responses, we needed to identify the minimum inhibitory concentration (MIC) ranges for our biosensor. This allows us to narrow down a subinhibitory range of antibiotic concentrations where the biosensor strains remain viable while still experiencing antibiotic-related stress.
 
-<a id="3fdd65dd82be80d9821fdb90bd390f41" />To estimate the MIC, CpxP and RecA were exposed ot two-fold serial dilutions of gentamicin, tobramycin, and amoxicillin, and growth after approximately 24 hours was assessed using OD600.
+<a id="3fdd65dd82be80529ae2e9d7b7f7a3f2" />To determine the MIC ranges of the CpxP and RecA biosensors, we performed antibiotic titrations using two-fold serial dilutions of gentamicin, tobramycin, and amoxicillin. Bacterial growth was assessed after 24 hours by measuring OD600.
 
-<a id="3fdd65dd82be80919526e64a35ba1a54" />Across the three antibiotic concentrations tested, both biosensor strains showed provisional MIC ranges from approximately 4-8 µg/ml. This range was then used to guide later biosensor titration experiments investigating whether sub-inhibitory antibiotic exposure could produce a measurable fluorescent stress response.
+<a id="3fdd65dd82be80919526e64a35ba1a54" />Across the three antibiotic concentrations tested, both biosensor strains showed provisional MIC ranges from approximately 4-8 µg/ml. Subsequently, this range was used to guide further biosensor validation experiments to evaluate GFP expression sensitivity in response to subinhibitory antibiotic exposure.
 
 <a id="3fdd65dd82be808eaceedb8164fbbd5c" />
 
@@ -126,3 +120,7 @@ title: "Biosensor"
 <a id="3fdd65dd82be800c87eae5677662dd9e" />The greater goal of this characterization was to determine whether fluorescence from our CpxP and RecA biosensors could eventually serve as meaningful indicators of bacterial response to antibiotics. Although preliminary experiments did not produce consistent dose-response relationships across every conditions, they established experimental conditions and limitations of our system and provided a foundation for future optimization towards our rapid antibiotic susceptibility testing platform.
 
 <br id="3fcd65dd82be807cb1f5c4189b0a5cc8" />
+
+# References
+
+<Bibliography refs={[{"n":1,"key":"lambertSuperfolderGFPFPbasea"}]} />

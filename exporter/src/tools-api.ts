@@ -193,8 +193,15 @@ class ToolsClient {
                     },
                 );
             });
-            if (isErr(post_res))
-                return new ExporterError(`Failed to upload asset with UID ${uid}.`, ["igem tools server"], post_res);
+            if (isErr(post_res)) {
+                // The server's message says why it refused the file, e.g. a disallowed file type
+                const reason: unknown = axios.isAxiosError(post_res) ? post_res.response?.data?.message : undefined;
+                return new ExporterError(
+                    `Failed to upload ${final_filename}` + (typeof reason === "string" ? `: ${reason}` : "."),
+                    ["igem tools server"],
+                    post_res,
+                );
+            }
 
             const job_data = post_res.data?.data;
             const upload_key = job_data?.uploadKey; // e.g., "teams/6279/wiki/assets/test-img.avif"

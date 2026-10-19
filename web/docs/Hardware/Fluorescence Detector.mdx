@@ -7,21 +7,25 @@ title: "Fluorescence Detector"
 
 <a id="3f9d65dd82be8050867be53a9a577c19" />Fluorescence is critical to many experiments and research applications, such as flow cytometry, fluorescence immunoassays, and more. Fluorescence helps us identify cellular structures, quantify colonies, and even detect cell susceptibility to antibiotics.
 
-<a id="3fad65dd82be80059b4bf8b57504d9bd" />Cells fluoresce when a fluorophore absorbs light energy (a photon), causing its electrons to transition from the ground state (s0) to an excited state (s1). As some energy is lost during this process, the emitted photon carries less energy and therefore has a longer wavelength, as shown in Figure 1. This phenomenon is known as the Stokes shift. \[1] [https://pmc.ncbi.nlm.nih.gov/articles/PMC4711767/](https://pmc.ncbi.nlm.nih.gov/articles/PMC4711767/) This indicates that when blue light is absorbed, green light of lower energy may be emitted, producing fluorescence.
+<a id="3fad65dd82be80059b4bf8b57504d9bd" />Cells fluoresce when a fluorophore absorbs light energy (a photon), causing its electrons to transition from the ground state (s0) to an excited state (s1). As some energy is lost during this process, the emitted photon carries less energy and therefore has a longer wavelength, as shown in Figure 1. This phenomenon is known as the Stokes shift <Cite refs={[{"n":1,"key":"sandersonFluorescenceMicroscopy2014"}]} />  This indicates that when blue light is absorbed, green light of lower energy may be emitted, producing fluorescence.
 
-<a id="3fad65dd82be8071bd8ef8d0ce110715" />
+<a id="3fed65dd82be80579527ffad2dafa6e7" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/15b7f98abcbc51f2968ee57d7657a2e3.avif" alt="" scale={0} align="center" />
+<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/15b7f98abcbc51f2968ee57d7657a2e3.avif","alt":"","scale":0}]}>
+  <Fragment slot="content">
+    <a id="3f9d65dd82be802baf5ce7932fffe8fa" />The spectrum of light with associated wavelengths and energy levels<Cite refs={[{"n":2,"key":"WhatFullSpectrum2012"}]} />
+  </Fragment>
+</Figure>
 
-<a id="3f9d65dd82be802baf5ce7932fffe8fa" />cite\[2] ([https://lumenistics.com/2012/03/19/what-is-full-spectrum-lighting/](https://lumenistics.com/2012/03/19/what-is-full-spectrum-lighting/))
+<br id="3fed65dd82be800cbb69dce2c50bf42e" />
 
-<a id="3fcd65dd82be8054b13ac95c53655d16" />
+<a id="3fed65dd82be80faaf97ca3f52ed80f7" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/b67cc0d90a9b5cf1a49c641aa5e6abcf.avif" alt="" scale={0} align="center" />
-
-<a id="3fcd65dd82be806b8948c357cdb7fcf7" />\[3] [https://www.knauer.net/blog/blog-9/seeing-is-believing-detection-made-easy-part-5-fluorescence-detectors-164](https://www.knauer.net/blog/blog-9/seeing-is-believing-detection-made-easy-part-5-fluorescence-detectors-164)
-
-<br id="3fcd65dd82be80ddb61ef68393b6218c" />
+<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/b67cc0d90a9b5cf1a49c641aa5e6abcf.avif","alt":"","scale":0}]}>
+  <Fragment slot="content">
+    <a id="3fcd65dd82be806b8948c357cdb7fcf7" />A diagram demonstrating the Stokes shift between the excitation absorption spectrum and the fluorescence emission spectrum<Cite refs={[{"n":3,"key":"DetectionMadeEasy2026"}]} />
+  </Fragment>
+</Figure>
 
 # <a id="3f9d65dd82be8054b0a7da2a0caffc89" />Motivation for Fluorescence Detector
 
@@ -29,13 +33,11 @@ title: "Fluorescence Detector"
 
 ## <a id="3f9d65dd82be80b4bb54d4d68e2b0c45" />Conventional vs. Our Fluorescence Detector
 
-<a id="3fad65dd82be8060b66ec7bc55f0ed97" />To identify the limitations of existing fluorescence detectors, we conducted preliminary market research. Based on our findings, fluorescence detection equipment can range in price from hundreds of dollars (i.e. \$630.39 [https://www.amazon.ca/Ultraviolet-Analyzer-Fluorescence-Wavelength-Observation/dp/B0G2YH4WD5](https://www.amazon.ca/Ultraviolet-Analyzer-Fluorescence-Wavelength-Observation/dp/B0G2YH4WD5)) to tens of thousands of dollars (i.e. \$42191 [https://www.labnics.com/fluorescence-spectrophotometer/nfs-100?srsltid=AU7gw4U\_AwaKeXBQpkJ9ssq\_yOg4ckLq\_kfEVxtzd-Au4IueHhTj49xR-Dg](https://www.labnics.com/fluorescence-spectrophotometer/nfs-100?srsltid=AU7gw4U_AwaKeXBQpkJ9ssq_yOg4ckLq_kfEVxtzd-Au4IueHhTj49xR-Dg)). Such costs make it financially impractical to equip every doctor’s office with a fluorescence detector used only for preliminary screening. Furthermore, although both handheld and benchtop detectors are available on the market, their designs are not compatible with our microfluidic chips. Some may also struggle to detect fluorescence from the small sample volumes used in our system.
+<a id="3fad65dd82be8060b66ec7bc55f0ed97" />To identify the limitations of existing fluorescence detectors, we conducted preliminary market research. Based on our findings, fluorescence detection equipment can range in price from hundreds of dollars (i.e. \$630.39 <Cite refs={[{"n":4,"key":"DarkBoxUV"}]} /> ) to tens of thousands of dollars (i.e. \$42191 <Cite refs={[{"n":5,"key":"ltdFluorescenceSpectrophotometerNFS100"}]} /> ). Such costs make it financially impractical to equip every clinician with a fluorescence detector used only for preliminary screening. Furthermore, although both handheld and benchtop detectors are available on the market, their designs are not compatible with our microfluidic chips.
 
 <a id="3fcd65dd82be80868e51fbc00a29dc5b" />To improve the accessibility of our point-of-care detection system, we incorporated several design features into our customized fluorescence detector: a holder tailored to our microfluidic chip, a user-friendly interface, a simplified fluorescence detection circuit to reduce material costs, and an innovative component assembly method that ensures both effective light shielding and ease of use.
 
 <a id="3fcd65dd82be80519f6edb341fb10bad" />With our customized fluorescence detector, we aim to make antibiotic resistance screening accessible, fast, and affordable.
-
-<br id="3fbd65dd82be80fca1d8c801a0118282" />
 
 # <a id="3fbd65dd82be80beb3d8f05eb568492f" />What’s New About Our Design
 
@@ -43,26 +45,29 @@ title: "Fluorescence Detector"
 
 <a id="3fdd65dd82be80ed88efe69ee7e79de6" />Before beginning the design of our fluorescence detector, we researched previous iGEM projects to explore existing approaches and achievements.
 
-<a id="3fdd65dd82be806d9421fc5bc19b0502" />Team Munich’s 2017 design inspired us with its compact fluorescence detector, which used magnets to sandwich the detection components between 3D-printed parts \[4]. This approach demonstrated the potential of magnets to improve user-friendliness and provide a convenient, efficient assembly method.
+<a id="3fdd65dd82be806d9421fc5bc19b0502" />Team Munich’s 2017 design inspired us with its compact fluorescence detector, which used magnets to sandwich the detection components between 3D-printed parts <Cite refs={[{"n":6,"key":"TeamMunich2017igemorg"}]} />. This approach demonstrated the potential of magnets to improve user-friendliness and provide a convenient, efficient assembly method.
 
-<a id="3fbd65dd82be80fcbf3dd64607f5505b" />As demonstrated in the 3D model (demonstrate in 3d model), the detector is split into two halves: A and B (label). Part A acts as the bottom, encompassing a sliding track for the microfluidic holder and circuit components that detect fluorescence. Part B will go on top of Part A to create an all dark enclosure; it also contains the Arduino microcontroller, illumination, and user interface for active control and feedback.
+<a id="3fed65dd82be80a8a6bdca626dbf5c1e" />As demonstrated in the 3D model, the detector is divided into two halves: Part A and Part B (label). Part A serves as the base, housing a sliding track for the microfluidic holder and the circuit components responsible for fluorescence detection. Part B sits on top of Part A to form a completely dark enclosure. It also houses the illumination system and user interface for active control over the on and off of the light.
 
-<a id="3fbd65dd82be805fb3eaebad02216a88" />So, how exactly do our magnets improve the design functionality?
+<a id="3fed65dd82be803da560c12777722089" />So, how exactly do our magnets improve the design's functionality?
 
-1. <a id="3fbd65dd82be80308af3fb723f5e20b7" />You can open the device up and lay each part completely flat on your workspace (another format? for 1 & 2)
+<a id="3fed65dd82be809d8589f767f9e2b9c8" />**1. Open, lay flat, and access with ease**
 
-   <a id="3fbd65dd82be804d9155f5c54c41047f" />This means you can:
-   - <a id="3fbd65dd82be805ea29ae3e8c49cc52b" />load the microfluidics easily
-   - <a id="3fbd65dd82be80c28232d38699eeca44" />inspect and adjust the electronics freely instead of having to maneuver in a tight space (our detector is quite compact!)
-   - <a id="3fbd65dd82be806b9d15f04b96604c8a" />clean and maintain the device without trouble
-2. <a id="3fbd65dd82be809ca907cbb18fffc58b" />You can snap and seal the detector and get a dark enclosure
+<a id="3fed65dd82be80cd9a94f69c71cb51dc" />The two halves can be separated and laid completely flat on your workspace, allowing you to:
 
-   <a id="3fbd65dd82be802b8bb4e9314b51b1b4" />This means no more:
-   - <a id="3fbd65dd82be80e4b47cd6202d5b830a" />figuring out complex fit mechanisms
-   - <a id="3fbd65dd82be8055a8aaeb6b2c10b5f3" />lengthy assembly/disassembly processes
-   - <a id="3fbd65dd82be8081ab96fede5d93b6d2" />struggling to keep each piece in the right place
+- <a id="3fed65dd82be80efb0f0f09b77c0ffb6" />Load the microfluidics with ease.
+- <a id="3fed65dd82be80f7a02cda04a4ab29ae" />Freely interact with the integrated switch and other user-interface components without having to maneuver in a tight space.
+- <a id="3fed65dd82be8087b344d76601de356d" />Clean and maintain the device with minimal hassle.
 
-## <a id="3fbd65dd82be806d90befc2e7b60dca1" />One (detector) for All (wells)
+<a id="3fed65dd82be80e0aa56fa81ee7a3cc5" />**2. Snap and seal the detector and get a dark enclosure**
+
+<a id="3fed65dd82be80868213e7b69574fcf4" />The magnets allow the two halves to snap together securely, this means no more:
+
+- <a id="3fed65dd82be80969b81f14cf3fd789d" />Figuring out complex fitting mechanisms.
+- <a id="3fed65dd82be80298259d4d1273dbaad" />Spending time on lengthy assembly and disassembly.
+- <a id="3fed65dd82be801684fdde993175dce1" />Struggling to keep each component securely in place.
+
+## <a id="3fbd65dd82be806d90befc2e7b60dca1" />One Detection Complex
 
 <a id="3fad65dd82be8086a8e2f55d7c455c7d" />Chip Holder
 
@@ -70,35 +75,44 @@ title: "Fluorescence Detector"
 
 <a id="3fbd65dd82be8072a122e078ce4d497b" />(the bumps) Image carousel
 
-<a id="3fbd65dd82be806ca8dff047baa90170" />Slide in and out to finish fluorescence detection of all wells in one sitting!
+<a id="3fed65dd82be8058a935db900dd202e7" />Slide in and out to detect fluorescence across all wells in one sitting!
 
-<a id="3fbd65dd82be806ea994f23ea4691532" />Our holder is designed to fit the microfluidic chips snugly, minimizing unwanted displacements or inaccurate readouts. The extruded legs on the bottom go onto the sliding tracks.
+<a id="3fed65dd82be80d7b287ff35797612c5" />Our holder is designed to fit the microfluidic chip snugly, minimizing unwanted movement and ensuring reliable fluorescence readings. The extruded legs on the bottom of the holder fit into the sliding tracks, allowing it to move smoothly through the detector.
 
-<a id="3fbd65dd82be8061bac6f6b0a79ab107" />How will the user realize they are at the site of detection? The small bumps are design to create gentle vibration to notify the users that they can pause and let the fluorescence detector do its work. Additionally, we added in visual reminders on the holder handle to mark the location of each well. For example, if the second white line reached the wall of the detector, it indicates that the second well has arrived at the site of fluorescence detection.
+<a id="3fed65dd82be807e9ff2c8522bfd5408" />How does the user know when a well reaches the detection site?
 
-## <a id="3fbd65dd82be8055acb5c9d629e47f52" />Improved Detection Workflow (modify)
+<a id="3fed65dd82be80839acdfd0f06dc12e2" />We incorporated two intuitive cues to guide the user through the detection process:
+
+- <a id="3fed65dd82be800fa35de029d6f52cdd" />**Tactile feedback:** Small bumps on the sliding track create gentle vibrations as the holder moves past them, notifying users when a well reaches the detection site and when to pause for fluorescence measurement.
+- <a id="3fed65dd82be8002b4e3e543679f33d7" />**Visual indicators:** White lines on the holder's handle mark the positions of individual wells. For example, when the second white line reaches the detector's wall, the second well is aligned with the fluorescence detection site.
+
+<a id="3fed65dd82be804bb7c4fa0859d4fe48" />Together, these features make it easy to navigate between wells and complete fluorescence detection efficiently in a single session.
+
+## <a id="3fbd65dd82be8055acb5c9d629e47f52" />Improved Detection Workflow
 
 <a id="3fbd65dd82be80988d13d51f15f40090" />We studied the mechanism of fluorescence detection used in conventional detectors, and simplified them so they get the same task done at a way cheaper cost.
 
-<a id="3fcd65dd82be80b1a2f2eb0a0ccfdead" />Most fluorescence detectors adopt a similar layout, with the illumination component, the sample, and the detection component forming a 90 degrees angle. This arrangement helps improve signal quality by reducing background noises \[3]. Excitation filters and emission filters permit a narrow band of wavelength, such that only the desired lights are filtered through and shone on the sample or detector \[5 [https://www.thorlabs.com/filters-for-fluorescence-microscopy-tutorial?tabName=Tutorial](https://www.thorlabs.com/filters-for-fluorescence-microscopy-tutorial?tabName=Tutorial)].
+<a id="3fcd65dd82be80b1a2f2eb0a0ccfdead" />Most fluorescence detectors adopt a similar layout, with the illumination component, the sample, and the detection component forming a 90 degrees angle. This arrangement helps improve signal quality by reducing background noises <Cite refs={[{"n":3,"key":"DetectionMadeEasy2026"}]} /> . Excitation filters and emission filters permit a narrow band of wavelength, such that only the desired lights are filtered through and shone on the sample or detector <Cite refs={[{"n":7,"key":"ThorlabsFiltersFluorescence"}]} />.
 
 <a id="3fcd65dd82be80bea79cf9c45374b2e6" />While this set-up has been widely approved, a critical limitation is the high cost of the filters. Since both filters need to allow a small range of light through, the precision determined their high price. After our research, we found that one excitation filter costs around \$300.
 
 <a id="3fcd65dd82be80199d18ceb6e7dfc17b" />To address this issue, we identified the key purpose of each component, and reengineered the conventional detection workflow to a more succinct and cost-effective form. Leaving the most essential parts, our detector encompasses a single-color LED directly above the sample, and a longpass filter and photodetector directly below.
 
-<a id="3fcd65dd82be803a80ffc5a7513e587a" />The function of each component is explained in detail in Design Breakdown. Overall, this layout reduced the material cost by ?? % (need to double check with Saige), saves a lot more space, and provides better accommodation for the microfluidics design.
+<a id="3fcd65dd82be803a80ffc5a7513e587a" />The function of each component is explained in detail in Design Breakdown. Overall, this layout reduced the material cost by at least 50% as the use of two filters was avoided. This customized set up saves a lot more space, and provides better accommodation for the microfluidics design <Cite refs={[{"n":8,"key":"DichroicLongpassFilters"}]} /> .
 
-<a id="3fcd65dd82be8062a968f9b2f9a77986" />
+<br id="3fed65dd82be8055b612f9f96e007d24" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/f8b2720263995db386f5deee570d3b02.avif" alt="" scale={0} align="center" />
+<a id="3fed65dd82be80249220fd3242f6569c" />
 
-<a id="3fcd65dd82be8068a723c71bce724dd7" />\[3]
-
-<br id="3fcd65dd82be800db03ef75ba20cc219" />
+<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/f8b2720263995db386f5deee570d3b02.avif","alt":"","scale":0}]}>
+  <Fragment slot="content">
+    <a id="3fcd65dd82be8068a723c71bce724dd7" />A diagram showing the typical information flow in a classic fluorescence detector <Cite refs={[{"n":3,"key":"DetectionMadeEasy2026"}]} />
+  </Fragment>
+</Figure>
 
 <br id="3fcd65dd82be8015bc54f7185fa14180" />
 
-# <a id="3fbd65dd82be80ca8eb3c43119c51ce4" />Design Breakdown
+# <a id="3fbd65dd82be80ca8eb3c43119c51ce4" />Enclosure Design Breakdown
 
 ## <a id="3fbd65dd82be8040ba01dabf592e8b51" />Microfluidic Chip Holder → image carousel
 
@@ -114,7 +128,7 @@ title: "Fluorescence Detector"
 
 - <a id="3fcd65dd82be80d2bf0ad0e31281fcef" />The user can hold onto the handle to move the chip forward or back. We also added in visual marks to ensure a smoother detection process.
 
-## <a id="3fcd65dd82be80089f38e2d9f24613c3" />Bottom Part
+## <a id="3fcd65dd82be80089f38e2d9f24613c3" />Bottom Housing
 
 <a id="3fcd65dd82be809aa264d7101f55596e" />Sliding tracks
 
@@ -132,7 +146,7 @@ title: "Fluorescence Detector"
 
 - <a id="3fcd65dd82be80269087fd77569c2fe2" />A black rectangular box covers the photodetector to better ensure the clarity of collected signals. This is also done through magnetic attachment. The longpass filter sit on top of the circular hollow to block out unwanted lights.
 
-## <a id="3fcd65dd82be80679f69c5d39ed7906b" />Top Part
+## <a id="3fcd65dd82be80679f69c5d39ed7906b" />Top Housing
 
 <a id="3fcd65dd82be80aa95e1c1a61665ff79" />pcb holder
 
@@ -148,11 +162,13 @@ title: "Fluorescence Detector"
 
 ## <a id="3fcd65dd82be80e6a372d84ab00a5116" />Fluorescence Detection System
 
-<a id="3fcd65dd82be8086b9c6dbbb1a24623e" />
+<a id="3fed65dd82be80f585e7cbab145882f8" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/498d609f5027593bb8ad1d9cffeff258.avif" alt="" scale={0} align="center" />
-
-<a id="3fcd65dd82be804daf32d4c29e9f0829" />The image above demonstrates the overall setup of our fluorescence detection system.
+<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/498d609f5027593bb8ad1d9cffeff258.avif","alt":"","scale":0}]}>
+  <Fragment slot="content">
+    <a id="3fcd65dd82be804daf32d4c29e9f0829" />The image above demonstrates the overall setup of our fluorescence detection system.
+  </Fragment>
+</Figure>
 
 <details>
   <summary><a id="3fdd65dd82be80f6938fed3a667dc917" />Illumination</summary>
@@ -175,56 +191,86 @@ title: "Fluorescence Detector"
 
   <Img url="https://static.igem.wiki/teams/6279/wiki/assets/27c3a84fd53d511ea5209bdab40942fe.avif" alt="" scale={0} align="center" />
 
-  <a id="3fdd65dd82be80a794c7e00c30b0c64b" />\[6] [https://www.teamwavelength.com/photodiode-basics/?srsltid=AU7gw4WpgE7HqUTpJtNF9DXKLUG063MMPIi-AgBpWjj-Ubo0S7H-0XY8](https://www.teamwavelength.com/photodiode-basics/?srsltid=AU7gw4WpgE7HqUTpJtNF9DXKLUG063MMPIi-AgBpWjj-Ubo0S7H-0XY8)
+  <a id="3fdd65dd82be80a794c7e00c30b0c64b" />Image demonstrates how absorbed photons create a voltage difference, allowing the photodiode to convert light into electrical current.<Cite refs={[{"n":9,"key":"PHOTODIODEBASICSWavelength"}]} />
+
+  <br id="3fed65dd82be80fc989ceba94a85f454" />
 </details>
-
-## <a id="3f9d65dd82be808f844aec659af2f946" />Bill of Materials
-
-<a id="3fad65dd82be8025b08ec928df6ba23c" />
-
-| <a id="3fad65dd82be80159391e1f59be216b2" />Materials            | Overall Price | Cost for the Project |
-| --------------------------------------------------------------- | ------------- | -------------------- |
-| <a id="3fad65dd82be800aa19ddfc70ef2025e" />3D Printing Filament | \$19.99/1 kg  |                      |
-| <a id="3fdd65dd82be80a1b47ac9ca97104267" />Magnets              |               |                      |
-| <a id="3fbd65dd82be80ee9a06f337958d1ac7" />488nm LED            |               |                      |
-| <a id="3fad65dd82be80de878fff86005eaf7c" />Long Pass Filter     | \$37.00 each  | \$37                 |
-| <a id="3fdd65dd82be80d7b3e8d079a0db49ba" />Photodiode           |               |                      |
-| <a id="3fdd65dd82be803fa88ae1b33ab51bfc" />PCB                  |               |                      |
-| <a id="3fdd65dd82be8055b1e7d82044f1b7f2" />Arduino              |               |                      |
-| <a id="3fdd65dd82be80049035f4cd445608fc" />Resistor             |               |                      |
-| <a id="3fdd65dd82be803c8c26cfd964bcfe95" />Switch               |               |                      |
-| <a id="3fdd65dd82be8083bbd8dba2019a7838" />Wiring               |               |                      |
 
 <br id="3fdd65dd82be806cbe84d9f4cbd0f63d" />
 
-# <a id="3fbd65dd82be805ba95ed803ef3c84bf" />Circuitry Schematics
+# <a id="3fbd65dd82be805ba95ed803ef3c84bf" />Circuitry
 
-<a id="3fbd65dd82be809da305fb39cbc4728b" />()
+## <a id="3fed65dd82be80f0bd71c5e374206beb" />Illumination
 
-<a id="3fdd65dd82be80ac805ef21a63a60766" />pcb 30mm w, 90mm l (mounting holes m3) → photodiode aligns with led
+<a id="3fed65dd82be80578faacae318762abc" />
 
-<a id="3fdd65dd82be8063ba5ef6787df04155" />led(middle) + resistor 30x30
+<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/7486c64db2c850ddb33cec2f5abd35c7.avif","alt":"","scale":0}]}>
+  <Fragment slot="content" />
+</Figure>
 
-<br id="3fdd65dd82be8079b5daf3bd0edbc1a9" />
+<a id="3fed65dd82be809ab4c1e5ffe6566fcb" />The 30mm x 30mm PCB board is made for illuminating our sample during fluorescence detection. It encompasses a 488nm LED as the primary light source, a resistor, a signal plane which carries data, and a ground plane acting as the return path for electrical currents.
 
-# <a id="3fbd65dd82be8042b94cfa15b5b4a7f3" />Testing and Validation
+## <a id="3fed65dd82be80838208cc23e8f0e8a5" />Detection
 
-<a id="3fbd65dd82be8050b707f95f6e52651d" />User manual…
+<a id="3fed65dd82be80b693b1c7cacc243239" />
 
-<a id="3fbd65dd82be80d780d0ea4b97a7a0f3" />data log
+<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/1049987edaae516c9d470c1dcf17c072.avif","alt":"","scale":0}]}>
+  <Fragment slot="content" />
+</Figure>
+
+<a id="3fed65dd82be804e91bad68e923f5e3a" />The 30mm x 90mm PCB board is used for fluorescence detection. The photodiode, LED, and microfluidic chip well are aligned on the same vertical axis.
+
+<br id="3fed65dd82be800881c6e9e05373f393" />
+
+# <a id="3f9d65dd82be808f844aec659af2f946" />Bill of Materials
+
+<a id="3fad65dd82be8025b08ec928df6ba23c" />
+
+| <a id="3fad65dd82be80159391e1f59be216b2" />Materials                   | Overall Price (CAD) | Cost for the Project (CAD) |
+| ---------------------------------------------------------------------- | ------------------- | -------------------------- |
+| <a id="3fad65dd82be800aa19ddfc70ef2025e" />3D Printing Filament        | 19.9/1 kg           | 19.99                      |
+| <a id="3fdd65dd82be80a1b47ac9ca97104267" />Magnets                     | 16.49/200 Pcs       | 1.15                       |
+| <a id="3fbd65dd82be80ee9a06f337958d1ac7" />488nm LED                   | 20.27/LED           | 40.54                      |
+| <a id="3fad65dd82be80de878fff86005eaf7c" />500nm Long Pass Filter      | 51.8                | 51.8                       |
+| <a id="3fdd65dd82be80d7b3e8d079a0db49ba" />Photodiode                  | 43.50               | 43.50                      |
+| <a id="3fdd65dd82be803fa88ae1b33ab51bfc" />PCB Base Board              | 2/5 Pcs             | 0.8                        |
+| <a id="3fed65dd82be8005855ef088d4345f0b" />Detection PCB Components    | 65.88               | 65.88                      |
+| <a id="3fed65dd82be80ef96c8d50068a8605e" />Illumination PCB Components |                     |                            |
+| <a id="3fdd65dd82be8055b1e7d82044f1b7f2" />Arduino Uno R4 MINIMA       | 15                  | 15                         |
+| <a id="3fdd65dd82be803c8c26cfd964bcfe95" />Switch                      | 5                   | 5                          |
+| <a id="3fed65dd82be80209b33d38e453a3e55" />M3 Brass Heat Set Insert    | 28.99/440 Pcs       | 0.79                       |
+| <a id="3fed65dd82be801aa104fcb495883cad" />                            |                     | **Total:**                 |
+
+# <a id="3fbd65dd82be8042b94cfa15b5b4a7f3" />User Manual
+
+<a id="3fed65dd82be80b08a2ddfd0a2a61097" />
+
+<a href="https://static.igem.wiki/teams/6279/wiki/assets/afecbf9f9e6f5c36ba8f8cf0f6bd932f.pdf" target="_blank" rel="noopener noreferrer">
+  Fluorescence Detector.pdf
+</a>
+
+# <a id="3fed65dd82be80a682bff627e911ba85" />Final Product
 
 <br id="3fbd65dd82be8023913adfada4de8751" />
 
 # <a id="3fbd65dd82be8034992cdf993e9976df" />Improvements for Future Iterations
 
-#### <a id="3fcd65dd82be8016a5bddf3afc0838d6" />**We plan to continue exploring the potential of our customized fluorescence detector. The following are some of our next steps:**
+<a id="3fcd65dd82be8016a5bddf3afc0838d6" />We plan to continue exploring the potential of our customized fluorescence detector. The following are some of our next steps:
 
-- <a id="3fcd65dd82be80c48737ec42f030366e" />**Implement a fully automated detection process**
-  - <a id="3fcd65dd82be80b399c0d57eec43d687" />Adopt a rack-and-pinion mechanism, with the rack attached to the bottom of the chip holder and the pinion positioned directly beneath it. A servomotor will control the angle of rotation precisely, allowing the chip to be displaced by a fixed distance with each turn.
-  - <a id="3fcd65dd82be801dbddaed9cc5815f6c" />Automatically upload all detection results (fluorescence/no fluorescence) to the connected computer, allowing users to attend to other tasks and retrieve the complete results at any time.
-- <a id="3fcd65dd82be80109e07c603d87ce92e" />**Further improve the light-blocking capabilities of the enclosure**
-  - <a id="3fcd65dd82be8089bdfdee3ad5dd6142" />Test materials other than PLA to evaluate their light-blocking properties.
-  - <a id="3fcd65dd82be8069ad45eef5ccf6e4dc" />Incorporate baffles and ridges to minimize light leakage and stray light.
-- <a id="3fcd65dd82be8036b0ebd749b078dcbe" />**Explore alternative circuitry designs**
-  - <a id="3fcd65dd82be80c0ac9ce3343c490a34" />Develop a PCB-only design.
-  - <a id="3fcd65dd82be80b781bdfcfb729950a2" />Investigate cheaper and simpler setups for fluorescence detection.
+<Callout icon="⚙️">
+  <a id="3fed65dd82be80048fcde5b4d928cd07" />Implement a fully automated detection process by incorporating a rack-and-pinion mechanism, with the rack attached to the bottom of the chip holder and the pinion positioned directly beneath it. A DC motor will precisely control the pinion’s rotation, allowing the chip to move a fixed distance with each turn and ensuring consistent positioning during detection. Additionally, all detection results, indicating the presence or absence of fluorescence, will be automatically uploaded to a connected computer, allowing users to focus on other tasks while the system operates and retrieve the complete results at any time.
+</Callout>
+
+<Callout icon="🕶️">
+  <a id="3fed65dd82be80f0b1f7ed79d49040c0" />Further improve the enclosure’s light-blocking capabilities by testing materials other than PLA to identify alternatives with better light-blocking properties. Additionally, incorporate baffles and ridges into the enclosure design to minimize light leakage and reduce stray light, improving the reliability and accuracy of fluorescence detection.
+</Callout>
+
+<Callout icon="💡">
+  <a id="3fed65dd82be80d3b7c2c170dfaf2f98" />Explore alternative circuitry designs by developing a PCB-only design to simplify the hardware layout and improve integration of the detection system. Additionally, investigate lower-cost and less complex circuitry configurations for fluorescence detection to reduce manufacturing costs while maintaining reliable detection performance.
+</Callout>
+
+<br id="3fed65dd82be80bba312e8f241a1083f" />
+
+# References
+
+<Bibliography refs={[{"n":1,"key":"sandersonFluorescenceMicroscopy2014"},{"n":2,"key":"WhatFullSpectrum2012"},{"n":3,"key":"DetectionMadeEasy2026"},{"n":4,"key":"DarkBoxUV"},{"n":5,"key":"ltdFluorescenceSpectrophotometerNFS100"},{"n":6,"key":"TeamMunich2017igemorg"},{"n":7,"key":"ThorlabsFiltersFluorescence"},{"n":8,"key":"DichroicLongpassFilters"},{"n":9,"key":"PHOTODIODEBASICSWavelength"}]} />

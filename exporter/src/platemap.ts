@@ -1,6 +1,4 @@
-import type { NotionBlock } from "./notion";
-import { $unsafe, $unsafeSync, ExporterError, isErr, type ExporterResult, type Result } from "./utils";
-import axios from "axios";
+import { $unsafeSync, ExporterError, isErr, type ExporterResult, type Result } from "./utils";
 import { parse } from "csv-parse/sync";
 
 /**
@@ -23,16 +21,6 @@ export interface Plate {
     name: string;
     columns: number;
     rows: (Well | null)[][];
-}
-
-type FileBlock = Extract<NotionBlock, { type: "file" }>;
-
-/** Download the text of an uploaded or linked file. */
-export async function fetchFileText(block: FileBlock): Promise<ExporterResult<string>> {
-    const url = block.file.type === "file" ? block.file.file.url : block.file.external.url;
-    const response = await $unsafe(async () => await axios.get(url, { responseType: "text", timeout: 30000 }));
-    if (isErr(response)) return new ExporterError(`Could not download the file ${url}.`, ["notion server"], response);
-    return String(response.data);
 }
 
 /**

@@ -1,4 +1,188 @@
 {
+    "EscherichiaColiStr2025": {
+        "citation_key": "EscherichiaColiStr2025",
+        "bib": "Escherichia coli str. K-12 substr. MG1655, complete genome [Internet]. 2025 [cited 2026 Oct 19]. Available from: <a href=\"http://www.ncbi.nlm.nih.gov/nuccore/U00096.3\">http://www.ncbi.nlm.nih.gov/nuccore/U00096.3</a>"
+    },
+    "muzellecPyDESeq2PythonPackage2023": {
+        "citation_key": "muzellecPyDESeq2PythonPackage2023",
+        "bib": "Muzellec B, Tele&#x144;czuk M, Cabeli V, Andreux M. PyDESeq2: a python package for bulk RNA-seq differential expression analysis. Bioinformatics [Internet]. 2023 Sept 5 [cited 2026 Oct 19];39(9):btad547. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC10502239/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC10502239/</a>"
+    },
+    "salgadoRegulonDBV120Comprehensive2023": {
+        "citation_key": "salgadoRegulonDBV120Comprehensive2023",
+        "bib": "Salgado H, Gama-Castro S, Lara P, Mejia-Almonte C, Alarc&#xF3;n-Carranza G, L&#xF3;pez-Almazo AG, et al. RegulonDB v12.0: a comprehensive resource of transcriptional regulation in E. coli K-12. Nucleic Acids Res [Internet]. 2023 Nov 16 [cited 2026 Oct 19];52(D1):D255&#x2013;64. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC10767902/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC10767902/</a>"
+    },
+    "ComparativeAnalysisTranscriptomic": {
+        "citation_key": "ComparativeAnalysisTranscriptomic",
+        "bib": "Comparative Analysis of Transcriptomic Response of Escherichia coli K-12 MG1655 to Nine Representative Classes of Antibiotics | Microbiology Spectrum [Internet]. [cited 2026 Oct 19]. Available from: <a href=\"https://journals.asm.org/doi/10.1128/spectrum.00317-23\">https://journals.asm.org/doi/10.1128/spectrum.00317-23</a>"
+    },
+    "MicrobiologySpectrum": {
+        "citation_key": "MicrobiologySpectrum",
+        "bib": "Microbiology Spectrum [Internet]. [cited 2026 Oct 19]. About Microbiology Spectrum. Available from: <a href=\"https://journals.asm.org/journal/spectrum/about?doi=10.1128%2Fmicrobiolspec&amp;publicationCode=spectrum\">https://journals.asm.org/journal/spectrum/about?doi=10.1128%2Fmicrobiolspec&amp;publicationCode=spectrum</a>"
+    },
+    "beebePhysicsApplicationsMicrofluidics2002": {
+        "citation_key": "beebePhysicsApplicationsMicrofluidics2002",
+        "bib": "Beebe DJ, Mensing GA, Walker GM. Physics and Applications of Microfluidics in Biology. Annual Review of Biomedical Engineering [Internet]. 2002 [cited 2026 Oct 19];4:261&#x2013;86. Available from: <a href=\"https://www.annualreviews.org/content/journals/10.1146/annurev.bioeng.4.112601.125916\">https://www.annualreviews.org/content/journals/10.1146/annurev.bioeng.4.112601.125916</a>"
+    },
+    "healthMinorAilmentsContraception": {
+        "citation_key": "healthMinorAilmentsContraception",
+        "bib": "Health M of. Minor Ailments and Contraception Service (MACS) - Province of British Columbia [Internet]. Province of British Columbia; [cited 2026 Oct 19]. Available from: <a href=\"https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/pharmacare/initiatives/ppmac\">https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/pharmacare/initiatives/ppmac</a>"
+    },
+    "emailPharmacistsNowPrescribing2023": {
+        "citation_key": "emailPharmacistsNowPrescribing2023",
+        "bib": "Email S by, Facebook S on, X S on, LinkedIn S on, Message S via T. Vancouver Is Awesome. 2023 [cited 2026 Oct 19]. Pharmacists now prescribing medication for minor ailments. Available from: <a href=\"https://www.vancouverisawesome.com/highlights/pharmacists-now-prescribing-medication-for-minor-ailments-7095241\">https://www.vancouverisawesome.com/highlights/pharmacists-now-prescribing-medication-for-minor-ailments-7095241</a>"
+    },
+    "niiroCosteffectivenessAnalysisRapid2026": {
+        "citation_key": "niiroCosteffectivenessAnalysisRapid2026",
+        "bib": "Niiro H, Yoshida A, Kino F, Matsuyama F, Tashiro N, Murata T, et al. Cost-effectiveness analysis of rapid antimicrobial susceptibility testing as a point of care for patients with uncomplicated urinary tract infection in Japan. J Med Econ. 2026 Dec;29(1):1315&#x2013;26."
+    },
+    "kowalska-krochmalMinimumInhibitoryConcentration2021": {
+        "citation_key": "kowalska-krochmalMinimumInhibitoryConcentration2021",
+        "bib": "Kowalska-Krochmal B, Dudek-Wicher R. The Minimum Inhibitory Concentration of Antibiotics: Methods, Interpretation, Clinical Relevance. Pathogens [Internet]. 2021 Feb 4 [cited 2026 Oct 19];10(2):165. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC7913839/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC7913839/</a>"
+    },
+    "lambertSuperfolderGFPFPbase": {
+        "citation_key": "lambertSuperfolderGFPFPbase",
+        "bib": "Lambert T. FPbase. [cited 2026 Oct 19]. Superfolder GFP at FPbase. Available from: <a href=\"https://www.fpbase.org/protein/superfolder-gfp/\">https://www.fpbase.org/protein/superfolder-gfp/</a>"
+    },
+    "lambertSuperfolderGFPFPbasea": {
+        "citation_key": "lambertSuperfolderGFPFPbasea",
+        "bib": "Lambert T. FPbase. [cited 2026 Oct 19]. Superfolder GFP at FPbase. Available from: <a href=\"https://www.fpbase.org/protein/superfolder-gfp/\">https://www.fpbase.org/protein/superfolder-gfp/</a>"
+    },
+    "PHOTODIODEBASICSWavelength": {
+        "citation_key": "PHOTODIODEBASICSWavelength",
+        "bib": "PHOTODIODE BASICS &#x2013; Wavelength Electronics [Internet]. [cited 2026 Oct 19]. Available from: <a href=\"https://www.teamwavelength.com/photodiode-basics/\">https://www.teamwavelength.com/photodiode-basics/</a>"
+    },
+    "DichroicLongpassFilters": {
+        "citation_key": "DichroicLongpassFilters",
+        "bib": "Dichroic Longpass Filters | Edmund Optics [Internet]. [cited 2026 Oct 19]. Available from: <a href=\"https://www.edmundoptics.com/f/dichroic-longpass-filters/14288/\">https://www.edmundoptics.com/f/dichroic-longpass-filters/14288/</a>"
+    },
+    "DiscordGroupChat2026": {
+        "citation_key": "DiscordGroupChat2026",
+        "bib": "Discord [Internet]. 2026 [cited 2026 Oct 19]. Discord - Group Chat That&#x2019;s All Fun &amp; Games. Available from: <a href=\"https://discord.com/channels/@me/1407230413906247742\">https://discord.com/channels/@me/1407230413906247742</a>"
+    },
+    "ThorlabsFiltersFluorescence": {
+        "citation_key": "ThorlabsFiltersFluorescence",
+        "bib": "Thorlabs &#xB7; Filters for Fluorescence Microscopy Tutorial [Internet]. [cited 2026 Oct 19]. Available from: <a href=\"https://www.thorlabs.com/filters-for-fluorescence-microscopy-tutorial?tabName=Tutorial\">https://www.thorlabs.com/filters-for-fluorescence-microscopy-tutorial?tabName=Tutorial</a>"
+    },
+    "ltdFluorescenceSpectrophotometerNFS100": {
+        "citation_key": "ltdFluorescenceSpectrophotometerNFS100",
+        "bib": "Ltd L. Labnics Ltd. - Laboratory Equipment. [cited 2026 Oct 19]. Fluorescence Spectrophotometer NFS-100 | Labnics Ltd. Available from: <a href=\"https://www.labnics.com/fluorescence-spectrophotometer/nfs-100?srsltid=AU7gw4U_AwaKeXBQpkJ9ssq_yOg4ckLq_kfEVxtzd-Au4IueHhTj49xR-Dg\">https://www.labnics.com/fluorescence-spectrophotometer/nfs-100?srsltid=AU7gw4U_AwaKeXBQpkJ9ssq_yOg4ckLq_kfEVxtzd-Au4IueHhTj49xR-Dg</a>"
+    },
+    "DarkBoxUV": {
+        "citation_key": "DarkBoxUV",
+        "bib": "Dark Box UV Ultraviolet Analyzer, Lab Ultraviolet Analysis Tester, Fluorescence Detector, Wavelength 254nm/365nm, with Observation Window, for Product Testing&#x202F;: Amazon.ca: Industrial &amp; Scientific [Internet]. [cited 2026 Oct 19]. Available from: <a href=\"https://www.amazon.ca/Ultraviolet-Analyzer-Fluorescence-Wavelength-Observation/dp/B0G2YH4WD5\">https://www.amazon.ca/Ultraviolet-Analyzer-Fluorescence-Wavelength-Observation/dp/B0G2YH4WD5</a>"
+    },
+    "DetectionMadeEasy2026": {
+        "citation_key": "DetectionMadeEasy2026",
+        "bib": "KNAUER Website [Internet]. 2026 [cited 2026 Oct 19]. Detection Made Easy Part 5: Fluorescence Detectors. Available from: <a href=\"https://www.knauer.net/blog/blog-9/seeing-is-believing-detection-made-easy-part-5-fluorescence-detectors-164\">https://www.knauer.net/blog/blog-9/seeing-is-believing-detection-made-easy-part-5-fluorescence-detectors-164</a>"
+    },
+    "WhatFullSpectrum2012": {
+        "citation_key": "WhatFullSpectrum2012",
+        "bib": "What is Full Spectrum Lighting? [Internet]. Lumenistics. 2012 [cited 2026 Oct 19]. Available from: <a href=\"https://lumenistics.com/2012/03/19/what-is-full-spectrum-lighting/\">https://lumenistics.com/2012/03/19/what-is-full-spectrum-lighting/</a>"
+    },
+    "sandersonFluorescenceMicroscopy2014": {
+        "citation_key": "sandersonFluorescenceMicroscopy2014",
+        "bib": "Sanderson MJ, Smith I, Parker I, Bootman MD. Fluorescence Microscopy. Cold Spring Harb Protoc [Internet]. 2014 Oct 1 [cited 2026 Oct 19];2014(10):pdb.top071795. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC4711767/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC4711767/</a>"
+    },
+    "CellularMicroenvironmentDesign": {
+        "citation_key": "CellularMicroenvironmentDesign",
+        "bib": "Cellular Microenvironment Design Lab [Internet]. [cited 2026 Oct 19]. Available from: <a href=\"https://moraeslab.com/cmed/\">https://moraeslab.com/cmed/</a>"
+    },
+    "bieComparativeAnalysisTranscriptomic2023": {
+        "citation_key": "bieComparativeAnalysisTranscriptomic2023",
+        "bib": "Bie L, Zhang M, Wang J, Fang M, Li L, Xu H, et al. Comparative Analysis of Transcriptomic Response of Escherichia coli K-12 MG1655 to Nine Representative Classes of Antibiotics. Microbiology Spectrum [Internet]. 2023 Feb 28 [cited 2026 Oct 19];11(2):e00317-23. Available from: <a href=\"https://journals.asm.org/doi/10.1128/spectrum.00317-23\">https://journals.asm.org/doi/10.1128/spectrum.00317-23</a>"
+    },
+    "tammaPrimerAmpCVLactamases2019": {
+        "citation_key": "tammaPrimerAmpCVLactamases2019",
+        "bib": "Tamma PD, Doi Y, Bonomo RA, Johnson JK, Simner PJ, Antibacterial Resistance Leadership Group. A Primer on AmpC &#x3B2;-Lactamases: Necessary Knowledge for an Increasingly Multidrug-resistant World. Clin Infect Dis [Internet]. 2019 Oct 15 [cited 2026 Oct 18];69(8):1446&#x2013;55. Available from: <a href=\"https://doi.org/10.1093/cid/ciz173\">https://doi.org/10.1093/cid/ciz173</a>"
+    },
+    "mcdonoughAgitationFermentersBioreactors1997": {
+        "citation_key": "mcdonoughAgitationFermentersBioreactors1997",
+        "bib": "McDonough RJ. Agitation in fermenters and bioreactors. In: Goldberg E, editor. Handbook of Downstream Processing [Internet]. Dordrecht: Springer Netherlands; 1997 [cited 2026 Oct 18]. p. 357&#x2013;416. Available from: <a href=\"https://doi.org/10.1007/978-94-009-1563-3_15\">https://doi.org/10.1007/978-94-009-1563-3_15</a>"
+    },
+    "AerationPrinciples": {
+        "citation_key": "AerationPrinciples",
+        "bib": "Aeration principles [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://cercell.com/bioreactor-support/cellvessel-details/aeration-principle/\">https://cercell.com/bioreactor-support/cellvessel-details/aeration-principle/</a>"
+    },
+    "erjavecEscherichiaColiOld2023": {
+        "citation_key": "erjavecEscherichiaColiOld2023",
+        "bib": "Erjavec MS. Escherichia coli: Old and New Insights. BoD &#x2013; Books on Demand; 2023. 304 p."
+    },
+    "ScientificNet": {
+        "citation_key": "ScientificNet",
+        "bib": "Scientific.Net [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://main.scientific.net/book/progress-on-advanced-manufacture-for-micro-nano-technology-2005/978-3-03813-055-0/ebook\">https://main.scientific.net/book/progress-on-advanced-manufacture-for-micro-nano-technology-2005/978-3-03813-055-0/ebook</a>"
+    },
+    "obomOperationBenchtopBioreactor2013": {
+        "citation_key": "obomOperationBenchtopBioreactor2013",
+        "bib": "Obom KM, Magno A, Cummings PJ. Operation of a Benchtop Bioreactor. J Vis Exp [Internet]. 2013 Sept 12 [cited 2026 Oct 18];(79):50582. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC3864403/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC3864403/</a>"
+    },
+    "hsuAdvancedMicroscaleBioreactor2012": {
+        "citation_key": "hsuAdvancedMicroscaleBioreactor2012",
+        "bib": "Hsu WT, Aulakh RPS, Traul DL, Yuk IH. Advanced microscale bioreactor system: a representative scale-down model for bench-top bioreactors. Cytotechnology [Internet]. 2012 Dec 1 [cited 2026 Oct 18];64(6):667&#x2013;78. Available from: <a href=\"https://doi.org/10.1007/s10616-012-9446-1\">https://doi.org/10.1007/s10616-012-9446-1</a>"
+    },
+    "hardtTheoreticalExperimentalCharacterization2006": {
+        "citation_key": "hardtTheoreticalExperimentalCharacterization2006",
+        "bib": "Hardt S, Pennemann H, Sch&#xF6;nfeld F. Theoretical and experimental characterization of a low-Reynolds number split-and-recombine mixer. Microfluid Nanofluid [Internet]. 2006 May 1 [cited 2026 Oct 18];2(3):237&#x2013;48. Available from: <a href=\"https://doi.org/10.1007/s10404-005-0071-6\">https://doi.org/10.1007/s10404-005-0071-6</a>"
+    },
+    "CharacterizationFeasibilityMiniaturized": {
+        "citation_key": "CharacterizationFeasibilityMiniaturized",
+        "bib": "Characterization and feasibility of a miniaturized stirred tank bioreactor to perform <i>E. coli</i> high cell density fed&#x2010;batch fermentations - Ali - 2012 - Biotechnology Progress - Wiley Online Library [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://aiche.onlinelibrary.wiley.com/doi/full/10.1002/btpr.708?casa_token=6Sk0EV8wSBoAAAAA%3An0Xh4_tQ2CxUvLKPmke1RB0IIVbKNwQ1DF8RU6bUJ4Z1voKlNYIwE3R7SYY2ariE41a9Ax8WbGk3dqmt\">https://aiche.onlinelibrary.wiley.com/doi/full/10.1002/btpr.708?casa_token=6Sk0EV8wSBoAAAAA%3An0Xh4_tQ2CxUvLKPmke1RB0IIVbKNwQ1DF8RU6bUJ4Z1voKlNYIwE3R7SYY2ariE41a9Ax8WbGk3dqmt</a>"
+    },
+    "BioreactorOverviewScienceDirect": {
+        "citation_key": "BioreactorOverviewScienceDirect",
+        "bib": "Bioreactor - an overview | ScienceDirect Topics [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://www.sciencedirect.com/topics/engineering/bioreactor\">https://www.sciencedirect.com/topics/engineering/bioreactor</a>"
+    },
+    "IISERTirupati_IndiaAPTASTELESNovela": {
+        "citation_key": "IISERTirupati_IndiaAPTASTELESNovela",
+        "bib": "IISER-Tirupati_India: APTASTELES: A novel diagnostic kit for Polycystic Ovarian ... (2022) - Project Promotion [English] - iGEM Video Universe [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://video.igem.org/videos/embed/218c9b92-9942-4103-a729-fa938c907c2e\">https://video.igem.org/videos/embed/218c9b92-9942-4103-a729-fa938c907c2e</a>"
+    },
+    "IISERTirupati_IndiaDesignnew2022": {
+        "citation_key": "IISERTirupati_IndiaDesignnew2022",
+        "bib": "IISER-Tirupati_India: designnew (2022) - iGEM Video Universe [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://video.igem.org/videos/embed/7ecd14a3-9dea-437c-a210-07ac1e03986f\">https://video.igem.org/videos/embed/7ecd14a3-9dea-437c-a210-07ac1e03986f</a>"
+    },
+    "TeamMunich2017igemorg": {
+        "citation_key": "TeamMunich2017igemorg",
+        "bib": "Team:Munich - 2017.igem.org [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://2017.igem.org/Team:Munich\">https://2017.igem.org/Team:Munich</a>"
+    },
+    "TeamMunichHardwareb": {
+        "citation_key": "TeamMunichHardwareb",
+        "bib": "Team:Munich/Hardware - 2017.igem.org [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://2017.igem.org/Team:Munich/Hardware\">https://2017.igem.org/Team:Munich/Hardware</a>"
+    },
+    "TeamMunichHardwarec": {
+        "citation_key": "TeamMunichHardwarec",
+        "bib": "Team:Munich/Hardware - 2017.igem.org [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://2017.igem.org/Team:Munich/Hardware\">https://2017.igem.org/Team:Munich/Hardware</a>"
+    },
+    "jakobsenGentamicinSusceptibilityEscherichia2007a": {
+        "citation_key": "jakobsenGentamicinSusceptibilityEscherichia2007a",
+        "bib": "Jakobsen L, Sandvang D, Jensen VF, Seyfarth AM, Frimodt-M&#xF8;ller N, Hammerum AM. Gentamicin susceptibility in Escherichia coli related to the genetic background: problems with breakpoints. Clinical Microbiology and Infection [Internet]. 2007 Aug 1 [cited 2026 Oct 18];13(8):830&#x2013;2. Available from: <a href=\"https://www.clinicalmicrobiologyandinfection.org/article/S1198-743X(14)63425-X/fulltext\">https://www.clinicalmicrobiologyandinfection.org/article/S1198-743X(14)63425-X/fulltext</a>"
+    },
+    "jakobsenGentamicinSusceptibilityEscherichia2007b": {
+        "citation_key": "jakobsenGentamicinSusceptibilityEscherichia2007b",
+        "bib": "Jakobsen L, Sandvang D, Jensen VF, Seyfarth AM, Frimodt-M&#xF8;ller N, Hammerum AM. Gentamicin susceptibility in Escherichia coli related to the genetic background: problems with breakpoints. Clinical Microbiology and Infection [Internet]. 2007 Aug 1 [cited 2026 Oct 18];13(8):830&#x2013;2. Available from: <a href=\"https://www.clinicalmicrobiologyandinfection.org/article/S1198-743X(14)63425-X/fulltext\">https://www.clinicalmicrobiologyandinfection.org/article/S1198-743X(14)63425-X/fulltext</a>"
+    },
+    "TeamMunichHardwarea": {
+        "citation_key": "TeamMunichHardwarea",
+        "bib": "Team:Munich/Hardware - 2017.igem.org [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://2017.igem.org/Team:Munich/Hardware\">https://2017.igem.org/Team:Munich/Hardware</a>"
+    },
+    "pandeyBetaLactamAntibiotics2023": {
+        "citation_key": "pandeyBetaLactamAntibiotics2023",
+        "bib": "Pandey N, Cascella M. Beta-Lactam Antibiotics. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2023 [cited 2026 Oct 18]. Available from: <a href=\"http://www.ncbi.nlm.nih.gov/books/NBK545311/\">http://www.ncbi.nlm.nih.gov/books/NBK545311/</a>"
+    },
+    "tsaiImpactAminoglycosidesDynamics2013": {
+        "citation_key": "tsaiImpactAminoglycosidesDynamics2013",
+        "bib": "Tsai A, Uemura S, Johansson M, Puglisi EV, Marshall RA, Aitken CE, et al. The Impact of Aminoglycosides on the Dynamics of Translation Elongation. Cell Reports [Internet]. 2013 Feb 21 [cited 2026 Oct 18];3(2):497&#x2013;508. Available from: <a href=\"https://www.sciencedirect.com/science/article/pii/S221112471300051X\">https://www.sciencedirect.com/science/article/pii/S221112471300051X</a>"
+    },
+    "PRISM": {
+        "citation_key": "PRISM",
+        "bib": "PRISM [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://wiki.ubcigem.com/ubc-vancouver/modelling/prism/\">https://wiki.ubcigem.com/ubc-vancouver/modelling/prism/</a>"
+    },
+    "governmentofbcOutpatientPaymentSchedule": {
+        "citation_key": "governmentofbcOutpatientPaymentSchedule",
+        "bib": "Government of BC. Outpatient Payment Schedule [Internet]. Available from: <a href=\"https://www.phsa.ca/plms/Documents/Laboratory%2520Services%2520Outpatient%2520Payment%2520Schedule.pdf&amp;ved=2ahUKEwirkb_0jcOXAxW2GoAAHZxqLFUQFnoECA8QAQ&amp;usg=AOvVaw1CQxLwPoHIs5MNZ_pion3Y\">https://www.phsa.ca/plms/Documents/Laboratory%2520Services%2520Outpatient%2520Payment%2520Schedule.pdf&amp;ved=2ahUKEwirkb_0jcOXAxW2GoAAHZxqLFUQFnoECA8QAQ&amp;usg=AOvVaw1CQxLwPoHIs5MNZ_pion3Y</a>"
+    },
+    "harnettPharmacistsNowPrescribing2023": {
+        "citation_key": "harnettPharmacistsNowPrescribing2023",
+        "bib": "Harnett CE. Vancouver Is Awesome. 2023 [cited 2026 Oct 17]. Pharmacists now prescribing medication for minor ailments. Available from: <a href=\"https://www.vancouverisawesome.com/highlights/pharmacists-now-prescribing-medication-for-minor-ailments-7095241\">https://www.vancouverisawesome.com/highlights/pharmacists-now-prescribing-medication-for-minor-ailments-7095241</a>"
+    },
     "healthPharmacistsPrescribingMinor": {
         "citation_key": "healthPharmacistsPrescribingMinor",
         "bib": "Health M of. Pharmacists prescribing for minor ailments and contraception - data - Province of British Columbia [Internet]. Province of British Columbia; [cited 2026 Oct 18]. Available from: <a href=\"https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/pharmacare/initiatives/sop/monitoring-evaluation-ppmac\">https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/pharmacare/initiatives/sop/monitoring-evaluation-ppmac</a>"
@@ -15,37 +199,49 @@
         "citation_key": "mayDemographicTreatmentPatterns2014",
         "bib": "May L, Mullins P, Pines J. Demographic and Treatment Patterns for Infections in Ambulatory Settings in the United States, 2006-2010. Acad Emerg Med [Internet]. 2014 Jan [cited 2026 Oct 18];21(1):17&#x2013;24. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC3930926/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC3930926/</a>"
     },
+    "regallaUrineCultureClinical2026": {
+        "citation_key": "regallaUrineCultureClinical2026",
+        "bib": "Regalla DKR, Leslie SW. Urine Culture: Clinical Use and Interpretation. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2026 [cited 2026 Oct 18]. Available from: <a href=\"http://www.ncbi.nlm.nih.gov/books/NBK557569/\">http://www.ncbi.nlm.nih.gov/books/NBK557569/</a>"
+    },
     "AntimicrobialSusceptibilityTesting": {
         "citation_key": "AntimicrobialSusceptibilityTesting",
         "bib": "Antimicrobial Susceptibility Testing Market Outlook, Forecast, Companies by 2034 [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://www.delveinsight.com/report-store/antimicrobial-susceptibility-testing-market\">https://www.delveinsight.com/report-store/antimicrobial-susceptibility-testing-market</a>"
     },
-    "regallaUrineCultureClinical2026a": {
-        "citation_key": "regallaUrineCultureClinical2026a",
-        "bib": "Regalla DKR, Leslie SW. Urine Culture: Clinical Use and Interpretation. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2026 [cited 2026 Oct 18]. Available from: <a href=\"http://www.ncbi.nlm.nih.gov/books/NBK557569/\">http://www.ncbi.nlm.nih.gov/books/NBK557569/</a>"
+    "ClinicalDiagnosticsMarket": {
+        "citation_key": "ClinicalDiagnosticsMarket",
+        "bib": "Clinical Diagnostics Market to Reach USD 234.36 Bn by 2035 [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://www.towardshealthcare.com/insights/clinical-diagnostics-market-sizing\">https://www.towardshealthcare.com/insights/clinical-diagnostics-market-sizing</a>"
+    },
+    "TeamMunichHardware": {
+        "citation_key": "TeamMunichHardware",
+        "bib": "Team:Munich/Hardware - 2017.igem.org [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://2017.igem.org/Team:Munich/Hardware\">https://2017.igem.org/Team:Munich/Hardware</a>"
+    },
+    "IISERTirupati_IndiaAPTASTELESNovel": {
+        "citation_key": "IISERTirupati_IndiaAPTASTELESNovel",
+        "bib": "IISER-Tirupati_India: APTASTELES: A novel diagnostic kit for Polycystic Ovarian ... (2022) - Project Promotion [English] - iGEM Video Universe [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://video.igem.org/videos/embed/218c9b92-9942-4103-a729-fa938c907c2e\">https://video.igem.org/videos/embed/218c9b92-9942-4103-a729-fa938c907c2e</a>"
+    },
+    "FAQFrequentlyAsked2026": {
+        "citation_key": "FAQFrequentlyAsked2026",
+        "bib": "FAQ - Frequently Asked Questions | Prusa Knowledge Base [Internet]. 2026 [cited 2026 Oct 18]. Available from: <a href=\"https://help.prusa3d.com/article/faq-frequently-asked-questions_1932\">https://help.prusa3d.com/article/faq-frequently-asked-questions_1932</a>"
     },
     "ClinicalDiagnosticsMarketa": {
         "citation_key": "ClinicalDiagnosticsMarketa",
         "bib": "Clinical Diagnostics Market to Reach USD 234.36 Bn by 2035 [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://www.towardshealthcare.com/insights/clinical-diagnostics-market-sizing\">https://www.towardshealthcare.com/insights/clinical-diagnostics-market-sizing</a>"
     },
-    "zotero-item-1258": {
-        "citation_key": "zotero-item-1258",
+    "regallaUrineCultureClinical2026a": {
+        "citation_key": "regallaUrineCultureClinical2026a",
+        "bib": "Regalla DKR, Leslie SW. Urine Culture: Clinical Use and Interpretation. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2026 [cited 2026 Oct 18]. Available from: <a href=\"http://www.ncbi.nlm.nih.gov/books/NBK557569/\">http://www.ncbi.nlm.nih.gov/books/NBK557569/</a>"
+    },
+    "technionigem2016TechnionIsrael": {
+        "citation_key": "technionigem2016TechnionIsrael",
         "bib": "Technion iGEM. 2016 Technion Israel [Internet]. Available from: <a href=\"https://2016.igem.org/Team:Technion_Israel/Hardware\">https://2016.igem.org/Team:Technion_Israel/Hardware</a>"
     },
     "baharogluIdentificationGenesInvolved2014": {
         "citation_key": "baharogluIdentificationGenesInvolved2014",
         "bib": "Baharoglu Z, Babosan A, Mazel D. Identification of genes involved in low aminoglycoside-induced SOS response in Vibrio cholerae: a role for transcription stalling and Mfd helicase. Nucleic Acids Res [Internet]. 2014 Feb 1 [cited 2026 Oct 18];42(4):2366&#x2013;79. Available from: <a href=\"https://doi.org/10.1093/nar/gkt1259\">https://doi.org/10.1093/nar/gkt1259</a>"
     },
-    "regallaUrineCultureClinical2026": {
-        "citation_key": "regallaUrineCultureClinical2026",
-        "bib": "Regalla DKR, Leslie SW. Urine Culture: Clinical Use and Interpretation. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2026 [cited 2026 Oct 18]. Available from: <a href=\"http://www.ncbi.nlm.nih.gov/books/NBK557569/\">http://www.ncbi.nlm.nih.gov/books/NBK557569/</a>"
-    },
     "medinaIntroductionEpidemiologyBurden2019": {
         "citation_key": "medinaIntroductionEpidemiologyBurden2019",
         "bib": "Medina M, Castillo-Pino E. An introduction to the epidemiology and burden of urinary tract infections. Ther Adv Urol [Internet]. 2019 May 2 [cited 2026 Oct 18];11:1756287219832172. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC6502976/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC6502976/</a>"
-    },
-    "ClinicalDiagnosticsMarket": {
-        "citation_key": "ClinicalDiagnosticsMarket",
-        "bib": "Clinical Diagnostics Market to Reach USD 234.36 Bn by 2035 [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://www.towardshealthcare.com/insights/clinical-diagnostics-market-sizing\">https://www.towardshealthcare.com/insights/clinical-diagnostics-market-sizing</a>"
     },
     "GlobalPointofCareDiagnostics": {
         "citation_key": "GlobalPointofCareDiagnostics",
@@ -74,10 +270,6 @@
     "raivioCpxEnvelopeStress1999": {
         "citation_key": "raivioCpxEnvelopeStress1999",
         "bib": "Raivio TL, Popkin DL, Silhavy TJ. The Cpx Envelope Stress Response Is Controlled by Amplification and Feedback Inhibition. Journal of Bacteriology [Internet]. 1999 Sept [cited 2026 Oct 18];181(17):5263&#x2013;72. Available from: <a href=\"https://journals.asm.org/doi/10.1128/jb.181.17.5263-5272.1999\">https://journals.asm.org/doi/10.1128/jb.181.17.5263-5272.1999</a>"
-    },
-    "FAQFrequentlyAsked2026a": {
-        "citation_key": "FAQFrequentlyAsked2026a",
-        "bib": "FAQ - Frequently Asked Questions | Prusa Knowledge Base [Internet]. 2026 [cited 2026 Oct 18]. Available from: <a href=\"https://help.prusa3d.com/article/faq-frequently-asked-questions_1932\">https://help.prusa3d.com/article/faq-frequently-asked-questions_1932</a>"
     },
     "liuTwofluidMixingMicrochannel2004": {
         "citation_key": "liuTwofluidMixingMicrochannel2004",
@@ -142,10 +334,6 @@
     "healthPharmacistsCanPrescribe2023": {
         "citation_key": "healthPharmacistsCanPrescribe2023",
         "bib": "Health. BC Gov News. 2023 [cited 2026 Oct 17]. Pharmacists can prescribe contraceptives, treatments for minor ailments. Available from: <a href=\"https://news.gov.bc.ca/releases/2023HLTH0074-000859\">https://news.gov.bc.ca/releases/2023HLTH0074-000859</a>"
-    },
-    "emailPharmacistsNowPrescribing2023": {
-        "citation_key": "emailPharmacistsNowPrescribing2023",
-        "bib": "Email S by, Facebook S on, X S on, LinkedIn S on, Message S via T. Vancouver Is Awesome. 2023 [cited 2026 Oct 17]. Pharmacists now prescribing medication for minor ailments. Available from: <a href=\"https://www.vancouverisawesome.com/highlights/pharmacists-now-prescribing-medication-for-minor-ailments-7095241\">https://www.vancouverisawesome.com/highlights/pharmacists-now-prescribing-medication-for-minor-ailments-7095241</a>"
     },
     "foxmanEpidemiologyUrinaryTract2010": {
         "citation_key": "foxmanEpidemiologyUrinaryTract2010",
@@ -435,8 +623,8 @@
         "citation_key": "ThisElectricField",
         "bib": "ScienceDaily [Internet]. [cited 2026 July 16]. This electric field trick boosted heat flow by nearly 300%. Available from: <a href=\"https://www.sciencedaily.com/releases/2026/07/260709160651.htm\">https://www.sciencedaily.com/releases/2026/07/260709160651.htm</a>"
     },
-    "persatCurvedShapeCaulobacter2014a": {
-        "citation_key": "persatCurvedShapeCaulobacter2014a",
+    "persatCurvedShapeCaulobacter2014": {
+        "citation_key": "persatCurvedShapeCaulobacter2014",
         "bib": "Persat A, Stone HA, Gitai Z. The curved shape of Caulobacter crescentus enhances surface colonization in flow. Nat Commun [Internet]. 2014 May 8 [cited 2025 Oct 1];5:3824. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC4104588/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC4104588/</a>"
     },
     "AIWorkspaceThat": {
@@ -447,8 +635,8 @@
         "citation_key": "nishimuraTechnologyUsingSimulated2023",
         "bib": "Nishimura Y. Technology using simulated microgravity. Regenerative Therapy [Internet]. 2023 Dec 1 [cited 2025 Oct 1];24:318&#x2013;23. Available from: <a href=\"https://www.sciencedirect.com/science/article/pii/S2352320423000767\">https://www.sciencedirect.com/science/article/pii/S2352320423000767</a>"
     },
-    "yuSynechococcusElongatusUTEX2015b": {
-        "citation_key": "yuSynechococcusElongatusUTEX2015b",
+    "yuSynechococcusElongatusUTEX2015": {
+        "citation_key": "yuSynechococcusElongatusUTEX2015",
         "bib": "Yu J, Liberton M, Cliften PF, Head RD, Jacobs JM, Smith RD, et al. Synechococcus elongatus UTEX 2973, a fast growing cyanobacterial chassis for biosynthesis using light and CO2. Sci Rep [Internet]. 2015 Jan 30 [cited 2025 Oct 2];5(1):8132. Available from: <a href=\"https://www.nature.com/articles/srep08132\">https://www.nature.com/articles/srep08132</a>"
     },
     "bharatStructureHexagonalSurface2017": {
@@ -475,8 +663,8 @@
         "citation_key": "chanquiaPhotobioreactorsCultivationSynthesis",
         "bib": "Chanquia, Vernet. Photobioreactors for cultivation and synthesis: Specifications, challenges, and perspectives."
     },
-    "OverviewInSituResourcea": {
-        "citation_key": "OverviewInSituResourcea",
+    "OverviewInSituResource": {
+        "citation_key": "OverviewInSituResource",
         "bib": "Overview: In-Situ Resource Utilization - NASA [Internet]. [cited 2025 Oct 1]. Available from: <a href=\"https://www.nasa.gov/overview-in-situ-resource-utilization/\">https://www.nasa.gov/overview-in-situ-resource-utilization/</a>"
     },
     "NeutralBuoyancyLaboratory": {
@@ -487,16 +675,16 @@
         "citation_key": "medicineMusculoskeletalDisordersWorkplace2001",
         "bib": "Medicine I of, Council NR, Education C on B and SS and, Workplace P on MD and the. Musculoskeletal Disorders and the Workplace: Low Back and Upper Extremities. National Academies Press; 2001. 511 p."
     },
-    "MSPMaastrichtSpinningDNAorigamia": {
-        "citation_key": "MSPMaastrichtSpinningDNAorigamia",
+    "MSPMaastrichtSpinningDNAorigami": {
+        "citation_key": "MSPMaastrichtSpinningDNAorigami",
         "bib": "MSP-Maastricht: Spinning DNA-origami Octahedron (2023) [English] - iGEM Video Universe [Internet]. [cited 2025 Feb 21]. Available from: <a href=\"https://video.igem.org/w/1YHDLAZi9qiFjr2HXxq6WL\">https://video.igem.org/w/1YHDLAZi9qiFjr2HXxq6WL</a>"
     },
     "vashiLabonaChipTechnologiesMicrogravity2022": {
         "citation_key": "vashiLabonaChipTechnologiesMicrogravity2022",
         "bib": "Vashi A, Sreejith KR, Nguyen NT. Lab-on-a-Chip Technologies for Microgravity Simulation and Space Applications. Micromachines (Basel) [Internet]. 2022 Dec 31 [cited 2025 Oct 1];14(1):116. Available from: <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC9864955/\">https://pmc.ncbi.nlm.nih.gov/articles/PMC9864955/</a>"
     },
-    "associationHistoricNumberLaunches2025a": {
-        "citation_key": "associationHistoricNumberLaunches2025a",
+    "associationHistoricNumberLaunches2025": {
+        "citation_key": "associationHistoricNumberLaunches2025",
         "bib": "Association SI. Historic Number of Launches Powers Commercial Satellite Industry Growth &#x2013; Satellite Industry Association Releases the 28th Annual State of the Satellite Industry Report [Internet]. Satellite Industry Association. 2025 [cited 2025 Oct 3]. Available from: <a href=\"https://sia.org/historic-number-of-launches-powers-commercial-satellite-industry-growth-satellite-industry-association-releases-the-28th-annual-state-of-the-satellite-industry-report/\">https://sia.org/historic-number-of-launches-powers-commercial-satellite-industry-growth-satellite-industry-association-releases-the-28th-annual-state-of-the-satellite-industry-report/</a>"
     },
     "charrierEngineeringSLayerCaulobacter2019": {
@@ -523,16 +711,16 @@
         "citation_key": "joerisControlledPartialGravity2024",
         "bib": "Joeris K, Keulen M, Kollmer JE. Controlled Partial Gravity Platform for Milligravity in Drop Tower Experiments [Internet]. arXiv; 2024 [cited 2025 Oct 1]. Available from: <a href=\"http://arxiv.org/abs/2411.12391\">http://arxiv.org/abs/2411.12391</a>"
     },
-    "crawfordChapter25Lunar2014a": {
-        "citation_key": "crawfordChapter25Lunar2014a",
+    "crawfordChapter25Lunar2014": {
+        "citation_key": "crawfordChapter25Lunar2014",
         "bib": "Crawford IA, Joy KH, Anand M. Chapter 25 - Lunar Exploration. In: Spohn T, Breuer D, Johnson TV, editors. Encyclopedia of the Solar System (Third Edition) [Internet]. Boston: Elsevier; 2014 [cited 2025 Oct 1]. p. 555&#x2013;79. Available from: <a href=\"https://www.sciencedirect.com/science/article/pii/B9780124158450000256\">https://www.sciencedirect.com/science/article/pii/B9780124158450000256</a>"
     },
     "fanCellSurfaceDisplay2011": {
         "citation_key": "fanCellSurfaceDisplay2011",
         "bib": "Fan LH, Liu N, Yu MR, Yang ST, Chen HL. Cell surface display of carbonic anhydrase on Escherichia coli using ice nucleation protein for CO&#x2082; sequestration. Biotechnol Bioeng. 2011 Dec;108(12):2853&#x2013;64."
     },
-    "xuBioremediationSolubleHeavy2010a": {
-        "citation_key": "xuBioremediationSolubleHeavy2010a",
+    "xuBioremediationSolubleHeavy2010": {
+        "citation_key": "xuBioremediationSolubleHeavy2010",
         "bib": "Xu Z, Lei Y, Patel J. Bioremediation of soluble heavy metals with recombinant Caulobacter crescentus. Bioeng Bugs. 2010;1(3):207&#x2013;12."
     },
     "BioreactorDesignScaleup": {

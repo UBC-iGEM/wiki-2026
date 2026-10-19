@@ -50,7 +50,7 @@
                             "item": "388d65dd82be80519270e56b78d9e4a2"
                         },
                         {
-                            "path": "Sequencing for CpxP and RecA",
+                            "path": "Preparing CpxP and RecA cultures for sequencing",
                             "item": "388d65dd82be80f1b9aded9137bcdb37"
                         },
                         {
@@ -58,7 +58,7 @@
                             "item": "388d65dd82be80f7addff8006cdf17a9"
                         },
                         {
-                            "path": "Transformation of CpxP/RecA into Epi300",
+                            "path": "Transformation of CpxP/RecA into EPI300",
                             "item": "3a0d65dd82be8006a207f9238485ada8"
                         },
                         {
@@ -82,7 +82,7 @@
                             "item": "3c2d65dd82be806b942fc3f784c5f6a9"
                         },
                         {
-                            "path": "Patient Simulant (B-Lact., CmR backbone) Cloning",
+                            "path": "Patient Simulant (Beta-Lact., CmR backbone) Cloning",
                             "item": "3c2d65dd82be8073a263f8409653e257"
                         },
                         {
@@ -146,11 +146,11 @@
                             "item": "3ead65dd82be80a692f1c26f88e901da"
                         },
                         {
-                            "path": "Biofactorial Library Screen",
+                            "path": "Biofactorial Part 1: MIC Assay",
                             "item": "3fcd65dd82be80d1856fcdc12ac52f19"
                         },
                         {
-                            "path": "Biofactorial Simulant Validation",
+                            "path": "Biofactorial Part 2: Library Screen",
                             "item": "3fcd65dd82be80508eacf33e7e0ce89d"
                         }
                     ]
@@ -210,9 +210,52 @@
                     "item": "3f9d65dd82be80e28c7be16850fbcb90"
                 },
                 {
-                    "path": "Lab Notebook",
-                    "type": "page",
-                    "item": "3ecd65dd82be80d1b702c82130b0682e"
+                    "path": "Experiment Database",
+                    "type": "db",
+                    "item": [
+                        {
+                            "path": "PDMS Casting",
+                            "item": "3bcd65dd82be80dea0a7ff237e09cc12"
+                        },
+                        {
+                            "path": "PDMS Casting",
+                            "item": "3bcd65dd82be804c945adc2479b17a44"
+                        },
+                        {
+                            "path": "PDMS Bonding",
+                            "item": "3bcd65dd82be80f6ac7bffe63fa61093"
+                        },
+                        {
+                            "path": "SOP for Calibration of SEN0169 pH Probe",
+                            "item": "3c1d65dd82be80908a25f2a2614b2c16"
+                        },
+                        {
+                            "path": "PDMS Casting",
+                            "item": "3c1d65dd82be80efb0f3c1c9d7fedfde"
+                        },
+                        {
+                            "path": "Hardware bacteria stock ",
+                            "item": "3d5d65dd82be8017b720f33f0b41e3b5"
+                        },
+                        {
+                            "path": "Bioreactor Bacterial Culture ",
+                            "item": "3d7d65dd82be8004bedbfb0def2c245d"
+                        }
+                    ]
+                },
+                {
+                    "path": "Protocol Databse",
+                    "type": "db",
+                    "item": [
+                        {
+                            "path": "PDMS Casting",
+                            "item": "3fdd65dd82be80379831efea7170d704"
+                        },
+                        {
+                            "path": "Bioreactor Culture ",
+                            "item": "3fdd65dd82be8001b086fa65b6cd4748"
+                        }
+                    ]
                 }
             ]
         },

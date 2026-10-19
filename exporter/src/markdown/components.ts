@@ -1,11 +1,11 @@
 import { fetchNotebook, parseColabFileId } from "../colab";
 import type { NotionBlock } from "../notion";
-import { fetchFileText, parsePlate, type Plate } from "../platemap";
+import { parsePlate, type Plate } from "../platemap";
 import { parseGenbank } from "../seqmap";
 import { ExporterError, isExporterErr, type ExporterResult } from "../utils";
 import { blockContext, convertBlocks, convertItems, type ConvertContext, type Item } from "./blocks";
 import { jsxFlow, jsxInlineBlock, type FlowContent, type JsxAttrs } from "./mdx";
-import { mediaFileName, parseImageCaption, uploadMedia } from "./media";
+import { fetchMedia, mediaFileName, parseImageCaption, uploadMedia } from "./media";
 import { asPlainText, convertRichText } from "./rich-text";
 import type { RichTextItemResponse } from "@notionhq/client";
 import type { Heading, Image, PhrasingContent } from "mdast";
@@ -444,10 +444,10 @@ async function platemap({ items, ctx }: ComponentInput): ComponentOutput {
         if (file_block.type !== "file" || !/\.csv$/i.test(mediaFileName(file_block)))
             return malformedPlatemap(`the subtitle "${name}" is not followed by an uploaded .csv file`);
 
-        const csv = await fetchFileText(file_block);
+        const csv = await fetchMedia(file_block);
         if (isExporterErr(csv)) return csv;
 
-        const parsed = parsePlate(name, csv, categories);
+        const parsed = parsePlate(name, csv.toString(), categories);
         if (isExporterErr(parsed)) return parsed;
         for (const warning of parsed.warnings)
             new ExporterError(warning, ["malformed content"]).warn(blockContext(ctx, file_block));
@@ -510,10 +510,10 @@ async function seqmap({ items, ctx }: ComponentInput): ComponentOutput {
         return malformedSeqmap("its title is not followed by an uploaded GenBank (.gb) file");
     if (rest.length > 0) return malformedSeqmap("it has content after its GenBank file");
 
-    const text = await fetchFileText(file_block);
-    if (isExporterErr(text)) return text;
+    const data = await fetchMedia(file_block);
+    if (isExporterErr(data)) return data;
 
-    const seq = parseGenbank(text, mediaFileName(file_block));
+    const seq = parseGenbank(data.toString(), mediaFileName(file_block));
     if (isExporterErr(seq)) return seq;
     if (seq.annotations.length === 0)
         new ExporterError(`Seqmap "${title}" has no annotated features.`, ["malformed content"]).warn(

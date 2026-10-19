@@ -12,8 +12,8 @@ path: "Wet Lab/Engineering/Biosensor"
   <Fragment slot="design">
     <a id="3fcd65dd82be80d2b360f82188ca775c" />Based on our literature review, we designed two fluorescent reporter constructs. The CpxP reporter uses the CpxP promoter, which responds to cell envelope stress. The RecA reporter uses the RecA promoter and its SOS box, which respond to DNA damage.
 
-    - <a id="3fcd65dd82be80abb525ebed8d998d62" />CpxP reporter (2940 bp): the pCpxP promoter with sfGFP.
-    - <a id="3fcd65dd82be80d8ac73f7e1a3e2711a" />RecA reporter (2855 bp): the pRecA promoter and SOS box with sfGFP.
+    - <a id="3fcd65dd82be80abb525ebed8d998d62" />CpxP reporter plasmid (2940 bp): the pCpxP promoter with sfGFP inco
+    - <a id="3fcd65dd82be80d8ac73f7e1a3e2711a" />RecA reporter plasmid (2855 bp): the pRecA promoter and SOS box with sfGFP.
 
     <a id="3fcd65dd82be809da7fcccf06046fa3d" />Both reporters are built in the pSB1C3 backbone for 3 reasons:
 
@@ -25,15 +25,15 @@ path: "Wet Lab/Engineering/Biosensor"
   <Fragment slot="build">
     <a id="3fcd65dd82be801e882ee015d4402ff9" />For assembly, we ordered gBlocks from IDT with Gibson overhangs built in:
 
-    - <a id="3fcd65dd82be8002aedcfd42ecba64e6" />Two linearized backbones (2079 bp) each with overhangs specific to one construct.
-    - <a id="3fcd65dd82be8084b400dc30f356c405" />A CpxP insert (947 bp) containing pCpxP and sfGFP.
-    - <a id="3fcd65dd82be8023aa8defcadaa252ff" />A RecA insert (862 bp) containing pRecA, the SOS box and sfGFP.
+    - <a id="3fcd65dd82be8002aedcfd42ecba64e6" />Two linearized backbone fragments (2079 bp), each with overhangs specific to one construct.
+    - <a id="3fcd65dd82be8084b400dc30f356c405" />A CpxP reporter insert (947 bp) containing our pCpxP-sfGFP reporter part ([BBa\_26A5JL4T](https://registry.igem.org/parts/bba-26a5jl4t)) and overhangs specific to the regions flanking the pSB1C3 backbone MCS
+    - <a id="3fcd65dd82be8023aa8defcadaa252ff" />A RecA reporter insert (862 bp) containing our pRecA-sfGFP reporter part ([BBa\_267O4B7H](https://registry.igem.org/parts/bba-267o4b7h)) with overhangs specific to the regions flanking the pSB1C3 backbone MCS
 
-    <a id="3fcd65dd82be807ea659e77608c0f7a4" />We assembled each reporter by Gibson assembly, combining the linearized backbone with the matching insert. The master mix contains an exonuclease that creates single-stranded overlaps, a DNA polymerase that fills gaps, and a DNA ligase that seals the backbone. We transformed the assemblies into competent E. coli DH5α cells and selected colonies on chloramphenicol.
+    <a id="3fcd65dd82be807ea659e77608c0f7a4" />We assembled each reporter by Gibson assembly, combining the linearized backbone with the corresponding insert. We transformed the assemblies into competent E. coli DH5α and selected colonies grown on chloramphenicol plates.
   </Fragment>
 
   <Fragment slot="test">
-    <a id="3fcd65dd82be803bb36cd9ccb8935bf8" />We extracted plasmids from colonies per construct from culture plates and sequenced them to confirm successful cloning.
+    <a id="3fcd65dd82be803bb36cd9ccb8935bf8" />We extracted plasmids from colonies of each construct and sequenced them to confirm successful cloning.
   </Fragment>
 
   <Fragment slot="learn">
@@ -137,6 +137,8 @@ path: "Wet Lab/Engineering/Biosensor"
 
 # <a id="3fcd65dd82be803397e6c89a77ff59f8" />Reporter Validation
 
+## <a id="3fed65dd82be804f8b3ff9a17630a54b" />Antibiotic-Induced Fluorescence Output
+
 <details>
   <summary><a id="3fcd65dd82be807da888f6d15162c5eb" />Iteration 1</summary>
 
@@ -146,7 +148,7 @@ path: "Wet Lab/Engineering/Biosensor"
 
   <Dbtl>
     <Fragment slot="design">
-      <a id="3fcd65dd82be8072a215f2804c410c94" />After transformation, we needed to validate our construct’s biological function as a sensor. To this end, we started by looking for differential expression of green fluorescent protein (GFP) to determine a range of sub-inhibitory antibiotic concentrations to use, as well its incubation time. We also considered the effect of optical density (OD600) on GFP expression, and included this as a variable in the experiment.
+      <a id="3fcd65dd82be8072a215f2804c410c94" />After transformation, we needed to validate our construct’s biological function as a sensor. To this end, we started by looking for differential expression of green fluorescent protein (GFP) to determine a range of subinhibitory antibiotic concentrations to use, as well its incubation time. We also considered the effect of optical density (OD600) on GFP expression, and included this as a variable in the experiment.
     </Fragment>
 
     <Fragment slot="build">

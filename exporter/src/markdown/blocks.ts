@@ -1,10 +1,11 @@
+import { MAX_ROWS, parseCsvTable } from "../csv-table";
 import type { ContentMap } from "../map";
 import { Id, PageId, type NotionBlock } from "../notion";
 import { ExporterError, isExporterErr, type WarningContext } from "../utils";
 import { COMPONENT_MAP, componentDocSuggestion, type ImgAttrs } from "./components";
 import { pageMention, warnGoogleLink } from "./link";
 import { anchorFlow, anchorText, jsxFlow, jsxInlineBlock, type FlowContent } from "./mdx";
-import { mediaFileName, parseImageCaption, uploadMedia } from "./media";
+import { fetchMedia, mediaFileName, parseImageCaption, uploadMedia } from "./media";
 import { convertRichText, asPlainText } from "./rich-text";
 import type { RichTextItemResponse } from "@notionhq/client";
 import type { Heading, List, ListItem, Paragraph, PhrasingContent, Table, TableRow } from "mdast";
@@ -286,6 +287,10 @@ async function convertBlock(block: NotionBlock, parent_ctx: ConvertContext): Pro
                     ]),
                 ];
             }
+            if (/\.csv$/i.test(filename)) {
+                const table = await csvTable(block, filename, ctx);
+                return table === null ? [] : [table];
+            }
             return [];
         }
         case "table":
@@ -395,6 +400,46 @@ async function convertTable(
     }
 
     return { type: "table", align: Array.from({ length: width }, () => null), children: table_rows };
+}
+
+/**
+ * An uploaded CSV, as a table whose first row is the header. Its anchor goes in the first header cell, which also keeps
+ * the header visible when that cell is blank (see `style.css`).
+ */
+async function csvTable(
+    block: Extract<NotionBlock, { type: "file" }>,
+    filename: string,
+    ctx: ConvertContext,
+): Promise<Table | null> {
+    const data = await fetchMedia(block);
+    if (isExporterErr(data)) {
+        data.warn(ctx);
+        return null;
+    }
+    const table = parseCsvTable(filename, data.toString());
+    if (isExporterErr(table)) {
+        table.warn(ctx);
+        return null;
+    }
+    if (table.truncated)
+        new ExporterError(`"${filename}" is longer than ${MAX_ROWS} rows; the rest was left out of the page.`, [
+            "malformed content",
+        ]).warn(ctx);
+
+    return {
+        type: "table",
+        align: Array.from({ length: table.rows[0]!.length }, () => null),
+        children: table.rows.map((row, r): TableRow => ({
+            type: "tableRow",
+            children: row.map((cell, c) => ({
+                type: "tableCell",
+                children: [
+                    ...(r === 0 && c === 0 ? [anchorText(ctx.block!)] : []),
+                    ...(cell === "" ? [] : [{ type: "text" as const, value: cell }]),
+                ],
+            })),
+        })),
+    };
 }
 
 /**

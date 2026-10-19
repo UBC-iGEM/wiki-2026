@@ -1,0 +1,38 @@
+---
+type: "database"
+title: "PDMS Casting"
+path: "Hardware/Protocol Databse/PDMS Casting"
+---
+
+# <a id="3fdd65dd82be80d98fcec9fdb6266aff" />Mold
+
+<a id="3fdd65dd82be80798cbad91e7e049892" />PDMS molds can be printed out of PLA or resin. When using PLA, ensure that when you are slicing, that a valid path has been formed for your channels, and there are no disconnects. If this occurs, you may need to use a nozzle with a lower diameter. For molds in the 2026 season, the requirements were as follows:
+
+- <a id="3fdd65dd82be8060a892c76730d48149" />7.6cm x 2.5cm interior size
+- <a id="3fdd65dd82be807786eddfe8cc389f2d" />3cm high exterior walls
+- <a id="3fdd65dd82be8060a95fda1651830f63" />>0.2mm base thickness
+- <a id="3fdd65dd82be806fbb30e7ca1e07b6fd" />>0.5mm channel thickness
+- <a id="3fdd65dd82be80b98fc1c6d7ca66bed7" />>1cm IO port elevation over channels
+
+<a id="3fdd65dd82be80099314e10bd54d652e" />When printing and inspecting your final mold, take care to ensure that the channels are continuous and do not have gaps due to seams.
+
+# <a id="3fdd65dd82be8049820bf1ab388bc2b4" />Casting
+
+<a id="3fdd65dd82be801ca785cc89cb5373ff" />Calculate the interior volume in which you wish to fill with PDMS. You can do so by calculation, or by filling the mold with water to your desired volume, then measuring that. If you do it with water, you must ensure the PLA is dry before casting. Create your desired volume with a 1(binder):10(elastomer) ratio, allowing for \~5% buffer. Mix for up to 5 minutes, or until you feel is it sufficient, then place in the desiccator for 15 minutes. After desiccation has finished, pour the dessicated PDMS into the mold, taking care not to introduce any bubbles. Once settled, place back into the desiccator for 10 minutes. After desiccation, use a needle to poke at any remaining bubbles. Place the mold on a petri dish/lid for support, and both into a 40C oven overnight. It was found that PLA will warp unacceptably at 60C.
+
+# <a id="3fdd65dd82be802dbb6dc3799ab43ccd" />Cast Removal
+
+<a id="3fdd65dd82be8071b501dfaadb2aed04" />You can break the cast to remove the PDMS. You should punch any required holes into your PDMS if required, but ideally your cast should have made them already.
+
+# <a id="3fdd65dd82be80d8b9e2dd56179f0cda" />Plasma Bonding
+
+1. <a id="3fdd65dd82be80e6afa4c3531f532efc" />Ensure that the RF level on the plasma cleaner is set to OFF, and turn off the PUMP and POWER
+2. <a id="3fdd65dd82be803c9512f3a4cfebe715" />Clean both the glass slide, and PDMS you wish to bond with IPA. Allow to dry.
+3. <a id="3fdd65dd82be80fe9480da407e268fda" />Place the PDMS, bonding side up, onto a glass slide covered in tape. Similarly, place the glass slide you wish to bond, bonding side up, onto another glass slide covered in tape.
+4. <a id="3fdd65dd82be808aac43c31baf0a7b6a" />Ensure the relief valve, if any, is closed, and turn on the PUMP and POWER, but do not turn the power level up
+5. <a id="3fdd65dd82be806d878ccb51c9c064fe" />When the vacuum light, if any, is on, and the pressure gauge has settled to a near vacuum, turn the power level up to the highest setting. You should see a glow from the chamber.
+6. <a id="3fdd65dd82be8047b67ef9f6330e64ff" />Slightly open the relief valve to allow oxygen into the chamber. The plasma should turn from purple to pink. If the plasma disappears, the relief valve was opened too much.
+7. <a id="3fdd65dd82be807a920ffda87decff1c" />Allow the device to sit for a full minute
+8. <a id="3fdd65dd82be8046bda0e73e6619c3c6" />After the expiration of one minute, turn the RF power to OFF, shut off the pump, and release the vacuum by turning the relief valve fully
+9. <a id="3fdd65dd82be809c9a6be0db95193820" />You must bond the devices with 60 seconds of the plasma being turned off. Be careful not to touch the bonding surfaces, and simply place them together. You can use pressure to force contact in places, but be careful of collapsing and bonding the channel.
+10. <a id="3fdd65dd82be8057a808f3831378184b" />Leave on a hotplate at 60C for 1-2 minutes (each side) to ensure best bonding.

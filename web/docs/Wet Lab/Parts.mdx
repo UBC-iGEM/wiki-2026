@@ -3,15 +3,31 @@ type: "page"
 title: "Parts"
 ---
 
-<a id="3fcd65dd82be8020bd26e538705bfcfa" />We submitted two parts to the iGEM Registry, exploiting *E. coli* stress response genes to detect the presence of antibiotics.
+# <a id="3fdd65dd82be806abfa2e0d2b61ec4dc" />Stress Reporter Parts
+
+<a id="3fcd65dd82be8020bd26e538705bfcfa" />Antibiotics can trigger bacterial stress responses as they disrupt essential cellular processes. We submitted the following parts to the iGEM Registry, exploiting *E. coli* stress response gene promoters to indirectly detect the presence of active antibiotics:
 
 <a id="3fcd65dd82be80898885ce9b2d89a005" />
 
-| <a id="3fcd65dd82be80a6951ccbbd78567878" />Part ID       | Part Name               | Description                                                                                                                        |
-| -------------------------------------------------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| <a id="3fcd65dd82be80e09c97ce2507b3ef3d" />BBa\_26A5JL4T | *cpxP* promoter + sfGFP | The expression of superfolder GFP (sfGFP) is induced when cell wall stress is sensed through the activation of the *cpxP* promoter |
-| <a id="3fcd65dd82be80088ea7fbb36deb35e1" />BBa\_267O4B7H | *recA* promoter + sfGFP | The expression of superfolder GFP (sfGFP) is induced when DNA damage is sensed through the activation of the *recA* promoter       |
+| <a id="3fcd65dd82be80a6951ccbbd78567878" />Part ID                                                       | Part Name               | Description                                                                                                                        |
+| -------------------------------------------------------------------------------------------------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| <a id="3fcd65dd82be80e09c97ce2507b3ef3d" />[BBa\_26A5JL4T](https://registry.igem.org/parts/bba-26a5jl4t) | *cpxP* promoter + sfGFP | The expression of superfolder GFP (sfGFP) is induced when cell wall stress is sensed through the activation of the *cpxP* promoter |
+| <a id="3fcd65dd82be80088ea7fbb36deb35e1" />[BBa\_267O4B7H](https://registry.igem.org/parts/bba-267o4b7h) | *recA* promoter + sfGFP | The expression of superfolder GFP (sfGFP) is induced when DNA damage is sensed through the activation of the *recA* promoter       |
 
-<br id="3fcd65dd82be80a78894ee14989d2d05" />
+<a id="3fed65dd82be806e88faff465182a6ea" />These parts can be incorporated into the RFC 10 compatible pSB1C3 backbone to generate reporter constructs. We have characterized these reporter constructs in non-pathogenic EPI300 *E. coli*, which is a derivative of the K-12 strain.
 
-<br id="3fad65dd82be802c8b35cf7b6786c866" />
+<br id="3fed65dd82be80cc9100ea4f0b9076e3" />
+
+## <a id="3fcd65dd82be80a78894ee14989d2d05" />***cpxP* promoter + sfGFP: BBa\_26A5JL4T**
+
+<a id="3fad65dd82be802c8b35cf7b6786c866" />The Cpx envelope stress response is a gram-negative bacterial stress-response pathway that is activated when the integrity of the cell envelope is disrupted <Cite refs={[{"n":1,"key":"raivioCpxEnvelopeStress1999"}]} />. Activation of this pathway stimulates the expression of downstream stress-response genes, including *cpxP*. We employ the *cpxP* promoter to induce the expression of fast maturing superfolder green fluorescent protein (sfGFP) to rapidly detect antibioitc-related cell wall stress.
+
+## <a id="3fed65dd82be805891a8e2a72ba801cf" />***recA* promoter + sfGFP: BBa\_267O4B7H**
+
+<a id="3fed65dd82be80139f03e61bd221fa2b" />The cellular stress caused by antibiotic exposure can damage bacterial DNA. The SOS pathway is a conserved global DNA-damage response mechanism that allows both gram-negative and gram-positive bacteria to detect and respond to disruptions in DNA replication and repair <Cite refs={[{"n":2,"key":"zgur-bertokDNADamageRepair2013"}]} />. When this pathway is activated, the repression of downstream genes is relieved, including *recA*. We employ the *recA* promoter to induce the expression of fast maturing sfGFP to rapidly detect antibioitc-related DNA damage.
+
+<br id="3fed65dd82be80619fbaf837d80ae95a" />
+
+# References
+
+<Bibliography refs={[{"n":1,"key":"raivioCpxEnvelopeStress1999"},{"n":2,"key":"zgur-bertokDNADamageRepair2013"}]} />
