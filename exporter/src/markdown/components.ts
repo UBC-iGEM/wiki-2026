@@ -1,14 +1,15 @@
 import { fetchNotebook, parseColabFileId } from "../colab";
-import type { NotionBlock } from "../notion";
+import { MAX_ROWS, parseCsvTable } from "../csv-table";
+import { Id, type NotionBlock } from "../notion";
 import { parsePlate, type Plate } from "../platemap";
 import { parseGenbank } from "../seqmap";
 import { ExporterError, isExporterErr, type ExporterResult } from "../utils";
 import { blockContext, convertBlocks, convertItems, type ConvertContext, type Item } from "./blocks";
-import { jsxFlow, jsxInlineBlock, type FlowContent, type JsxAttrs } from "./mdx";
+import { anchorText, jsxFlow, jsxInlineBlock, type FlowContent, type JsxAttrs } from "./mdx";
 import { fetchMedia, mediaFileName, parseImageCaption, uploadMedia } from "./media";
 import { asPlainText, convertRichText } from "./rich-text";
 import type { RichTextItemResponse } from "@notionhq/client";
-import type { Heading, Image, PhrasingContent } from "mdast";
+import type { Heading, Image, PhrasingContent, Table, TableRow } from "mdast";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import remarkParse from "remark-parse";
@@ -45,6 +46,8 @@ export const COMPONENT_MAP: Record<string, (input: ComponentInput) => ComponentO
     platemap,
     seqmap,
     vega,
+    csv,
+    downloadable,
     skip,
 };
 
@@ -142,12 +145,14 @@ async function dbtl({ items, ctx }: ComponentInput): ComponentOutput {
 interface Model3dAttrs {
     url: string;
 }
-export const MODEL3D_SLOTS = ["content"] as const;
+export const MODEL3D_SLOTS = [] as const;
 type Model3dSlots = SlotRecord<typeof MODEL3D_SLOTS>;
 
-async function model3d({ items, ctx }: ComponentInput): ComponentOutput {
-    const [file_block, ...following_content] = trimBlank(items);
+async function model3d({ items }: ComponentInput): ComponentOutput {
+    // A single uploaded model
+    const [file_block, ...rest] = trimBlank(items);
     if (file_block?.type !== "file") return malformedModel3d("it does not start with an uploaded file");
+    if (rest.length > 0) return malformedModel3d("it has content after its model");
 
     if (!/\.gl(?:b|tf)$/i.test(mediaFileName(file_block)))
         return malformedModel3d("its uploaded file is not a .glb or .gltf model");
@@ -158,7 +163,7 @@ async function model3d({ items, ctx }: ComponentInput): ComponentOutput {
     return generateComponent<Model3dAttrs, Model3dSlots>({
         tag: "Model3D",
         attrs: { url },
-        slots: { content: await convertItems(following_content, ctx) },
+        slots: {},
     });
 }
 
@@ -532,6 +537,123 @@ function malformedSeqmap(problem: string): ExporterError {
         `Seqmap component could not be understood: ${problem}.` +
             componentDocSuggestion(
                 "https://app.notion.com/p/ubcigem/Wiki-Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#3fcd65dd82be809fb2ffe066841ec5af",
+            ),
+        ["malformed content"],
+    );
+}
+
+// ====================
+// CSV COMPONENT
+// ====================
+
+type FileBlock = Extract<NotionBlock, { type: "file" }>;
+
+const CSV_FILE = /\.csv$/i;
+
+async function csv({ items, ctx }: ComponentInput): ComponentOutput {
+    // A single uploaded CSV
+    const [file_block, ...rest] = trimBlank(items);
+    if (file_block?.type !== "file" || !CSV_FILE.test(mediaFileName(file_block)))
+        return malformedCsv("it does not start with an uploaded .csv file");
+    if (rest.length > 0) return malformedCsv("it has content after its CSV file");
+
+    const table = await csvTable(file_block, ctx);
+    return isExporterErr(table) ? table : [table];
+}
+
+/**
+ * An uploaded CSV, as a table whose first row is the header. Its anchor goes in the first header cell, which also keeps
+ * the header visible when that cell is blank (see `style.css`).
+ */
+async function csvTable(file_block: FileBlock, ctx: ConvertContext): Promise<ExporterResult<Table>> {
+    const file_name = mediaFileName(file_block);
+    const data = await fetchMedia(file_block);
+    if (isExporterErr(data)) return data;
+
+    const table = parseCsvTable(file_name, data.toString());
+    if (isExporterErr(table)) return table;
+    if (table.truncated)
+        new ExporterError(`"${file_name}" is longer than ${MAX_ROWS} rows; the rest was left out of the page.`, [
+            "malformed content",
+        ]).warn(blockContext(ctx, file_block));
+
+    return {
+        type: "table",
+        align: Array.from({ length: table.rows[0]!.length }, () => null),
+        children: table.rows.map((row, r): TableRow => ({
+            type: "tableRow",
+            children: row.map((cell, c) => ({
+                type: "tableCell",
+                children: [
+                    ...(r === 0 && c === 0 ? [anchorText(new Id(file_block.id))] : []),
+                    ...(cell === "" ? [] : [{ type: "text" as const, value: cell }]),
+                ],
+            })),
+        })),
+    };
+}
+
+function malformedCsv(problem: string): ExporterError {
+    return new ExporterError(
+        `CSV component could not be understood: ${problem}.` +
+            componentDocSuggestion(
+                "https://app.notion.com/p/ubcigem/Wiki-Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#3fed65dd82be806e9481cd073907b6be",
+            ),
+        ["malformed content"],
+    );
+}
+
+// ====================
+// DOWNLOADABLE COMPONENT
+// ====================
+
+/** How a downloadable file is previewed in its dropdown; `none` has no dropdown. */
+export type DownloadableKind = "pdf" | "model" | "csv" | "none";
+
+export interface DownloadableAttrs {
+    /** The file's name, as uploaded to Notion. */
+    name: string;
+    url: string;
+    kind: DownloadableKind;
+}
+/** `preview` holds the table of a CSV; PDFs and models are previewed from `url`. */
+export const DOWNLOADABLE_SLOTS = ["preview"] as const;
+type DownloadableSlots = SlotRecord<typeof DOWNLOADABLE_SLOTS>;
+
+function downloadableKind(file_name: string): DownloadableKind {
+    if (/\.pdf$/i.test(file_name)) return "pdf";
+    if (/\.gl(?:b|tf)$/i.test(file_name)) return "model";
+    if (CSV_FILE.test(file_name)) return "csv";
+    return "none";
+}
+
+async function downloadable({ items, ctx }: ComponentInput): ComponentOutput {
+    // A single uploaded file
+    const [file_block, ...rest] = trimBlank(items);
+    if (file_block?.type !== "file") return malformedDownloadable("it does not start with an uploaded file");
+    if (rest.length > 0) return malformedDownloadable("it has content after its file");
+
+    const name = mediaFileName(file_block);
+    const kind = downloadableKind(name);
+
+    const url = await uploadMedia(file_block, { keep_original_file: true });
+    if (isExporterErr(url)) return url;
+
+    const table = kind === "csv" ? await csvTable(file_block, ctx) : undefined;
+    if (table !== undefined && isExporterErr(table)) return table;
+
+    return generateComponent<DownloadableAttrs, DownloadableSlots>({
+        tag: "Downloadable",
+        attrs: { name, url, kind },
+        slots: { preview: table === undefined ? [] : [table] },
+    });
+}
+
+function malformedDownloadable(problem: string): ExporterError {
+    return new ExporterError(
+        `Downloadable component could not be understood: ${problem}.` +
+            componentDocSuggestion(
+                "https://app.notion.com/p/ubcigem/Wiki-Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#3fed65dd82be80c89f5cc96aef671900",
             ),
         ["malformed content"],
     );

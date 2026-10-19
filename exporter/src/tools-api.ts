@@ -21,6 +21,33 @@ let CLIENT_PROMISE: Promise<ExporterResult<ToolsClient>> | null = null;
 const ASSETS_FOLDER = "assets";
 const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
 
+/** The file types iGEM is known to accept; the server refuses others with a 422. */
+const UPLOADABLE_EXTENSIONS = new Set([
+    "avif",
+    "cif",
+    "css",
+    "csv",
+    "gif",
+    "glb",
+    "gltf",
+    "ico",
+    "jpeg",
+    "jpg",
+    "js",
+    "json",
+    "otf",
+    "pdb",
+    "pdf",
+    "png",
+    "stl",
+    "svg",
+    "ttf",
+    "vtt",
+    "webp",
+    "woff",
+    "woff2",
+]);
+
 /**
  * Public interface to a singleton `ToolsClient` interface.
  */
@@ -194,13 +221,14 @@ class ToolsClient {
                 );
             });
             if (isErr(post_res)) {
-                // The server's message says why it refused the file, e.g. a disallowed file type
-                const reason: unknown = axios.isAxiosError(post_res) ? post_res.response?.data?.message : undefined;
-                return new ExporterError(
-                    `Failed to upload ${final_filename}` + (typeof reason === "string" ? `: ${reason}` : "."),
-                    ["igem tools server"],
-                    post_res,
-                );
+                const status = axios.isAxiosError(post_res) ? post_res.response?.status : undefined;
+                const name = original_file?.file_name ?? final_filename;
+                if (status === 422 || !UPLOADABLE_EXTENSIONS.has(final_extension))
+                    return new ExporterError(
+                        `Failed to upload "${name}"; iGEM may not accept .${final_extension} files.`,
+                        ["igem tools server"],
+                    );
+                return new ExporterError(`Failed to upload "${name}".`, ["igem tools server"], post_res);
             }
 
             const job_data = post_res.data?.data;

@@ -3,23 +3,54 @@ import { MODEL3D_SLOTS } from "@exporter/markdown/components";
 
 interface Props {
     url: string;
+    /** Leaves out the box, for a viewer placed inside another component's. */
+    bare?: boolean;
 }
 
-const { url } = Astro.props;
-MODEL3D_SLOTS satisfies readonly ["content"];
+const { url, bare = false } = Astro.props;
+MODEL3D_SLOTS satisfies readonly [];
 ---
 
-<model-viewer src={url} alt="Interactive 3D model" camera-controls auto-rotate touch-action="pan-y"></model-viewer>
-<slot name="content" />
+{
+    bare ? (
+        <model-viewer src={url} alt="Interactive 3D model" camera-controls auto-rotate touch-action="pan-y" />
+    ) : (
+        <div class="model3d glow-panel">
+            <div class="panel glow-panel-body">
+                <model-viewer src={url} alt="Interactive 3D model" camera-controls auto-rotate touch-action="pan-y" />
+            </div>
+        </div>
+    )
+}
 
 <script>
     import "@google/model-viewer";
 </script>
 
 <style>
+    /* The border and glow come from .glow-panel in style.css; the bottom margin clears the outline hanging below */
+    .model3d {
+        margin: 2rem 0 3rem;
+    }
+
+    .panel {
+        padding: 1.25rem 2.5rem;
+    }
+
+    /* Overrides model-viewer's own 300x150px default */
     model-viewer {
         display: block;
+        height: 32rem;
         width: 100%;
-        aspect-ratio: 16 / 9;
+    }
+
+    @media (max-width: 700px) {
+        .panel {
+            padding: 1rem 1.25rem;
+        }
+
+        model-viewer {
+            height: 20rem;
+        }
     }
 </style>

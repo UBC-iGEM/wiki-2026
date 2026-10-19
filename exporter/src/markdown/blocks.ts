@@ -1,11 +1,10 @@
-import { MAX_ROWS, parseCsvTable } from "../csv-table";
 import type { ContentMap } from "../map";
 import { Id, PageId, type NotionBlock } from "../notion";
 import { ExporterError, isExporterErr, type WarningContext } from "../utils";
 import { COMPONENT_MAP, componentDocSuggestion, type ImgAttrs } from "./components";
 import { pageMention, warnGoogleLink } from "./link";
 import { anchorFlow, anchorText, jsxFlow, jsxInlineBlock, type FlowContent } from "./mdx";
-import { fetchMedia, mediaFileName, parseImageCaption, uploadMedia } from "./media";
+import { mediaFileName, parseImageCaption, uploadMedia } from "./media";
 import { convertRichText, asPlainText } from "./rich-text";
 import type { RichTextItemResponse } from "@notionhq/client";
 import type { Heading, List, ListItem, Paragraph, PhrasingContent, Table, TableRow } from "mdast";
@@ -272,27 +271,13 @@ async function convertBlock(block: NotionBlock, parent_ctx: ConvertContext): Pro
             const { alt, scale, align } = parseImageCaption(block, ctx);
             return [anchorFlow(anchor), jsxFlow("Img", { url, alt, scale, align } satisfies ImgAttrs)];
         }
-        case "file": {
-            const filename = mediaFileName(block);
-            if (filename.endsWith(".pdf")) {
-                const uploaded_url = await uploadMedia(block, { keep_original_file: true });
-                if (isExporterErr(uploaded_url)) {
-                    uploaded_url.warn(ctx);
-                    return [];
-                }
-                return [
-                    anchorFlow(anchor),
-                    jsxFlow("a", { href: uploaded_url, target: "_blank", rel: "noopener noreferrer" }, [
-                        { type: "paragraph", children: [{ type: "text", value: filename }] },
-                    ]),
-                ];
-            }
-            if (/\.csv$/i.test(filename)) {
-                const table = await csvTable(block, filename, ctx);
-                return table === null ? [] : [table];
-            }
+        case "file":
+            new ExporterError(
+                `The file "${mediaFileName(block)}" is placed directly on the page; did you mean to wrap it in a Downloadable component?` +
+                    componentDocSuggestion(COMPONENT_DOCS),
+                ["malformed content"],
+            ).warn(ctx);
             return [];
-        }
         case "table":
             return [anchorFlow(anchor), await convertTable(block, ctx)];
         case "synced_block":
@@ -400,46 +385,6 @@ async function convertTable(
     }
 
     return { type: "table", align: Array.from({ length: width }, () => null), children: table_rows };
-}
-
-/**
- * An uploaded CSV, as a table whose first row is the header. Its anchor goes in the first header cell, which also keeps
- * the header visible when that cell is blank (see `style.css`).
- */
-async function csvTable(
-    block: Extract<NotionBlock, { type: "file" }>,
-    filename: string,
-    ctx: ConvertContext,
-): Promise<Table | null> {
-    const data = await fetchMedia(block);
-    if (isExporterErr(data)) {
-        data.warn(ctx);
-        return null;
-    }
-    const table = parseCsvTable(filename, data.toString());
-    if (isExporterErr(table)) {
-        table.warn(ctx);
-        return null;
-    }
-    if (table.truncated)
-        new ExporterError(`"${filename}" is longer than ${MAX_ROWS} rows; the rest was left out of the page.`, [
-            "malformed content",
-        ]).warn(ctx);
-
-    return {
-        type: "table",
-        align: Array.from({ length: table.rows[0]!.length }, () => null),
-        children: table.rows.map((row, r): TableRow => ({
-            type: "tableRow",
-            children: row.map((cell, c) => ({
-                type: "tableCell",
-                children: [
-                    ...(r === 0 && c === 0 ? [anchorText(ctx.block!)] : []),
-                    ...(cell === "" ? [] : [{ type: "text" as const, value: cell }]),
-                ],
-            })),
-        })),
-    };
 }
 
 /**
