@@ -5,6 +5,7 @@ import green_tube from "../../public/assets/hero_interactive/green_tube.svg?raw"
 import pink_tube from "../../public/assets/hero_interactive/pink_tube.svg?raw";
 import empty_tube from "../../public/assets/hero_interactive/empty_tube.svg?raw";
 import chip_light_up from "../../public/assets/hero_interactive/chip_light_up.svg?raw";
+import reset_icon from "../../public/assets/hero_interactive/reset-icon.svg?raw";
 ---
 
 <section class="interactive-section">
@@ -28,7 +29,10 @@ import chip_light_up from "../../public/assets/hero_interactive/chip_light_up.sv
             <div class="tube-visual tube-visual--empty-left" aria-hidden="true" set:html={empty_tube} />
         </div>
 
-        <h4 class="prompt-text">Click on patient samples to conduct the test</h4>
+        <div class="prompt">
+            <h4 class="prompt-text">Click on patient samples to conduct the test</h4>
+            <button class="reset-button" type="button" aria-label="Reset the test" set:html={reset_icon} />
+        </div>
 
         <div class="overlay-stack">
             <button
@@ -209,30 +213,40 @@ import chip_light_up from "../../public/assets/hero_interactive/chip_light_up.sv
             if (timeline.progress() === 0) sound.play();
             timeline.play();
         });
+
+        return timeline;
     }
 
-    setupCaseInteraction({
-        tubeSelector: ".tube-visual--green",
-        chipSelector: ".chip-visual--left",
-        emptySelector: ".tube-visual--empty-left",
-        rotation: -116,
-        color: "#5CA18F",
-        id: "liquid-left",
-        litChipSelector: ".chip-visual--left-lit",
-        captionSelector: ".case-caption--left",
-        soundSrc: `${BASE_URL}assets/audio/audio-fluorescent.mp3`,
-    });
+    const caseTimelines = [
+        setupCaseInteraction({
+            tubeSelector: ".tube-visual--green",
+            chipSelector: ".chip-visual--left",
+            emptySelector: ".tube-visual--empty-left",
+            rotation: -116,
+            color: "#5CA18F",
+            id: "liquid-left",
+            litChipSelector: ".chip-visual--left-lit",
+            captionSelector: ".case-caption--left",
+            soundSrc: `${BASE_URL}assets/audio/audio-fluorescent.mp3`,
+        }),
 
-    // Mirror of the left tube
-    setupCaseInteraction({
-        tubeSelector: ".tube-visual--pink",
-        chipSelector: ".chip-visual--right",
-        emptySelector: ".tube-visual--empty-right",
-        rotation: 116,
-        color: "#E650DB",
-        id: "liquid-right",
-        captionSelector: ".case-caption--right",
-        soundSrc: `${BASE_URL}assets/audio/audio-not-fluorescent.mp3`,
+        // Mirror of the left tube
+        setupCaseInteraction({
+            tubeSelector: ".tube-visual--pink",
+            chipSelector: ".chip-visual--right",
+            emptySelector: ".tube-visual--empty-right",
+            rotation: 116,
+            color: "#E650DB",
+            id: "liquid-right",
+            captionSelector: ".case-caption--right",
+            soundSrc: `${BASE_URL}assets/audio/audio-not-fluorescent.mp3`,
+        }),
+    ];
+
+    // Rewinding each timeline to 0 puts every tube, chip, liquid band and
+    // caption back where it started, ready to be clicked again
+    document.querySelector(".reset-button")?.addEventListener("click", () => {
+        for (const timeline of caseTimelines) timeline.pause(0);
     });
 </script>
 
@@ -269,9 +283,44 @@ import chip_light_up from "../../public/assets/hero_interactive/chip_light_up.sv
         text-align: center;
     }
 
-    .prompt-text {
+    /* Prompt text with the reset button centered underneath */
+    .prompt {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
         max-width: min(14rem, 16vw);
+    }
+
+    .prompt-text {
         text-align: center;
+    }
+
+    /* Home page labels are 24px; the .case/.case-row qualifiers
+       out-specificity MainLayout's global h3/h4 sizes */
+    .case .case-heading,
+    .case .case-caption,
+    .case-row .prompt-text {
+        font-size: 24px;
+    }
+
+    .reset-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        transition: transform 0.3s ease;
+        width: 2.5rem;
+    }
+
+    .reset-button:hover {
+        transform: rotate(-45deg);
+    }
+
+    .reset-button :global(svg) {
+        display: block;
+        height: auto;
+        width: 100%;
     }
 
     .chip-visual {
@@ -348,10 +397,18 @@ import chip_light_up from "../../public/assets/hero_interactive/chip_light_up.sv
             font-size: 0.8rem;
         }
 
-        .case-row .prompt-text {
+        .case-row .prompt {
             flex-shrink: 1;
-            font-size: 0.7rem;
+            gap: 0.5rem;
             max-width: min(5rem, 19vw);
+        }
+
+        .case-row .prompt-text {
+            font-size: 0.7rem;
+        }
+
+        .reset-button {
+            width: 1.5rem;
         }
     }
 </style>
