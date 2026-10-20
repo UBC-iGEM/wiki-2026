@@ -114,12 +114,33 @@ import { BASE_URL } from "../utils/base-url";
     import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
     import { MotionPathPlugin } from "gsap/MotionPathPlugin";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
+    import Lenis from "lenis";
+    import "lenis/dist/lenis.css";
 
     gsap.registerPlugin(DrawSVGPlugin, MotionPathPlugin, ScrollTrigger);
 
     onPage((signal) => {
         const hero = document.querySelector(".home-hero");
         if (!hero) return;
+
+        // Scrolls the page slower than the browser would, and eases into each wheel step, so the intro and the dots
+        // following the chip lines aren't rushed past. Driven by GSAP's ticker so ScrollTrigger reads the same frame.
+        // Scrollable parts of the page (and the lightbox) keep the browser's own scrolling.
+        const lenis = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? null
+            : new Lenis({
+                  allowNestedScroll: true,
+                  lerp: 0.08,
+                  prevent: (node) => !!node.closest("dialog[open]"),
+                  wheelMultiplier: 0.6,
+              });
+        lenis?.on("scroll", ScrollTrigger.update);
+        const tick = (time: number): void => lenis?.raf(time * 1000);
+        if (lenis) {
+            gsap.ticker.add(tick);
+            // Lag smoothing would make the eased scroll stutter after a slow frame
+            gsap.ticker.lagSmoothing(0);
+        }
 
         // Collects every tween and ScrollTrigger made below, so leaving the page can stop them all
         const context = gsap.context(() => {
@@ -193,11 +214,13 @@ import { BASE_URL } from "../utils/base-url";
                 .to(".chip-1", { opacity: 1, duration: 0.9 })
                 .to(".chip-2", { opacity: 1, duration: 0.1 }, "+=0.2")
                 // chip-3 is a separate image (not inline SVG), so hold here until it can actually be shown
-                .addPause("+=0.2", () => {
+                .addLabel("chip-3-wait", "+=0.2")
+                .addPause("chip-3-wait", () => {
                     void chip3Ready.then(() => introTimeline.resume());
                 })
                 .to(".chip-3", { opacity: 1, duration: 0.2 })
-                .to(".chip-1, .chip-2", { opacity: 0, duration: 0.3 }, "+=0.1")
+                // autoAlpha, so once gone their noise and blur filters are no longer painted
+                .to(".chip-1, .chip-2", { autoAlpha: 0, duration: 0.3 }, "+=0.1")
                 .addLabel("chip-shown")
                 .to(".chip-stage", { x: () => -stageShift(), duration: 0.6, ease: "power2.inOut" }, "+=0.2")
                 .call(() => {
@@ -385,14 +408,26 @@ import { BASE_URL } from "../utils/base-url";
             }
 
             // The intro waits for the page transition, so it isn't half over by the time the page is revealed.
-            // Arriving by the navbar's logo, which grew into the chip, it picks up from the chip
+            // Arriving by the navbar's logo, which grew into the chip, it picks up from the chip. The transition
+            // already waited for chip-3 to decode, so its pause goes: a seek stops at any pause it crosses, which
+            // would leave chips 1 and 2 showing under the logo and chip-3 fading in again once the transition ends
             const { kind, finished } = arrivedBy();
             introTimeline.pause();
-            if (kind === "logo") introTimeline.seek("chip-shown");
+            if (kind === "logo") {
+                introTimeline.removePause("chip-3-wait");
+                introTimeline.seek("chip-shown");
+            }
             void finished.then(() => introTimeline.play());
         });
 
-        return () => context.revert();
+        return () => {
+            context.revert();
+            if (lenis) {
+                gsap.ticker.remove(tick);
+                gsap.ticker.lagSmoothing(500, 33);
+                lenis.destroy();
+            }
+        };
     });
 </script>
 
@@ -522,6 +557,8 @@ import { BASE_URL } from "../utils/base-url";
         opacity: 0;
         position: absolute;
         top: 0;
+        /* Its own layer, so moving it doesn't repaint the chip line under it every frame */
+        will-change: transform;
         width: calc(var(--chip-w) * 45 / 594);
     }
 
@@ -536,6 +573,7 @@ import { BASE_URL } from "../utils/base-url";
         opacity: 0;
         position: absolute;
         top: 0;
+        will-change: transform;
         width: calc(var(--chip-w) * 25 / 594);
     }
 

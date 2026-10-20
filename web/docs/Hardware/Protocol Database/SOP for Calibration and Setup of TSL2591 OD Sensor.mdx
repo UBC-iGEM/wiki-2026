@@ -1,0 +1,277 @@
+---
+type: "database"
+title: "SOP for Calibration and Setup of TSL2591 OD Sensor"
+path: "Hardware/Protocol Database/SOP for Calibration and Setup of TSL2591 OD Sensor"
+---
+
+# <a id="3ffd65dd82be801da201f990e92b7597" />OBJECTIVE
+
+> <a id="3ffd65dd82be80f18b6ccc8b94b6ab1e" />Confirm that the TSL2591 light sensor and LED work, choose an LED current, gain, and integration time that give a strong, non-saturated signal, and set dark and blank references so OD readings are correct.
+
+## <a id="3ffd65dd82be80328ff1fcb4b8cb39a6" />**PRODUCT:**
+
+<a id="3ffd65dd82be806691f8c97a60564fdd" />TSL2591 High Dynamic Range Digital Light Sensor (Adafruit breakout) + \~600 nm LED + Arduino
+
+## <a id="3ffd65dd82be80f1a994faccb274466b" />**DOCUMENTATION:**
+
+- <a id="3ffd65dd82be8003a0f2fcba5ed6b8d8" />TSL2591 datasheet: [https://look.ams-osram.com/m/c901de8e97608f8/original/TSL2591-DS000338.pdf](https://look.ams-osram.com/m/c901de8e97608f8/original/TSL2591-DS000338.pdf)
+- <a id="3ffd65dd82be805e8e42e43c941fd4aa" />Adafruit wiring & test: [https://learn.adafruit.com/adafruit-tsl2591/wiring-and-test](https://learn.adafruit.com/adafruit-tsl2591/wiring-and-test)
+- <a id="3ffd65dd82be809e8d67ef11a2469b04" />Adafruit library: [https://github.com/adafruit/Adafruit\_TSL2591\_Library](https://github.com/adafruit/Adafruit_TSL2591_Library)
+
+# <a id="3ffd65dd82be8085a45de9399ebf50a7" />OVERVIEW
+
+<a id="3ffd65dd82be80ef9e03c0ec0a9f05b3" />Calibration is done by adjusting **BOTH** the hardware (resistor sets LED current) and the software (gain and integration time in the Arduino code).
+
+- <a id="3ffd65dd82be801894a9fcc5784578ad" />Read **CH0** (visible + IR), not CH1 (IR only)
+- <a id="3ffd65dd82be80e49937d77a9341d3f9" />ADC can be read at either 100ms integration time or 200+ms. This can be adjusted through gain, as it amplifies the readout signal
+  - <a id="3ffd65dd82be80229e80c2ee13fc0f1f" />shorter integration time = faster reading, better for bright environments
+  - <a id="3ffd65dd82be80c188ffedfb80a192d6" />longer integration time = longer reading, better for dim environments
+- <a id="3ffd65dd82be8030bd98eb7fb93eef8f" />LED and sensor position must be fixed during all tests
+
+# <a id="3ffd65dd82be8008a652e6a090a829dd" />PROCEDURE
+
+## <a id="3ffd65dd82be805eac20edf0e1969fa7" />MATERIAL PREP
+
+- <a id="3ffd65dd82be80c6bcf9e113c4e60f0f" />Arduino, TSL2591 breakout, \~600 nm LED, breadboard, jumper wires
+- <a id="3ffd65dd82be80a5af59d950b0b32ae5" />Various resistors (e.g. 1 kΩ, 680 Ω, 470 Ω, 330 Ω, 220 Ω)
+- <a id="3ffd65dd82be80e4a5ddfdad456c05db" />Translucent material (e.g. tape) and opaque material (e.g. foil)
+
+<br id="3ffd65dd82be800ab787e7c4388a3025" />
+
+- <a id="3ffd65dd82be808b93ccfc04b96eb234" />***Never run the LED without a resistor***
+- <a id="3ffd65dd82be80d5b370fba865ead322" />***Do not change LED or sensor position once testing starts***
+
+## <a id="3ffd65dd82be80adad71e14ee3532d42" />HARDWARE SETUP
+
+1. <a id="3ffd65dd82be80efbb53c26fe81ebc2e" />TSL2591 ↔ Arduino
+   1. <a id="3ffd65dd82be800fa26fc4146e9c2e0f" />VIN: 5V
+   2. <a id="3ffd65dd82be8067a547f319349cb812" />GND: GND
+   3. <a id="3ffd65dd82be80acbfc9e66a4116af67" />SDA: SDA
+   4. <a id="3ffd65dd82be80789080ff892e1f4773" />SCL: SCL
+2. <a id="3ffd65dd82be806e8033d13ec081fc6b" />LED circuit: Arduino **D7** → resistor → LED (+ to resistor side) → GND
+   1. <a id="3ffd65dd82be805a9444cc844dd948c8" />Start with the largest resistor
+   2. <a id="3ffd65dd82be80fb9ab4f0f91509f27d" />D7 is the pin used in the code
+3. <a id="3ffd65dd82be8011836ec72f7f754776" />Position the LED directly facing the TSL2591 with a gap between them
+4. <a id="3ffd65dd82be801aa13bfe90579078b9" />Install **Adafruit TSL2591 Library** and **Adafruit Unified Sensor** in Arduino IDE
+5. <a id="3ffd65dd82be801b963eebf0a257dc45" />Connect Arduino to laptop, flash **v1**
+
+## <a id="3ffd65dd82be80f38c1ec38b0474c00d" />CODE
+
+### <a id="3ffd65dd82be800f86f6d86af689a77f" />v1: Instantanous Readout
+
+<a id="3ffd65dd82be804089a5c27489a07c0a" />Serial Monitor at 9600 baud. Type `1` for LED ON, `0` for LED OFF.
+
+<a id="3ffd65dd82be805386c1c60bb9e7d36b" />
+
+```c++
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include "Adafruit_TSL2591.h"
+
+#define LED_PIN 7
+#define SAT_COUNT 36863   // 100 ms; use 65535 for 200 ms or longer
+
+Adafruit_TSL2591 tsl = Adafruit_TSL2591(2591);
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(LED_PIN, OUTPUT);
+  if (!tsl.begin()) { Serial.println("TSL2591 not found"); while (1); }
+  tsl.setGain(TSL2591_GAIN_MED);                   // LOW, MED, HIGH, MAX
+  tsl.setTiming(TSL2591_INTEGRATIONTIME_100MS);    // 100MS ... 600MS
+  Serial.println("Send 1 = LED ON, 0 = LED OFF");
+}
+
+void loop() {
+  if (Serial.available()) {
+    char c = Serial.read();
+    if (c == '1') digitalWrite(LED_PIN, HIGH);
+    if (c == '0') digitalWrite(LED_PIN, LOW);
+  }
+  uint16_t ch0 = tsl.getFullLuminosity() & 0xFFFF;   // CH0 only
+  Serial.print("LED "); Serial.print(digitalRead(LED_PIN) ? "ON" : "OFF");
+  Serial.print("  CH0: "); Serial.print(ch0);
+  if (ch0 >= SAT_COUNT) Serial.print("  SATURATED");
+  Serial.println();
+}
+```
+
+### <a id="3ffd65dd82be8061924aed41eb30d3d6" />v2: Averaged Values for Calibration
+
+<a id="3ffd65dd82be807c91b7ef17d1aedb5a" />Averages 10 readings per line and prints mean, standard deviation, and OD as CSV. Commands: `1` / `0` = LED ON / OFF, `d` = capture dark (LED off), `b` = capture blank (LED on). OD prints `nan` until both are captured.
+
+<a id="3ffd65dd82be805baed5e60500e19843" />
+
+```c++
+#include <Wire.h>
+#include <math.h>
+#include <Adafruit_Sensor.h>
+#include "Adafruit_TSL2591.h"
+
+#define LED_PIN 7
+#define GAIN TSL2591_GAIN_MED
+#define INTEGRATION TSL2591_INTEGRATIONTIME_100MS
+#define SAT_COUNT 36863   // 100 ms; use 65535 for 200 ms or longer
+#define N_SAMPLES 10
+
+Adafruit_TSL2591 tsl = Adafruit_TSL2591(2591);
+float darkVal = NAN, blankVal = NAN;
+
+void measure(float &mean, float &sd, bool &sat) {
+  float sum = 0, sumsq = 0;
+  sat = false;
+  for (int i = 0; i < N_SAMPLES; i++) {
+    float ch0 = tsl.getFullLuminosity() & 0xFFFF;   // CH0 only
+    if (ch0 >= SAT_COUNT) sat = true;
+    sum += ch0; sumsq += ch0 * ch0;
+  }
+  mean = sum / N_SAMPLES;
+  float var = (sumsq - N_SAMPLES * mean * mean) / (N_SAMPLES - 1);
+  sd = var > 0 ? sqrt(var) : 0;
+}
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, HIGH);
+  if (!tsl.begin()) { Serial.println("TSL2591 not found"); while (1); }
+  tsl.setGain(GAIN);
+  tsl.setTiming(INTEGRATION);
+  Serial.println("1/0 = LED on/off, d = dark, b = blank");
+  Serial.println("time_s,led,CH0_mean,CH0_SD,sat,OD");
+}
+
+void loop() {
+  float mean, sd; bool sat;
+
+  if (Serial.available()) {
+    char c = Serial.read();
+    if (c == '1') digitalWrite(LED_PIN, HIGH);
+    if (c == '0') digitalWrite(LED_PIN, LOW);
+    if (c == 'd') {                        // dark: LED off
+      digitalWrite(LED_PIN, LOW); delay(500);
+      measure(mean, sd, sat); darkVal = mean;
+      Serial.print("# DARK "); Serial.println(darkVal, 1);
+      digitalWrite(LED_PIN, HIGH);
+    }
+    if (c == 'b') {                        // blank: LED on
+      digitalWrite(LED_PIN, HIGH); delay(500);
+      measure(mean, sd, sat); blankVal = mean;
+      Serial.print("# BLANK "); Serial.println(blankVal, 1);
+    }
+  }
+
+  measure(mean, sd, sat);
+
+  // OD = -log10((I_sample - I_dark) / (I_blank - I_dark))
+  float od = NAN;
+  if (!isnan(darkVal) && !isnan(blankVal) && blankVal > darkVal) {
+    float ratio = (mean - darkVal) / (blankVal - darkVal);
+    if (ratio > 0) od = -log10(ratio);
+  }
+
+  Serial.print(millis() / 1000.0, 1); Serial.print(",");
+  Serial.print(digitalRead(LED_PIN) ? "ON" : "OFF"); Serial.print(",");
+  Serial.print(mean, 1); Serial.print(",");
+  Serial.print(sd, 1); Serial.print(",");
+  Serial.print(sat ? "SAT" : "ok"); Serial.print(",");
+  Serial.println(od, 4);
+}
+```
+
+## <a id="3ffd65dd82be806aaf0deee708a165b0" />SENSOR TEST (LED OFF)
+
+<a id="3ffd65dd82be8047a3caf1fa1827b267" />Flash **v1**. Settings: 100 ms integration, medium gain, CH0.
+
+1. <a id="3ffd65dd82be80a9b621c21b7c2d18f9" />Keep the LED OFF and record CH0 in room light
+2. <a id="3ffd65dd82be80a29416d7c418e2e992" />Cover the sensor with your hand or place it in darkness: CH0 should decrease significantly
+3. <a id="3ffd65dd82be80bcb212e7d0de85c3e5" />Shine room light / phone flashlight at it: CH0 should increase
+
+<a id="3ffd65dd82be80e59e35ee4586cb454d" />
+
+```
+Dark → low ADC
+Room light → higher ADC
+Bright light → much higher ADC
+```
+
+<a id="3ffd65dd82be805997add15214458ea4" />Verify a drastic difference in CH0 is observed. This directly tells us if the sensor is working.
+
+## <a id="3ffd65dd82be804880fec1f1db003285" />LED TEST
+
+1. <a id="3ffd65dd82be80b9a7fbd80ec29dac27" />Start with a large resistor
+2. <a id="3ffd65dd82be80679f19c971d890b16c" />LED OFF (`0`): record CH0
+3. <a id="3ffd65dd82be805da184e87ea77964d2" />LED ON (`1`): record CH0
+
+<a id="3ffd65dd82be8001b406c4540785aebd" />
+
+```
+LED OFF → low ADC
+LED ON  → much higher ADC
+```
+
+## <a id="3ffd65dd82be80099ff8ecb67b2dd7fb" />LIGHT BLOCKING TEST
+
+<a id="3ffd65dd82be80bfa4b3dd580e65c627" />Keep LED, sensor, gain, and integration time fixed. LED ON.
+
+<a id="3ffd65dd82be807db542f73136b832de" />
+
+```
+No blockage  → highest ADC
+Translucent  → medium ADC
+Opaque       → near the LED OFF reading
+```
+
+<a id="3ffd65dd82be8077b863d3eeae223fcc" />This confirms that less light reaching the sensor gives a lower reading, which is what the OD calculation uses.
+
+## <a id="3ffd65dd82be804080f8c29dba4b10d3" />LED CURRENT TEST
+
+<a id="3ffd65dd82be80339c52c5c04f61d7d4" />LED current is set by the resistor (Ohm’s law):
+
+<a id="3ffd65dd82be80989f68e592541ab71a" />
+
+$$
+I_{led} = \frac {V_{source} - V_{LED}} {R}
+$$
+
+<a id="3ffd65dd82be80118c60f3037bbea0e7" />
+
+$$
+R = \frac {V_{source} - V_{LED}} {I_{LED}}
+$$
+
+<a id="3ffd65dd82be807bb3c8ec3ad5accec6" />The LED’s rated current is not known, so step the resistor down gradually and watch how much brighter the LED looks and how much CH0 changes.
+
+1. <a id="3ffd65dd82be80f99a22c9a4d34501da" />Start with a large resistor, LED ON, record CH0
+2. <a id="3ffd65dd82be80edab1bc5801b16ec2e" />Swap to the next smaller resistor and repeat
+3. <a id="3ffd65dd82be8096a51ddf66a08b5f2d" />Stop when the LED ON vs LED OFF difference is sufficently large and CH0 is below saturation
+
+<Callout icon="🥼">
+  <a id="3ffd65dd82be80ad810be40e02c9094d" />**Operator notes:** The LED rated current and voltage were unknown. With \~470 Ω the difference between dim and bright was small. Stepping the resistor down gave a much larger difference. Settled on \~250 Ω. Since this setup has already verified the sensor to work and produced a large range of values, integration time does not need to be adjusted.
+</Callout>
+
+## <a id="3ffd65dd82be8058a6b6e96aae19f979" />DARK AND BLANK (OD CHECK)
+
+<a id="3ffd65dd82be802db1e3e41753273e5b" />Flash **v2** with the chosen `GAIN`, `INTEGRATION`, and `SAT_COUNT`.
+
+1. <a id="3ffd65dd82be8031a128cbae7bafa49a" />Cover the sensor from room light, send `d` to capture **dark** (LED off)
+2. <a id="3ffd65dd82be80218774df7a7253df22" />Leave the LED and sensor in their fixed positions with nothing in the path, send `b` to capture **blank** (LED on)
+3. <a id="3ffd65dd82be807bb000eb7138e2fc3d" />OD should read \~0 with nothing in the path
+4. <a id="3ffd65dd82be80dd8e87e1f65d059bf5" />Place translucent material in the path: OD should be above 0 and increase with more layers
+5. <a id="3ffd65dd82be8036adbdc86abc46ef42" />Place opaque material in the path: OD should be very high or `nan` (reading at or below dark)
+
+<a id="3ffd65dd82be806e8574d745c2fe63e0" />OD is calculated as:
+
+<a id="3ffd65dd82be8079a8c3ce1eff0bdb9f" />
+
+$$
+OD = -log_{10} ( \frac {I_{sample} - I_{dark}} {I_{blank} - I_{dark}})
+$$
+
+- <a id="3ffd65dd82be80a79e5de34ed924eb69" />I\_sample = CH0 with LED ON and sample in the path
+- <a id="3ffd65dd82be80b3aa07ef491ce82fbc" />I\_dark = CH0 with LED OFF
+- <a id="3ffd65dd82be80f49558e92518baa2c7" />I\_blank = CH0 with LED ON and reference point in the path
+
+<Callout icon="🥼">
+  <a id="3ffd65dd82be808d912eec7a78c878a1" />**Operator notes:** For this test trial, I\_dark read CH0 = 2, I\_bright read CH0 = 478, and I\_sample read CH0 = 415
+</Callout>

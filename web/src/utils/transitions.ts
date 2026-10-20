@@ -14,8 +14,11 @@ export type TransitionKind = "logo" | "prev" | "next";
 type Arrival = { kind?: TransitionKind; finished: Promise<void> };
 
 // finished: when the current page's transition ends
-// navAway: the page being pushed aside had been scrolled past the navbar
-const STATE: { finished: Promise<void>; navAway: boolean } = { finished: Promise.resolve(), navAway: false };
+// nav_away: the page being pushed aside had been scrolled past the navbar
+const STATE: { finished: Promise<void>; nav_away: boolean } = { finished: Promise.resolve(), nav_away: false };
+
+// How long a navigation waits on the new page's scripts and the hero chip before going ahead without them
+const PREPARE_TIMEOUT_MS = 1500;
 
 /** How the current page was arrived at, and when its transition ends; for a page's own intro to wait on. */
 export function arrivedBy(): Arrival {
@@ -34,36 +37,41 @@ export function arrivedBy(): Arrival {
  * the old page's, so they are moved into the new page's head, which the swap brings in (the same elements, so Vite
  * can still update them).
  */
-async function runNewScripts(newDocument: Document, to: URL): Promise<void> {
+async function runNewScripts(new_document: Document, to: URL): Promise<void> {
     const met = new Set([...document.scripts].map((script) => script.src));
     const styles = new Set(document.head.querySelectorAll("style"));
-    const imports = [...newDocument.querySelectorAll<HTMLScriptElement>("script[type=module][src]")]
+    const imports = [...new_document.querySelectorAll<HTMLScriptElement>("script[type=module][src]")]
         .map((script) => new URL(script.getAttribute("src")!, to).href)
         .filter((src) => !met.has(src))
         .map((src) => import(/* @vite-ignore */ src).catch(() => undefined));
     await Promise.all(imports);
     for (const style of document.head.querySelectorAll("style")) {
-        if (!styles.has(style)) newDocument.head.append(style);
+        if (!styles.has(style)) new_document.head.append(style);
     }
 }
 
 document.addEventListener("astro:before-preparation", (event: TransitionBeforePreparationEvent) => {
     const link = event.navigationType === "traverse" ? null : event.sourceElement?.closest("a");
     const rel = link?.closest(".page-nav") ? link.getAttribute("rel") : null;
-    const toLogo = rel === null && !!link?.matches(".home-logo");
+    const to_logo = rel === null && Boolean(link?.matches(".home-logo"));
     if (rel === "prev" || rel === "next") event.direction = rel;
-    else if (toLogo) event.direction = "logo";
+    else if (to_logo) event.direction = "logo";
 
     // Read now, before the new page resets the scroll
     const nav = document.querySelector("nav.primary");
-    STATE.navAway = (rel === "prev" || rel === "next") && !!nav && nav.getBoundingClientRect().bottom <= 0;
+    STATE.nav_away = (rel === "prev" || rel === "next") && nav !== null && nav.getBoundingClientRect().bottom <= 0;
 
     const loader = event.loader;
     event.loader = async (): Promise<void> => {
         await loader();
         // Prevented: a full page load follows instead
         if (event.signal.aborted || event.defaultPrevented) return;
-        await Promise.all([runNewScripts(event.newDocument, event.to), toLogo && decodeChip(event)]);
+        // Capped, so a slow or stuck import (e.g. a big library on a slow connection) can't hold up the navigation;
+        // anything not run by then is run by Astro after the swap, as usual
+        await Promise.race([
+            Promise.all([runNewScripts(event.newDocument, event.to), to_logo && decodeChip(event)]),
+            new Promise((resolve) => window.setTimeout(resolve, PREPARE_TIMEOUT_MS)),
+        ]);
     };
 });
 
@@ -80,7 +88,7 @@ document.addEventListener("astro:before-swap", (event: TransitionBeforeSwapEvent
     STATE.finished = event.viewTransition.finished;
 
     // Set on the new page's <html>, as the swap replaces the old one's attributes with its
-    if (STATE.navAway) {
+    if (STATE.nav_away) {
         const root = event.newDocument.documentElement;
         root.dataset.navAway = "";
         event.viewTransition.finished.finally(() => delete document.documentElement.dataset.navAway);

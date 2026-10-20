@@ -18,12 +18,12 @@ date: "2026-08-30"
 ## <a id="3d6d65dd82be8013b5aff3db597f3f86" />Variables
 
 - <a id="3cdd65dd82be8066a38cc53646fcf976" />Independent: antibiotic concentration
-- <a id="3d6d65dd82be80198e9dec6981b5962a" />Readout: OD value after 24 hours of antibioitc exposure
+- <a id="3d6d65dd82be80198e9dec6981b5962a" />Readout: $OD_{600}$ value after 24 hours of antibioitc exposure
 - <a id="3d6d65dd82be809195c6ea90c5eb471c" />Objective: To find the optimal antibiotic concentration for each strain that maximises the number of colonies on the agar plate to use for future validations
 
-# <a id="3cdd65dd82be803aa819ca880a32a8f0" />Experiment:
+# <a id="3cdd65dd82be803aa819ca880a32a8f0" />Experiment
 
-## <a id="3cdd65dd82be80f59debf83a6b8cca9d" />Materials:
+## <a id="3cdd65dd82be80f59debf83a6b8cca9d" />Materials
 
 - <a id="3cdd65dd82be80b7b688fcb5bf2e2c7f" />Standard 96-well microplate (flat-bottom, sterile)
 - <a id="3d6d65dd82be80548fedd4ce7f2cf8df" />Multichannel pipette + reservoir
@@ -39,7 +39,7 @@ date: "2026-08-30"
 - <a id="3d6d65dd82be80b6af6fc8fd79c95823" />LB broth
 - <a id="3d6d65dd82be8092a16cec424315d738" />Varioskan plate reader
 
-## <a id="3cdd65dd82be809290fdf93eb421f915" />Procedure:
+## <a id="3cdd65dd82be809290fdf93eb421f915" />Procedure
 
 ## <a id="3cdd65dd82be8095b53cf8913cbc81e1" />Day 1 - Preparation of Inoculum
 
@@ -50,10 +50,10 @@ date: "2026-08-30"
    3. <a id="3cdd65dd82be80e9b571d83202edea34" />LB-Amox = β-lactam resistant strain in LB-Cm
    4. <a id="3cdd65dd82be805681aaea7c132f0c28" />LB-Cephalexin = β-lactam resistant strain in LB-Cm
 
-## <a id="3cdd65dd82be80379e26de12eada5d66" />Day 2
+## <a id="3cdd65dd82be80379e26de12eada5d66" />Day 2 - Plating the Assay
 
 1. <a id="3cdd65dd82be8042a3c7e0c0c149f3a1" />**Measuring** $OD_{600}$ **of starting culture:** Use a spectrophotometer or plate reader to measure the $OD_{600}$ of the culture. If $OD_{600}$ is above 0.1, dilute with fresh broth. If it's between 0.09–0.1, proceed. If below 0.09, incubate 15–30 more minutes and re-check.
-2. <a id="3cdd65dd82be80908c63c58d2a5495fb" />**Prep of diluted, standardised inoculum**: Add 100 µL of OD-adjusted culture into 10 mL of fresh broth in a trough (a 1:100 dilution). Mix gently by pipetting up and down a few times. This gives \~10⁶ CFU/mL and is enough to inoculate about 16 rows of a 96-well plate.
+2. <a id="3cdd65dd82be80908c63c58d2a5495fb" />**Prep of diluted, standardised inoculum**: Add 100 µL of $OD_{600}$-adjusted culture into 10 mL of fresh broth in a trough (a 1:100 dilution). Mix gently by pipetting up and down a few times. This gives \~10⁶ CFU/mL and is enough to inoculate about 16 rows of a 96-well plate.
 3. <a id="3cdd65dd82be80e3b2e2c3a76121176f" />**Prep of antibiotic stock**: Dissolve antibiotic in broth at 2× the highest concentration to be tested. Check concentration range on literature MIC values for your strain, spanning at least several dilutions below and above that value.
 4. <a id="3cdd65dd82be8090a33cfcc1da3ab40f" />Using the layout below, add 50 µL of broth to columns 1–10 of the 96-well plate. Leave column 11 empty. Add 100 µL of broth to column 12 (sterility control).
 
@@ -71,6 +71,8 @@ date: "2026-08-30"
 2. <a id="3cdd65dd82be8085b76be11993a50d8c" />**Inoculating the plate**: Using a multichannel pipette, add 50 µL of the diluted standardized inoculum to every well in columns 1–11. Do not add inoculum to column 12 (it must stay sterile). Complete this step within 15 minutes of preparing the inoculum in Step 3.
 3. <a id="3cdd65dd82be80c3be4af14521d64d95" />Seal and incubate: cover the plate with a sealing film, then a lid. Incubate at 37°C overnight.
 
+<a id="3ffd65dd82be8000958eeeb712f07e77" />The plate layout with the 2x concentrations of antibiotics are show below:
+
 <a id="3ced65dd82be806cab81e101ef997259" />
 
 |                                              |          |              |            |           |          |          |          |          |          |          |          |          |
@@ -81,19 +83,17 @@ date: "2026-08-30"
 | <a id="8d1782c397474bed9b9465f0217df50e" />C | 0µg/ml   | 0.0625 µg/mL | 0.125µg/ml | 0.25µg/ml | 0.5µg/ml | 1µg/ml   | 2µg/ml   | 4µg/ml   | 8µg/ml   | 16µg/ml  | 32µg/ml  | blank LB |
 | <a id="3ced65dd82be80178c36d9a5690978e7" />D | blank LB | blank LB     | blank LB   | blank LB  | blank LB | blank LB | blank LB | blank LB | blank LB | blank LB | blank LB | blank LB |
 
-<br id="3ced65dd82be80e58a2ae1a8b9b79f3b" />
-
-## <a id="3cdd65dd82be80a892dfd0b274aaeeb5" />Day 3: Read the Plate and Determine MIC
+## <a id="3cdd65dd82be80a892dfd0b274aaeeb5" />Day 3 - Read the Plate and Determine MIC
 
 1. <a id="3cdd65dd82be80a3ac35f57e8d56f51f" />Remove the plate from the incubator, take off the lid and sealing film, and let it sit at room temperature for 15 minutes before reading.
-2. <a id="3cdd65dd82be8060ada8d73315200ff7" />**Read OD**: Load the plate into a plate reader and record the $OD_{600}$ value for every well, including the growth control and sterility control.
+2. <a id="3cdd65dd82be8060ada8d73315200ff7" />**Read** $OD_{600}$: Load the plate into a plate reader and record the $OD_{600}$ value for every well, including the growth control and sterility control.
 3. <a id="3cdd65dd82be800ab39cf58188d059dc" />**Data analysis**: Subtract the sterility control $OD_{600}$ (background) from each well. Plot $OD_{600}$ versus antibiotic concentration (log scale on the x-axis) for each strain. Determine the MIC as the lowest concentration where no visible turbidity/growth occurs — this can be done visually or by fitting the curve with a Gompertz model for a more precise value.
 
 # <a id="3cdd65dd82be80ffb628d74a013c917d" />Results
 
-- <a id="3cdd65dd82be806295b9ed510bbaaddf" />Cultures were at an OD of 0.6 after 26 hours of incubation at 37˚C, 250rpm.
+- <a id="3cdd65dd82be806295b9ed510bbaaddf" />Cultures were at an $OD_{600}$ of 0.6 after 26 hours of incubation at 37˚C, 250rpm.
 - <a id="3ced65dd82be8070b79dd923e0811548" />To wash out the Cm from the LB-Cm, centrifuged each tube at 4000xg for 10 mins. Resuspended each pellet in 8-10ml of LB.
-- <a id="3ced65dd82be80468ea1eec916799724" />Diluted to OD of 0.1 by diluting 1ml of inoculum with 5ml of fresh LB
+- <a id="3ced65dd82be80468ea1eec916799724" />Diluted to $OD_{600}$ of 0.1 by diluting 1ml of inoculum with 5ml of fresh LB
 
 ## <a id="3d0d65dd82be8032af47dd8fcdcf1e77" />Raw Data
 
@@ -147,7 +147,8 @@ date: "2026-08-30"
 
 # <a id="3cdd65dd82be80cda7a6df847aa2374e" />Summary
 
-- <a id="3d0d65dd82be806eb9d2e06c89c237fc" />Gentamicin at \<8 µg/ml allows for simulant survival.
+- <a id="3d0d65dd82be806eb9d2e06c89c237fc" />Gentamicin at \< 16 µg/ml allows for simulant survival.
+- <a id="3ffd65dd82be80d49fece9e9a840a3d7" />Columns 10-11 in the gentamicin plate appear to not have been inoculated as their values are similar to the media control in column 12.
 - <a id="3d2d65dd82be80dea181f5f329073535" />Kanamycin, Cephalexin, and Amoxicillin should be titrated again at concentrations above 32 µg/mL as bacterial growth from baseline was observed at all dilutions.
 
 <br id="3d2d65dd82be80798c34d187bff4fac7" />

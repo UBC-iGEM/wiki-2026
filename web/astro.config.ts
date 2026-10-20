@@ -1,6 +1,6 @@
 // @ts-check
 import { CONFIG } from "../exporter/src/config";
-import { codeTheme } from "./src/code-theme";
+import { CODE_THEME } from "./src/code-theme";
 import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
 import linkValidator from "astro-link-validator";
@@ -45,7 +45,7 @@ export default defineConfig({
         },
     ],
     markdown: {
-        shikiConfig: { theme: codeTheme },
+        shikiConfig: { theme: CODE_THEME },
         processor: unified({
             remarkPlugins: [remarkMath, remarkBreaks],
             rehypePlugins: [
@@ -60,6 +60,23 @@ export default defineConfig({
     },
     integrations: [mdx(), linkValidator()],
     vite: {
+        // The client scripts' npm dependencies, bundled when the dev server starts. Otherwise Vite finds each the
+        // first time a page using it is visited and reloads the page, and as utils/transitions.ts imports the next
+        // page's scripts before the URL changes, that reload lands back on the page being left
+        optimizeDeps: {
+            include: [
+                "gsap",
+                "gsap/DrawSVGPlugin",
+                "gsap/MotionPathPlugin",
+                "gsap/ScrollTrigger",
+                "lenis",
+                "react",
+                "react-dom/client",
+                "seqviz",
+                "vega-embed",
+                "@google/model-viewer",
+            ],
+        },
         build: {
             rollupOptions: {
                 output: {

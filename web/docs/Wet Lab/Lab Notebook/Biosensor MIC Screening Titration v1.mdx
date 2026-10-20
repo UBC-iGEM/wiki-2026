@@ -19,12 +19,12 @@ date: "2026-08-22"
 
 ## <a id="3c4d65dd82be80b2bbb6da48dd1f5ca2" />Variables
 
-- <a id="3c4d65dd82be8081b4a8c830ff09bba2" />Independent:  Seeding Density (1 concentrations, OD = 0.4), Type of antibiotic (4 of them), Antibiotic Concentration (6 concentrations), Gene (Cpxp, *recA*), Time (0–2h)
+- <a id="3c4d65dd82be8081b4a8c830ff09bba2" />Independent:  Seeding Density (1 concentrations, $OD_{600}$ of 0.4), Type of antibiotic (4 of them), Antibiotic Concentration (6 concentrations), Gene (Cpxp, *recA*), Time (0–2h)
 - <a id="3d6d65dd82be808baf37c02212286eb5" />Dependent: Fluorescence intensity
 
 # <a id="3c4d65dd82be8020970ececec7905808" />Background
 
-<a id="3d6d65dd82be808c902fd62dea2ea390" />Previously, we used bacterial cultures grown to an OD of 0.4. However, we failed to account for the dilution of the cultures once plated with antibiotic solution, diluting the final OD values to 0.2. As such, we will grow our cultures to 0.8 for a final dilution of OD 0.4.
+<a id="3d6d65dd82be808c902fd62dea2ea390" />Previously, we used bacterial cultures grown to an $OD_{600}$ of 0.4. However, we failed to account for the dilution of the cultures once plated with antibiotic solution, diluting the final $OD_{600}$ values to 0.2. As such, we will grow our cultures to 0.8 for a final dilution of $OD_{600}$ of 0.4.
 
 <a id="3d6d65dd82be804c90d5f31db2a12648" />Additionally, we previously only tested 3 concentrations per antibiotic. Each showed relatively similar results except for *recA* exposed to aminoglycosides, in which concentrations did matter. If antibiotic concentration does matter, we need a much larger range of Abs to observe a difference.
 
@@ -57,7 +57,7 @@ date: "2026-08-22"
 
 ## <a id="3c4d65dd82be80bd8279fa5610feee4c" />Strains x Antibiotics
 
-<a id="3c4d65dd82be8000b0adcd1e08e5974c" />Proposed Concentration Ranges: CpxP and *recA* have 14 Ab concentration conditions each. There are 4 Ab conditions. There is 1 OD conditions for each, each on a new plate.
+<a id="3c4d65dd82be8000b0adcd1e08e5974c" />Proposed Concentration Ranges: CpxP and *recA* have 14 Ab concentration conditions each. There are 4 Ab conditions. There is 1 $OD_{600}$ conditions for each, each on a new plate.
 
 <a id="3c4d65dd82be80358aaff95c17a98096" />Each replicate 3 times on the same plate, each reporter will be on the same plate. One antibiotic = one plate
 
@@ -139,17 +139,13 @@ date: "2026-08-22"
      - <a id="3c4d65dd82be80888217fd0932da518e" />Final = 2.5mL of 256 µg/mL Cephalexin
 </details>
 
-### <a id="3c4d65dd82be800d888df67e38514b18" />Seeding Density ($OD_{600}$) —> 1 Condition
+### <a id="3c4d65dd82be800d888df67e38514b18" />Seeding Density
 
 <a id="3c4d65dd82be804094f9c3a0a32f6f9a" />
 
 | <a id="fffd3c7a3e074056a56f86f5b549c584" />Condition | Final Well $OD_{600}$ | 2X $OD_{600}$ (before 1:1 mixing) |
 | ---------------------------------------------------- | --------------------- | --------------------------------- |
 | <a id="3c4d65dd82be80be9d25c4356d312ee9" />Middle    | 0.4                   | 0.8                               |
-
-<a id="3c4d65dd82be807d930ad7d84b4c728d" />**Plate Layout (”Pre-Bio!-benchtop”)**
-
-<a id="3c4d65dd82be805ebfd0d31113bb35c7" />[https://docs.google.com/spreadsheets/d/1gxGefBRIcrYFp4sTtU63BCt8\_APnksCg4UcSKbhlogA/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1gxGefBRIcrYFp4sTtU63BCt8_APnksCg4UcSKbhlogA/edit?usp=sharing)
 
 ## <a id="3c4d65dd82be80beaceed8dfc6d0fb9b" />Procedure
 
@@ -206,18 +202,14 @@ date: "2026-08-22"
 
 ## <a id="3c4d65dd82be80d1a366f90b17d94998" />Results
 
-<a id="3c7d65dd82be80b1b509c0dd23e0d9b6" />Fluorescent measurements found here: [https://docs.google.com/spreadsheets/d/13tkrA-tpVJRQ0SEbdjT2S2VjTO5xx5BoVRohIQljUfA/edit?usp=sharing](https://docs.google.com/spreadsheets/d/13tkrA-tpVJRQ0SEbdjT2S2VjTO5xx5BoVRohIQljUfA/edit?usp=sharing)
-
-<br id="3d0d65dd82be80759187dccc3b098062" />
-
 <a id="3c7d65dd82be804ba03dd7568129e5ba" />
 
-|                                                       |                          |               |                                         |                   |
-| ----------------------------------------------------- | ------------------------ | ------------- | --------------------------------------- | ----------------- |
-| <a id="3c7d65dd82be809c86bbc595e63cc760" />Biosensors | OD after 22hr incubation | OD after wash | Volume to dilute to OD 0.8 (10ml total) | OD after dilution |
-| <a id="3c7d65dd82be80d6b8a2f9828a7dfa28" />CpxP       | 1.55                     | 0.99          | 8ml + 2ml LB                            | 0.80              |
-| <a id="9208bf3459d74428a2863f96ef4a583b" />RecA       | 1.45                     | 0.88          | 9.1ml + 900 µl LB                       | 0.78              |
-| <a id="3c7d65dd82be8008ba14f887d48fabe4" />WT         | 1.58                     | 1.03          | 7.8ml + 1.2ml LB                        | 0.88              |
+|                                                       |                                  |                       |                                                 |                           |
+| ----------------------------------------------------- | -------------------------------- | --------------------- | ----------------------------------------------- | ------------------------- |
+| <a id="3c7d65dd82be809c86bbc595e63cc760" />Biosensors | $OD_{600}$ after 22hr incubation | $OD_{600}$ after wash | Volume to dilute to $OD_{600}$ 0.8 (10ml total) | $OD_{600}$ after dilution |
+| <a id="3c7d65dd82be80d6b8a2f9828a7dfa28" />CpxP       | 1.55                             | 0.99                  | 8ml + 2ml LB                                    | 0.80                      |
+| <a id="9208bf3459d74428a2863f96ef4a583b" />RecA       | 1.45                             | 0.88                  | 9.1ml + 900 µl LB                               | 0.78                      |
+| <a id="3c7d65dd82be8008ba14f887d48fabe4" />WT         | 1.58                             | 1.03                  | 7.8ml + 1.2ml LB                                | 0.88                      |
 
 - <a id="3c4d65dd82be80e98473ee1cf3f04d17" />Washed bacteria, centrifuges at 4000 rpm for 15 mins. Resuspended in 20ml LB medium
 - <a id="3d0d65dd82be802baadfdc21dd30ef7d" />Plates with Cephalexin, gentamicin, amoxicillin, and kanamycin were made, in no particular order.
@@ -226,45 +218,39 @@ date: "2026-08-22"
 - <a id="3d0d65dd82be80b6b62cd618c3c18d60" />Notes on amoxicillin: a mistake was made loading the plate, the misloaded well (dilution 3 in a dilution 4 well) was cleared, washed with LB broth, then refilled with the correct dilution.
 - <a id="3d0d65dd82be806f94a1e9f98ec93407" />Note on amoxicillin raw data: plate is rotated 180 degrees. rotate 180 to analyze.
 
-<br id="3c7d65dd82be80c895f1e0814f70315d" />
+<a id="3ffd65dd82be80c3b6eadabfddb40e2b" />
 
-<br id="3ced65dd82be80088604e1a09613cc33" />
+<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/8fc6d73c3e705785af93bfc87b87959f.avif","alt":"","scale":0}]}>
+  <Fragment slot="content">
+    <a id="3d0d65dd82be80edb16cc2332ff548e7" />**Figure 1**. MIC response of kanamycin for RecA and CpxP.
+  </Fragment>
+</Figure>
 
-<a id="3d0d65dd82be8074b3bddcc4d221fa94" />
+<a id="3ffd65dd82be806ba480c0cc9f8c1269" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/8fc6d73c3e705785af93bfc87b87959f.avif" alt="" scale={0} align="center" />
+<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/f8c0f6307c4e51558fb3e9bb1063aef0.avif","alt":"","scale":0}]}>
+  <Fragment slot="content">
+    <a id="3d0d65dd82be80289d60f83aa2918f81" />**Figure 2**. MIC response of cephalexin for RecA and CpxP.
+  </Fragment>
+</Figure>
 
-<a id="3d0d65dd82be80edb16cc2332ff548e7" />**Figure 1**. MIC response of kanamycin for RecA and CpxP.
+<a id="3ffd65dd82be8048b25cc3fb32dae98b" />
 
-<br id="3d6d65dd82be8020897cfa31dcfc1f66" />
+<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/6e1b0f22536f5579949154c1657153dd.avif","alt":"","scale":0}]}>
+  <Fragment slot="content">
+    <a id="3d0d65dd82be801ca843d73a9fabdc1d" />**Figure 3**. MIC response of gentamicin for RecA and CpxP.
+  </Fragment>
+</Figure>
 
-<a id="3d0d65dd82be808da114e85324256c07" />
+<a id="3ffd65dd82be809ca95ae6113d44ae7b" />
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/f8c0f6307c4e51558fb3e9bb1063aef0.avif" alt="" scale={0} align="center" />
-
-<a id="3d0d65dd82be80289d60f83aa2918f81" />**Figure 2**. MIC response of cephalexin for RecA and CpxP.
-
-<br id="3d6d65dd82be80c7b208d854b84623b3" />
-
-<a id="3d0d65dd82be80afa597c160423d9c0d" />
-
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/6e1b0f22536f5579949154c1657153dd.avif" alt="" scale={0} align="center" />
-
-<a id="3d0d65dd82be801ca843d73a9fabdc1d" />**Figure 3**. MIC response of gentamicin for RecA and CpxP.
-
-<br id="3d0d65dd82be80939a2dfb635fb78caf" />
-
-<a id="3d0d65dd82be806aac3be4d39e1aa0be" />
-
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/114505dcd9b95e42ae5a795775433995.avif" alt="" scale={0} align="center" />
-
-<a id="3d0d65dd82be80ba8bc9dc7fc01dba96" />**Figure 4**. MIC response of amoxicillin for RecA and CpxP.
-
-<br id="3d0d65dd82be80b49a1ec758476f845b" />
+<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/114505dcd9b95e42ae5a795775433995.avif","alt":"","scale":0}]}>
+  <Fragment slot="content">
+    <a id="3d0d65dd82be80ba8bc9dc7fc01dba96" />**Figure 4**. MIC response of amoxicillin for RecA and CpxP.
+  </Fragment>
+</Figure>
 
 ## <a id="3d0d65dd82be8028b949f1b438823d4b" />Summary
-
-<a id="3d6d65dd82be804d8062f7d43082938e" />To determine the
 
 <a id="3d6d65dd82be8053b23bfafe1c23e313" />Some MIC ranges are identified, though high overlap suggests that results may be due to error or chance. We will repeat this experiment to acquire a larger sample size, giving us confidence in our selection of MIC range before scaling up to biofactorial.
 

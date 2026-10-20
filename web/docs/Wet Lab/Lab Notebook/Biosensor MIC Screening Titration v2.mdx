@@ -19,7 +19,7 @@ date: "2026-09-09"
 
 ## <a id="3d6d65dd82be80ed966aeedcad7e3fff" />Variables
 
-- <a id="3d6d65dd82be808c81f2ed00d14189fe" />Independent:  Held: Seeding Density (1 concentrations, OD = 0.4), Type of antibiotic (4 of them), Antibiotic Concentration (6 concentrations), Gene (Cpxp, *recA*), Time (0–2h)
+- <a id="3d6d65dd82be808c81f2ed00d14189fe" />Independent:  Held: Seeding Density (1 concentrations, $OD_{600}$ = 0.4), Type of antibiotic (4 of them), Antibiotic Concentration (6 concentrations), Gene (Cpxp, *recA*), Time (0–2h)
 - <a id="3d6d65dd82be8065a938d28095c5abee" />Dependent: Fluorescence intensity
 
 # <a id="3d6d65dd82be8066b652e4714cefa323" />Experiment
@@ -39,7 +39,7 @@ date: "2026-09-09"
 
 ## <a id="3d6d65dd82be804aa0b3fc996ae5827a" />Strains x Antibiotics
 
-<a id="3d6d65dd82be80fcbd9dda8aedb26801" />Proposed Concentration Ranges: CpxP and *recA* have 14 Ab concentration conditions each. There are 4 Ab conditions. There is 1 OD conditions for each, each on a new plate.
+<a id="3d6d65dd82be80fcbd9dda8aedb26801" />Proposed Concentration Ranges: CpxP and *recA* have 14 Ab concentration conditions each. There are 4 Ab conditions. There is 1 $OD_{600}$ conditions for each, each on a new plate.
 
 <a id="3d6d65dd82be806b9c4ffb1124195d56" />Each replicate 3 times on the same plate, each reporter will be on the same plate. One antibiotic = one plate
 
@@ -121,17 +121,13 @@ date: "2026-09-09"
      - <a id="3d6d65dd82be8007be53de79ba674382" />Final = 2.5mL of 256 µg/mL Cephalexin
 </details>
 
-### <a id="3d6d65dd82be801b8e69fe3be27b6880" />Seeding Density ($OD_{600}$) —> 1 Condition
+### <a id="3d6d65dd82be801b8e69fe3be27b6880" />Seeding Density
 
 <a id="3d6d65dd82be80378017e9c097bb2c46" />
 
 | <a id="b966b1b2d20142b6b2c223ec92016f51" />Condition | Final Well $OD_{600}$ | 2X $OD_{600}$ (before 1:1 mixing) |
 | ---------------------------------------------------- | --------------------- | --------------------------------- |
 | <a id="3d6d65dd82be80b79899dc4e36975ec5" />Middle    | 0.4                   | 0.8                               |
-
-<a id="3d6d65dd82be80eab99cebf9b9c8b2e2" />**Plate Layout (”Pre-Bio!-benchtop”)**
-
-<a id="3d6d65dd82be8020a2feddb9e4834cbe" />[https://docs.google.com/spreadsheets/d/1gxGefBRIcrYFp4sTtU63BCt8\_APnksCg4UcSKbhlogA/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1gxGefBRIcrYFp4sTtU63BCt8_APnksCg4UcSKbhlogA/edit?usp=sharing)
 
 ## <a id="3d6d65dd82be80a5881bd88ad6d9ba9e" />Procedure
 
@@ -177,7 +173,7 @@ date: "2026-09-09"
 
 - <a id="3d6d65dd82be806c8658f67a2892e50f" />Immediately following plate preparation, begin the fluorescence assay using the Varioskan microplate reader
 - <a id="3d6d65dd82be803794bbdf2de812aeb8" />Incubate the plate at 37˚C during the assay
-- <a id="3d6d65dd82be8007bfc3c123c7427864" />Record GFP fluorescence and OD value measurements over 40mins every 10 minutes, starting at t = 0 mins.
+- <a id="3d6d65dd82be8007bfc3c123c7427864" />Record GFP fluorescence and $OD_{600}$ value measurements over 40mins every 10 minutes, starting at t = 0 mins.
   - <a id="3d6d65dd82be8087bdc0e092082c9168" />Ex: 488 nm
   - <a id="3d6d65dd82be80c1b38dca0a77337fbe" />Em: 510 nm
   - <a id="3d6d65dd82be80a0b4f6fde322302017" />Record measurement over 2 hours every 10 minutes
@@ -188,34 +184,26 @@ date: "2026-09-09"
 
 <a id="3f3d65dd82be801d93d7f51d72fb1622" />
 
-|                                                       |                 |
-| ----------------------------------------------------- | --------------- |
-| <a id="3f3d65dd82be80d0aaf1f5a669b073cf" />Biosensors | OD after \~20hr |
-| <a id="3f3d65dd82be8033acbbf6e88ce86530" />CpxP       | 0.47            |
-| <a id="3f3d65dd82be80fa8a83cfdc65578003" />RecA       | 0.46            |
-| <a id="3f3d65dd82be80a68f97d544cbb80c00" />WT+CmR     | 0.45            |
+|                                                       |                         |
+| ----------------------------------------------------- | ----------------------- |
+| <a id="3f3d65dd82be80d0aaf1f5a669b073cf" />Biosensors | $OD_{600}$ after \~20hr |
+| <a id="3f3d65dd82be8033acbbf6e88ce86530" />CpxP       | 0.47                    |
+| <a id="3f3d65dd82be80fa8a83cfdc65578003" />RecA       | 0.46                    |
+| <a id="3f3d65dd82be80a68f97d544cbb80c00" />WT+CmR     | 0.45                    |
 
 <a id="3d6d65dd82be80e8a812e304f84f9c92" />Experiment Notes:
 
 - <a id="3d6d65dd82be80b3b024ff167f9f9649" />For kanamycin, well F9 did not have sufficient Antibiotic. This was due to an error in pipetting during the serial dilution, which left dilution #11 with insufficient.
 - <a id="3dad65dd82be8033a4e5fb9313b91bdb" />Note for adding Bb- control: we want to compare directly to see if there is background fluorescence compared to WT as well as the promoter gene strains.
-- <a id="3dad65dd82be809290b0ccf2bcd976d3" />BIG NOTE: we used a final OD of 0.2 (2x OD of 0.4) because of resource restrictions, and note that the plates used were clear → potential bleedhtrough of fluorescence measurement. Note for Bio! to use opaque well plates.
+- <a id="3dad65dd82be809290b0ccf2bcd976d3" />BIG NOTE: we used a final $OD_{600}$ of 0.2 (2x $OD_{600}$ of 0.4) because of resource restrictions, and note that the plates used were clear → potential bleedthrough of fluorescence measurement. Note for Bio! to use opaque well plates.
 - <a id="3dfd65dd82be8098a0e4c6de0c170874" />F9 for Kanamycin…? had too little antibiotic
 
 ## <a id="3d6d65dd82be8050b441fa7cd956d481" />Summary
 
-<a id="3dfd65dd82be80708ff9f96167684ca1" />Data collection and organization:
-
-<a id="3dfd65dd82be80df90b9e5051895277d" />[https://docs.google.com/spreadsheets/d/1ITJ89rERNb9f-RRy2KEqdD5XAQPOaExZpy\_MwZRSWU0/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1ITJ89rERNb9f-RRy2KEqdD5XAQPOaExZpy_MwZRSWU0/edit?usp=sharing)
-
-<a id="3d6d65dd82be80829a76ff83166064ad" />Preliminary thoughts (no graph yet): \
-\- some errors appear to be machine or human based, such as an entire column of OD values being extremely low for one measurement and not for others. The fact that it was a column implies it was not random and the machine did not scan it correctly (for example)
-
-<a id="3dfd65dd82be80469439efa62a473da5" />values of fluorescence were extremely close to the LB media control causing strange behaviour for data when used to calculate fold change. instead use difference vs WT control instead?
-
-<a id="3dfd65dd82be809bb1d4f150e4ff8611" />OD does not appear to significantly decrease, it seems to actually increase, for most antibiotics. This implies either some sort of cloudiness forming, or even further growth (would need to check rate of growth).
-
-<a id="3dfd65dd82be803fa691eda0e5317cb8" />Note that there were not very significant changes observed in the preliminary data.
+- <a id="3d6d65dd82be80829a76ff83166064ad" />some errors appear to be machine or human based, such as an entire column of $OD_{600}$ values being extremely low for one measurement and not for others. The fact that it was a column implies it was not random and the machine did not scan it correctly (for example)
+- <a id="3ffd65dd82be809d963fd342bd290404" />values of fluorescence were extremely close to the LB media control causing strange behaviour for data when used to calculate fold change. instead use difference vs WT control instead?
+- <a id="3ffd65dd82be806d9428cecb05dfe50b" />$OD_{600}$ does not appear to significantly decrease, it seems to actually increase, for most antibiotics. This implies either some sort of cloudiness forming, or even further growth (would need to check rate of growth).
+- <a id="3ffd65dd82be80d68c07ca76deef4ccf" />Note that there were not very significant changes observed in the preliminary data.
 
 <br id="3dfd65dd82be8070bea6c8b1a1bfae04" />
 

@@ -4,7 +4,7 @@ import type { ShikiConfig } from "@astrojs/markdown-remark";
  * The Shiki theme for code blocks, drawn from the brand colours in MainLayout.astro.
  * Shiki inlines these at build time, so they are hex values rather than the CSS custom properties.
  */
-const color = {
+const COLOR = {
     ebonyClay: "#1b1f41",
     orchid: "#e650db",
     limeYellow: "#c9fd3a",
@@ -18,34 +18,34 @@ const color = {
     fluorescence: "#00ff92",
 };
 
-export const codeTheme: NonNullable<ShikiConfig["theme"]> = {
+export const CODE_THEME: NonNullable<ShikiConfig["theme"]> = {
     name: "igem-wiki",
     type: "dark",
     colors: {
-        "editor.background": color.ebonyClay,
-        "editor.foreground": color.periwinkle,
+        "editor.background": COLOR.ebonyClay,
+        "editor.foreground": COLOR.periwinkle,
     },
     settings: [
-        { settings: { background: color.ebonyClay, foreground: color.periwinkle } },
+        { settings: { background: COLOR.ebonyClay, foreground: COLOR.periwinkle } },
         {
             scope: ["comment", "punctuation.definition.comment"],
-            settings: { foreground: color.greyTeal, fontStyle: "italic" },
+            settings: { foreground: COLOR.greyTeal, fontStyle: "italic" },
         },
         {
             scope: ["keyword", "storage", "storage.type", "storage.modifier", "keyword.control"],
-            settings: { foreground: color.orchid },
+            settings: { foreground: COLOR.orchid },
         },
         {
             scope: ["keyword.operator", "punctuation", "meta.brace"],
-            settings: { foreground: `${color.periwinkle}b3` },
+            settings: { foreground: `${COLOR.periwinkle}b3` },
         },
         {
             scope: ["string", "string.quoted", "string.template", "markup.inline.raw", "punctuation.definition.string"],
-            settings: { foreground: color.limeYellow },
+            settings: { foreground: COLOR.limeYellow },
         },
         {
             scope: ["constant.character.escape", "string.regexp", "constant.other.placeholder"],
-            settings: { foreground: color.citrine },
+            settings: { foreground: COLOR.citrine },
         },
         {
             scope: [
@@ -56,39 +56,45 @@ export const codeTheme: NonNullable<ShikiConfig["theme"]> = {
                 "variable.other.constant",
                 "variable.other.enummember",
             ],
-            settings: { foreground: color.fluorescence },
+            settings: { foreground: COLOR.fluorescence },
         },
         {
             scope: ["entity.name.function", "support.function", "meta.function-call.generic", "variable.function"],
-            settings: { foreground: color.cornflowerLight },
+            settings: { foreground: COLOR.cornflowerLight },
         },
         {
-            scope: ["entity.name.type", "entity.name.class", "support.type", "support.class", "entity.other.inherited-class"],
-            settings: { foreground: color.northernLights },
+            scope: [
+                "entity.name.type",
+                "entity.name.class",
+                "support.type",
+                "support.class",
+                "entity.other.inherited-class",
+            ],
+            settings: { foreground: COLOR.northernLights },
         },
         {
             scope: ["variable.parameter", "variable.language"],
-            settings: { foreground: color.northernLights, fontStyle: "italic" },
+            settings: { foreground: COLOR.northernLights, fontStyle: "italic" },
         },
         {
             scope: ["entity.name.tag", "meta.tag.sgml"],
-            settings: { foreground: color.orchid },
+            settings: { foreground: COLOR.orchid },
         },
         {
             scope: ["entity.other.attribute-name", "support.type.property-name", "meta.object-literal.key"],
-            settings: { foreground: color.northernLights },
+            settings: { foreground: COLOR.northernLights },
         },
         {
             scope: ["markup.heading", "entity.name.section"],
-            settings: { foreground: color.limeYellow, fontStyle: "bold" },
+            settings: { foreground: COLOR.limeYellow, fontStyle: "bold" },
         },
         { scope: ["markup.bold"], settings: { fontStyle: "bold" } },
         { scope: ["markup.italic"], settings: { fontStyle: "italic" } },
         {
             scope: ["markup.underline.link", "string.other.link"],
-            settings: { foreground: color.cornflower },
+            settings: { foreground: COLOR.cornflower },
         },
-        { scope: ["markup.inserted"], settings: { foreground: color.fluorescence } },
-        { scope: ["markup.deleted", "invalid"], settings: { foreground: color.orchid } },
+        { scope: ["markup.inserted"], settings: { foreground: COLOR.fluorescence } },
+        { scope: ["markup.deleted", "invalid"], settings: { foreground: COLOR.orchid } },
     ],
 };

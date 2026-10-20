@@ -210,37 +210,7 @@
                     "item": "3f9d65dd82be80e28c7be16850fbcb90"
                 },
                 {
-                    "path": "Experiment Database",
-                    "type": "db",
-                    "item": [
-                        {
-                            "path": "PDMS Casting",
-                            "item": "3bcd65dd82be80dea0a7ff237e09cc12"
-                        },
-                        {
-                            "path": "PDMS Casting",
-                            "item": "3bcd65dd82be804c945adc2479b17a44"
-                        },
-                        {
-                            "path": "PDMS Bonding",
-                            "item": "3bcd65dd82be80f6ac7bffe63fa61093"
-                        },
-                        {
-                            "path": "PDMS Casting",
-                            "item": "3c1d65dd82be80efb0f3c1c9d7fedfde"
-                        },
-                        {
-                            "path": "Hardware bacteria stock ",
-                            "item": "3d5d65dd82be8017b720f33f0b41e3b5"
-                        },
-                        {
-                            "path": "Bioreactor Bacterial Culture ",
-                            "item": "3d7d65dd82be8004bedbfb0def2c245d"
-                        }
-                    ]
-                },
-                {
-                    "path": "Protocol Databse",
+                    "path": "Protocol Database",
                     "type": "db",
                     "item": [
                         {
@@ -254,6 +224,18 @@
                         {
                             "path": "SOP for Calibration of SEN0169 pH Probe",
                             "item": "3ffd65dd82be80e58db9f0dd54c61fdd"
+                        },
+                        {
+                            "path": "Flow Test",
+                            "item": "3ffd65dd82be8011b03efe932b39b27c"
+                        },
+                        {
+                            "path": "Bioreactor Assembly Process",
+                            "item": "3ffd65dd82be80e88110e122189caf17"
+                        },
+                        {
+                            "path": "SOP for Calibration and Setup of TSL2591 OD Sensor",
+                            "item": "3ffd65dd82be80be8176c79e03919382"
                         }
                     ]
                 }

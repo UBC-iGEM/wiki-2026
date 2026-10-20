@@ -133,6 +133,68 @@ pre.astro-code {
     display: inline;
 }
 
+/* Plain toggles (no heading in the summary) title in the caption style. Kept at the specificity of .page-content
+   alone so components with a <summary> of their own keep their styling */
+.page-content :where(summary:not(:has(> :is(h1, h2, h3, h4, h5, h6)))) {
+    font: var(--text-caption);
+}
+
+/* Open, a plain toggle's title is held off its content */
+.page-content :where(details[open] > summary:not(:has(> :is(h1, h2, h3, h4, h5, h6)))) {
+    margin-bottom: 0.5rem;
+}
+
+/* Toggles space themselves from what follows like a paragraph does. Open, the last child's own bottom margin collapses
+   into this one rather than adding to it */
+.page-content :where(details) {
+    margin-bottom: 1em;
+}
+
+/* An inline heading drops its own margins, so a toggle heading's <details> and <summary> take them on, matching
+   MainLayout's heading spacing: the top margin above the toggle, the bottom margin between the title and its content */
+.page-content :where(details:has(> summary > h1)) {
+    margin-top: 2.5rem;
+}
+.page-content :where(details:has(> summary > h2)) {
+    margin-top: 2rem;
+}
+.page-content :where(details:has(> summary > h3)) {
+    margin-top: 1.75rem;
+}
+.page-content :where(details:has(> summary > :is(h4, h5, h6))) {
+    margin-top: 1.5rem;
+}
+.page-content :where(details[open] > summary:has(> h1)) {
+    margin-bottom: 1.25rem;
+}
+.page-content :where(details[open] > summary:has(> h2)) {
+    margin-bottom: 0.75rem;
+}
+.page-content :where(details[open] > summary:has(> :is(h3, h4, h5, h6))) {
+    margin-bottom: 0.5rem;
+}
+
+/* A toggle heading draws its own disclosure arrow, so it scales and colours with the heading rather than the summary */
+.page-content :where(summary:has(> :is(h1, h2, h3, h4, h5, h6))) {
+    list-style: none;
+}
+.page-content :where(summary:has(> :is(h1, h2, h3, h4, h5, h6)))::-webkit-details-marker {
+    display: none;
+}
+.page-content :where(summary > :is(h1, h2, h3, h4, h5, h6))::before {
+    content: "▸";
+    display: inline-block;
+    margin-right: 0.4em;
+}
+.page-content :where(details[open] > summary > :is(h1, h2, h3, h4, h5, h6))::before {
+    rotate: 90deg;
+}
+@media (prefers-reduced-motion: no-preference) {
+    .page-content :where(summary > :is(h1, h2, h3, h4, h5, h6))::before {
+        transition: rotate 0.15s ease;
+    }
+}
+
 /* Scrolling to a TOC heading should leave a gap above */
 .page-content :is(h1, h2, h3, h4, h5, h6) {
     scroll-margin-top: 1.5rem;

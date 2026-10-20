@@ -15,7 +15,7 @@ title: "Microfluidic Chip"
 
 <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/8e777445531759f38ecd3f6487d3e5b7.avif","alt":"","scale":0}]}>
   <Fragment slot="content">
-    <a id="3f8d65dd82be80e9acc5d959143e5f41" />A visualization of a simple PDMS microfluidic chip <Cite refs={[{"n":4,"key":"liuSimpleDirectReading2015"}]} />
+    <a id="3f8d65dd82be80e9acc5d959143e5f41" />Figure 1: A visualization of a simple PDMS microfluidic chip <Cite refs={[{"n":4,"key":"liuSimpleDirectReading2015"}]} />.
   </Fragment>
 </Figure>
 
@@ -23,15 +23,17 @@ title: "Microfluidic Chip"
 
 <a id="3f9d65dd82be80cd85a7c6b8012e7fe8" />A microfluidic chip must consist of several components to be considered as such: a method of introducing reagents/samples, a method for transporting fluid throughout the channels, and a method of mixing reagents, and various other devices such as valves <Cite refs={[{"n":2,"key":"whitesidesOriginsFutureMicrofluidics2006"}]} />.
 
-<a id="3fed65dd82be80028fa5c7260d64be1f" />Microfluidic chips are especially valuable in biomedical engineering due to the scale of the chips <Cite refs={[{"n":2,"key":"whitesidesOriginsFutureMicrofluidics2006"}]} />. When fluid flows in small channels (hundreds of micrometres in length) turbulence is incredibly limited, leading to mixing which occurs through diffusion instead of convection and is easier to predict mathematically<Cite refs={[{"n":2,"key":"whitesidesOriginsFutureMicrofluidics2006"}]} />. Microfluidics allow a researcher to perform smaller-scale experiments with less reagent volume required, shorter reaction times, and the possibility of parallel operation <Cite refs={[{"n":5,"key":"beebePhysicsApplicationsMicrofluidics2002"}]} />.
+<a id="3fed65dd82be80028fa5c7260d64be1f" />Microfluidic chips are especially valuable in biomedical engineering due to the scale of the chips <Cite refs={[{"n":2,"key":"whitesidesOriginsFutureMicrofluidics2006"}]} />. When fluid flows in small channels (hundreds of micrometres in length) turbulence is incredibly limited, leading to mixing which occurs through diffusion instead of convection and is easier to predict mathematically <Cite refs={[{"n":2,"key":"whitesidesOriginsFutureMicrofluidics2006"}]} />. Microfluidics allow a researcher to perform smaller-scale experiments with less reagent volume required, shorter reaction times, and the possibility of parallel operation <Cite refs={[{"n":5,"key":"beebePhysicsApplicationsMicrofluidics2002"}]} />.
 
 # <a id="3fcd65dd82be80f0a24ceb053365c15e" />FDM-PDMS Microfluidic Chips
 
-## <a id="3fdd65dd82be8029b0eff96e305faa1a" />**CONNOR RIGHT HERE →** Our Chip
+## <a id="3fdd65dd82be8029b0eff96e305faa1a" />Our Chip
 
-<a id="3fdd65dd82be809f8156f6764fe80cee" />PDMS protocol can be found here:
+<a id="3ffd65dd82be800dbc14f471226de5fa" />Our microfluidic chips were fabricated using a single-part mold and cast in PDMS, following the protocol outlined in [PDMS Casting](/ubc-vancouver/hardware/protocol-database/pdms-casting). The PDMS chips were then plasma-bonded to microscope slides to create a sealed structure. To image the wells, we developed a custom [Fluorescence Detector](/ubc-vancouver/hardware/fluorescence-detector) designed specifically for our microfluidic chip. Finally, we used modified pipette tips to facilitate sample loading by leveraging Bernoulli’s principle, allowing us to distribute the sample evenly without the need for syringes.
 
-<a id="3ffd65dd82be80658b43d464fbd02e36" />Adapted from: [https://www.youtube.com/watch?v=P2bFp79l2Cs](https://www.youtube.com/watch?v=P2bFp79l2Cs), [https://www.youtube.com/watch?v=KTfC9Jm7HWk](https://www.youtube.com/watch?v=KTfC9Jm7HWk)
+<a id="3ffd65dd82be80ef8badd1250decf20a" />
+
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/797aed1798be54a683e510a5b995770a.avif" alt="" scale={0} align="center" />
 
 ## <a id="3edd65dd82be805b9410f31bfdcf29d8" />Historical Use of FDM-PDMS Microfluidic chips in iGEM
 
@@ -41,7 +43,7 @@ title: "Microfluidic Chip"
 
 <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/0f1f3928c10c5e43a63bc357198cf4ad.avif","alt":"","scale":0}]}>
   <Fragment slot="content">
-    <a id="3fdd65dd82be80b08e22f0372d210acc" />The PDMS protocol of Technion Israel, which uses a PLA mold, desiccator, and oven, similar to our own protocol.
+    <a id="3fdd65dd82be80b08e22f0372d210acc" />Figure 2: The PDMS protocol of Technion Israel, which uses a PLA mold, desiccator, and oven, similar to our own protocol.
   </Fragment>
 </Figure>
 
@@ -135,7 +137,7 @@ title: "Microfluidic Chip"
   <Fragment slot="design">
     <a id="3f9d65dd82be80039d81efeb55570457" />At this point in the process, we started to develop channel designs and cast them in epoxy to establish a baseline of how the process would work before we moved onto the more expensive PDMS. This chip is designed to be an initial model that clearly indicates different important sections to a microfluidic chip, giving us a baseline to improve on for future designs.
 
-    <a id="3fcd65dd82be80a3ad97c680c34c73cf" />Three separate sections were designed to be put into the epoxy chip, corresponding to a fluid mixing section, a degradation section, and an outlet section. All of these steps are needed in order for our sensor bacteria to fluoresce in response to antibiotic-resistant patient samples, leading to this decision for early chip design philosophy. With this, an inlet hole is added to one end of the chip to signify the area where antibiotic samples will be added for future chip validation and testing.
+    <a id="3fcd65dd82be80a3ad97c680c34c73cf" />Three separate sections were designed to be put into the epoxy chip, corresponding to a fluid mixing section, a degradation section, and an outlet section. All of these steps are needed in order for our sensor bacteria to fluoresce in response to antibiotic-resistant patient samples, leading to this decision to use three distinct sections for early chip design philosophy. An inlet hole is added to one end of the chip to signify the area where antibiotic samples will be added for future chip validation and testing.
 
     <a id="3fcd65dd82be802088ebd4abe4b7498e" />For this first iteration of chips, a zigzag pattern was chosen to represent the mixing section of the epoxy chip. This design has been previously tested for mixing capability and additionally has a 2 dimensional profile, both allowing for it to be an effective selection for our first chip design <Cite refs={[{"n":11,"key":"leeMicrofluidicMixingReview2011"},{"n":12,"key":"mengeaudMixingProcessesZigzag2002"}]} />.
 
@@ -153,25 +155,32 @@ title: "Microfluidic Chip"
     - <a id="3fdd65dd82be807d95a0ec92c751be51" />Three outlet channels were added to the chip, with the main fluid flow splitting down 3 separate pathways to reach them. This was done to allow multiple sensor bacteria to be tested in parallel, while also having a control outlet for the fluorescence detector to work with.
 
     * <a id="3fcd65dd82be8064b8ffe2c24aa2b27b" />For this first iteration of testing, the side walls of the chip model were chosen to be 1 mm wide and 2 mm tall, as we wanted smaller walls so that it would be easier to move the cured positive mold for the printed chip negative.
-    * <a id="3fdd65dd82be803c881bcb9827a0aca2" />A barrier of 9mm was given on every side of the microfluidic chip to ensure that there would be no leaking on any sides out of the chip.
+    * <a id="3fdd65dd82be803c881bcb9827a0aca2" />A barrier of 9 mm was given on every side of the microfluidic chip to ensure that there would be no leaking on any sides out of the chip.
 
     <a id="3fdd65dd82be80f288e5d1127076db3d" />
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/e000b41ed87950ce9ddf20e1d0b7881b.avif","alt":"","scale":0}]}>
       <Fragment slot="content">
-        <a id="3fdd65dd82be80d98a4afa97a42ea788" />Top view of the SolidWorks model for the Mark One Epoxy mold microfluidic chip
+        <a id="3fdd65dd82be80d98a4afa97a42ea788" />Figure 3: Top view of the SolidWorks model for the Mark One Epoxy mold microfluidic chip
       </Fragment>
     </Figure>
   </Fragment>
 
   <Fragment slot="test">
-    <a id="3fcd65dd82be80afb5e7f90168e26265" />The primary goal of designing and manufacturing this chip was to create direction for optimal chip requirements in the future to allow for more practical manufacturing with respect to CAD modelling and design. This includes 3D printing settings, as well as curing practices and improvements to the side walls and channel geometries in future chips. After an STL file was created from the above SolidWorks file, the resulting CAD model was 3D printed using a Prusa i3 Mk3 printer on default settings. After printing was complete, epoxy resin was mixed and then poured into the mold to the top (2mm) and left to cure for 72 hours. After this, we attempted to remove the chip from the model; however, the cured chip was stuck to the side walls of the PLA. To take the chip out, cuts were made along the edges in order to remove the walls, and then the chip was bent and peeled off of the bottom plate of the chip.
+    <a id="3fcd65dd82be80afb5e7f90168e26265" />The primary goal of designing and manufacturing this chip was to create direction for optimal chip requirements in the future to allow for more practical manufacturing with respect to CAD modelling and design. This includes 3D printing settings, as well as curing practices and improvements to the side walls and channel geometries in future chips. After an STL file was created from the above SolidWorks file, the resulting CAD model was 3D printed using a Prusa i3 Mk3 printer on default settings.
+
+    - <a id="3ffd65dd82be80158424e4fda6ce5899" />Layer height 0.2 mm
+    - <a id="3ffd65dd82be80218061d493b83f7156" />Printing temperature 200°C
+    - <a id="3ffd65dd82be80b58655dad9414f70b1" />Base plate temperature 60°C
+    - <a id="3ffd65dd82be805bb0c8e80811c871d3" />General “Standard Quality” settings on Ultimaker Cura
+
+    <a id="3ffd65dd82be80b8bb3fd5c520c53480" />After printing was complete, epoxy resin was mixed and then poured into the mold to the top (2mm) and left to cure for 72 hours.
 
     <a id="3fdd65dd82be809e9a12c39d9903ba9e" />
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/d84677fdd3255f1092d03454b22ec682.avif","alt":"","scale":0}]}>
       <Fragment slot="content">
-        <a id="3fdd65dd82be80d2acb6cc2be574ea27" />Epoxy microfluidic chip (right) after being removed from the PLA negative mold (left)
+        <a id="3fdd65dd82be80d2acb6cc2be574ea27" />Figure 4: Epoxy microfluidic chip (right) after being removed from the PLA negative mold (left)
       </Fragment>
     </Figure>
 
@@ -197,19 +206,17 @@ title: "Microfluidic Chip"
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3fcd65dd82be8000aa5ecd4233d0f0ba" />Many of the adjustments that were made to this chip were related to the issues with removing the Epoxy chip in DBTL cycle 1. In order to remedy the issue with the cured chip bonding with the sides and base of the mold container, we attempted to make a microfluidic design without including any walls directly attached to the chip. This both removed the potential bonding issues that we anticipated with PDMS and also decreased printing time, allowing for a quicker build time for this chip. As an additional feature to attempt to lessen the effects of sticking, all of the microfluidic channels were chamfered at the top.
+    <a id="3fcd65dd82be8000aa5ecd4233d0f0ba" />Many of the adjustments that were made to this chip were related to the issues with removing the epoxy chip in DBTL cycle 1. In order to remedy the issue with the cured chip bonding with the sides and base of the mold container, we attempted to make a microfluidic design without including any walls directly attached to the chip. This both removed the potential bonding issues that we anticipated with PDMS and also decreased printing time, allowing for a quicker build time for this chip. As an additional feature to lessen the effects of adhesion, all of the microfluidic channels were chamfered at the top.
 
     <a id="3fdd65dd82be8050a157f28d08862e1a" />With this new iteration of the chip, we wanted to experiment with alternative channel shapes and how effective they would be for manufacturing purposes. Using PDMS, we decided to fully cover the channels here, such that the channel pathways were only exposed on the bottom. With this, we are able to close the chips by using only one sheet of glass to be plasma-bonded to the chip rather than two that would have been needed otherwise.
 
     <a id="3fdd65dd82be80729ea6fb79fef1a699" />Along with this change, both the mixing and degradation sections of the chips were altered. For the mixing section, a repeated L-shaped herringbone intrusion was added instead of the original zigzag section. Each of these herringbone patterns works to jostle all the laminar fluid streams together semi-randomly such that there are many small antibiotic streamlines flowing adjacent to the patient sample. This is done such that diffusion that happens along the course of the chip will result in the mixing of these two fluids in laminar flow, and the effectiveness of this pattern has previously been tested for its mixing capabilities at low Re <Cite refs={[{"n":15,"key":"liuTwofluidMixingMicrochannel2004"}]} />. The design was appealing due to its flat base, meaning it is compatible with our manufacturing process with PDMS pouring.
 
-    <a id="3fdd65dd82be80d283f4d2bb9a99a256" />The degradation section was changed to split into 4 separate sections. This was done as an alternative geometry to keep the small channel width while also maintaining high fluid volume with a shape that has wider gaps, which we believed would reduce the likelihood of a rip occurring. The change also allowed us to experiment with alternative chip designs, giving us better information on which designs work most effectively for FDM-based chip manufacturing, which we can use for future DBTL cycles.
+    <a id="3fdd65dd82be80d283f4d2bb9a99a256" />The degradation section was changed to split into 4 separate sections. This was done as an alternative geometry to keep the small channel width while also maintaining high fluid volume with a shape that has wider gaps, which we believed would reduce the likelihood of a tear occurring. The change also allowed us to experiment with alternative chip designs, giving us better information on which designs work most effectively for FDM-based chip manufacturing, which we can use for future DBTL cycles.
   </Fragment>
 
   <Fragment slot="build">
-    <a id="3f9d65dd82be80f8af46d108dd8a879a" />Build:
-
-    <a id="3fdd65dd82be80878a9bfdb57df63d8b" />This iteration of the chip used primarily the same CAD techniques as the previous iteration of the chip. A slight chamfer has been added to the edges of each of the channels. This was chosen, for this iteration, as 0.1mm of each of the side lengths cut off at the top corners of each of the channels. The inlet and outlet valves were also adjusted to be 4mm tall this iteration. This allows us, for the build phase, to have a section of the negative chip mold to protrude out of the PDMS cast that we are using for this iteration. This is important here, as it means that we are able to have an opening for the addition of sensor bacteria and antibiotics at either end of the chip. Without this alteration, an incision would have needed to be made to access the inner channels of the chip.
+    <a id="3fdd65dd82be80878a9bfdb57df63d8b" />This iteration of the chip used primarily the same CAD techniques as the previous iteration of the chip. A slight chamfer has been added to the edges of each of the channels. This was chosen, for this iteration, as 0.1 mm of each of the side lengths cut off at the top corners of each of the channels. The inlet and outlet valves were also adjusted to be 4 mm tall this iteration. This allows us, for the build phase, to have a section of the negative chip mold to protrude out of the PDMS cast that we are using for this iteration. This is important here, as it means that we are able to have an opening for the addition of sensor bacteria and antibiotics at either end of the chip. Without this alteration, an incision would have needed to be made to access the inner channels of the chip.
 
     <a id="3fdd65dd82be808dabfae1a028c03111" />With this, the herringbone structure was created on the chip, with 40 iterations of the L shapes evenly spaced from each other along the first section of the chip. Each of these shapes creates a divot that digs 0.35mm into the channel, leaving 0.65mm of the height of the channel unchanged. All of the corners on this channel being at 90 degrees, and the angle between each end of the herringbone and the edge of the channel at 45 degrees.
 
@@ -217,7 +224,7 @@ title: "Microfluidic Chip"
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/cba1ff646ce95472906809a1f8a9106f.avif","alt":"","scale":0}]}>
       <Fragment slot="content">
-        <a id="3fdd65dd82be800ba303e281f1cedc71" />Herringbone structure dimensions
+        <a id="3fdd65dd82be800ba303e281f1cedc71" />Figure 5: Herringbone structure dimensions
       </Fragment>
     </Figure>
 
@@ -227,7 +234,7 @@ title: "Microfluidic Chip"
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/c28912568541537fad468a38517e2b4d.avif","alt":"","scale":0}]}>
       <Fragment slot="content">
-        <a id="3fdd65dd82be808d878cf2cae8f014ab" />Herringbone 1 microfluidic chip design viewed from above
+        <a id="3fdd65dd82be808d878cf2cae8f014ab" />Figure 6: Herringbone 1 microfluidic chip design viewed from above
       </Fragment>
     </Figure>
 
@@ -241,7 +248,7 @@ title: "Microfluidic Chip"
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/c23e24da49d65ee7bd3399cc385ce8eb.avif","alt":"","scale":0}]}>
       <Fragment slot="content">
-        <a id="3fdd65dd82be808b81ede6e2934b7031" />PDMS-based microfluidic chip attached to a glass pane
+        <a id="3fdd65dd82be808b81ede6e2934b7031" />Figure 7: PDMS-based microfluidic chip attached to a glass pane
       </Fragment>
     </Figure>
   </Fragment>
@@ -285,18 +292,12 @@ title: "Microfluidic Chip"
 
 ## <a id="3f9d65dd82be80b6aa95d79b44a66b51" />Mark Three: PDMS Attempt II
 
-<a id="3f9d65dd82be801eae01dca176a523fc" />
-
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/f8c312fee52b50cf9c6bc7aece2b3b58.avif" alt="" scale={0} align="center" />
-
 <br id="3f9d65dd82be8005ae1fcb691df623d2" />
 
 <a id="3f9d65dd82be80a8a392e44b741787d1" />
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3f9d65dd82be808c8c37f1336cc4a8d1" />Design:
-
     <a id="3fdd65dd82be8001bbd6cdc5092cf609" />At this point, we designed several different channel possibilities to try to further understand potential chip geometries. We also developed a PDMS protocol to be used for future microfluidic chips. All of these models had
 
     <a id="3fdd65dd82be806f9007ffc59995eddc" />The herringbone design from above is reused here, this time including a base plate surrounding the sides of the channels. The edges of the walls follow the sides of the channel dimensions, as this was seen to allow a lesser amount of PDMS to be required to fully enclose the chip. This adjustment should allow for more consistency in casting than older designs. This is a simple extension of the previous chip design, so there were no major adjustments added other than this
@@ -305,7 +306,7 @@ title: "Microfluidic Chip"
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/125aced52de957ec9d69ec9c6f66167d.avif","alt":"","scale":0}]}>
       <Fragment slot="content">
-        <a id="3fdd65dd82be80cb9b02ecd95d729afb" />Iteration of the herringbone model including a base and walls.
+        <a id="3fdd65dd82be80cb9b02ecd95d729afb" />Figure 8: Iteration of the herringbone model including a base and walls.
       </Fragment>
     </Figure>
 
@@ -317,7 +318,7 @@ title: "Microfluidic Chip"
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/416e95b241ce563e92f2884dc9846463.avif","alt":"","scale":0}]}>
       <Fragment slot="content">
-        <a id="3fdd65dd82be80b9bd51d775c193313d" />Turnaround model for the microfluidic chip
+        <a id="3fdd65dd82be80b9bd51d775c193313d" />Figure 9: Turnaround model for the microfluidic chip
       </Fragment>
     </Figure>
 
@@ -333,7 +334,7 @@ title: "Microfluidic Chip"
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/211443be3b1e5b7e8a821648962c19d1.avif","alt":"","scale":0}]}>
       <Fragment slot="content">
-        <a id="3fdd65dd82be80ec900afa5a5d860624" />“Ellipses” model for the microfluidic chip
+        <a id="3fdd65dd82be80ec900afa5a5d860624" />Figure 10: “Ellipses” model for the microfluidic chip
       </Fragment>
     </Figure>
 
@@ -345,23 +346,19 @@ title: "Microfluidic Chip"
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/455fb418606d5065afb6b50b0a43c5d6.avif","alt":"","scale":0}]}>
       <Fragment slot="content">
-        <a id="3fdd65dd82be801db40dea4df51d8952" />“Rotation” model for the microfluidic chip
+        <a id="3fdd65dd82be801db40dea4df51d8952" />Figure 11: “Rotation” model for the microfluidic chip
       </Fragment>
     </Figure>
-
-    <a id="3fdd65dd82be801d86e7d0f2684f1ea1" />**ADD DIFFERENT DESIGNS HERE AND EXPLAIN THE LOGIC**
   </Fragment>
 
   <Fragment slot="build">
-    <a id="3f9d65dd82be805e8bc2c2bded9f3781" />Build:
-
-    <a id="3fed65dd82be80b3b769ed41047b2934" />General CAD modelling practices have not changed between iterations here. The main differences here are the slightly more complex geometries for the mixing, particularly in the rotation chip. This piece originally had shapes that would not work for the PDMS process we currently have, as there would be a section of PDMS looping around the PLA mold, so it would have needed to be ripped without a CAD design change.
+    <a id="3fed65dd82be80b3b769ed41047b2934" />General CAD modelling practices have not changed between iterations here. The main differences here are the slightly more complex geometries for the mixing, particularly in the rotation chip. This piece originally had shapes that would not work for the PDMS process we currently have, as there would be a section of PDMS looping around the PLA mold, so it would have needed to be ripped without a CAD design change. Furthermore, the complexities regarding this DBTL cycle as a whole led to us decreasing the layer height to 0.08 mm to get a more representative shape for the smaller components in the design.
 
     <a id="3fed65dd82be803c853bf62c602eda29" />
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/0849310dc11950368663c0b5d5acc3e7.avif","alt":"","scale":0}]}>
       <Fragment slot="content">
-        <a id="3fed65dd82be8079a124cbf774878c4d" />Single section of the rotation microfluidic chip mixer after adjustments to prevent ripping during manufacturing.
+        <a id="3fed65dd82be8079a124cbf774878c4d" />Figure 12: Single section of the rotation microfluidic chip mixer after adjustments to prevent ripping during manufacturing.
       </Fragment>
     </Figure>
 
@@ -369,15 +366,13 @@ title: "Microfluidic Chip"
   </Fragment>
 
   <Fragment slot="test">
-    <a id="3f9d65dd82be803a838bc8b1b35827c6" />Test:
-
-    <a id="3fed65dd82be80e6b30ffa11a04c1fb9" />Printing out the respective molds for all of these designs was done on an alternative printer. We wanted to see how these pieces print out, and if there are any designs that would clearly not work because of printing issues. All four of these designs were printed as the same time on the same printer for analysis
+    <a id="3f9d65dd82be803a838bc8b1b35827c6" />Printing out the respective molds for all of these designs was done on an alternative printer. We wanted to see how these pieces print out, and if there are any designs that would clearly not work because of printing issues. All four of these designs were printed as the same time on the same printer for analysis
 
     <a id="3fed65dd82be80febb3cd0e6a6e3cd45" />
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/f8c312fee52b50cf9c6bc7aece2b3b58.avif","alt":"","scale":0}]}>
       <Fragment slot="content">
-        <a id="3fed65dd82be805286eced72f8e79af9" />3D printed molds for each of the four CAD designs for DBTL 3.
+        <a id="3fed65dd82be805286eced72f8e79af9" />Figure 13: 3D printed molds for each of the four CAD designs for DBTL 3.
       </Fragment>
     </Figure>
 
@@ -411,11 +406,11 @@ title: "Microfluidic Chip"
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/ec2fd87fa97b5af792bc58ac0f571729.avif","alt":"","scale":0}]}>
       <Fragment slot="content">
-        <a id="3ffd65dd82be807497a5dc3e36431594" />Circular Diffusion Chamber Microfluidics Chip
+        <a id="3ffd65dd82be807497a5dc3e36431594" />Figure 14: Circular Diffusion Chamber Microfluidics Chip
       </Fragment>
     </Figure>
 
-    #### <a id="3ffd65dd82be80b19124c39f8e710168" />Rationale
+    <a id="3ffd65dd82be80839b8ef73e87a34da9" />**Rationale**
 
     <a id="3ffd65dd82be80bd91a3c283c815fc06" />The enlarged central chamber serves as a mixing and flow-distribution region, allowing the incoming sample to spread before entering the eight downstream channels. Its increased cross-sectional area may help reduce flow velocity and distribute fluid toward the outlets, although uniform distribution would need to be confirmed through flow testing or simulation.
 
@@ -423,11 +418,11 @@ title: "Microfluidic Chip"
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/bab4938fab4a5ee6a72018a95c955dee.avif","alt":"","scale":0}]}>
       <Fragment slot="content">
-        <a id="3ffd65dd82be80d2b465ff904ac1d7a3" />Snake with Radial Outputs Microfluidics Chip
+        <a id="3ffd65dd82be80d2b465ff904ac1d7a3" />Figure 15: Snake with Radial Outputs Microfluidics Chip
       </Fragment>
     </Figure>
 
-    #### <a id="3ffd65dd82be80db8a01ce46fe9cac65" />Rationale
+    <a id="3ffd65dd82be8019bcacefd89cc4e1ec" />**Rationale**
 
     <a id="3ffd65dd82be8049a785cf5983c43c74" />The serpentine channel increases the effective flow-path length within a compact footprint, providing additional residence time for the sample to interact with the engineered bacterial biosensor. The downstream branching junction distributes the flow toward eight individual outlets, enabling parallel collection or analysis of the resulting samples. This configuration balances a longer reaction pathway with a compact chip layout, while the flow distribution and residence time would need to be validated to ensure consistent assay performance.
 
@@ -435,11 +430,11 @@ title: "Microfluidic Chip"
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/7770391755d55d8d81eaf359de5d5026.avif","alt":"","scale":0}]}>
       <Fragment slot="content">
-        <a id="3ffd65dd82be80ce9df5f99595788b54" />Multi-Step Microfluidics Chip
+        <a id="3ffd65dd82be80ce9df5f99595788b54" />Figure 16: Multi-Step Microfluidics Chip
       </Fragment>
     </Figure>
 
-    #### <a id="3ffd65dd82be804cbf3ac03f4cd9bde8" />Rationale
+    <a id="3ffd65dd82be807d87acc64de76e68d6" />**Rationale**
 
     <a id="3ffd65dd82be8068abd7fcae2b8f2aea" />Sample Introduction & Metering Chambers: The initial entry port and expanded chamber allow for precise metering of raw or lightly filtered urine, minimizing user error and standardizing the sample volume required for testing.
 
@@ -457,7 +452,7 @@ title: "Microfluidic Chip"
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/08e43b9056a85298ba8af52a2ce0bedf.avif","alt":"","scale":0}]}>
       <Fragment slot="content">
-        <a id="3ffd65dd82be80c1b719c297899c7557" />Broken mold after taking the PDMS microfluidics chip out.
+        <a id="3ffd65dd82be80c1b719c297899c7557" />Figure 17: Broken mold after taking the PDMS microfluidics chip out.
       </Fragment>
     </Figure>
 
@@ -465,19 +460,18 @@ title: "Microfluidic Chip"
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/f6af8d03cf765b509e5503c01caa19d2.avif","alt":"","scale":0}]}>
       <Fragment slot="content">
-        <a id="3ffd65dd82be800caf44e623a2c75045" />Ironed and demolded microfluidics chip.
+        <a id="3ffd65dd82be800caf44e623a2c75045" />Figure 18: Demolded microfluidics chip.
       </Fragment>
     </Figure>
 
-    <a id="3fdd65dd82be809ea148d312caaf6af5" />When we flowed liquid through this version of our chip, the liquid would spill out of the sides due to the resolution of the printer creating incredibly small channels on the sides. To address this issue, we used the “IRON” function of our three-dimensional printer. It enabled the printer to go over all the surfaces without extruding material. In turn, this results in a smoother surface that plasma-bonds better with the glass cover slips, actively reducing the leakage.
+    <a id="3fdd65dd82be809ea148d312caaf6af5" />When we flowed liquid through this version of our chip, the liquid would spill out of the sides due to the resolution of the printer creating incredibly small channels on the sides.
   </Fragment>
 
   <Fragment slot="learn">
     <a id="3f9d65dd82be80d09fc1e8692048b6ea" />We learned two main piece of information from this DBTL cycle;
 
-    <a id="3ffd65dd82be80eba7ccda6e7c8a2276" />(1) Walls are paramount to proper PDMS casting. They allowed us to control the thickness of the chips and give us a way to demold the chips without breaking them (although the mold has to be altered in the process - see above)
-
-    <a id="3ffd65dd82be80bea086e29739a2d16b" />(2) Surface finish is very important to eliminate leakage. By using the ironing function of our printers, we managed the print errors, resulting in reduced/eliminated leaks. Step forward include using resin printers instead of fusion deposition modelling (FDM) printers to increase the resolution of our parts. That being said, the latter could not be implemented this year due to budget and technical limitations.
+    - <a id="3ffd65dd82be80eba7ccda6e7c8a2276" />Walls are paramount to proper PDMS casting. They allowed us to control the thickness of the chips and give us a way to demold the chips without breaking them (although the mold has to be altered in the process - see above)
+    - <a id="3ffd65dd82be80bea086e29739a2d16b" />Surface finish is very important to eliminate leakage.
   </Fragment>
 </Dbtl>
 
@@ -493,31 +487,37 @@ title: "Microfluidic Chip"
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3f9d65dd82be800aab99dc7aad5a82bb" />Design
+    <a id="3f9d65dd82be800aab99dc7aad5a82bb" />Through this iteration of the microfluidic chips, the side walls were raised much higher to allow for more lenience when pouring PDMS during the build period. We wanted to use this cycle to begin testing the chips for functionality, and pumping fluids through them to analyze any potential issues with fluid flow in the system.
   </Fragment>
 
   <Fragment slot="build">
     <a id="3f9d65dd82be80c085ebc426da2fc9ba" />Build
 
+    <a id="3fdd65dd82be801a91c6f0e75df64942" />The flow channels remined the same for this cycle, as did the 3D modelling method, and the PDMS protocol did not change either.
+
     <a id="3fdd65dd82be80baa733c321773f59d5" />
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/83cbc9d6f08e5a8a819947b58aa6ac7f.avif","alt":"","scale":0}]}>
-      <Fragment slot="content" />
+      <Fragment slot="content">
+        <a id="3ffd65dd82be80199d77c6560b598117" />Figure 19: Top view of Solidworks CAD for this iteration of casting
+      </Fragment>
     </Figure>
   </Fragment>
 
   <Fragment slot="test">
     <a id="3f9d65dd82be806e83b2c0d8a635f589" />We were finally able to successfully run our indicator solution through the device with no leaks.
 
-    <a id="3f9d65dd82be808192dfdfe127f7c470" />
+    <a id="3ffd65dd82be807a9a1cfca68c57597e" />
 
-    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/565558afed2256d4b387f59766ec2696.avif" alt="" scale={0} align="center" />
+    <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/565558afed2256d4b387f59766ec2696.avif","alt":"","scale":0}]}>
+      <Fragment slot="content" />
+    </Figure>
 
-    <a id="3f9d65dd82be8079adcedd4547c602ba" />We printed both an ironed (left) and a non-ironed (right) device so that we could use the non-ironed device as a control. As can be seen, the ironed device had no leakage, while the non-ironed device showed significant leakage.
+    <a id="3f9d65dd82be8079adcedd4547c602ba" />We printed both an ironed (left) and a non-ironed (right) device so that we could use the non-ironed device as a control. To address this issue, we used the “IRON” function of our three-dimensional printer. It enabled the printer to go over all the surfaces without extruding material. In turn, this results in a smoother surface that plasma-bonds better with the glass cover slips, actively reducing the leakage.  As can be seen, the ironed device had no leakage, while the non-ironed device showed significant leakage.
   </Fragment>
 
   <Fragment slot="learn">
-    <a id="3fcd65dd82be8017a0d1c373a5e67a7c" />Our chip was incredibly difficult to design fluorescence detection in mind. The angle of rotation between wells was incredibly slim, meaning that our movement between wells would have to be incredibly precise in order to differentiate between conditions. As such we began to approach linear chips.
+    <a id="3fcd65dd82be8017a0d1c373a5e67a7c" />Our chip was incredibly difficult to design fluorescence detection in mind. The angle of rotation between wells was incredibly slim, meaning that our movement between wells would have to be incredibly precise in order to differentiate between conditions. As such we began to approach linear outlets on our chips. This would give the fluorescence detector more room to move and adjust to sample the sensor bacteria output.
   </Fragment>
 </Dbtl>
 
@@ -537,7 +537,7 @@ title: "Microfluidic Chip"
 
     <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/1b29d447260c5009836ad07894bba3b8.avif","alt":"","scale":0}]}>
       <Fragment slot="content">
-        <a id="3fdd65dd82be80c3b26cdb1058ad01bc" />The dark circles on this image represent the wells, and the light grey rectangle represents the microfluidic chip. Our dimensions are visualized using the brackets.
+        <a id="3fdd65dd82be80c3b26cdb1058ad01bc" />Figure 20: The dark circles on this image represent the wells, and the light grey rectangle represents the microfluidic chip. Our dimensions are visualized using the brackets.
       </Fragment>
     </Figure>
   </Fragment>
@@ -547,49 +547,77 @@ title: "Microfluidic Chip"
 
     <a id="3fcd65dd82be8039a978d3d2041a6d15" />Assumptions:
 
-    - <a id="3fcd65dd82be805a8dbfd8e8767fe941" />main channel is 1\*1 mm\*2
-    - <a id="3fcd65dd82be8096822ec1c247ed5f22" />outlets (7) are 0.5\*0.5 mm^2
+    - <a id="3fcd65dd82be805a8dbfd8e8767fe941" />main channel is 1 x 1 x 2 mm
+    - <a id="3fcd65dd82be8096822ec1c247ed5f22" />outlets (7) are 0.5 x 0.5 mm^2
     - <a id="3fcd65dd82be8034a073d6607e9ab062" />outlet length is 15 mm
-    - <a id="3fcd65dd82be80a7a9c5ec76a30d78c6" />outlet spacing 8 mm apart
+    - <a id="3fcd65dd82be80a7a9c5ec76a30d78c6" />outlet spacing 9.375 mm apart
     - <a id="3fcd65dd82be8025bc32fe9c9bcc6e2f" />identical outlets
     - <a id="3fcd65dd82be805fbfc6d3849eb7f023" />There is no output from the wells (i.e. they never overflow)
 
-    <a id="3fcd65dd82be8078a0befc14c9192da1" />Hydraulic Resistance of main channel:
+    <a id="3fcd65dd82be8078a0befc14c9192da1" />Hydraulic Resistance of main channel <Cite refs={[{"n":19,"key":"TheoreticalMicrofluidicsOxford"}]} />:
 
-    <a id="3fcd65dd82be804382d6f21b8f19f2bd" />
+    <a id="3ffd65dd82be8051b142c58fdccfa7b5" />
 
     $$
-    \mu: \text{dynamic viscosity},
-    L: \text{Length}, h: \text{length of channel side} \\ 
-    R_{M} = \frac{28.4 \mu \cdot L}{h^{4}} \\
-    R_{M} = \frac{28.4 (0.001) \cdot(0.008)}{(0.001)^{4}} \\
-    R_{M} = 2.3 \cdot 10^8 \frac{Pa\cdot s}{m^{3}}
+    \begin{aligned}
+    R_M &= \frac{28.4\cdot \mu \cdot L}{h^{4}} \\[6pt]
+       &= \frac{28.4\,(0.001\ \mathrm{Pa\cdot s})(0.009375\ \mathrm{m})}{(0.001\ \mathrm{m})^{4}} \\[6pt]
+        &\approx 2.7 \times 10^{8}\ \mathrm{\frac{Pa\cdot s}{m^{3}}}
+    \end{aligned}
+    \\[10pt]
+    \text{where } \mu = \text{dynamic viscosity},\quad
+    L = \text{channel length},\quad
+    h = \text{channel side length}
     $$
 
     <a id="3fcd65dd82be8066956df04399fbfbfe" />Hydraulic Resistance of the Outlet Channel
 
-    <a id="3fcd65dd82be80168360e1a4d281f96e" />
+    <a id="3ffd65dd82be80628a49ccf2854e7304" />
 
     $$
-    R_{O} = \frac{28.4 \mu*L}{h^{4}} \\
-    R_{O} = \frac{28.4 (0.001)\cdot(0.0015)}{(0.0005)^{4}} \\
-    R_{O} = 6.8 \cdot 10^{9} \frac{Pa \cdot s}{m^{3}}
+    \begin{aligned} R_O &= \frac{28.4\,\cdot \mu  \cdot L}{h^{4}} \\[6pt] &= \frac{28.4\,(0.001\ \mathrm{Pa\cdot s})(0.0015\ \mathrm{m})}{(0.0005\ \mathrm{m})^{4}} \\[6pt] &\approx 6.8 \times 10^{8}\ \mathrm{\frac{Pa\cdot s}{m^{3}}} \end{aligned}
     $$
 
-    <a id="3fcd65dd82be80749853e50f1960f236" />The outlet channel is therefore 300x more resistive than the main channel.
+    <a id="3fcd65dd82be80749853e50f1960f236" />The outlet channel is therefore 3 times more resistive than the main channel.
 
     <a id="3fcd65dd82be803da847db7267f7b901" />
 
     $$
-    \frac{R_{O}}{R_{M}} = 30
+    \frac{R_{O}}{R_{M}} \approx 2.56
     $$
+
+    <a id="3ffd65dd82be809dad3bd63fc891f3e2" />To split the flow throughout the wells based on our hydraulic resistance calculation, we can set up an equivalent circuit with all of the main and outlet channel resistances listed
+
+    <a id="3ffd65dd82be80b9905afcf72fdaf519" />
+
+    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/232c67c2e8b0515c9f489eb3256a8e2f.avif" alt="" scale={0} align="center" />
+
+    <a id="3ffd65dd82be80fdb932d8b5e1a7f8a6" />We used this to solve for equivalent resistance in this portion of the chip.
+
+    <a id="3ffd65dd82be8091a4d4e64e7645c8b2" />
+
+    $$
+    R_{T}=3.13 \times 10^{8}\ \mathrm{\frac{Pa\cdot s}{m^{3}}}
+    $$
+
+    <a id="3ffd65dd82be8050b30eeec2de3a6a35" />Based on this value, we then solved for the flow rate going into this channel as a function of pressure drop
+
+    <a id="3ffd65dd82be805ba59cf958b8f1fc92" />
+
+    $$
+    Q=\frac{\Delta p}{R_{T}}=3.19\cdot10^{-9}\cdot\Delta p
+    $$
+
+    <a id="3ffd65dd82be8013b923fd962af1e9bb" />From here, we can solve the resistor system for the pressure drop and flow rate over all of the wells
+
+    <a id="3ffd65dd82be8022ae6cdd5489d9b49e" />\*
 
     <a id="3fcd65dd82be80f5804fe717aa249165" />To split our flow equally between wells we must divide the flow between the eight wells.
 
     <a id="3fcd65dd82be80ca97e1d6f6cd32db2d" />
 
     $$
-    Q_{i}=\frac{Q_{O}}{7} = 0.143 Q_{O}
+    Q_{i}=\frac{Q_{O}}{7} = 0.143\text{ } Q_{O}
     $$
 
     <a id="3fcd65dd82be80a098ccd61c547c2ae9" />In the main channel, the flow will drop as it passes each successive well.
@@ -597,38 +625,23 @@ title: "Microfluidic Chip"
     <a id="3fcd65dd82be801184acd1a733986ae7" />
 
     $$
-    Q= 1 \text{,} \frac{6}{7} \text{,} \frac{5}{7} \text{,} \frac{4}{7}\text{,} \frac{3}{7}\text{,} \frac{2}{7}\text{,}\frac{1}{7}
+    Q= 1 \text{, } \frac{6}{7} \text{, } \frac{5}{7} \text{, } \frac{4}{7}\text{, } \frac{3}{7}\text{, } \frac{2}{7}\text{, }\frac{1}{7}
     $$
 
     <a id="3fcd65dd82be8041a2c7dfd8af79e1cf" />In the main channel, there were therefore be a pressure loss as the volume of fluid pushing forward will be lessened:
 
-    <a id="3fcd65dd82be806faf91d61bbfce89d9" />
+    <a id="3ffd65dd82be80d1a4aec48d195b375c" />
 
     $$
-    \Delta P = QR_{M} \\
-    \begin{array}{|c|c|c|}
-    \hline
-    \text{Well} & \text{Flow Rate} & \text{Pressure Drop} \\
-    \hline
-    1 & Q & QR_m \\
-    2 & \frac{6}{7}Q & \frac{6}{7}QR_m \\
-    3 & \frac{5}{7}Q & \frac{5}{7}QR_m \\
-    4 & \frac{4}{7}Q & \frac{4}{7}QR_m \\
-    5 & \frac{3}{7}Q & \frac{3}{7}QR_m \\
-    6 & \frac{2}{7}Q & \frac{2}{7}QR_m \\
-    7 & \frac{1}{7}Q & \frac{1}{7}QR_m \\
-    \hline
-    \end{array}
+    \begin{gathered} \Delta P = Q R_M \\[10pt] \def\arraystretch{1.6} \begin{array}{|c|c|c|} \hline \textbf{Well} & \textbf{Flow Rate} & \textbf{Pressure Drop} \\ \hline 1 & Q & Q R_M \\ 2 & \tfrac{6}{7} Q & \tfrac{6}{7} Q R_M \\ 3 & \tfrac{5}{7} Q & \tfrac{5}{7} Q R_M \\ 4 & \tfrac{4}{7} Q & \tfrac{4}{7} Q R_M \\ 5 & \tfrac{3}{7} Q & \tfrac{3}{7} Q R_M \\ 6 & \tfrac{2}{7} Q & \tfrac{2}{7} Q R_M \\ 7 & \tfrac{1}{7} Q & \tfrac{1}{7} Q R_M \\ \hline \end{array} \end{gathered}
     $$
 
     <a id="3fcd65dd82be80b1a713e061cc2ce7b7" />You are then able to add up all of the pressure drops.
 
-    <a id="3fcd65dd82be80acbb5cefe1ca9bf0b1" />
+    <a id="3ffd65dd82be80febd2fcd62ce30f194" />
 
     $$
-    \sum_{i=P_{1}}^{P_{8}} \Delta P_{Mi} = Q_{i}R_{M} \\
-    \sum_{i=P_{1}}^{P_{8}} \Delta P_{Mi} = (1+\frac{6}{7}+\frac{5}{7}+\frac{4}{7}+\frac{3}{7}+\frac{2}{7}+\frac{1}{7})QR_{M} \\
-    \Delta P_M =  9.2\cdot 10^8 Q Pa
+    \begin{aligned} \Delta P_M &= \sum_{i=1}^{7} \Delta P_{M,i} = \sum_{i=1}^{7} Q_i R_M \\[6pt] &= \left(1 + \tfrac{6}{7} + \tfrac{5}{7} + \tfrac{4}{7} + \tfrac{3}{7} + \tfrac{2}{7} + \tfrac{1}{7}\right) Q R_M \\[6pt] &= 4\,Q R_M \\[6pt] &\approx \left(9.1 \times 10^{8}\ \mathrm{\tfrac{Pa\cdot s}{m^{3}}}\right) Q \end{aligned}
     $$
 
     <a id="3fcd65dd82be80858440d9eae070c516" />To find the pressure drops across the outlets as fluid moves in we then:
@@ -636,9 +649,7 @@ title: "Microfluidic Chip"
     <a id="3fcd65dd82be8058a844d5f4fdc4bbed" />
 
     $$
-    R_{O}=6.8 \cdot 10^{9} \\
-    \Delta P_O = (7)(R_{O})(\frac{Q} {7})\\
-    \Delta P_O = 6.8 \cdot 10^{9} Q Pa
+    \begin{aligned} R_O &\approx 6.8 \times 10^{8}\ \mathrm{\tfrac{Pa\cdot s}{m^{3}}} \\[6pt] \Delta P_O &= 7 \cdot R_O \cdot \frac{Q}{7} = R_O\,Q \\[6pt] &\approx \left(6.8 \times 10^{8}\ \mathrm{\tfrac{Pa\cdot s}{m^{3}}}\right) Q \end{aligned}
     $$
 
     <a id="3fcd65dd82be80129549e5c56d71678f" />We can then compare the pressure difference across the main channel to into the outlets to find whether there is an unequal push.
@@ -646,20 +657,16 @@ title: "Microfluidic Chip"
     <a id="3fcd65dd82be8070addff8c6b0f05683" />
 
     $$
-    \frac{\Delta P_M}{\Delta P_O}=\frac{9.2\cdot 10^8}{6.8 \cdot10^{9}} \\
-    \frac{\Delta P_M}{\Delta P_O}= 0.14\\
+    \frac{\Delta P_M}{\Delta P_O}= \frac{(9.1 \times 10^{8})\,Q}{(6.8 \times 10^{8})\,Q} \\[6pt] \approx 1.3 
+
     $$
 
-    <a id="3fdd65dd82be80638303cf04ac758c5f" />Therefore, most of the pressure comes from the outlet. Because the pressure at the outlet is so much larger than the pressure in the main channel, the flow tends to equalize.
-
-    <a id="3fdd65dd82be8081ae26cb5abf2fac45" />We can now compare individual wells to see if there is a difference in that pressure equalization. If there is a significant difference it implies that there is a significant difference in the filling of the wells.
+    <a id="3fdd65dd82be80638303cf04ac758c5f" />We can now compare individual wells to see if there is a difference in that pressure equalization. If there is a significant difference it implies that there is a significant difference in the filling of the wells.
 
     <a id="3fdd65dd82be80afb6abdcb439ecee95" />
 
     $$
-    \frac{ \Delta P_{M}}{\Delta P_{O7}}=\frac{(Q/7)R_M}{R_OQ} \\
-    \frac{\Delta P_{M}}{\Delta P_{O7}}=\frac{R_M}{7R_O} \\
-    \frac{\Delta P_{M}}{\Delta P_{O7}}=0.00476
+    \begin{aligned} \frac{\Delta P_M}{\Delta P_{O7}} &= \frac{\left(\tfrac{Q}{7}\right) R_M}{R_O\,Q} = \frac{R_M}{7\,R_O} \\[6pt] &= \frac{2.27 \times 10^{8}}{7\,(6.8 \times 10^{8})} \\[6pt] &\approx 0.048 \end{aligned}
     $$
 
     <a id="3fdd65dd82be808182aed902a1bf1d5a" />We then do this for each outlet:
@@ -667,22 +674,10 @@ title: "Microfluidic Chip"
     <a id="3fdd65dd82be800e97ebf7d9a43c5a13" />
 
     $$
-    \begin{array}{|c|c|}
-    \hline
-    \text{Section} &
-    \text{Pressure Difference With Main Channel} \\
-    \hline
-    1 & 0.0333\\
-    2 &  0.0167\\
-    3 &  0.0111\\
-    4 &  0.0083 \\
-    5 &  0.0067\\
-    6 &  0.0056\\
-    7 &  0.0048\\
-    8 &   0.0042\\
-    \hline
-    \end{array}
+    \def\arraystretch{1.5} \begin{array}{|c|c|} \hline \textbf{Section} & \textbf{Pressure Ratio } \left(\Delta P_M / \Delta P_{O}\right) \\ \hline 1 & 0.333 \\ 2 & 0.169 \\ 3 & 0.113 \\ 4 & 0.083 \\ 5 & 0.067 \\ 6 & 0.056 \\ 7 & 0.048 \\ \hline \end{array}
     $$
+
+    <a id="3ffd65dd82be806fbcb9e06c526c2b7c" />\*
 
     <a id="3fdd65dd82be804da412cad0f9c2b3bf" />We can now determine the relative variation between the first outlet and the last outlet:
 
@@ -694,8 +689,6 @@ title: "Microfluidic Chip"
 
     <a id="3fdd65dd82be80a3bce7cef3dbcdc4cb" />Therefore, the relative difference between the first well and the last well is 13%. Since pressure and flow have a direct relationship, we are able to infer that the flow between the wells is not significantly different and was deemed acceptable by the team.
 
-    ### <a id="3ffd65dd82be80f4b39ee2a3db04358a" />Flow Simulation - Mixing of Two Aqueous Fluids
-
     <a id="3ffd65dd82be8054be07c63a7e0160c2" />Furthermore, to verify the mathematical model above, we ran a fluid flow simulation. The objective was observe flow behavior at the millimeter scale, and confirm that channel size did not matter due to great resistance.
 
     <a id="3ffd65dd82be8056bdf2c9addf90b8cf" />First, we made a simple microfluidics model to verify that the simulation parameters would yield a sensible result.
@@ -705,7 +698,7 @@ title: "Microfluidic Chip"
     1. <a id="3ffd65dd82be80bd8d74d998e6408f76" />Microfluidics chip is filled with even concentrations of fluids A and B.
     2. <a id="3ffd65dd82be80d4b8dcf7e72022687c" />Both fluids are aqueous and represented using water. Both having the same viscoelastic properties.
     3. <a id="3ffd65dd82be8031ae1cf59eb0f70ca0" />Inlet flow rate is 0.001 kg/min
-    4. <a id="3ffd65dd82be80dca920d4eb7ad88b68" />Outlet pressure is set at atmospheric ambient temperature and pressure  (20C and 1 ATM).
+    4. <a id="3ffd65dd82be80dca920d4eb7ad88b68" />Outlet pressure is set at atmospheric ambient temperature and pressure (20 °C and 1 atm).
 
     <a id="3ffd65dd82be80ef93cdd8b8b063ea65" />The output, that served as a qualitative test for the above mathematical model is the following.
 
@@ -715,11 +708,9 @@ title: "Microfluidic Chip"
   <Fragment slot="learn">
     <a id="3ffd65dd82be800482b1d51c904dc116" />Three main takeaways were learned from the previous test cycles:
 
-    <a id="3ffd65dd82be803094e8e12e5aade152" />(1) Our mathematical model somewhat holds but further simulation and physical testing is needed to draw any conclusion.
-
-    <a id="3ffd65dd82be80dfaf02e295b66c02d2" />(2) A simple diffusion chamber is not sufficient to provide mixing; a serpentine channel is needed to ensure proper mixing of species within the chip. This conclusion is drawn from the flow simulation surnamed “Chip\_4\_Animation\_1”
-
-    <a id="3ffd65dd82be802a9aede94d7120e966" />(3) To simplify the geometry of our device, we wanted to reduce the number of channels to remove redundancy during flow testing. In other words, for the testing phase, we will remove 5 of the 7 wells and only keep 2 output wells.
+    - <a id="3ffd65dd82be803094e8e12e5aade152" />Our mathematical model somewhat holds but further simulation and physical testing is needed to draw any conclusion.
+    - <a id="3ffd65dd82be80039657fecf57d49bdf" />A simple diffusion chamber is not sufficient to provide mixing; a serpentine channel is needed to ensure proper mixing of species within the chip. This conclusion is drawn from the flow simulation surnamed “Chip\_4\_Animation\_1”.
+    - <a id="3ffd65dd82be806bbc3df21e5c3204d5" />To simplify the geometry of our device, we wanted to reduce the number of channels to remove redundancy during flow testing. In other words, for the testing phase, we will remove 5 of the 7 wells and only keep 2 output wells.
   </Fragment>
 </Dbtl>
 
@@ -727,9 +718,89 @@ title: "Microfluidic Chip"
 
 ## <a id="3fad65dd82be805a8952fcbd574984e3" />Mark Seven: Reduced Channels
 
+<a id="3fad65dd82be80e3b01ff41ecbabebe9" />
+
+<Dbtl>
+  <Fragment slot="design">
+    <a id="3fad65dd82be80269ed8cacca4a18e8a" />Up to this point, we had been designing our channels so that they could accommodate a large number of samples, a hypothetical five based on the different groups our wet lab had identified, plus a positive and negative control. For this DBTL, we reduced the number of samples so that we would be able to include our bacteria without redundancy.
+  </Fragment>
+
+  <Fragment slot="build">
+    <a id="3ffd65dd82be808ca99df5269c679272" />PDMS casting and plasma bonding were done in the same way as previously described in both earlier sections and our protocols database.
+  </Fragment>
+
+  <Fragment slot="test">
+    <a id="3ffd65dd82be806f806cf3a334fa91a1" />To test our microfluidic chips, we decided to run coloured liquid through the system so that we could visualize mixing and air bubbles within the system as can be seen in  [Flow Test](/ubc-vancouver/hardware/protocol-database/flow-test). We initially tried adding the liquid directly to the system with our 1 mL syringes, but we had significant leaking issues. Our second attempt used cut pipette tips so that the hydrostatic pressure would push the liquid through the chip, taking advantage of Bernoulli’s principle. This had significantly less leaking, but the force would build up over time and slip through the cracks between the pipette and the PDMS chip. Unfortunately, our dyes of choice were not particularly strong and were not very visible on camera.
+
+    <a id="3ffd65dd82be801097d8fa3efa302f28" />We also started experimenting with covering up wells, so that we could better control the filling of the system. In order for the fluid to move to the next well over, we need to remove the preceding well as a possibility. An additional way to solve this problem would be to have one channel leading to each well, however, this leads to issues with the spacing of the channels on the chip.
+
+    <a id="3ffd65dd82be80a6ab3be52b5b3ca45a" />Chip One, Reservoir:
+
+    <a id="3ffd65dd82be801e8461d8605311cd86" />
+
+    <ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/1ca702e9f4ea51ff867ed3a652b763d0.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/c1688a9130ac591aaa5b1f24709506fe.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/798e7eabc17957b4b9a18a09f283b11d.avif","alt":"","scale":0}]}>
+      <Fragment slot="descriptions">
+        <div class="carousel-desc" data-index="0" />
+
+        <div class="carousel-desc" data-index="1" />
+
+        <div class="carousel-desc" data-index="2" />
+      </Fragment>
+    </ImageCarousel>
+
+    <a id="3ffd65dd82be800f9807ecc64e3da941" />Images from testing of the reservoir microfluidic chip. The presence of air bubbles in this reservoir caused significant issues with the movement of the fluid through the system. The bubbles would add air into the channel leading to the external wells, create back pressure, and prevent the system from completely filling up.
+
+    <a id="3ffd65dd82be80b186c7fea9e8cf6023" />Chip Two, Turn arounds:
+
+    <a id="3ffd65dd82be80c190a5ddc6e6b97309" />
+
+    <ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/ed240b1ac27b507e8c8af061d8e1237e.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/cab81162e32b583d8d95e1c991a121fe.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/8515907a64085ddaad297ecb9cbd96cb.avif","alt":"","scale":0}]}>
+      <Fragment slot="descriptions">
+        <div class="carousel-desc" data-index="0" />
+
+        <div class="carousel-desc" data-index="1" />
+
+        <div class="carousel-desc" data-index="2" />
+      </Fragment>
+    </ImageCarousel>
+
+    <a id="3ffd65dd82be800682bbdafbd47507ef" />Images from testing of our curving microfluidic chip. This one had significantly more favourable mixing, though the issue of wells overflowing was still significant. However, between the two chips, this was clearly the superior choice.
+  </Fragment>
+
+  <Fragment slot="learn">
+    <a id="3fad65dd82be8098a50adbfbf5c5da1d" />From this cycle we learned
+
+    - <a id="3ffd65dd82be8089bd25da72dce66924" />Large reservoirs lead to the presence of air bubbles in the chip as the reservoirs are difficult to fill. The air bubbles can then lead to back pressure which prevents fluid from making it all the way to the end of the chip.
+    - <a id="3ffd65dd82be80f9a59dfe020b083235" />Pipettes can be used to take advantage of the Bernoulli principle, meaning that a syringe, or syringe pump is not necessary to fill up a chip
+    - <a id="3ffd65dd82be80718f5ff10aa0165b7e" />Positioning of inputs down the flow path from each other is inadvisable as the path of least resistance for the fluid is into the next inlet
+    - <a id="3ffd65dd82be806fb296f61ee936067a" />Sealing the pipettes into the inlets needs more work, as currently, fluid manages to escape from between the plastic and the PDMS chip once pressure builds up
+    - <a id="3ffd65dd82be80109a04d2eb06578442" />Wells will need to be deeper or sealed off when they are full. Even though our math showed that the pressure difference would not lead to uneven flow, it did not account for the situation where the wells would overflow.
+  </Fragment>
+</Dbtl>
+
 # <a id="3ecd65dd82be803eb079c678c4df61d6" />Next Steps
 
-<a id="3fcd65dd82be80f8bcd9f324e37d227c" />Our next steps with this project will be optimizing our input flow rates and updating our process so that we are able to get more than one chip out of the same mold. Optimizing the input flow rates of the sample and antibiotic will allow us to maximize the response from our biosensors. Currently, we have been breaking our molds in order to get our chips out; however, for both environmental and monetary reasons, it would be more optimal if we were able to get multiple chips out of the same mold.
+<a id="3fcd65dd82be80f8bcd9f324e37d227c" />Our next steps with this project will be:
+
+<Callout icon="💧">
+  <a id="3ffd65dd82be80588670d5e178178fe5" />Optimizing our input flow rates. Optimizing the input flow rates of the sample and antibiotic will allow us to maximize the response from our biosensors. One way that you can confirm flow rates *ex silico* is by using a strong dye and a high-speed camera, such that you are able to watch the mixing after the experiment is complete.
+</Callout>
+
+<Callout icon="🌿">
+  <a id="3ffd65dd82be8089a405f25a8f9b31ef" />Updating our process so that we are able to get more than one chip out of the same mold. Currently, we have been breaking our molds in order to get our chips out; however, for both environmental and monetary reasons, it would be more optimal if we were able to get multiple chips out of the same mold. We could potentially achieve this by using mold release spray.
+</Callout>
+
+<Callout icon="🧠">
+  <a id="3ffd65dd82be80718c7fdfe444b16cec" />Refine our designs so that they are more precise and controlled. In the time since we have begun designing our knowledge of microfluidics as a team has steadily increased, partially due to coursework, as such we want to improve on the designs so that they avoid pitfalls such as having a reservoir with no internal structure or wells that are not equidistant apart.
+</Callout>
+
+<Callout icon="💡">
+  <a id="3ffd65dd82be80f3930ef12da6fd92bd" />Take full advantage of Bernoulli’s principle to redefine how we load our samples. We had initially planned to load them with syringes. It was only during our experiment that we realized that the sample on our syringes wasn’t strong enough, so we got creative and used cut pipette tips. Bernoulli’s principle is extremely well defined, meaning we could calculate exactly how much sample is needed to fill the wells and how long it would take to get there.
+</Callout>
+
+<Callout icon="🦭">
+  <a id="3ffd65dd82be80f299bad65204ffbbc0" />Fix our sealing system so we don’t have to worry about losing precious volume and exposing clinicians to biohazards. Even if we do switch to using Bernoulli’s principle, we still run into issues with sample leaks. We could explore using a sealant around the pipette tip before we introduce it to the channel.
+</Callout>
 
 # <a id="3fad65dd82be801abde2d0e87f888dbc" />Reproduction Materials
 
@@ -881,6 +952,16 @@ title: "Microfluidic Chip"
   <Fragment slot="preview" />
 </Downloadable>
 
+<br id="3ffd65dd82be8075af7dd5124961e6a3" />
+
+## <a id="3ffd65dd82be806482f8e4147bd9a8a4" />DBTL 7 Ellipses Chip
+
+<br id="3ffd65dd82be8012bd6eed0071b85974" />
+
+## <a id="3ffd65dd82be8050b851c686bdd07a25" />Final Snake Microfluidic Chip
+
+<br id="3ffd65dd82be803aba71c7622ba43737" />
+
 # References
 
-<Bibliography refs={[{"n":1,"key":"pattanayakMicrofluidicChipsRecent2021"},{"n":2,"key":"whitesidesOriginsFutureMicrofluidics2006"},{"n":3,"key":"sackmannPresentFutureRole2014"},{"n":4,"key":"liuSimpleDirectReading2015"},{"n":5,"key":"beebePhysicsApplicationsMicrofluidics2002"},{"n":6,"key":"technionigem2016TechnionIsrael"},{"n":7,"key":"TeamMunich2017igemorg"},{"n":8,"key":"IISERTirupati_IndiaDesignnew2022"},{"n":9,"key":"5TechniquesMake2021"},{"n":10,"key":"liuMicrofluidicsChipsFabrication2024"},{"n":11,"key":"leeMicrofluidicMixingReview2011"},{"n":12,"key":"mengeaudMixingProcessesZigzag2002"},{"n":13,"key":"FAQFrequentlyAsked2026"},{"n":14,"key":"sharmaEvaluationMechanicalAdhesive2026"},{"n":15,"key":"liuTwofluidMixingMicrochannel2004"},{"n":16,"key":"CellularMicroenvironmentDesign"},{"n":17,"key":"ScientificNet"},{"n":18,"key":"hardtTheoreticalExperimentalCharacterization2006"}]} />
+<Bibliography refs={[{"n":1,"key":"pattanayakMicrofluidicChipsRecent2021"},{"n":2,"key":"whitesidesOriginsFutureMicrofluidics2006"},{"n":3,"key":"sackmannPresentFutureRole2014"},{"n":4,"key":"liuSimpleDirectReading2015"},{"n":5,"key":"beebePhysicsApplicationsMicrofluidics2002"},{"n":6,"key":"technionigem2016TechnionIsrael"},{"n":7,"key":"TeamMunich2017igemorg"},{"n":8,"key":"IISERTirupati_IndiaDesignnew2022"},{"n":9,"key":"5TechniquesMake2021"},{"n":10,"key":"liuMicrofluidicsChipsFabrication2024"},{"n":11,"key":"leeMicrofluidicMixingReview2011"},{"n":12,"key":"mengeaudMixingProcessesZigzag2002"},{"n":13,"key":"FAQFrequentlyAsked2026"},{"n":14,"key":"sharmaEvaluationMechanicalAdhesive2026"},{"n":15,"key":"liuTwofluidMixingMicrochannel2004"},{"n":16,"key":"CellularMicroenvironmentDesign"},{"n":17,"key":"ScientificNet"},{"n":18,"key":"hardtTheoreticalExperimentalCharacterization2006"},{"n":19,"key":"TheoreticalMicrofluidicsOxford"}]} />

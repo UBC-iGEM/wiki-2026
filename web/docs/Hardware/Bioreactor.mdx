@@ -13,7 +13,7 @@ title: "Bioreactor"
 
 ## <a id="3f0d65dd82be8052b407e9132156ecbf" />Why for this project?
 
-<a id="3fad65dd82be80e39714f6e9569d58c4" />We developed a bioreactor for several reasons. At the outset, we were unsure how many biosensor strains we would develop for our proof of concept. In the largest scenario, we would have five strains to culture separately. Because all strains would produce the same fluorescence and could therefore be analyzed using the same circuitry, we would need to run five shaker flasks at once, taking up considerable space in our 37°C room or on our bench. Bioreactors would let us use vertical space, keep cultures outside the 37°C room, off the bench, and closely monitor growth to optimize conditions and increase yield <Cite refs={[{"n":2,"key":"CharacterizationFeasibilityMiniaturized"},{"n":3,"key":"hsuAdvancedMicroscaleBioreactor2012"},{"n":4,"key":"obomOperationBenchtopBioreactor2013"}]} />. This would provide enough bacteria for both the hardware and wet lab teams to use in their experiments using a comparably simple process.
+<a id="3fad65dd82be80e39714f6e9569d58c4" />We developed a bioreactor for several reasons. At the outset, we were unsure how many biosensor strains we would develop for our proof of concept. In the most extreme scenario, we would have five strains to culture separately. Because all strains would produce the same fluorescence and could therefore be analyzed using the same circuitry, we would need to run five shaker flasks at once, taking up considerable space in our 37°C room or on our bench. Bioreactors would let us use vertical space, keep cultures outside the 37°C room, off the bench, and closely monitor growth to optimize conditions and increase yield <Cite refs={[{"n":2,"key":"CharacterizationFeasibilityMiniaturized"},{"n":3,"key":"hsuAdvancedMicroscaleBioreactor2012"},{"n":4,"key":"obomOperationBenchtopBioreactor2013"}]} />. This would provide enough bacteria for both the hardware and wet lab teams to use in their experiments using a comparably simple process.
 
 ## <a id="3f0d65dd82be80b9b69ce42379b3fb66" />Identifying Needs
 
@@ -110,19 +110,83 @@ title: "Bioreactor"
 
 ### <a id="3f0d65dd82be80099df1d6502485640f" />Design Decisions
 
-<a id="3fdd65dd82be80a1ab8dd7e495413b60" />basically just copy and paste the design justification page
+<a id="3fdd65dd82be80a1ab8dd7e495413b60" />When finalizing which design components should appear in the project, several factors were considered. Considering the requirements, sampling method, agitation, and component organization became the options with the widest variety of possible approaches. Most of the concern stemmed from past experiences in working with bioreactors (UBC iGEM 2025) and wanting to learn from what worked and what could be improved. This resulted in the use of weighted decision matrices (WDMs). Each option was scored out of 10 against criteria weighted by importance to the project. Weighted scores were summed, and the highest total was selected. By listing out both the pros and cons of each option, the most objective choice can be selected with engineering reasoning. Other components such as aeration, monitoring systems, and material selection are directly justified.
+
+<Callout icon="🧱">
+  <a id="3ffd65dd82be80e2806dc267c2f0133a" />**Material Selection**
+
+  <a id="3ffd65dd82be8020a6bac48c8cf53c99" />PLA is used for the early iterations because it is inexpensive, easy to source, and prints reliably on the Bambu Lab P1S, which allows parts to be reprinted quickly as the design changes. Its main limitations are a low heat tolerance and layer lines that can trap liquid, so PETG is being considered for final iterations because it resists chemicals such as bleach and has better layer adhesion for sealing. A 32 oz glass mason jar is used as the vessel because the same vessel worked in last year’s project, which makes it a proven choice. Glass is also inert to the culture and to cleaning agents, while being inexpensive and easily accessible (and can be substituted with adjacent glassware). The standard design can also allow components to be easily modelled around to well-specified dimensions.
+</Callout>
+
+<Callout icon="🗃️">
+  <a id="3ffd65dd82be805a8885f393377b60fb" />**Component Organization**
+
+  <a id="3ffd65dd82be8058a739c7107fedf7ec" />The electronics compartment houses the circuit components, so its position affects assembly, stability, and bench space. Placing it on top of the jar incorporates the components directly onto the vessel, which makes assembly easier and takes up less space. A bottom placement is more stable, but it takes up more space and requires components to be wired up to the top of the jar. A side placement makes the housing chunky to fit the cylindrical wall, blocks part of the jar, and requires components to be secured to keep them from falling out. The main concern with the top placement is a high center of gravity, which could cause tipping, but this can easily be mitigated by keeping the footprint of the holder close to that of the jar.
+
+  <a id="3ffd65dd82be8008a8f8f653619eb90d" />WDM Considerations
+
+  <a id="3ffd65dd82be80b58047fb13a734f0fc" />
+
+  | <a id="3ffd65dd82be805fa510f18a15661215" />Placement | Considerations                                                                                                                                                                                                                                              |
+  | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | <a id="3ffd65dd82be80a58376e3539a7b0f9f" />On Top    | • Circuit components attach directly to the jar, making assembly easier<br />  • A high center of gravity (CoG) could make the structure tip over<br />  • Takes up less bench space<br />  • Putting the circuits together and securing them can be tricky |
+  | <a id="3ffd65dd82be803886dcf3f4c9bd2159" />On Bottom | • Takes up more bench space, but more stable<br />  • Components must be wired from the holder up to the top of the jar<br />  • Least complicated method to maintain modularity                                                                            |
+  | <a id="3ffd65dd82be80a29766f618939a7a63" />On Side   | • Housing becomes chunky to accommodate the cylindrical wall<br />  • Components must be secured to prevent them from falling out<br />  • Blocks part of the jar<br />  • Supports and holders may creep with long-term use                                |
+
+  <a id="3ffd65dd82be80fdb23ddd40fe7f20d8" />
+
+  <Img url="https://static.igem.wiki/teams/6279/wiki/assets/e652e26eb1b7579f96c60f8877da4882.avif" alt="" scale={0} align="center" />
+</Callout>
+
+<Callout icon="🧫">
+  <a id="3ffd65dd82be8031b826c2d39e7b6bc1" />**Sampling Method**
+
+  <a id="3ffd65dd82be8094b1e8cfd504b8aa67" />Samples must be taken from the culture without compromising sterility. A dedicated tubing path is created, where the culture is exposed to the external environment only when the tube is opened and connected to a pipette. This also allows sampling at a controlled volume for OD measurement. Using a hinge or the entire jar lid would be easiest for the operator, as it gives the largest opening. However, this is not always the best choice, as it exposes a large area of the vessel to the outside environment, thus creating a high risk of contamination to the bacteria. However, using tubing that feeds directly from the vessel interior creates a designated pathway for sampling while maintaining an airtight seal when not in use. Concerns regarding complications with its interaction with the existing jar lid can be easily mitigated by redesigning the lid completely.
+
+  <a id="3ffd65dd82be8037b2c1d9146db754c1" />WDM Considerations
+
+  <a id="3ffd65dd82be8077a5ddde67428aec25" />
+
+  | <a id="3ffd65dd82be80b38cafe3bafe4190a5" />Placement | Considerations                                                                                                                                                                                                                                     |
+  | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | <a id="3ffd65dd82be8045bd63e237ef50236f" />Hinge     | • Most complicated design requiring specific tolerancing in design and mechanism selection<br />  • Must incorporate a method to maintain an airtight state when not sampling<br />  • Easiest method to sample from                               |
+  | <a id="3ffd65dd82be80b6a2bac8d1a3cec333" />Jar Lid   | • Difficult to sample, due to the requirement of parts of the vessel to be removed and then reassembled<br />  • Modifications are purely design-based of a single component<br />  • Exposes the whole vessel to the opening during sampling      |
+  | <a id="3ffd65dd82be8052abc4feae26aa1517" />Tubing    | • No extra modifications required<br />  • Small opening to decrease contamination risk<br />  • Must be able to retain an airtight state when not sampling<br />  • External system must be designed around a sampling tube with specific cutouts |
+
+  <a id="3ffd65dd82be80b696d1cf1e298e84c9" />
+
+  <Img url="https://static.igem.wiki/teams/6279/wiki/assets/8b54b9b289865b8fb0105b7190096cba.avif" alt="" scale={0} align="center" />
+</Callout>
+
+<Callout icon="🌪️">
+  <a id="3ffd65dd82be80dea994dec25e54a38b" />**Agitation**
+
+  <a id="3ffd65dd82be80f8af9dd1e8150c535b" />Agitation keeps nutrients and oxygen evenly distributed so that all cells have access to them. A magnetic stir bar is already available, is easy to use, and comes in different sizes that provide sufficient agitation. An impeller was considered because it provides more controlled and thorough agitation, but it is hard to assemble, is easy to fall off, and requires an additional motor and a way to secure it to the motor shaft. A custom stir bar could also be designed to the needs of the project, but it is not already available, and its higher center of gravity makes it unstable. A stir bar therefore gives sufficient agitation with the fewest added components. Because it is driven by an external stir plate, it also keeps extra wires and tubing out of the vessel.
+
+  <a id="3ffd65dd82be80029867cd9c3de0480e" />WDM Considerations
+
+  <a id="3ffd65dd82be807bb4cdfb2632d4e742" />
+
+  | <a id="3ffd65dd82be8029b291ea24f647dfe2" />Placement       | Considerations                                                                                                                                                                                                            |
+  | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | <a id="3ffd65dd82be80c392efd9e8f859774c" />Stir Bar        | • Existing equipment with various sizes that can be selected<br />  • Risk of producing turbulent flow if RPM is too high and the rotation arm is too large<br />  • Can risk heating up if used for long periods         |
+  | <a id="3ffd65dd82be80e1b8d8c7dc8569a48c" />Impeller        | • Difficult to assemble to the motor shaft and can easily slip off<br />  • Requires a designated motor and coupling shaft<br />  • Provides the most controlled agitation that can be adjusted based on testing outcomes |
+  | <a id="3ffd65dd82be8037b8f3f345a9ca1ad6" />Custom Stir Bar | • Not readily available, but can be customized to best suit the needs of the project<br />  • Much larger CoG that can make the stir bar unstable and prone to tipping when set into action                               |
+
+  <a id="3ffd65dd82be80388c83d91c06b76294" />
+
+  <Img url="https://static.igem.wiki/teams/6279/wiki/assets/800dfd1208fa56339ede382251c6e80c.avif" alt="" scale={0} align="center" />
+</Callout>
+
+<Callout icon="🫧">
+  <a id="3ffd65dd82be8037962ac1fbf72204ab" />**Aeration**
+
+  <a id="3ffd65dd82be801094eec55f02c115a3" />*E. Coli* is an aerobic bacterium, so sufficient oxygen must be delivered to all cells for optimal growth. A sparger produces fine bubbles, which give a high surface area to volume ratio for oxygen transfer. A shaker table was considered as an alternative but carries a risk of instability. As circuitry is attached to the bioreactor, continuous motion and vibration could dislodge parts and cause damage. A sparger therefore gives similar results in a controlled, stationary setting.
+
+  - <a id="3f9d65dd82be8069b9d1c8d3690c7ec4" />All off-the-shelf parts were sourced from easy-to-access manufacturers, such as McMaster-Carr. Unique components were fabricated in-house via FDM manufacturing with a Bambu Lab P1S 3D printer.
+</Callout>
 
 <br id="3f9d65dd82be80f28a86f7cb496fe517" />
-
-### <a id="3f0d65dd82be8099b910d75d41023f01" />Final Design
-
-<a id="3fdd65dd82be800a830dc18cc208a5bb" />
-
-<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/91d755db623554ae8b2a5ea200d96473.svg","alt":"","scale":0}]}>
-  <Fragment slot="content" />
-</Figure>
-
-<br id="3fdd65dd82be8075a261e4fd42d644fb" />
 
 ## <a id="3f0d65dd82be80079833f4eabe80eb2b" />Iteration 1
 
@@ -145,7 +209,7 @@ title: "Bioreactor"
     <ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/a694dcffd1dd510e9cd3fa9da33be6d4.svg","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/f15f183cf277557b85cd212a6dc3ae64.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/66e9d2d761b657738fd8877b6e34e670.svg","alt":"","scale":0}]}>
       <Fragment slot="descriptions">
         <div class="carousel-desc" data-index="0">
-          <a id="3fdd65dd82be8012b60dcba80a4c8b98" />**Sampling:** xx tubing with syringe to manually withdraw volume from the culture
+          <a id="3fdd65dd82be8012b60dcba80a4c8b98" />**Sampling:** Silicon tubing with syringe to manually withdraw volume from the culture
         </div>
 
         <div class="carousel-desc" data-index="1">
@@ -160,16 +224,29 @@ title: "Bioreactor"
   </Fragment>
 
   <Fragment slot="build">
-    <a id="3f9d65dd82be80cfa486d053599a3064" />(insert CAD model)
+    <a id="3ffd65dd82be80a6be74e0ca58a54445" />
 
-    <a id="3f9d65dd82be80c79e47cf7418998e1f" />(insert prototype photos)
+    <ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/883ce675585f5ad8b0dea7830ffe15f3.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/1c50bcf56b6c529abfbb9e3a83483d88.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/3eea7c5e5d9b5badb663350b53217c5d.avif","alt":"","scale":0}]}>
+      <Fragment slot="descriptions">
+        <div class="carousel-desc" data-index="0">
+          <a id="3ffd65dd82be80b49702d8f5e12e2fa7" />First CAD model of the exterior bioreactor system
+        </div>
+
+        <div class="carousel-desc" data-index="1">
+          <a id="3ffd65dd82be80128715f76acd6616eb" />Internal view of the electronics compartment with the peristaltic pump and it’s holder for aeration purposes. Testing out the physical spacing of different electronics demonstrated that the design, similar to an IKEA pegboard, is suitable for holding various parts and has a high degree of modularity.
+        </div>
+
+        <div class="carousel-desc" data-index="2">
+          <a id="3ffd65dd82be803d9e67e9eb654ac4b7" />Modified jar lid component that interfaces with the jar screw and the electronics holder. Geometric locking patterns and heat set inserts were used to enable the use of fasteners between parts.
+        </div>
+      </Fragment>
+    </ImageCarousel>
   </Fragment>
 
   <Fragment slot="test">
     <a id="3f9d65dd82be80aeaef4c798154184b3" />**What worked:**
 
     - <a id="3f9d65dd82be8041b30ec33319fb9b8c" />The overall structure held together and accommodated the aeration, agitation, and sampling components in a single, compact assembly.
-    - <a id="3f9d65dd82be8069b9d1c8d3690c7ec4" />All off-the-shelf parts were sourced from easy-to-access manufacturers, such as McMaster-Carr. Unique components were fabricated in-house via FDM manufacturing with a Bambu Lab P1S 3D printer.
     - <a id="3f9d65dd82be8005af2ded3ffa81a8c6" />Sampling proved to work and was a simple and effective process. No leakage was observed during the process of extracting a small volume and transferring to a cuvette. This process, including OD measurement time, took roughly 4 minutes.
     - <a id="3f9d65dd82be80b0bd22ec6f48bc5cf7" />The electronics compartment occupied nearly the same footprint as the mason jar vessel. No tipping occurred during experimentation, suggesting that the center of gravity was not offset by the electronics.
 
@@ -192,7 +269,7 @@ title: "Bioreactor"
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3fdd65dd82be80d48848ef2da17f6c9c" />The goal behind iteration 2 was to build on the foundation of iteration 1 by addressing the limitations and introducing the first monitoring components of the bioreactor. A temperature probe and a pH probe were added, along with an Arduino microcontroller to read outputs from them. The core features from iteration 1 were carried over unchanged so that the effect of the new additions could be assessed on their own. Temperature and pH are two of the main conditions that determine how well *E. Coli* grows, so measuring them gives users confidence that the culture is growing as intended and that environmental conditions are kept most suitable for growth. The pH probe in particular requires correct calibration and handling to give reliable readings, so a standard operating procedure (SOP) was developed for its use. This makes the measurement repeatable for any operator, regardless of laboratory experience, which supports the goal of a bioreactor that others can build and operate independently.
+    <a id="3fdd65dd82be80d48848ef2da17f6c9c" />The goal behind iteration 2 was to build on the foundation of iteration 1 by addressing the limitations and introducing the first monitoring components of the bioreactor. A temperature probe and a pH probe were added, along with an Arduino microcontroller to read outputs from them. The core features from iteration 1 were carried over so that the effect of the new additions could be assessed on their own. Temperature and pH are two of the main conditions that determine how well *E. Coli* grows, so measuring them gives users confidence that the culture is growing as intended and that environmental conditions are kept most suitable for growth. The pH probe in particular requires correct calibration and handling to give reliable readings, so a standard operating procedure (SOP) was developed for its use. This makes the measurement repeatable for any operator, regardless of laboratory experience, which supports the goal of a bioreactor that others can build and operate independently.
 
     <a id="3fdd65dd82be80648f96f1d55814b4b0" />Reassessment of the design was conducted against the following questions, while still preserving the points from iteration 1:
 
@@ -210,7 +287,7 @@ title: "Bioreactor"
         <div class="carousel-desc" data-index="0">
           <a id="3fdd65dd82be80d9a354d1991bf2aaad" />A pH probe only gives useful readings if it is calibrated correctly, so an SOP was written for the SEN0169 pH probe. The SOP covers calibration, using buffer solutions of pH 4.0 and 7.0. For general use of the probe, the procedure follows the manufacturer’s wiki page that comes with the sensor ([https://wiki.dfrobot.com/sen0169/#tech\_specs](https://wiki.dfrobot.com/sen0169/#tech_specs)). The SOP gives every operator the same steps to follow, which keeps readings consistent between experiments and users, including those without prior laboratory training. The full SOP is available here:
 
-          <a id="3ffd65dd82be804c820ee5652b58435a" />[SOP for Calibration of SEN0169 pH Probe](/ubc-vancouver/hardware/protocol-databse/sop-for-calibration-of-sen0169-ph-probe)
+          <a id="3ffd65dd82be804c820ee5652b58435a" />[SOP for Calibration of SEN0169 pH Probe](/ubc-vancouver/hardware/protocol-database/sop-for-calibration-of-sen0169-ph-probe)
 
           <a id="3fdd65dd82be8069bd84fff335f1ffd8" />Selection of the SENS0169 pH probe is according to the following:
 
@@ -220,11 +297,11 @@ title: "Bioreactor"
         </div>
 
         <div class="carousel-desc" data-index="1">
-          <a id="3fdd65dd82be802cbd03c12358c1fca1" />Temperature is one of the main conditions that determine how well *E. Coli* grows, so a DS18B20 waterproof digital temperature probe is added to monitor the culture. Unlike the pH probe, the DS18B20 is a digital sensor that reports its reading directly with no additional signal conversion board, and does not require calibration from the operator. For general use of the probe, the procedure follows the manufacturer’s wiki page that comes with the sensor ([https://www.analog.com/media/en/technical-documentation/data-sheets/ds18b20.pdf](https://www.analog.com/media/en/technical-documentation/data-sheets/ds18b20.pdf)).
+          <a id="3fdd65dd82be802cbd03c12358c1fca1" />Temperature is one of the main conditions that determine how well *E. coli* grows, so a DS18B20 waterproof digital temperature probe is added to monitor the culture. Unlike the pH probe, the DS18B20 is a digital sensor that reports its reading directly with no additional signal conversion board, and does not require calibration from the operator. For general use of the probe, the procedure follows the manufacturer’s wiki page that comes with the sensor ([https://www.analog.com/media/en/technical-documentation/data-sheets/ds18b20.pdf](https://www.analog.com/media/en/technical-documentation/data-sheets/ds18b20.pdf)).
 
           <a id="3fdd65dd82be8094bae0d386bc69b483" />Selection of the DS18B20 temperature probe is according to the following:
 
-          - <a id="3fdd65dd82be80ffb97ed9fa0158bcec" />Measurement range: The probe measures from -55 to 125°C, which comfortably covers 37°C, the temperature at which *E. Coli* is usually grown.
+          - <a id="3fdd65dd82be80ffb97ed9fa0158bcec" />Measurement range: The probe measures from -55 to 125°C, which comfortably covers 37°C, the temperature at which *E. coli* is usually grown.
           - <a id="3fdd65dd82be80d59f62c4d291b1eb92" />Accuracy: The manufacturer lists an accuracy of ±0.5°C between -10 and 85°C, which is sufficient to confirm that the culture is being held close to its target temperature. The resolution can be set up to 12 bits, so small changes in temperature can still be observed if necessary.
           - <a id="3fdd65dd82be8048955bf01c5819ccc4" />Waterproof construction: The probe is sealed in a waterproof stainless steel casing, meaning it can be directly submerged in the culture for the full length of an experiment without added protection or repeated removal.
         </div>
@@ -235,12 +312,26 @@ title: "Bioreactor"
   <Fragment slot="build">
     <a id="3fdd65dd82be80d0b5fde5dca45b1dec" />
 
-    <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/d2add33f83795b8b917c09bda83ff9df.svg","alt":"","scale":0}]}>
-      <Fragment slot="content" />
-    </Figure>
+    <ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/d2add33f83795b8b917c09bda83ff9df.svg","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/fdd7d80e3ff15597a7ca820a7022ce3e.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/227e59a8253d512ab961364d921021cb.avif","alt":"","scale":0}]}>
+      <Fragment slot="descriptions">
+        <div class="carousel-desc" data-index="0">
+          <a id="3ffd65dd82be80658c91dca2d42bda7f" />Illustration of key components found in the second iteration of the bioreactor
+        </div>
 
-    <a id="3fdd65dd82be80ba9b2fff558f8db718" />(insert CAD model)\
-    (insert prototype photos)
+        <div class="carousel-desc" data-index="1">
+          <a id="3ffd65dd82be80d5bd81c2c0bb947d1c" />Internal view of the electronics compartment containing:
+
+          - <a id="3ffd65dd82be808f81f1f55d2b102b22" />Sampling tube
+          - <a id="3ffd65dd82be80249aa6d8fad807bccd" />Sparger and peristaltic pump
+          - <a id="3ffd65dd82be8053adbad677f56e21fb" />Temperature probe
+          - <a id="3ffd65dd82be80d898cdc72ff46cc707" />pH probe
+        </div>
+
+        <div class="carousel-desc" data-index="2">
+          <a id="3ffd65dd82be80b9a31dc22ac41781a0" />Adjusted jar lid component to accommodate for the additional inputs/outputs built in iteration 2, with varying hole sizes to reflect the OD of the parts.
+        </div>
+      </Fragment>
+    </ImageCarousel>
   </Fragment>
 
   <Fragment slot="test">
@@ -255,12 +346,16 @@ title: "Bioreactor"
     <a id="3fdd65dd82be806d9d34d4d5ca6f9fbb" />**What did not work:**
 
     - <a id="3fdd65dd82be80189caafb27e4ed5dd3" />The press-fit of the lid did not work as intended due to inaccurate tolerances between the lid and the electronics compartment. Without a covering for the top opening, there is a risk that parts may be moved or knocked loose during experimentation. This risk is intended to be prevented as part of failure mode and effects analysis (FMEA) to build a robust system.
-    - <a id="3fdd65dd82be803296c1c0a7e7914454" />Some openings do not match the diameter of the equipment passing through them. When testing with bacteria, unused holes and the gaps around this equipment need to be sealed with Parafilm, which works temporarily, but is not a long-term solution. Leakage is a significant concern for a vessel intended to hold a bacterial culture, since it risks both contamination of the bacteria and the operator.
+    - <a id="3fdd65dd82be803296c1c0a7e7914454" />Some openings do not match the diameter of the equipment passing through them. When testing with bacteria, unused holes and the gaps around this equipment need to be sealed with Parafilm, which works temporarily, but is not a long-term solution. Leakage is a significant concern for a vessel intended to hold a bacterial culture, since it risks both contamination of the culture and the external environment.
     - <a id="3fdd65dd82be80d49782f0ec0811437c" />The continuous monitoring provides real-time data, but the system does not alert the operator when a minimum or maximum limit is reached. Without defined limits or a warning, the operator must interpret the raw readings alone, which makes it difficult to tell whether the culture conditions are acceptable. The purpose of monitoring is to be proactive in identifying problems in experimentation, but this system creates a roadblock for operators who may not have experience or know what the ideal values are.
   </Fragment>
 
   <Fragment slot="learn">
-    <a id="3fdd65dd82be80bab865e1174307c053" />xx
+    <a id="3ffd65dd82be8002b574dbff228d835a" />Based on findings from iteration 2, iteration 3 will focus on improving the problems identified from testing, specifically the alignment of components and the sealing of the vessel. Only upgrades that address a problem found in testing were selected, as more complex additions would take longer to build and be harder to reproduce.
+
+    <a id="3ffd65dd82be80308ec7f15f39103b3b" />To improve alignment, the electronics compartment will be made wider and taller, with a larger opening, so that components can be placed and adjusted more easily. Identification tabs will also be added to show where each piece goes and in what orientation. By making the placement of each component clear, there is less room for assembly errors, and wires can be organized more easily.
+
+    <a id="3ffd65dd82be80b5bdb2e89bdf4ab8f2" />To improve sealing, the lid will be redesigned to be taller with a thinner wall, and the way it fits will be changed to correct the tolerance issue seen with the press-fit. The openings for tubing and probes will also be resized to match the diameter of the equipment passing through them. By creating a closer fit with fewer gaps, there is less need for Parafilm as a temporary seal, and less room for liquids and gases to pass through.
   </Fragment>
 </Dbtl>
 
@@ -271,28 +366,130 @@ title: "Bioreactor"
 <Dbtl>
   <Fragment slot="design">
     <a id="3fdd65dd82be801597adec018c23d29a" />A key focus for iteration 3 is the addition of optical density (OD) monitoring. The planned design pairs a manual sample extraction with a sensor made from tubing, a light-tight box, and a syringe, informed by previously published low-cost designs (cite). OD is the standard measure of bacterial growth, so this addition would allow the growth of the culture to be tracked directly from the bioreactor, rather than requiring a spectrophotometer for external measurements. This is important to the project because temperature and pH only describe the conditions around the culture, while OD shows how the bacteria are responding to them. With OD included, the operator can tell whether the conditions in the bioreactor are producing growth, and the growth curves needed for validation can be generated by the bioreactor itself.
+
+    <a id="3ffd65dd82be80ca883bed288996fc3b" />To start, the sensor system itself must first be built, verified, validated, and tested such that result consistency is guaranteed. The following workflow shall be observed:
+
+    1. <a id="3ffd65dd82be80f5a860c93f9763d555" />Construct the circuitry according to device documentation
+    2. <a id="3ffd65dd82be80ca9920c4c9e49581b5" />Check for sensor function through verification testing
+    3. <a id="3ffd65dd82be80c2835fd07bd948fef7" />Check for result precision through validation testing
+    4. <a id="3ffd65dd82be80238471ccb19c815c21" />Adapt the sensor system to fit the needs of an OD sensor
+    5. <a id="3ffd65dd82be804b8a3df9ac38d8184b" />Test for result accuracy by comparing sensor output with spectrophotometer output
+    6. <a id="3ffd65dd82be80e5a45dc9582535547c" />Apply OD monitoring system to the bioreactor
   </Fragment>
 
   <Fragment slot="build">
-    <a id="3fdd65dd82be80358a42ebaca8952eeb" />XX
+    <a id="3ffd65dd82be805083abe15f0c28b08f" />
+
+    <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/92288df6964b5f5e993de930bf04ac8d.avif","alt":"","scale":0}]}>
+      <Fragment slot="content">
+        <a id="3ffd65dd82be803ca634e650a9d9ee92" />Figure 1: Circuitry and test setup for the TSL2591 light sensor and LED (enclosed in containment on the right)
+      </Fragment>
+    </Figure>
+
+    <a id="3ffd65dd82be80408858dda210f31604" />The OD sensor was built as a separate module, with the LED and TSL2591 light sensor positioned on opposite sides of the sample tubing. The enclosure maintained a fixed distance and alignment between the components while reducing interference from ambient lighting. An Arduino was used to collect readings from the light sensor and convert them into OD values.
+
+    <a id="3ffd65dd82be80bb8f3ff086548fb921" />For general use of the sensor, the procedure follows the manufacturer’s wiki page that comes with the part: [https://look.ams-osram.com/m/c901de8e97608f8/original/TSL2591-DS000338.pdf](https://look.ams-osram.com/m/c901de8e97608f8/original/TSL2591-DS000338.pdf)
+
+    <a id="3ffd65dd82be8091be20df7a14cf0b90" />To ensure that the measurements could be reproduced by different operators, a standard operating procedure (SOP) was developed for the OD sensor. The SOP covers LED current selection, dark and blank calibration, sample measurement, and interpretation of the calculated OD values.
+
+    <a id="3ffd65dd82be802a8ac9ee2bd4f074b1" />As the light sensor would be adapted into a larger system to become an OD sensor, it is vital that individual functionality is tested first. An SOP was created to standardize LED current selection, dark and blank calibration, as well as sample measurement and interpretation. The full SOP is available here:
+
+    <a id="3ffd65dd82be80289520e7c550bee852" />[SOP for Calibration and Setup of TSL2591 OD Sensor](/ubc-vancouver/hardware/protocol-database/sop-for-calibration-and-setup-of-tsl2591-od-sensor)
   </Fragment>
 
   <Fragment slot="test">
-    <a id="3fdd65dd82be8000ac2ff63fc672a75b" />XX
+    <a id="3ffd65dd82be805699cce8d7b514e908" />Using the code from the SOP, measurement outputs are collected and analyzed in MatLab to determine if there are any trends or deviations in data than what was expected. Thus, testing focused on determining the consistency of readings over time and the sensor’s ability to distinguish between samples of different optical densities.
+
+    <a id="3ffd65dd82be80a68835c8f92cfde7ba" />**Precision testing**
+
+    <a id="3ffd65dd82be8091bf68e7575e1c5c4f" />During initial calibration and setup, the CH0 reading was observed to increase gradually when exposed to same light intensity, even when the sample and sensor positions remained unchanged. Although the rate of increase slowed over time, the change in light intensity introduced variation into the calculated OD values and suggests the presence of drift.
+
+    <a id="3ffd65dd82be80aab42fea2af240ec3f" />By taking measurements over a 60 second period, the range of data can be plotted and analyzed to see if the drift continues at a steady rate, or if disturbance is related closer to the sensor itself.
+
+    <a id="3ffd65dd82be804ca8c6c5df0d952d4d" />
+
+    <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/cb607262e5ed54178078cdf0291acf72.avif","alt":"","scale":0}]}>
+      <Fragment slot="content">
+        <a id="3ffd65dd82be807eb3d0ce0a0fa52055" />Figure 2: Graph of CH0 sensor readings against time when subjected to a consistent light intensity
+      </Fragment>
+    </Figure>
+
+    <a id="3ffd65dd82be80638d57ea96a3eb5614" />Observing the graphical trend, it appears that the drift is most prominent at the start 30 seconds of sampling and plateau for the latter half. While the data is not completely consistent, it should be noted that data will always be affected by external factors, such as movement of the hardware or changes to environmental ambiance.
+
+    <a id="3ffd65dd82be805ea529d02c6ca54961" />To improve data consistency and precision, testing protocol can outline a workflow that mandates a data collection period of 60 seconds, where the first 30 seconds of data acquisition is discarded and only the last 30 second half be considered. This hopes to reduce any equipment sourced error and avoid reporting drift as part of bacterial growth.
+
+    <a id="3ffd65dd82be806a8692e185c1fd9f83" />**Accuracy testing**
+
+    <a id="3ffd65dd82be8037ad32d02dd0e4a25f" />A critical function of an OD sensor is the ability to distinguish between samples with different levels of light transmission. Different concentrations of dish soap diluted in water were selected as test samples to investigate how the measured OD changes with concentration. From a range of 1 to 10, each test sample contained a ratio of water to dish soap. As each level of concentration increased, an addition half spoonful of dish soap was added to the mixture.
+
+    <a id="3ffd65dd82be8037bacdfc02b2f68e46" />
+
+    <ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/a4e28618c1445e1186c3a2886120d5ad.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/dacb3f9f4cac53fa90d6ee885478605e.avif","alt":"","scale":0}]}>
+      <Fragment slot="descriptions">
+        <div class="carousel-desc" data-index="0">
+          <a id="3ffd65dd82be808ca5a4e5fcda48d630" />Figure 3: graph of raw CH0 sensor reading for varying dish soap concentration levels
+        </div>
+
+        <div class="carousel-desc" data-index="1">
+          <a id="3ffd65dd82be80dca42fc1195b7de774" />Figure 4: graph of converted optical density readings for varying dish soap concentration levels
+        </div>
+      </Fragment>
+    </ImageCarousel>
+
+    <a id="3ffd65dd82be803fbfc5fb50f5aeecd3" />Plotting both the raw CH0 outputs and the calculated OD measurements, the output trend lands relatively similar to the shape of what the expected result would be. As the CH0 outputs decreases with increased concentration in dish soap, the expected OD would also increase. However, it should be noted that there should be a logarithmic relationship for optical density, but with such a small sample size, producing the specific graph shape can be difficult.
+
+    <a id="3ffd65dd82be8025b86bde96f5528e5e" />This test is important because the sensor must be sensitive enough to detect changes in optical density as a bacterial culture grows. While dish soap is not a direct substitute for bacterial cultures, the experiment provides an initial assessment of the sensor's ability to distinguish between different light transmission levels.
+
+    <a id="3ffd65dd82be80f5ba0df9dc22cb56d0" />**What worked:**
+
+    - <a id="3ffd65dd82be80c298d1e37e6ca2c774" />Adjusting the voltage received by the LED by controlling the resistor between the power source and the part was successfully able to fine-tune the sensor. Reducing the resistance from 470 ohms to approximately 250 ohms increased the amount of light reaching the sensor without causing saturation. This provided a larger usable signal, making changes in light transmission easier to pick up and distinguish from noise or background readings. Having a sufficient signal range is especially important for detecting smaller changes in OD as the bacterial culture develops, while maintaining enough sensitivity for measurements at higher cell densities.
+    - <a id="3ffd65dd82be802bb29af3b45bb9fa57" />Developing the OD sensor as a separate module allows it to operate independently of the bioreactor without requiring modifications or pauses in testing to the existing vessel. This is particularly beneficial because the previous iterations had already established the core functionality of the bioreactor. Keeping the sensor modular also makes it easier to troubleshoot, replace components, or improve the enclosure without affecting the rest of the system.
+
+    <a id="3ffd65dd82be80309c05dc0a36bc4b36" />**What did not work:**
+
+    - <a id="3ffd65dd82be80d2b2b6c570fe04ac1f" />While a delayed-measurement window is implemented to reduce the effects of drift from the sensor, there is still uncertainty as to whether or not the magnitude of change can affect the results of the sensor long-term. Drift and noise can be affected by a plethora of factors, including the variability in the part quality, disturbances in the surrounding environment, or even the presence of other hardware components. For monitoring bacterial growth, this becomes a concern, as reliable measurements must be consistently taken at different points in time.
   </Fragment>
 
   <Fragment slot="learn">
-    <a id="3fdd65dd82be803cac95fc7c80b80d93" />XX
+    <a id="3fdd65dd82be803cac95fc7c80b80d93" />Iteration 3 expanded the monitoring capabilities of the bioreactor by introducing a low-cost method of measuring optical density. Initial testing confirmed that the sensor could detect changes in transmitted light and convert them into OD values. The next step is to incorporate the OD sensor into the bioreactor's sampling workflow and validate its performance using bacterial cultures. Comparing the measured values against a laboratory spectrophotometer would help establish its accuracy and suitability for generating bacterial growth curves.
   </Fragment>
 </Dbtl>
 
 ## <a id="3f0d65dd82be804c80d7cc53d190decd" />Validation of Each Iteration
 
-<a id="3fed65dd82be80c4b96af028d6808f24" />To assess the performance of our bioreactor, we validated through wet-lab integration.
+<a id="3fed65dd82be80c4b96af028d6808f24" />To assess our bioreactor’s performance, we conducted wet-lab validation by comparing it with the conventional flask-culturing method, which served as the control. The following document outlines the general use of bioreactor, proper storage, and detailed culturing process using a bioreactor.
 
-<a id="3fed65dd82be80f9ad11d560f30546ba" />We have set up an experiment with the control being the conventional flask-culturing method, which is tested against our bioreactor
+<a id="3ffd65dd82be8017a881f1d9ba46bb2c" />
 
-<br id="3fed65dd82be80f19cb0f9ea636cead1" />
+<Downloadable name="Bioreactor Use Protocol (1).pdf" url="https://static.igem.wiki/teams/6279/wiki/assets/311aa842087a5f4aaff275830a6aa095.pdf" kind="pdf">
+  <Fragment slot="preview" />
+</Downloadable>
+
+<a id="3ffd65dd82be80969ff6f625638b6c91" />Culturing Process and Setup
+
+### <a id="3ffd65dd82be8049b554da6746775784" />Iteration 2 Culturing Results
+
+<a id="3ffd65dd82be80f98f9de3ed56681df1" />
+
+<ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/ddcd944f12ee597fa30f9b35777f18d0.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/031a0944a9c65a6f833f1086c8258498.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/2e8f409f0fe1551c86be9971b2aec5c2.avif","alt":"","scale":0}]}>
+  <Fragment slot="descriptions">
+    <div class="carousel-desc" data-index="0">
+      <a id="3ffd65dd82be808fb075c08ee9b93220" />Growth curve experiment 1
+    </div>
+
+    <div class="carousel-desc" data-index="1">
+      <a id="3ffd65dd82be80dc9e82e6e5cf270da1" />Growth curve experiment 2
+    </div>
+
+    <div class="carousel-desc" data-index="2">
+      <a id="3ffd65dd82be8035a60fca4faff332b1" />Growth curve experiment 2
+    </div>
+  </Fragment>
+</ImageCarousel>
+
+<a id="3ffd65dd82be8054b26acfa3d7cc971b" />Overall, the bioreactor showed promising increased in bacterial yield compared to control.
+
+<br id="3ffd65dd82be806799f6f30bde8acb32" />
 
 # <a id="3fed65dd82be80cfabc8d49c615bfc53" />Impact of the Bioreactor
 
@@ -310,32 +507,39 @@ title: "Bioreactor"
 
 <a id="3fdd65dd82be80f1b236e80746773563" />For maximum reproducibility and transparency to the iGEM community, the following documents outline the protocols referenced through the bioreactor development process. By adhering to the same standards, other operators and engineers can replicate the design without needing to repeat rudimentary work and obtain comparable results.
 
-- <a id="3f9d65dd82be808489cac13115f1f222" />Actual assembly instructions
-- <a id="3f9d65dd82be80fb988dcea7fdc10ddc" />Usage and culturing bacteria instructions
-- <a id="3f9d65dd82be8075a42cc60a71bb711e" />Sop for ph probe
-- <a id="3f9d65dd82be8010a5afdfd1ce2ba5a8" />Sop for od sensor
+<a id="3ffd65dd82be8098982bef5ab9c627ab" />Assembly Instructions:
 
-## <a id="3f0d65dd82be80999588f93d7ea51fb9" />Bill of Materials (BOM)
+<a id="3ffd65dd82be809e83f0ea154c398589" />[Bioreactor Assembly Process](/ubc-vancouver/hardware/protocol-database/bioreactor-assembly-process)
 
-<a id="3fdd65dd82be805cb7d3e7e3751ae042" />
+<a id="3f9d65dd82be808489cac13115f1f222" />*E. Coli* Culturing Instructions:
 
-| <a id="3fdd65dd82be8056be5dc6f29f555406" />**Item**  | Use Case | **Cost (CAD)** |
-| ---------------------------------------------------- | -------- | -------------- |
-| <a id="3fdd65dd82be80538ae2c002fc2714f2" />          |          |                |
-| <a id="3fdd65dd82be80e8b673cc8992edcbab" />          |          |                |
-| <a id="3fdd65dd82be80919a69d66b6f145a57" />          |          |                |
-| <a id="3fdd65dd82be80549f94e3ea550b5d57" />          |          |                |
-| <a id="3fdd65dd82be80de9988c861901f86da" />          |          |                |
-| <a id="3fdd65dd82be800fb271e31361c0bb3c" />          |          |                |
-| <a id="3fdd65dd82be80c48915d40d0c630cd4" />          |          |                |
-| <a id="3fdd65dd82be80608322d24753fd0a8e" />          |          |                |
-| <a id="3fdd65dd82be80568f02e31c81620d8c" />          |          |                |
-| <a id="3fdd65dd82be80e68e0cc226ed74b065" />          |          |                |
-| <a id="3fdd65dd82be807fa00ff5ee8dda79ae" />**Total** |          |                |
+<a id="3ffd65dd82be804c8b90c7d0b8a76d6f" />
+
+<Downloadable name="Bioreactor Use Protocol (1).pdf" url="https://static.igem.wiki/teams/6279/wiki/assets/ea27d87f19dc58b9a6563e6f46e00c5d.pdf" kind="pdf">
+  <Fragment slot="preview" />
+</Downloadable>
+
+<a id="3f9d65dd82be8075a42cc60a71bb711e" />SOP for SENS0169 pH Probe:
+
+<a id="3ffd65dd82be8045b658e984fc3061ad" />[SOP for Calibration of SEN0169 pH Probe](/ubc-vancouver/hardware/protocol-database/sop-for-calibration-of-sen0169-ph-probe)
+
+<a id="3ffd65dd82be8078994dfcd16d7ddb86" />SOP for TSL2591 OD Sensor:
+
+<a id="3ffd65dd82be80b3af10d7b0d17b241f" />[SOP for Calibration and Setup of TSL2591 OD Sensor](/ubc-vancouver/hardware/protocol-database/sop-for-calibration-and-setup-of-tsl2591-od-sensor)
+
+<br id="3ffd65dd82be80e38544ecc3befd006c" />
+
+<a id="3ffd65dd82be80d19d99d9190ff12876" />
 
 ## <a id="3fdd65dd82be806595d5c4f69d0276f2" />Reproduction Materials
 
-- <a id="3f9d65dd82be80e685c2c02dbb9195dc" />Engineering drawings
+<a id="3f9d65dd82be80e685c2c02dbb9195dc" />Specified Engineering Drawings ([https://web.archive.org/web/20160101092059if\_/http://www.gpi.org/sites/default/files/drawings/4614.pdf](https://web.archive.org/web/20160101092059if_/http://www.gpi.org/sites/default/files/drawings/4614.pdf))
+
+<a id="3ffd65dd82be805d81d3c2e39468b769" />
+
+<Downloadable name="UBC iGEM 2026 Bioreactor Engineering Drawings.pdf" url="https://static.igem.wiki/teams/6279/wiki/assets/a5e2f9cb8e4e53e6992edbed936db7fd.pdf" kind="pdf">
+  <Fragment slot="preview" />
+</Downloadable>
 
 # <a id="3f0d65dd82be80a99bf0ea06cce646d7" />Next Steps for the Bioreactor
 
