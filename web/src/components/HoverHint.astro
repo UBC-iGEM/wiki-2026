@@ -1,0 +1,202 @@
+---
+import hand from "../../public/assets/icons/hover-hint.svg?raw";
+
+/**
+ * A tapping hand in the corner of an interactive element, telling the reader it can be played with.
+ * Its parent is the element: it must be positioned, and is where hovering and use are watched.
+ *
+ * The hand rests faintly until it comes into view, taps twice, and fades away for good. It takes no part
+ * in the page: clicks pass through it to the element, and it can't be selected. With reduced motion it
+ * doesn't tap, and goes instead once the element is hovered or used.
+ */
+interface Props {
+    /** Dark, for a hint over a light card such as SeqViz's or Vega's. */
+    tone?: "light" | "dark";
+    class?: string;
+}
+
+const { tone = "light", class: className } = Astro.props;
+
+// The SVG is inlined once per hint, so its gradients need ids of their own.
+const id = Math.random().toString(36).slice(2, 8);
+const svg = hand.replaceAll("hover-hint-", `hover-hint-${id}-`);
+---
+
+<span class:list={["hover-hint", `tone-${tone}`, className]} aria-hidden="true" set:html={svg} />
+
+<script>
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+    /** After it comes into view, so the reader's eye has settled before it moves. */
+    const TAP_DELAY = 600;
+
+    /** Whether the hint can be seen, as a section faded in by the home page's intro may still be transparent. */
+    const isShown = (hint: HTMLElement) =>
+        !hint.checkVisibility || hint.checkVisibility({ opacityProperty: true, visibilityProperty: true });
+
+    const tapper = new IntersectionObserver(
+        (entries) => {
+            for (const entry of entries) {
+                if (!entry.isIntersecting) continue;
+                const hint = entry.target as HTMLElement;
+                tapper.unobserve(hint);
+
+                const waitUntilShown = () => {
+                    if (!isShown(hint)) return requestAnimationFrame(waitUntilShown);
+                    setTimeout(() => hint.classList.add("is-tapping"), TAP_DELAY);
+                };
+                waitUntilShown();
+            }
+        },
+        // Fully on screen and a little clear of the bottom edge, so it has scrolled in rather than just peeked
+        { threshold: 1, rootMargin: "0px 0px -10% 0px" },
+    );
+
+    for (const hint of document.querySelectorAll<HTMLElement>(".hover-hint")) {
+        const target = hint.parentElement!;
+
+        /** Fades the hint out for good. */
+        const retire = () => {
+            hint.classList.add("is-retired");
+            hint.classList.remove("is-tapping");
+        };
+
+        // A one-off: having tapped, it goes, whether or not the element was hovered or used meanwhile
+        hint.querySelector(".hand")!.addEventListener("animationend", retire);
+
+        // Without the tap to wait for, it goes once a mouse has found the element or the element is used
+        if (reducedMotion.matches) {
+            target.addEventListener("pointerenter", (event) => {
+                if (event.pointerType === "mouse") retire();
+            });
+            for (const type of ["pointerdown", "wheel", "keydown"])
+                target.addEventListener(type, retire, { passive: true });
+            continue;
+        }
+
+        tapper.observe(hint);
+    }
+</script>
+
+<style>
+    /* Placed in the parent's bottom-right corner, unless the parent's class says otherwise */
+    .hover-hint {
+        bottom: 0.75rem;
+        filter: drop-shadow(0 0 0.35rem color-mix(in srgb, var(--color-cornflower) 45%, transparent));
+        opacity: 0.7;
+        /* Clicks, hovers and text selection all pass through to the element beneath */
+        pointer-events: none;
+        position: absolute;
+        right: 0.75rem;
+        /* Leaning in towards the content, from the corner it sits in */
+        transform: rotate(-15deg);
+        transition: opacity 300ms ease;
+        user-select: none;
+        width: 1.35rem;
+        z-index: 1;
+    }
+
+    /* The palm's fill and the outline's, each running down the hand */
+    .tone-light {
+        --fill-from: #f5f5f5;
+        --fill-to: var(--color-periwinkle);
+        --line-from: var(--color-periwinkle);
+        --line-to: var(--color-cornflower);
+    }
+
+    /* The panel's own colours, with a softer glow on the light card */
+    .tone-dark {
+        --fill-from: var(--color-ebony-clay-raised);
+        --fill-to: var(--color-ebony-clay);
+        --line-from: var(--color-cornflower);
+        --line-to: var(--color-ebony-clay-raised);
+        filter: drop-shadow(0 0 0.3rem color-mix(in srgb, var(--color-cornflower) 25%, transparent));
+    }
+
+    .hover-hint :global(.fill-from) {
+        stop-color: var(--fill-from);
+    }
+
+    .hover-hint :global(.fill-to) {
+        stop-color: var(--fill-to);
+    }
+
+    .hover-hint :global(.line-from) {
+        stop-color: var(--line-from);
+    }
+
+    .hover-hint :global(.line-to) {
+        stop-color: var(--line-to);
+    }
+
+    .hover-hint :global(svg) {
+        display: block;
+        height: auto;
+        overflow: visible;
+        width: 100%;
+    }
+
+    .hover-hint.is-tapping {
+        opacity: 1;
+    }
+
+    .hover-hint.is-retired {
+        opacity: 0;
+    }
+
+    .hover-hint.is-retired {
+        transition-duration: 600ms;
+    }
+
+    /* Pressing from the wrist, with the lines drawing back into the fingertip and springing out again */
+    .hover-hint :global(.hand) {
+        transform-box: view-box;
+        transform-origin: 45px 131px;
+    }
+
+    .hover-hint :global(.taps) {
+        transform-box: view-box;
+        transform-origin: 28px 20px;
+    }
+
+    .is-tapping :global(.hand) {
+        animation: hover-hint-press 1s ease-in-out 2;
+    }
+
+    .is-tapping :global(.taps) {
+        animation: hover-hint-taps 1s ease-in-out 2;
+    }
+
+    @keyframes hover-hint-press {
+        0%,
+        100% {
+            transform: none;
+        }
+        35% {
+            transform: translateY(6px) scale(0.94);
+        }
+        55% {
+            transform: none;
+        }
+    }
+
+    @keyframes hover-hint-taps {
+        0%,
+        20% {
+            opacity: 1;
+            transform: none;
+        }
+        35% {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+        55% {
+            opacity: 1;
+            transform: scale(1.15);
+        }
+        75%,
+        100% {
+            opacity: 1;
+            transform: none;
+        }
+    }
+</style>

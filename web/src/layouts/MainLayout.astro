@@ -19,6 +19,8 @@ interface Props {
 
 const { title, headings = [] } = Astro.props;
 
+const SITE_NAME = "FAST - 2026 UBC iGEM Wiki";
+
 const show_toc = headings.length > 0;
 const show_sidebar = show_toc || Astro.slots.has("sidebar");
 ---
@@ -28,10 +30,11 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>{title ?? "UBC iGEM Wiki"}</title>
+        <title>{title ? `${title} | ${SITE_NAME}` : SITE_NAME}</title>
 
-        <link rel="icon" type="image/svg+xml" href={`${BASE_URL}favicon.svg`} />
-        <link rel="icon" href={`${BASE_URL}favicon.ico`} />
+        <!-- The v=_ makes browsers that cached an earlier icon fetch it again; bump it when the icon changes -->
+        <link rel="icon" type="image/svg+xml" href={`${BASE_URL}favicon.svg?v=2`} />
+        <link rel="icon" href={`${BASE_URL}favicon.ico?v=2`} />
 
         <Font cssVariable="--font-geist" />
         <Font cssVariable="--font-source-serif-4" />

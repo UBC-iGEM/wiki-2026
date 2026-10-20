@@ -1,6 +1,7 @@
 ---
 import { type PlatemapAttrs, PLATEMAP_SLOTS, PLATEMAP_PALETTE_SIZE } from "@exporter/markdown/components";
 import { type Plate, wellId } from "@exporter/platemap";
+import HoverHint from "./HoverHint.astro";
 type Props = PlatemapAttrs;
 
 const { categories, plates: plates_json } = Astro.props;
@@ -68,6 +69,7 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
                     }
                 </div>
             </div>
+            <HoverHint />
         </figure>
 
         <!-- Must match `drawLegend` in the script -->
@@ -212,8 +214,10 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
 
 <!-- Global, as wells redrawn by the script don't carry Astro's scoping attribute -->
 <style is:global>
+    /* Narrower than the page, leaving a 96-well plate some room either side at its largest wells */
     .platemap {
-        margin: 2rem 0 3rem;
+        margin: 2rem auto 3rem;
+        max-width: 52rem;
     }
 
     .platemap .panel {
@@ -227,8 +231,10 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
         font: var(--text-subtitle);
     }
 
+    /* Anchors the HoverHint */
     .platemap .plate {
         margin: 0;
+        position: relative;
     }
 
     /* Bold body text rather than the page's caption style; tripled up to outrank `.page-content figcaption` */

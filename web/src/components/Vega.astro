@@ -1,5 +1,6 @@
 ---
 import { type VegaAttrs, VEGA_SLOTS } from "@exporter/markdown/components";
+import HoverHint from "./HoverHint.astro";
 type Props = VegaAttrs;
 
 const { code } = Astro.props;
@@ -7,11 +8,16 @@ VEGA_SLOTS satisfies readonly [];
 
 // `<` is escaped so a string in the spec can't close the script tag.
 const data = code.replaceAll("<", "\\u003c");
+// Only a chart with tooltips or selections has anything to hover over
+const interactive = /"(tooltip|params|selection|signals)"\s*:/.test(code);
 ---
 
 <figure class="vega glow-panel">
     <div class="glow-panel-body">
-        <div class="vega-host"></div>
+        <div class="vega-stage">
+            <div class="vega-host"></div>
+            {interactive && <HoverHint tone="dark" />}
+        </div>
         <script type="application/json" class="vega-data" is:inline set:html={data} />
     </div>
 </figure>
@@ -44,6 +50,11 @@ const data = code.replaceAll("<", "\\u003c");
 
     .vega .glow-panel-body {
         padding: 1.5rem 2.5rem;
+    }
+
+    /* Anchors the HoverHint, outside the host as Vega replaces what's in it */
+    .vega .vega-stage {
+        position: relative;
     }
 
     /* Vega draws dark text by default, so the chart sits on a light card */

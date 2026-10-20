@@ -1,5 +1,6 @@
 ---
 import { type SeqmapAttrs, SEQMAP_SLOTS } from "@exporter/markdown/components";
+import HoverHint from "./HoverHint.astro";
 type Props = SeqmapAttrs;
 
 const { title, seq } = Astro.props;
@@ -12,7 +13,10 @@ const data = seq.replaceAll("<", "\\u003c");
 <figure class="seqmap glow-panel">
     <div class="seqmap-body glow-panel-body">
         <slot name="title" />
-        <div class="seqmap-host" aria-label={`Sequence map: ${title}`}></div>
+        <div class="seqmap-stage">
+            <div class="seqmap-host" aria-label={`Sequence map: ${title}`}></div>
+            <HoverHint tone="dark" />
+        </div>
         <script type="application/json" class="seqmap-data" is:inline set:html={data} />
     </div>
 </figure>
@@ -97,6 +101,11 @@ const data = seq.replaceAll("<", "\\u003c");
 
     .seqmap .title {
         font: var(--text-subtitle);
+    }
+
+    /* Anchors the HoverHint, outside the host as React replaces what's in it */
+    .seqmap .seqmap-stage {
+        position: relative;
     }
 
     /* SeqViz positions its contents absolutely, so the host sets the height */

@@ -3,6 +3,7 @@ import { ContentMap, type JsonMap } from "@exporter/map";
 import config from "../../docs/content_map.json";
 import { BASE_URL } from "../utils/base-url";
 import logoSvg from "../../public/assets/hero/icon.svg?raw";
+import menuSvg from "../../public/assets/icons/menu.svg?raw";
 
 const content_map = ContentMap.fromJSON(config as JsonMap);
 
@@ -26,9 +27,7 @@ const static_links = content_map.static_links;
 
     <button class="chip menu-toggle" type="button" aria-expanded="false" aria-controls="nav-sections">
         <span>
-            <svg class="menu-icon" viewBox="0 0 16 12" aria-hidden="true">
-                <path d="M0 1h16M0 6h16M0 11h16"></path>
-            </svg>
+            <span class="menu-icon" aria-hidden="true" set:html={menuSvg} />
             Menu
         </span>
     </button>
@@ -227,14 +226,18 @@ const static_links = content_map.static_links;
 
     /* Drawn rather than the ☰ character, which some phones render as an emoji */
     .menu-icon {
-        fill: none;
+        display: inline-block;
         height: 0.7em;
         margin-right: 0.4rem;
-        stroke: currentcolor;
-        stroke-linecap: round;
-        stroke-width: 2;
         vertical-align: 0.05em;
         width: 0.95em;
+    }
+
+    .menu-icon :global(svg) {
+        display: block;
+        height: 100%;
+        overflow: visible;
+        width: 100%;
     }
 
     /* The mock widens the chip in play and leaves the others alone */

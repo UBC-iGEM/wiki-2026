@@ -1,5 +1,6 @@
 ---
 import { MODEL3D_SLOTS } from "@exporter/markdown/components";
+import HoverHint from "./HoverHint.astro";
 
 interface Props {
     url: string;
@@ -11,13 +12,33 @@ const { url, bare = false } = Astro.props;
 MODEL3D_SLOTS satisfies readonly [];
 ---
 
-{
+<!-- The HoverHint stands in for model-viewer's own interaction prompt -->{
     bare ? (
-        <model-viewer src={url} alt="Interactive 3D model" camera-controls auto-rotate touch-action="pan-y" />
+        <div class="stage">
+            <model-viewer
+                src={url}
+                alt="Interactive 3D model"
+                camera-controls
+                auto-rotate
+                touch-action="pan-y"
+                interaction-prompt="none"
+            />
+            <HoverHint />
+        </div>
     ) : (
         <div class="model3d glow-panel">
             <div class="panel glow-panel-body">
-                <model-viewer src={url} alt="Interactive 3D model" camera-controls auto-rotate touch-action="pan-y" />
+                <div class="stage">
+                    <model-viewer
+                        src={url}
+                        alt="Interactive 3D model"
+                        camera-controls
+                        auto-rotate
+                        touch-action="pan-y"
+                        interaction-prompt="none"
+                    />
+                    <HoverHint />
+                </div>
             </div>
         </div>
     )
@@ -35,6 +56,11 @@ MODEL3D_SLOTS satisfies readonly [];
 
     .panel {
         padding: 1.25rem 2.5rem;
+    }
+
+    /* Anchors the HoverHint */
+    .stage {
+        position: relative;
     }
 
     /* Overrides model-viewer's own 300x150px default */
