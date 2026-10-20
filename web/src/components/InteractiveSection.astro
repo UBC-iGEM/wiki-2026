@@ -55,8 +55,9 @@ import reset_icon from "../../public/assets/hero_interactive/reset-icon.svg?raw"
 <script>
     import { onPage } from "../utils/page";
     import { gsap } from "gsap";
-    import { BASE_URL } from "../utils/base-url";
     import { createSound } from "../utils/sfx";
+    import { FLUORESCENT } from "../utils/sounds/fluorescent";
+    import { NOT_FLUORESCENT } from "../utils/sounds/not-fluorescent";
 
     // Positioned tube relative to the chips via offset calculation
     function tubeTargetRelativeToChip(chipSelector: string, tubeSelector: string) {
@@ -231,7 +232,7 @@ import reset_icon from "../../public/assets/hero_interactive/reset-icon.svg?raw"
                 id: "liquid-left",
                 litChipSelector: ".chip-visual--left-lit",
                 captionSelector: ".case-caption--left",
-                soundSrc: `${BASE_URL}assets/audio/audio-fluorescent.mp3`,
+                soundSrc: FLUORESCENT,
             }),
 
             // Mirror of the left tube
@@ -243,7 +244,7 @@ import reset_icon from "../../public/assets/hero_interactive/reset-icon.svg?raw"
                 color: "#E650DB",
                 id: "liquid-right",
                 captionSelector: ".case-caption--right",
-                soundSrc: `${BASE_URL}assets/audio/audio-not-fluorescent.mp3`,
+                soundSrc: NOT_FLUORESCENT,
             }),
         ];
 

@@ -15,15 +15,20 @@ import SoundToggle from "../components/SoundToggle.astro";
 
 <script>
     import { onPage } from "../utils/page";
-    import { BASE_URL } from "../utils/base-url";
     import { createBackgroundSound } from "../utils/sfx";
 
     onPage(() => {
         // Runs on every page once the home page has been visited, but the music is the home page's alone
         if (!document.querySelector(".home-hero")) return;
 
-        // Fades in with the sound toggle, and resumes where it left off after being turned off and on again
-        createBackgroundSound(`${BASE_URL}assets/audio/bg-audio.mp3`);
+        // Fades in with the sound toggle, and resumes where it left off after being turned off and on again.
+        // The track is an MP3 data URI in a JSON file on iGEM's uploads server, which doesn't accept audio files
+        // but keeps these few megabytes out of the repo
+        createBackgroundSound(() =>
+            fetch("https://static.igem.wiki/teams/6279/wiki/manual/background.json").then((response) =>
+                response.json(),
+            ),
+        );
     });
 </script>
 

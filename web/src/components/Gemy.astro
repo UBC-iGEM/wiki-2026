@@ -37,7 +37,7 @@
 
 <script>
     import { onPage } from "../utils/page";
-    import { BASE_URL } from "../utils/base-url";
+    import { GEMY_SQUEAK } from "../utils/sounds/gemy-squeak";
     import { arrivedBy } from "../utils/transitions";
 
     const GEMY_CHANCE = 1 / 25;
@@ -100,7 +100,7 @@
             // Petting him: a tooltip that follows the cursor, then a squeak and a wiggle on click
             const tip = document.getElementById("gemy-tip")!;
             // Plays even with the site's sound turned off
-            const squeak = new Audio(`${BASE_URL}assets/audio/gemy.mp3`);
+            const squeak = new Audio(GEMY_SQUEAK);
             const TIP_OFFSET = 14;
             gemy.addEventListener("pointermove", (event) => {
                 tip.style.display = "block";
@@ -130,7 +130,7 @@
             // Peek once the page and Gemy's image have loaded, and the page transition has revealed the page
             const img = gemy.querySelector("img")!;
             const img_loaded = new Promise((resolve) => img.addEventListener("load", resolve, { once: true }));
-            img.src = `${BASE_URL}assets/gemy.png`;
+            img.src = "https://static.igem.wiki/teams/6279/wiki/manual/gemy.avif";
             const page_loaded =
                 document.readyState === "complete"
                     ? Promise.resolve()
