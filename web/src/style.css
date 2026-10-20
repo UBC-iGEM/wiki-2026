@@ -115,18 +115,15 @@ pre.astro-code {
     overflow-x: auto;
 }
 
-/* A long equation scrolls in place rather than widening the page */
-.katex-display,
-.katex {
+/*
+ * A long display equation scrolls in place rather than widening the page.
+ * Inline maths is left alone: KaTeX breaks it across lines itself, and its layout overhangs its box by a fraction of a
+ * pixel, which would show a scrollbar on a scrolling inline box.
+ */
+.katex-display {
     max-width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
-}
-
-/* Inline maths needs a block box of its own before it can scroll */
-.katex {
-    display: inline-block;
-    vertical-align: middle;
 }
 
 /* Toggle headings sit inside <summary>, so keep them beside the disclosure marker */
