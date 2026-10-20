@@ -253,13 +253,21 @@ function buildMonth(key: string): CalendarMonth {
 
 <style>
     .db-calendar {
+        --months-nav-height: 1.4rem;
         background: var(--color-ebony-clay);
         display: block;
-        border: 1px solid var(--color-periwinkle);
+        border: 2px solid var(--color-periwinkle);
         border-radius: 8px;
         font-family: var(--font-geist);
         padding: 0.6rem;
+        /* Lifted over the database dropdown below it, which a day's panel opens down over */
         position: relative;
+        z-index: 1;
+    }
+
+    /* As much space below the month's grid as above it (past the month's heading), so the grid sits centred */
+    .db-calendar[open] {
+        padding-bottom: var(--months-nav-height);
     }
 
     .db-calendar > summary {
@@ -272,6 +280,10 @@ function buildMonth(key: string): CalendarMonth {
         user-select: none;
     }
 
+    table {
+        border-radius: 6px;
+    }
+
     /* Every month is rendered; only the active one is shown, so it works without JS */
     table.month {
         display: none;
@@ -279,10 +291,11 @@ function buildMonth(key: string): CalendarMonth {
 
     table.month.active {
         border-collapse: separate;
-        border-spacing: 2px;
+        /* Rows only, so the line under the weekdays runs unbroken; the days keep apart through their padding */
+        border-spacing: 0 2px;
         display: table;
-        /* style.css spaces content tables below; the calendar's own padding is enough */
-        margin-bottom: 0;
+        /* style.css spaces content tables above and below; the calendar's own padding is enough */
+        margin: 0;
         table-layout: fixed;
         width: 100%;
     }
@@ -294,12 +307,25 @@ function buildMonth(key: string): CalendarMonth {
         border: 0;
     }
 
+    /* style.css outlines content tables in grey; the calendar's match its box */
+    table.month.active,
+    table.month thead th {
+        border-color: var(--color-periwinkle);
+    }
+
     caption {
         color: var(--color-periwinkle);
         font-size: 0.8rem;
-        font-weight: 600;
+        font-weight: 700;
         padding: 0 0 0.4rem 0.1rem;
         text-align: left;
+    }
+
+    /* MainLayout spaces captions out from their content (and outranks the rule above); this one shares a line with
+       the month arrows, which are as tall */
+    table.month caption {
+        line-height: var(--months-nav-height);
+        margin: 0;
     }
 
     th {
@@ -319,7 +345,7 @@ function buildMonth(key: string): CalendarMonth {
         color: color-mix(in srgb, var(--color-periwinkle) 55%, transparent);
         font-size: 0.72rem;
         height: 1.9rem;
-        padding: 0;
+        padding: 0 1px;
         text-align: center;
     }
 
@@ -450,16 +476,18 @@ function buildMonth(key: string): CalendarMonth {
     }
 
     .months-nav {
+        align-items: center;
         display: flex;
         gap: 0.15rem;
+        height: var(--months-nav-height);
         position: absolute;
-        right: 0.5rem;
-        top: 0.45rem;
+        right: 0.6rem;
+        top: 0.6rem;
     }
 
     .months-nav button {
         background: none;
-        border: 1px solid var(--color-periwinkle);
+        border: 2px solid var(--color-periwinkle);
         border-radius: 5px;
         color: var(--color-periwinkle);
         cursor: pointer;
