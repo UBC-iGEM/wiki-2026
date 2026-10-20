@@ -56,32 +56,33 @@ DBTL_SLOTS satisfies readonly ["design", "build", "test", "learn"];
         width: var(--icon-width);
     }
 
+    /* Each card's gradient is the part of the mock's gradient that falls on the card, as the mock's run past its edges */
     .design {
         --icon-left: 4rem;
         --icon-top: -0.95rem;
         --icon-width: 10.7rem;
-        --card-bg: linear-gradient(100deg, #e252df, #c752e0);
+        --card-bg: linear-gradient(219deg, #a15cf0, #e24fde 87%);
     }
 
     .build {
         --icon-left: 5.65rem;
         --icon-top: -0.15rem;
         --icon-width: 8.5rem;
-        --card-bg: linear-gradient(to top right, #7c62f9, #5b82ee);
+        --card-bg: linear-gradient(90deg, #8e6cea, #5e7af2);
     }
 
     .test {
         --icon-left: 4.85rem;
         --icon-top: -0.5rem;
         --icon-width: 10rem;
-        --card-bg: linear-gradient(to top right, #31b0cd, #48d698);
+        --card-bg: linear-gradient(84deg, #38b2c8, #77c1b4);
     }
 
     .learn {
         --icon-left: 5.6rem;
         --icon-top: -0.2rem;
         --icon-width: 7.8rem;
-        --card-bg: linear-gradient(80deg, #d4c742, #a7cf5c 45%, #93e93c);
+        --card-bg: linear-gradient(103deg, #ced245, #c9fc3a);
     }
 
     .step .title {
@@ -112,6 +113,19 @@ DBTL_SLOTS satisfies readonly ["design", "build", "test", "learn"];
 
     .card > :global(*:last-child) {
         margin-bottom: 0;
+    }
+
+    /*
+     * Glow panels (figures, callouts, Colab, Downloadable and co.) keep their dark background, but their glowing outline and
+     * the one stacked behind clash with the card.
+     */
+    .card :global(.glow-panel::before) {
+        display: none;
+    }
+
+    .card :global(.glow-panel-body) {
+        border: none;
+        box-shadow: none;
     }
 
     /*

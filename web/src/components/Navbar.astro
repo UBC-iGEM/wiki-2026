@@ -159,6 +159,11 @@ const static_links = content_map.static_links;
         width: auto;
     }
 
+    /* The logo file is drawn in periwinkle, which the navbar swaps for lime yellow */
+    .home-logo :global(svg [fill]:not([fill="none"])) {
+        fill: var(--color-lime-yellow);
+    }
+
     .home-logo:hover {
         opacity: 0.8;
     }

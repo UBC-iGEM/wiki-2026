@@ -19,7 +19,8 @@
     --text-small: 400 0.75rem / normal var(--font-source-serif-4);
 
     /* The page title's panel */
-    --gradient-title: linear-gradient(90deg, #c6fb64, #90fb7b 50%, #76fb96);
+    /* The part of the mock's lime-to-fluorescence gradient that falls on the title, as the mock's runs far past it */
+    --gradient-title: linear-gradient(168deg, var(--color-lime-yellow) 26%, #7dfe5b);
 }
 
 @media (max-width: 1000px) {

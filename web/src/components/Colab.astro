@@ -70,20 +70,34 @@ COLAB_SLOTS satisfies readonly ["notebook", "content"];
     }
 
     .open {
+        align-items: center;
         background: var(--color-cornflower);
+        border-radius: 10px;
         color: var(--color-periwinkle);
+        display: flex;
         flex-shrink: 0;
-        font: var(--text-caption);
-        padding: 0.4rem 1rem;
+        font: 600 1rem / normal var(--font-geist);
+        min-height: 2.875rem;
+        padding: 0 1rem;
         text-decoration: none;
         transition:
             background 120ms ease,
+            box-shadow 120ms ease,
             color 120ms ease;
     }
 
-    .open:hover {
-        background: var(--color-lime-yellow);
+    /* The start of the mock's lime-to-green gradient, which mostly runs past the button, with its green glow */
+    .open:is(:hover, :focus-visible) {
+        background: linear-gradient(154deg, var(--color-lime-yellow), #8dfe54);
+        box-shadow:
+            0 0 10px #00ff92,
+            0 4px 4px rgb(0 0 0 / 25%);
         color: var(--color-ebony-clay);
+    }
+
+    .open:focus-visible {
+        outline: 2px solid var(--color-lime-yellow);
+        outline-offset: 4px;
     }
 
     /* Long notebooks scroll inside the panel rather than taking over the page. */
