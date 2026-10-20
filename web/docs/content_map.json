@@ -226,10 +226,6 @@
                             "item": "3bcd65dd82be80f6ac7bffe63fa61093"
                         },
                         {
-                            "path": "SOP for Calibration of SEN0169 pH Probe",
-                            "item": "3c1d65dd82be80908a25f2a2614b2c16"
-                        },
-                        {
                             "path": "PDMS Casting",
                             "item": "3c1d65dd82be80efb0f3c1c9d7fedfde"
                         },
@@ -254,6 +250,10 @@
                         {
                             "path": "Bioreactor Culture ",
                             "item": "3fdd65dd82be8001b086fa65b6cd4748"
+                        },
+                        {
+                            "path": "SOP for Calibration of SEN0169 pH Probe",
+                            "item": "3ffd65dd82be80e58db9f0dd54c61fdd"
                         }
                     ]
                 }

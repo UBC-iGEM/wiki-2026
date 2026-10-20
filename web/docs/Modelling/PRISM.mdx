@@ -39,14 +39,6 @@ title: "PRISM"
 
 ## <a id="3fdd65dd82be8019b085e8adcbdba997" />Pipeline Inputs
 
-<a id="3fdd65dd82be8074a1cafc94b5e21d95" />
-
-<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/041aea9320b5544d81e6615ca3e20045.svg","alt":"","scale":0}]}>
-  <Fragment slot="content">
-    <a id="3fdd65dd82be8099bdd8dacbac38fb7c" />PRISM combines expression measurements, regulatory annotations a strain specific reference genome, and an analysis configuration.
-  </Fragment>
-</Figure>
-
 <a id="3fdd65dd82be806f937ad5dfdad81134" />These inputs were chosen to keep the analysis consistent internally as PRISM favours traceability within one dataset and strain. Dataset GSE220559 provides antibiotic test conditions to reference. Due to the lack of available data directly applicable to our project, ceftazidime and kanamycin serve as beta-lactam and aminoglycoside proxies respectively.  Ciprofloxacin and polymyxin E act as cross-reactivity challenges while imipnem checks for study robustness.
 
 ## <a id="3fdd65dd82be8059a61dfb30dc23998a" />Input Validation
@@ -333,9 +325,97 @@ title: "PRISM"
 
 # <a id="3fcd65dd82be8072bdf4cbde9bb1863a" />Validation
 
-<br id="3fdd65dd82be80a58ee4e65912e4dba7" />
+<a id="3fdd65dd82be80a58ee4e65912e4dba7" />Validation was separated into statistical, reference, software, and future biological evidence so that computational checks are not presented as proof of sensor function.
+
+## <a id="3ffd65dd82be805aa779d35c3f99da5c" />Statistical assessment within the discovery study
+
+- <a id="3ffd65dd82be8089b376c9682286869a" />Biological-replicate inspection
+- <a id="3ffd65dd82be8088b023ff252127ac53" />Adjusted p-values and effect uncertainty
+- <a id="3ffd65dd82be80e48995fe38d364761b" />Direct drug-versus-drug comparisons
+- <a id="3ffd65dd82be80cb8324fe831406f660" />Nine post-fit threshold screens
+- <a id="3ffd65dd82be80ab99caca6e9b20d926" />Candidate stability and cross-reactivity summaries
+
+<a id="3ffd65dd82be80799331d722bfb30729" />The nine screens reuse the fitted model and p-values. They measure sensitivity to count/effect thresholds within the fitted gene universe, not independent replication. Cross-reactivity comparisons provide evidence about the observed compounds. Evaluation should separate candidate selection from the data used to estimate performance. Selection-bias research motivates an independent study or prospective reporter test; it does not make the current descriptive comparison invalid, but limits the claims it can support. A future equivalence claim also needs a pre-specified biologically meaningful bound and a suitable statistical test. PRISM currently reports descriptive interval bounds rather than a formal result.
+
+## <a id="3ffd65dd82be80bbb72fd2d860bcfc50" />Reference and sequence validation
+
+- <a id="3ffd65dd82be80e2af54f39e47bdc72c" />Locked RegulonDB and genome releases
+- <a id="3ffd65dd82be80f8aa9dec6b61c117fd" />Source-file checksum verification
+- <a id="3ffd65dd82be806c8bc6cae46ef8900b" />Gene-identifier reconciliation
+- <a id="3ffd65dd82be80d4a9a1f413ed2c3986" />Promoter-sequence comparison against MG1655
+- <a id="3ffd65dd82be80f0b9d5cfe1506aaa78" />Reporting of missing coordinates and sequence mismatches
+
+## <a id="3ffd65dd82be80098a8ae16f134706c8" />Software validation
+
+<a id="3ffd65dd82be80209999efaea08ed14f" />Automated tests for candidate scoring and regulatory-edge semantics
+
+- <a id="3ffd65dd82be8041add0e208a64844d0" />Database construction and integrity checks
+- <a id="3ffd65dd82be8031ba80cb65aabbfc8a" />API, CLI, explorer, and curation tests
+- <a id="3ffd65dd82be8041a726e46fc590c1ca" />Synthetic fixtures for continuous integration
+- <a id="3ffd65dd82be8032934bdfa1f3431087" />Failed-stage workflow termination
+- <a id="3ffd65dd82be80a79d2fc87b1f1cd61b" />Atomic database replacement after successful validation
+
+<a id="3ffd65dd82be80379051d307eb30a622" />Acceptance checks include successful source-locus lookup, explicit ambiguity handling, rejection of cross-run contrasts, complete import of locked reference IDs, and preservation of old reviews and evidence after a changed-run rebuild. The test suite uses synthetic fixtures to exercise these contracts. The real example is separately checked for database integrity, mapping coverage, and unchanged candidate/panel membership. Test totals belong to a specific code revision.
+
+## <a id="3ffd65dd82be80638a30e6ead485c45f" />Biological validation
+
+<a id="3ffd65dd82be804c81c8e5e9fc8ae1d5" />In order to perform biological we must clone selected promoter fragments upstream of a reporter
+
+- <a id="3ffd65dd82be8008b583ef4e79a5f44d" />Test the exact target antibiotics doses at multiple time points
+- <a id="3ffd65dd82be8053b01cf55c0260b7fe" />Include untreated controls
+- <a id="3ffd65dd82be804f8ddbfb53423e3db6" />Compare susceptible and resistant backgrounds where feasible
+- <a id="3ffd65dd82be803a80ebdb1e7f064950" />Normalization of fluorescence to growth
+- <a id="3ffd65dd82be80f9b0cafbcb4e731635" />Evaluate response magnitude, time, and specificity
+
+<a id="3ffd65dd82be807393bac7b4842bf0ec" />Before collecting reporter data, define the experimental unit, distinguish biological from technical replicates, and record construct sequence/version, chassis, reporter/vector context, batch, plate/well, compound, dose with units, and exposure time. Preserve raw fluorescence and growth measurements with normalization and QC decisions. Define inclusion/exclusion rules and acceptance thresholds before evaluating the selected panel.
+
+### <a id="3ffd65dd82be80d1a915dfc42010cca5" />What the reporter must distinguish
+
+<a id="3ffd65dd82be805abbbdcad332a9ee38" />The next experiment needs to distinguish promoter response from changes in the measurement system. Promoter measurements depend on construct and assay context, and expression burden can alter host capacity. Include a promoterless background and a suitable reference construct, and preserve full construct sequences and the conditions of measurement. Reporter maturation contributes to the delay between expression and fluorescence. Aminoglycosides can also disrupt protein production and folding, so an RNA response need not translate into stronger fluorescence under treatment. This is a rationale for measuring reporter performance directly under the target conditions, not a prediction that any selected promoter will fail.
+
+<a id="3ffd65dd82be80e3b63cce18e1d3b471" />A fluorescence/OD ratio alone is not a complete calibration strategy. Preserve blank-subtracted raw channels, instrument settings, calibration records, and the range over which optical density is interpretable. These are requirements for the future assay, not measurements already made by PRISM.
+
+<a id="3ffd65dd82be80009552d6672a787a80" />
+
+| <a id="3ffd65dd82be80c99af6e8f370cf20f2" />Claim                                   | Current evidence              | Still required                     |
+| ---------------------------------------------------------------------------------- | ----------------------------- | ---------------------------------- |
+| <a id="3ffd65dd82be80aa9fc5e4be6b808162" />Gene responds to a proxy antibiotic     | Differential-expression model | Exact-drug replication             |
+| <a id="3ffd65dd82be80d3a591c1e82c029dd5" />Candidate has promoter context          | RegulonDB and genome mapping  | Construct-boundary review          |
+| <a id="3ffd65dd82be8048bb12f5e92c6000cc" />Candidate is relatively class-selective | Challenge comparisons         | Reporter specificity assay         |
+| <a id="3ffd65dd82be80d4acd6dc07d7a6ecea" />Promoter drives reporter induction      | Not yet established           | Wet-lab reporter assay             |
+| <a id="3ffd65dd82be802b8744d6c84870b670" />Candidate can support a diagnostic      | Not yet established           | Analytical and clinical validation |
 
 # <a id="3fcd65dd82be80b4885ad7eb8416905c" />Discussion
+
+<a id="3ffd65dd82be8079bb12c12aa8df4ed1" />What PRISM achieved
+
+- <a id="3ffd65dd82be808ea6c9d02076d43a13" />Combined several evidence types in one auditable workflow
+- <a id="3ffd65dd82be8095adf7eb728fba9798" />Reduced the experimental search space
+- <a id="3ffd65dd82be80349cb6ed9e20cef1bb" />Produced a balanced first-pass screening panel
+- <a id="3ffd65dd82be804f9f54cd6546880588" />Created a reusable database, query API, CLI, and explorer
+- <a id="3ffd65dd82be80e88a36dd2958fabc2f" />Preserved provenance and manual-review history
+
+<a id="3ffd65dd82be8030b7c1e91a18ebe3fb" />Limitations
+
+- <a id="3ffd65dd82be806baad8d60eb11ceeeb" />One transcriptomic study and one bacterial strain
+- <a id="3ffd65dd82be80a58776f3fde0033bff" />Three biological replicates per condition
+- <a id="3ffd65dd82be809bacbed5cfa39a30ca" />Shared water controls
+- <a id="3ffd65dd82be80b48878ebd50b08d1d0" />Class proxies rather than the four exact wet-lab antibiotics
+- <a id="3ffd65dd82be80ac984dd4fbeccf4f38" />Transcript abundance is not equivalent to promoter activity
+- <a id="3ffd65dd82be80f682a0e44a7ec920ef" />Incomplete promoter coordinates and regulatory annotations
+- <a id="3ffd65dd82be80e08514cf0578fa31eb" />Nearly half the candidate genes lack promoter mappings, creating annotation-dependent selection bias
+- <a id="3ffd65dd82be80169387dbd61685498b" />Correlated operon genes limit enrichment interpretation
+- <a id="3ffd65dd82be80b497e9d35cedf6f75c" />No independent user study, held-out biological validation, or demonstrated arbitrary-study importer
+- <a id="3ffd65dd82be8026baa7f0457d1b1790" />Numeric exposure concentrations have not been curated; elapsed RNA-sampling exposure times remain unknown
+
+<a id="3ffd65dd82be8013a92ae079ebd32f41" />Next iteration
+
+- <a id="3ffd65dd82be8052921ac74bba99e327" />Clone and test the 12 proposed promoter fragments
+- <a id="3ffd65dd82be809aa460d3dfb9263161" />Measure responses to amoxicillin, cephalexin, gentamicin, and tobramycin
+- <a id="3ffd65dd82be80438b2eff83f1042113" />Evaluate dose, time, fluorescence, and growth
+- <a id="3ffd65dd82be80c8911adfdc1aec3bde" />Include untreated and off-target controls
+- <a id="3ffd65dd82be8085a197dc6c7db30aee" />Connect construct, plate, exposure, replicate, and measurement records to PRISM candidate identifiers
+- <a id="3ffd65dd82be806fa176dd458b4a44ba" />Re-rank candidates using experimental evidence
 
 # <a id="3fcd65dd82be80b6a097c96c22eb80a1" />References
 

@@ -1,4 +1,56 @@
 {
+    "governmentofbcOutpatientPaymentSchedule": {
+        "citation_key": "governmentofbcOutpatientPaymentSchedule",
+        "bib": "Government of BC. Outpatient Payment Schedule [Internet]. Available from: <a href=\"https://www.phsa.ca/plms/Documents/Laboratory%20Services%20Outpatient%20Payment%20Schedule.pdf\">https://www.phsa.ca/plms/Documents/Laboratory%20Services%20Outpatient%20Payment%20Schedule.pdf</a>"
+    },
+    "DevelopmentIntegratedSystem": {
+        "citation_key": "DevelopmentIntegratedSystem",
+        "bib": "Towards development of an integrated system for diagnosis of infectious diseases of the blood [Internet]. [cited 2026 Oct 20]. Available from: <a href=\"https://www.researchgate.net/publication/337293987_Towards_development_of_an_integrated_system_for_diagnosis_of_infectious_diseases_of_the_blood?channel=doi&amp;linkId=5dcfdb9d299bf1b74b45af8f&amp;showFulltext=true\">https://www.researchgate.net/publication/337293987_Towards_development_of_an_integrated_system_for_diagnosis_of_infectious_diseases_of_the_blood?channel=doi&amp;linkId=5dcfdb9d299bf1b74b45af8f&amp;showFulltext=true</a>"
+    },
+    "ubcvan": {
+        "citation_key": "ubcvan",
+        "bib": "UBC_Vancouver: Synaestivum - Heat Resistant Transgenic Wheat (2022) - Project Promotion [English] - iGEM Video Universe [Internet]. [cited 2026 Oct 20]. Available from: <a href=\"https://video.igem.org/videos/embed/a2853a01-d199-4aab-94fb-48b1fc916641\">https://video.igem.org/videos/embed/a2853a01-d199-4aab-94fb-48b1fc916641</a>"
+    },
+    "TeamBITFluorescence": {
+        "citation_key": "TeamBITFluorescence",
+        "bib": "Team:BIT/Fluorescence Detection - 2021.igem.org [Internet]. [cited 2026 Oct 20]. Available from: <a href=\"https://2021.igem.org/Team:BIT/Fluorescence_Detection\">https://2021.igem.org/Team:BIT/Fluorescence_Detection</a>"
+    },
+    "CambridgeCamiRaCrop": {
+        "citation_key": "CambridgeCamiRaCrop",
+        "bib": "Cambridge: CamiRa - Crop Assessment via miRNA Analysis (2025) - Project Promotion [English] - iGEM Video Universe [Internet]. [cited 2026 Oct 20]. Available from: <a href=\"https://video.igem.org/videos/embed/eDS5yb5GwtkV9YkYZ7XC6Q\">https://video.igem.org/videos/embed/eDS5yb5GwtkV9YkYZ7XC6Q</a>"
+    },
+    "clancyAmplificationfreeDetectionMicroRNAs2017": {
+        "citation_key": "clancyAmplificationfreeDetectionMicroRNAs2017",
+        "bib": "Clancy E, Burke M, Arabkari V, Barry T, Kelly H, Dwyer RM, et al. Amplification-free detection of microRNAs via a rapid microarray-based sandwich assay. Anal Bioanal Chem [Internet]. 2017 [cited 2026 Oct 20];409(14):3497&#x2013;505. Available from: <a href=\"http://link.springer.com/10.1007/s00216-017-0298-6\">http://link.springer.com/10.1007/s00216-017-0298-6</a>"
+    },
+    "kawakatsuMicrofluidicDeviceSimple2024": {
+        "citation_key": "kawakatsuMicrofluidicDeviceSimple2024",
+        "bib": "Kawakatsu Y, Okada R, Hara M, Tsutsui H, Yanagisawa N, Higashiyama T, et al. Microfluidic Device for Simple Diagnosis of Plant Growth Condition by Detecting miRNAs from Filtered Plant Extracts. Plant Phenomics [Internet]. 2024 [cited 2026 Oct 20];6:0162. Available from: <a href=\"https://linkinghub.elsevier.com/retrieve/pii/S2643651524002759\">https://linkinghub.elsevier.com/retrieve/pii/S2643651524002759</a>"
+    },
+    "hsuThioflavinItsPhotoirradiative2013": {
+        "citation_key": "hsuThioflavinItsPhotoirradiative2013",
+        "bib": "Hsu JCC, Chen EHL, Snoeberger RC, Luh FY, Lim TS, Hsu CP, et al. Thioflavin T and Its Photoirradiative Derivatives: Exploring Their Spectroscopic Properties in the Absence and Presence of Amyloid Fibrils. J Phys Chem B [Internet]. 2013 Apr 4 [cited 2026 Oct 20];117(13):3459&#x2013;68. Available from: <a href=\"https://pubs.acs.org/doi/10.1021/jp309331u\">https://pubs.acs.org/doi/10.1021/jp309331u</a>"
+    },
+    "xueThioflavinAmyloidDye2017": {
+        "citation_key": "xueThioflavinAmyloidDye2017",
+        "bib": "Xue C, Lin TY, Chang D, Guo Z. Thioflavin T as an amyloid dye: fibril quantification, optimal concentration and effect on aggregation. R Soc open sci [Internet]. 2017 [cited 2026 Oct 20];4(1):160696. Available from: <a href=\"https://royalsocietypublishing.org/doi/10.1098/rsos.160696\">https://royalsocietypublishing.org/doi/10.1098/rsos.160696</a>"
+    },
+    "levineThioflavineInteractionSynthetic1993": {
+        "citation_key": "levineThioflavineInteractionSynthetic1993",
+        "bib": "Levine H. Thioflavine T interaction with synthetic Alzheimer&#x2019;s disease <i>&#x3B2;</i> &#x2010;amyloid peptides: Detection of amyloid aggregation in solution. Protein Science [Internet]. 1993 [cited 2026 Oct 20];2(3):404&#x2013;10. Available from: <a href=\"https://onlinelibrary.wiley.com/doi/10.1002/pro.5560020312\">https://onlinelibrary.wiley.com/doi/10.1002/pro.5560020312</a>"
+    },
+    "zhouPaperBasedSandwichFormat2015": {
+        "citation_key": "zhouPaperBasedSandwichFormat2015",
+        "bib": "Zhou F, Noor M, Krull U. A Paper-Based Sandwich Format Hybridization Assay for Unlabeled Nucleic Acid Detection Using Upconversion Nanoparticles as Energy Donors in Luminescence Resonance Energy Transfer. Nanomaterials [Internet]. 2015 Sept 24 [cited 2026 Oct 20];5(4):1556&#x2013;70. Available from: <a href=\"https://www.mdpi.com/2079-4991/5/4/1556\">https://www.mdpi.com/2079-4991/5/4/1556</a>"
+    },
+    "circuitsarduinoArduinoFluorometer": {
+        "citation_key": "circuitsarduinoArduinoFluorometer",
+        "bib": "CircuitsArduino  noahrwheeler97in. Instructables. [cited 2026 Oct 20]. Arduino Fluorometer. Available from: <a href=\"https://www.instructables.com/Arduino-Fluorometer/\">https://www.instructables.com/Arduino-Fluorometer/</a>"
+    },
+    "HowBuildFluorometer": {
+        "citation_key": "HowBuildFluorometer",
+        "bib": "How to build a fluorometer for fluorescence measurement - Ibsen Photonics [Internet]. [cited 2026 Oct 20]. Available from: <a href=\"https://ibsen.com/technologies/fluorescence-spectroscopy/how-to-build-a-fluorometer/\">https://ibsen.com/technologies/fluorescence-spectroscopy/how-to-build-a-fluorometer/</a>"
+    },
     "EscherichiaColiStr2025": {
         "citation_key": "EscherichiaColiStr2025",
         "bib": "Escherichia coli str. K-12 substr. MG1655, complete genome [Internet]. 2025 [cited 2026 Oct 19]. Available from: <a href=\"http://www.ncbi.nlm.nih.gov/nuccore/U00096.3\">http://www.ncbi.nlm.nih.gov/nuccore/U00096.3</a>"
@@ -174,10 +226,6 @@
     "PRISM": {
         "citation_key": "PRISM",
         "bib": "PRISM [Internet]. [cited 2026 Oct 18]. Available from: <a href=\"https://wiki.ubcigem.com/ubc-vancouver/modelling/prism/\">https://wiki.ubcigem.com/ubc-vancouver/modelling/prism/</a>"
-    },
-    "governmentofbcOutpatientPaymentSchedule": {
-        "citation_key": "governmentofbcOutpatientPaymentSchedule",
-        "bib": "Government of BC. Outpatient Payment Schedule [Internet]. Available from: <a href=\"https://www.phsa.ca/plms/Documents/Laboratory%2520Services%2520Outpatient%2520Payment%2520Schedule.pdf&amp;ved=2ahUKEwirkb_0jcOXAxW2GoAAHZxqLFUQFnoECA8QAQ&amp;usg=AOvVaw1CQxLwPoHIs5MNZ_pion3Y\">https://www.phsa.ca/plms/Documents/Laboratory%2520Services%2520Outpatient%2520Payment%2520Schedule.pdf&amp;ved=2ahUKEwirkb_0jcOXAxW2GoAAHZxqLFUQFnoECA8QAQ&amp;usg=AOvVaw1CQxLwPoHIs5MNZ_pion3Y</a>"
     },
     "harnettPharmacistsNowPrescribing2023": {
         "citation_key": "harnettPharmacistsNowPrescribing2023",

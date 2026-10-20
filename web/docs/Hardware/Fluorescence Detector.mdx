@@ -110,97 +110,7 @@ title: "Fluorescence Detector"
   </Fragment>
 </Figure>
 
-<br id="3fcd65dd82be8015bc54f7185fa14180" />
-
-# <a id="3fbd65dd82be80ca8eb3c43119c51ce4" />Enclosure Design Breakdown
-
-## <a id="3fbd65dd82be8040ba01dabf592e8b51" />Microfluidic Chip Holder → image carousel
-
-<a id="3fcd65dd82be80a5af0bf567c1ede359" />(technical drawing)
-
-- <a id="3fcd65dd82be8013a409ef1abc32a4df" />After the chip is dropped into the holder, each well will rest on top of a gap. This allows proper illumination and permits the fluorescence to reach the photodetector.
-
-<a id="3fcd65dd82be803eba2cffbe7394c314" />(close-up of the bottom section)
-
-- <a id="3fcd65dd82be80258641f67c7796cacf" />There are 7 hemisphere-shaped indents on the bottom of the holder legs, each representing a well. When a well arrives at the site of detection, the indent slides onto a bump and gentle vibration is transmitted through the handle to the user’s hand. This serves as a reminder for the user to pause and wait for detection to happen.
-
-<a id="3fcd65dd82be809c8f64daf9c0cafa3a" />(close up of the handle (3d model & irl with the markings))
-
-- <a id="3fcd65dd82be80d2bf0ad0e31281fcef" />The user can hold onto the handle to move the chip forward or back. We also added in visual marks to ensure a smoother detection process.
-
-## <a id="3fcd65dd82be80089f38e2d9f24613c3" />Bottom Housing
-
-<a id="3fed65dd82be80d590d8d9f042a7db03" />
-
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/00f4605510835f8986b035430c3126f7.avif" alt="" scale={0} align="center" />
-
-<a id="3fed65dd82be807b9355f2d2fd8e05bc" />
-
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/1a360f47676f5a8eb7de97aa1bb33ced.avif" alt="" scale={0} align="center" />
-
-<a id="3fcd65dd82be809aa264d7101f55596e" />Sliding tracks
-
-- <a id="3fcd65dd82be8015a288d32884d700fc" />The holder slides smoothly on the tracks so the user can move each well to the site of detection. One track is attached onto the side wall to leave out space for PCB insert.
-
-<a id="3fcd65dd82be8032b15dc40cb0f8a936" />Anti-lifting? structure close up
-
-- <a id="3fcd65dd82be805cae07dc568a4404d9" />input
-
-<a id="3fcd65dd82be8032af95e3344878fa6e" />cover and longpass filter
-
-- <a id="3fcd65dd82be80269087fd77569c2fe2" />A black rectangular box covers the photodetector to better ensure the clarity of collected signals. This is also done through magnetic attachment. The longpass filter sit on top of the circular hollow to block out unwanted lights.
-
-## <a id="3fcd65dd82be80679f69c5d39ed7906b" />Top Housing
-
-<a id="3fcd65dd82be80aa95e1c1a61665ff79" />pcb holder
-
-- <a id="3fcd65dd82be80db9f46f33494e24351" />The illumination PCB board will be slotted in and held securely in place.
-
-<a id="3fcd65dd82be80ce8c90f7d9cb1187d4" />switch
-
-- <a id="3fcd65dd82be80a68099d4d2c89121fa" />The switch acts as the user interface. Users can flip on the LED before beginning fluorescence detection, and turn it off when they are done. This saves energy and prolongs the lifetime of the implemented LED.
-
-<a id="3fcd65dd82be80578c85cf5b5557c942" />arduino on the side wall
-
-- <a id="3fcd65dd82be8093b664e9834909baa2" />Arduino is fixed onto the side wall for easier wire connections as it controls both illumination and detection. Heat-set inserts are used to secure the Arduino. Additionally, it will be connected to a computer through the opening next to the Arduino. This way, the user can collect all the outputs efficiently.
-
-## <a id="3fcd65dd82be80e6a372d84ab00a5116" />Fluorescence Detection System
-
-<a id="3fed65dd82be80f585e7cbab145882f8" />
-
-<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/498d609f5027593bb8ad1d9cffeff258.avif","alt":"","scale":0}]}>
-  <Fragment slot="content">
-    <a id="3fcd65dd82be804daf32d4c29e9f0829" />The image above demonstrates the overall setup of our fluorescence detection system.
-  </Fragment>
-</Figure>
-
-<details>
-  <summary><a id="3fdd65dd82be80f6938fed3a667dc917" />Illumination</summary>
-
-  <a id="3fdd65dd82be80638f6bf6e882df4e46" />We opted for a single color LED, which has a wavelength of 488nm. This acts as a simplified version of the light source + excitation filter combination. With lights emitted at a specific wavelength, the background noises are reduced and the signal quality is improved. The reason for choosing blue is because it is blue light has a shorter wavelength and higher frequency, which means it has higher energy. This makes it an effective choice for exciting fluorescence.
-</details>
-
-<details>
-  <summary><a id="3fdd65dd82be80aab47ceea8c89c318d" />Filtering</summary>
-
-  <a id="3fdd65dd82be805abe67fcdc440f1f0b" />A long pass filter is used as our emission filter. As its name indicates, a long pass filter blocks off lights of shorter wavelengths and lets lights of longer wavelengths pass through. We implemented a 500nm long pass filter to block off the blue light and permit green fluorescence, which is 510nm.
-</details>
-
-<details>
-  <summary><a id="3fdd65dd82be804e8c33cf20247b7798" />Photodiode</summary>
-
-  <a id="3fdd65dd82be8055b2b9e2b43f7070ed" />A photodiode converts received lights (photons) into electrical current. The signal will then be outputted to indicate if there is fluorescence or no.
-
-  <a id="3fdd65dd82be8040b4c2ca07d7abec08" />
-
-  <Img url="https://static.igem.wiki/teams/6279/wiki/assets/27c3a84fd53d511ea5209bdab40942fe.avif" alt="" scale={0} align="center" />
-
-  <a id="3fdd65dd82be80a794c7e00c30b0c64b" />Image demonstrates how absorbed photons create a voltage difference, allowing the photodiode to convert light into electrical current.<Cite refs={[{"n":9,"key":"PHOTODIODEBASICSWavelength"}]} />
-
-  <br id="3fed65dd82be80fc989ceba94a85f454" />
-</details>
-
-<br id="3fdd65dd82be806cbe84d9f4cbd0f63d" />
+<br id="3ffd65dd82be8033a631d088c92a9dc0" />
 
 # <a id="3fbd65dd82be805ba95ed803ef3c84bf" />Circuitry
 
@@ -209,42 +119,137 @@ title: "Fluorescence Detector"
 <a id="3fed65dd82be80578faacae318762abc" />
 
 <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/7486c64db2c850ddb33cec2f5abd35c7.avif","alt":"","scale":0}]}>
-  <Fragment slot="content" />
+  <Fragment slot="content">
+    <a id="3fed65dd82be809ab4c1e5ffe6566fcb" />The 30mm x 30mm PCB board is made for illuminating our sample during fluorescence detection. It encompasses a 488nm LED as the primary light source, a resistor, a signal plane which carries data, and a ground plane acting as the return path for electrical currents.
+  </Fragment>
 </Figure>
-
-<a id="3fed65dd82be809ab4c1e5ffe6566fcb" />The 30mm x 30mm PCB board is made for illuminating our sample during fluorescence detection. It encompasses a 488nm LED as the primary light source, a resistor, a signal plane which carries data, and a ground plane acting as the return path for electrical currents.
 
 ## <a id="3fed65dd82be80838208cc23e8f0e8a5" />Detection
 
 <a id="3fed65dd82be80b693b1c7cacc243239" />
 
 <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/1049987edaae516c9d470c1dcf17c072.avif","alt":"","scale":0}]}>
-  <Fragment slot="content" />
+  <Fragment slot="content">
+    <a id="3fed65dd82be804e91bad68e923f5e3a" />The 30mm x 90mm PCB board is used for fluorescence detection. The photodiode, LED, and microfluidic chip well are aligned on the same vertical axis.
+  </Fragment>
 </Figure>
-
-<a id="3fed65dd82be804e91bad68e923f5e3a" />The 30mm x 90mm PCB board is used for fluorescence detection. The photodiode, LED, and microfluidic chip well are aligned on the same vertical axis.
-
-<br id="3ffd65dd82be80a59633f62083be557f" />
 
 ## <a id="3ffd65dd82be80cc86e3e2490f4ea650" />Build Process
 
-<br id="3ffd65dd82be80baaa76f8eb23c48178" />
+<a id="3ffd65dd82be80b4b731ca3f0a41104a" />We started this process by doing a lit review of previously built fluorescence detectors to see how complicated the process would be. We discovered that they were often composed of several main components:
+
+- <a id="3ffd65dd82be805a9e74c6f98d3ea731" />A light source, usually an LED or laser of a specific wavelength <Cite refs={[{"n":9,"key":"HowBuildFluorometer"},{"n":10,"key":"circuitsarduinoArduinoFluorometer"}]} />
+- <a id="3ffd65dd82be80e3becbdbe342292d4e" />An excitation filter, to remove all light except the excitation wavelength from hitting the sample <Cite refs={[{"n":9,"key":"HowBuildFluorometer"}]} />
+- <a id="3ffd65dd82be805d99e5fa5f8cda83f7" />A sample holder, to keep the sample still while it is being analyzed <Cite refs={[{"n":9,"key":"HowBuildFluorometer"}]} />
+- <a id="3ffd65dd82be8094a6b3ce9d3063b29c" />A dichroic mirror, to split the beam into multiple parts <Cite refs={[{"n":9,"key":"HowBuildFluorometer"}]} />
+- <a id="3ffd65dd82be809c83d5e47b297ba3b8" />An emission filter, to remove all light except that emitted from the sample <Cite refs={[{"n":9,"key":"HowBuildFluorometer"}]} />
+- <a id="3ffd65dd82be80d2bac4ea9890f9f37a" />A detector, often a photomultiplier tube or silicone photodetector, to quantify the response electronically <Cite refs={[{"n":9,"key":"HowBuildFluorometer"}]} />
+- <a id="3ffd65dd82be8021abb7faf3af4f973d" />A circuit to process the detected signal, often including an op-amp for amplification <Cite refs={[{"n":10,"key":"circuitsarduinoArduinoFluorometer"}]} />
+- <a id="3ffd65dd82be8049a58beace456a37af" />A microcontroller, to analyze the results and report them to the user <Cite refs={[{"n":10,"key":"circuitsarduinoArduinoFluorometer"}]} />
+
+<a id="3ffd65dd82be80248f77e6ecd4e62570" />We knew our fluorescence detector didn’t need to be as sophisticated as a commercial fluorescence detector as we were looking just for the prescence of fluorescence and knew that we could cut a lot of unneccesary parts to reduce cost and complexity.
+
+### <a id="3ffd65dd82be80b1b88ce03295f17557" />Previous iGEM Detectors
+
+<a id="3ffd65dd82be805a8a25e8c9ae503b0b" />We then looked at how previous iGEM teams had built fluorescence detectors so that we could see how others approached the issue.
+
+#### <a id="3ffd65dd82be80dcb5b6ffe2b376d82f" />Munich 2017 <Cite refs={[{"n":6,"key":"TeamMunich2017igemorg"}]} />
+
+<a id="3ffd65dd82be80a19573f7dff9d051e1" />Munich used a blue LED and a photoresistor. Interestingly they did not use any filters in their designs. They were not attempting to look at the same light waves as we are. Their microcontroller of choice was an Arduino Nano. Our team had a left over arduino uno from 2025. Overall, we decided that their circuitry had little overlap with our purpose, as we didn’t think a photoresistor would be sensitive enough to detect fluorescence from a small volume of bacteria.
+
+#### <a id="3ffd65dd82be802b9ed4fcd71f8f246f" />BIT 2021 <Cite refs={[{"n":11,"key":"TeamBITFluorescence"}]} />
+
+<a id="3ffd65dd82be80ac9601d67aab7b3ce9" />
+
+<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/e97355f23ac0533da1bca0ed2573dbbc.avif","alt":"","scale":0}]}>
+  <Fragment slot="content">
+    <a id="3ffd65dd82be80aead6bd8087c82aa07" />BIT 2021’s operational amplifier circuit, one piece of a large puzzle
+  </Fragment>
+</Figure>
+
+<a id="3ffd65dd82be80bf849efd668e77b638" />BIT used an LED and an optical diode. They used two filters in their design, both an excitation and emission filter. They appear to have been looking at several different wavelengths. Unfortunately, their wiki is difficult to parse due to low contrast between the text and the background meaning valuable information is hard to pick out.
+
+#### <a id="3ffd65dd82be80578f09e16c676bfa4f" />UBC 2022 <Cite refs={[{"n":12,"key":"ubcvan"}]} />
+
+<a id="3ffd65dd82be801caff1f7cbd50970f4" />UBC iGEM 2022 used an LED and a photodiode. They were also looking at sensing GFP at the lowest possible price and left behind easy-to-follow documentation. The team was not able to finish creating their PCB in time for Jamboree due to mailing issues, but they had also used an Arduino Uno. We now knew that this was the direction we needed to move in.
+
+### <a id="3ffd65dd82be80d69547ddc13f6a2c4c" />Mark 1
 
 <a id="3ffd65dd82be80bcb16ed59b30863993" />
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3ffd65dd82be8088a371f1bef3b5bf2e" />Design
+    <a id="3ffd65dd82be80c58778d98be7e2fd1a" />
+
+    <IHP>
+      <Fragment slot="people">
+        <div class="ihp-card glow-panel" data-index="0">
+          <div class="ihp-card-body glow-panel-body">
+            <div class="ihp-name">Bram Banik</div>
+
+            <div class="ihp-profile">
+              <img class="ihp-photo" src="https://static.igem.wiki/teams/6279/wiki/assets/fb5f90e3b1655751b91bf2e73b1a01a4.avif" alt="Bram Banik" />
+
+              <div class="ihp-desc">
+                Bram is a fourth-year Engineering Physics student at UBC, specializing in Electrical Engineering. He currently works in PCB design at the quantum computing company D-Wave.
+              </div>
+            </div>
+
+            <div class="ihp-content">
+              <a id="3ffd65dd82be80f8b800de9bce6042f5" />Since no one on the team had much experience with circuit or PCB design, we sought out Bram. We showed him the research we had found on previous fluorescence detectors and asked how we would go about designing a circuit of our own. He looked through our research and pointed out that UBC iGEM in 2022 had pulled many of the details of their circuit from a paper and let us know that pulling from already created circuits was common practice in circuit design, especially for complicated circuits, as working from base principles was exceedingly tedious, difficult, and math heavy.
+            </div>
+          </div>
+        </div>
+      </Fragment>
+    </IHP>
+
+    <a id="3ffd65dd82be809b8075df7e46f740c9" />
+
+    <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/7620c4fb917d56a1a4816427978798c1.avif","alt":"","scale":0}]}>
+      <Fragment slot="content">
+        <a id="3ffd65dd82be807faef0d1a5914c7033" />UBC iGEM 2022’s Circuit Based on Work From <Cite refs={[{"n":13,"key":"DevelopmentIntegratedSystem"}]} />
+      </Fragment>
+    </Figure>
+
+    <a id="3ffd65dd82be80a3a4c5c8a328fa5dbb" />CIRCUIT EXPLANATION
   </Fragment>
 
   <Fragment slot="build">
-    <a id="3ffd65dd82be80338f37d1b98d21a357" />Build
+    <a id="3ffd65dd82be80849131cb12104d7b90" />
+
+    <IHP>
+      <Fragment slot="people">
+        <div class="ihp-card glow-panel" data-index="0">
+          <div class="ihp-card-body glow-panel-body">
+            <div class="ihp-name">Bram Banik</div>
+
+            <div class="ihp-profile">
+              <img class="ihp-photo" src="https://static.igem.wiki/teams/6279/wiki/assets/fb5f90e3b1655751b91bf2e73b1a01a4.avif" alt="Bram Banik" />
+
+              <div class="ihp-desc">
+                Bram is a fourth-year Engineering Physics student at UBC, specializing in Electrical Engineering. He currently works in PCB design at the quantum computing company D-Wave.
+              </div>
+            </div>
+
+            <div class="ihp-content">
+              <a id="3ffd65dd82be80ea8478fa4b24bb19af" />We reached out to Bram again when we were starting to approach creating the circuit. Since no one on the team had experience in PCB design, we brought Bram in to conduct a tutorial for our members. He walked us through how to create a simple voltage comparator in KiCad. During this tutorial, he taught the team the basic principles of PCB design and what to keep in mind when choosing the placement of traces.
+
+              <a id="3ffd65dd82be80a2a573ed7d9d1ad13a" />
+
+              <Img url="https://static.igem.wiki/teams/6279/wiki/assets/a4d72a1c27df5de4bea79ba2ce255965.avif" alt="" scale={0} align="center" />
+            </div>
+          </div>
+        </div>
+      </Fragment>
+    </IHP>
+
+    <a id="3ffd65dd82be80d995f0c4fc036ada6e" />After Bram’s tutorial, we created the circuit in KiCAD and submitted it to JLC PCB for manufacturing.
+
+    <a id="3ffd65dd82be808e8d6cfc638a91947b" />IMAGE OF UGLY PCB
   </Fragment>
 
   <Fragment slot="test">
-    <a id="3ffd65dd82be8006a02afba41bf0de35" />Test
-
-    <a id="3ffd65dd82be80f7941cc31c75262489" />Set up
+    <a id="3ffd65dd82be8006a02afba41bf0de35" />Setup
 
     - <a id="3ffd65dd82be8068aa6acbedaf3e920a" />Connect circuit to +5V, GND, and A0 (analog in) pins on arduino
     - <a id="3ffd65dd82be80278229d05213240292" />Code arduino to read A0 and print to serial monitor (below)
@@ -281,9 +286,17 @@ title: "Fluorescence Detector"
       - <a id="3ffd65dd82be80a094bec437553aa9ac" />2^10 = 1024, so 0-1023
     - <a id="3ffd65dd82be80e3af4ce1ff89f5dad2" />Dividing the number of steps by total voltage range gives volts per step, calculation shown below, used to convert from ADC reading to voltage
 
-    <a id="3ffd65dd82be80c7a4c3f86a07e3c523" />
+    <a id="3ffd65dd82be805c831bd02e8fa77a66" />
 
-    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/5124e83ef9505d16a74b581c2c8771ba.avif" alt="" scale={0} align="center" />
+    $$
+    V= N \cdot \frac{V_{REF}}{1024} \\
+    V_{REF}=5 \\
+    V = N \cdot 4.88 mV \\
+    \text{When } N= 895 \\
+    V = 4.37 V \\
+    \text{When } N = 922 \\
+    V = 4.50 V
+    $$
 
     <a id="3ffd65dd82be80f293c5ea66188feb7c" />
 
@@ -298,9 +311,9 @@ title: "Fluorescence Detector"
     | <a id="3ffd65dd82be8093a302e24b520dc21b" />5                       | 921                | 4.50        |
     | <a id="3ffd65dd82be80b381b8d0326f9a7e3e" />6+                      | 922                | 4.50        |
 
-    <a id="3ffd65dd82be80b08790fad2dd506530" />These results indicate that something in our circuit is a miss.
+    <a id="3ffd65dd82be80b08790fad2dd506530" />These results indicate that something in our circuit isn’t working as expected.
 
-    <a id="3ffd65dd82be80009b8bd6aa2565269f" />When you refer to the paper that our circuit was based on, you can see that they use voltage rails of +9V and -9V and that the OP07 op-amp used works within a supply voltage range of ± 3V to ± 18V, whereas we are powering the circuit using the ±5V and 0V rails of an Arduino, meaning that the supply voltage is outside the range that the OP07 are rated for. Therefore, we need to redesign the circuit to suit our purposes better.
+    <a id="3ffd65dd82be80009b8bd6aa2565269f" />When you refer to the paper that our circuit was based on <Cite refs={[{"n":13,"key":"DevelopmentIntegratedSystem"}]} /> , you can see that they use voltage rails of +9V and -9V and that the OP07 op-amp used works within a supply voltage range of ± 3V to ± 18V, whereas we are powering the circuit using the ±5V and 0V rails of an Arduino, meaning that the supply voltage is outside the range that the OP07 are rated for. Therefore, we need to redesign the circuit to suit our purposes better.
 
     <a id="3ffd65dd82be801ea636c5a5e2a3e39f" />To go into more detail, since the op-amps were operating outside of their rated supply voltage, the internal circuitry cannot work as intended, and the performance is impacted. It appears the op-amp output was stuck at its maximum output around 3.7 V; since the OP07 is not a rail-to-rail op-amp, its output cannot reach its rails. The internal circuitry requires some voltage across it, around 1-2V, preventing the output from reaching the rails the op-amp is supplied with. This was the case for both op-amps, and as such, increasing the gain only pushed the voltage slightly higher rather than multiplying it as the op-amp outputs were already saturated. This also explains why the output signal of the circuit was not responsive to light, as we rely on the op-amps to convert the photocurrent into a readable voltage, and they were not set up correctly to do so. Additionally, the clipping diode has a forward voltage drop of around 0.7V, which is why the Arduino read around 4.4V.
 
@@ -325,15 +338,21 @@ title: "Fluorescence Detector"
       </Fragment>
     </Figure>
 
-    <a id="3ffd65dd82be809489b0d4263319983e" />
+    <a id="3ffd65dd82be809489b0d4263319983e" />Results from simulations compared to expected values (voltages are taken from different nodes in the circuit, with “U1 input difference” being a subtraction between both input nodes  on the U1 op amp):
 
-    <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/5f4d702cc20a54859cd54dc642802c05.avif","alt":"","scale":0}]}>
-      <Fragment slot="content">
-        <a id="3ffd65dd82be80e58c73f24a38d877f7" />Results from simulations compared to expected values (voltages are taken from different nodes in the circuit, with “U1 input difference” being a subtraction between both input nodes  on the U1 op amp)
-      </Fragment>
-    </Figure>
+    <a id="3ffd65dd82be801b81a3c0a640ca1d33" />
 
-    <a id="3ffd65dd82be80d48c37dbf248909f2c" />**Expected value calculations:**
+    |                                                                |           |               |             |
+    | -------------------------------------------------------------- | --------- | ------------- | ----------- |
+    | <a id="3ffd65dd82be807eaec3f490a3846d74" />Node                | Expected  | -9V/+9V rails | 0V/5V rails |
+    | <a id="3ffd65dd82be805bbe9ee85fc7bb6e34" />U1 input difference | \~0nV     | 24 nV         | 887.7 mV    |
+    | <a id="3ffd65dd82be8099bafaec267dc5bf86" />V\_TIA              | 18.0 mV   | 18 mV         | 929.6 mV    |
+    | <a id="3ffd65dd82be806b8347c3fb2316a53d" />V\_Gain             | 36.0 mV   | 36.0 mV       | 1862 mV     |
+    | <a id="3ffd65dd82be80d7a928dfe82b2df91f" />ARD\_IN             | \~0.726 V | 0.729 V       | 2.541 V     |
+
+    <a id="3ffd65dd82be8035a614df5df646ab88" />**Expected value calculations:**
+
+    <a id="3ffd65dd82be80c1b54bfcde2f09ac3e" />Based on the properties of an op-amp, the U1 input difference should be \~0V.
 
     <a id="3ffd65dd82be805e9ff3d63e0de15910" />V\_TIA: The voltage node that converts the photodiode’s current into a voltage.
 
@@ -387,29 +406,101 @@ title: "Fluorescence Detector"
   </Fragment>
 
   <Fragment slot="learn">
-    <a id="3ffd65dd82be8055b71fc382c50a8cb1" />We need to redesign our circuit to fit with our specific setup.
+    <a id="3ffd65dd82be8055b71fc382c50a8cb1" />We need to redesign our circuit to fit with our specific voltage requirements.
   </Fragment>
 </Dbtl>
 
-<a id="3ffd65dd82be80609d7de503d33f9977" />
+<br id="3ffd65dd82be80a58c75e1f713fc8386" />
 
-<Dbtl>
-  <Fragment slot="design">
-    <a id="3ffd65dd82be80dbb4d5cbeef2ac30c1" />Design
-  </Fragment>
+### <a id="3ffd65dd82be80a9a80edcc089b514fe" />Mark Two
 
-  <Fragment slot="build">
-    <a id="3ffd65dd82be8045966ce30cf1cd87c5" />Build
-  </Fragment>
+# <a id="3fbd65dd82be80ca8eb3c43119c51ce4" />Enclosure
 
-  <Fragment slot="test">
-    <a id="3ffd65dd82be80a3a58dfd7069ed520e" />Test
-  </Fragment>
+## <a id="3fbd65dd82be8040ba01dabf592e8b51" />Microfluidic Chip Holder → image carousel
 
-  <Fragment slot="learn">
-    <a id="3ffd65dd82be8019b9f9f57dd31d9709" />Learn
+<a id="3fcd65dd82be80a5af0bf567c1ede359" />(technical drawing)
+
+- <a id="3fcd65dd82be8013a409ef1abc32a4df" />After the chip is dropped into the holder, each well will rest on top of a gap. This allows proper illumination and permits the fluorescence to reach the photodetector.
+
+<a id="3fcd65dd82be803eba2cffbe7394c314" />(close-up of the bottom section)
+
+- <a id="3fcd65dd82be80258641f67c7796cacf" />There are 7 hemisphere-shaped indents on the bottom of the holder legs, each representing a well. When a well arrives at the site of detection, the indent slides onto a bump and gentle vibration is transmitted through the handle to the user’s hand. This serves as a reminder for the user to pause and wait for detection to happen.
+
+<a id="3fcd65dd82be809c8f64daf9c0cafa3a" />(close up of the handle (3d model & irl with the markings))
+
+- <a id="3fcd65dd82be80d2bf0ad0e31281fcef" />The user can hold onto the handle to move the chip forward or back. We also added in visual marks to ensure a smoother detection process.
+
+## <a id="3fcd65dd82be80089f38e2d9f24613c3" />Bottom Housing
+
+<details>
+  <summary><a id="3fcd65dd82be809aa264d7101f55596e" />Sliding tracks</summary>
+
+  <a id="3fcd65dd82be8015a288d32884d700fc" />The holder slides smoothly on the tracks so the user can move each well to the site of detection. One track is attached onto the side wall to leave out space for PCB insert.
+</details>
+
+<details>
+  <summary><a id="3fcd65dd82be8032af95e3344878fa6e" />Cover and longpass filter</summary>
+
+  <a id="3fcd65dd82be80269087fd77569c2fe2" />A black rectangular box covers the photodetector to better ensure the clarity of collected signals. This is also done through magnetic attachment. The longpass filter sit on top of the circular hollow to block out unwanted lights.
+</details>
+
+<details>
+  <summary><a id="3fcd65dd82be80578c85cf5b5557c942" />Arduino</summary>
+
+  <a id="3ffd65dd82be805ea694f9f2a6c86176" />Arduino is fixed onto the side wall for easier wire connections as it controls both illumination and detection. Heat-set inserts are used to secure the Arduino. Additionally, it will be connected to a computer through the opening next to the Arduino. This way, the user can collect all the outputs efficiently.
+</details>
+
+<details>
+  <summary><a id="3ffd65dd82be80b3af3bf45deb6d8c53" />Detector PCB</summary>
+
+  <br id="3ffd65dd82be803a990ad0660408aebe" />
+</details>
+
+## <a id="3fcd65dd82be80679f69c5d39ed7906b" />Top Housing
+
+<a id="3fcd65dd82be80aa95e1c1a61665ff79" />pcb holder
+
+- <a id="3fcd65dd82be80db9f46f33494e24351" />The illumination PCB board will be slotted in and held securely in place.
+
+<a id="3fcd65dd82be80ce8c90f7d9cb1187d4" />switch
+
+- <a id="3fcd65dd82be80a68099d4d2c89121fa" />The switch acts as the user interface. Users can flip on the LED before beginning fluorescence detection, and turn it off when they are done. This saves energy and prolongs the lifetime of the implemented LED.
+
+## <a id="3fcd65dd82be80e6a372d84ab00a5116" />Fluorescence Detection System
+
+<a id="3fed65dd82be80f585e7cbab145882f8" />
+
+<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/498d609f5027593bb8ad1d9cffeff258.avif","alt":"","scale":0}]}>
+  <Fragment slot="content">
+    <a id="3fcd65dd82be804daf32d4c29e9f0829" />The image above demonstrates the overall setup of our fluorescence detection system.
   </Fragment>
-</Dbtl>
+</Figure>
+
+<details>
+  <summary><a id="3fdd65dd82be80f6938fed3a667dc917" />Illumination</summary>
+
+  <a id="3fdd65dd82be80638f6bf6e882df4e46" />We opted for a single color LED, which has a wavelength of 488nm. This acts as a simplified version of the light source + excitation filter combination. With lights emitted at a specific wavelength, the background noises are reduced and the signal quality is improved. The reason for choosing blue is because it is blue light has a shorter wavelength and higher frequency, which means it has higher energy. This makes it an effective choice for exciting fluorescence.
+</details>
+
+<details>
+  <summary><a id="3fdd65dd82be80aab47ceea8c89c318d" />Filtering</summary>
+
+  <a id="3fdd65dd82be805abe67fcdc440f1f0b" />A long pass filter is used as our emission filter. As its name indicates, a long pass filter blocks off lights of shorter wavelengths and lets lights of longer wavelengths pass through. We implemented a 500nm long pass filter to block off the blue light and permit green fluorescence, which is 510nm.
+</details>
+
+<details>
+  <summary><a id="3fdd65dd82be804e8c33cf20247b7798" />Photodiode</summary>
+
+  <a id="3fdd65dd82be8055b2b9e2b43f7070ed" />A photodiode converts received lights (photons) into electrical current. The signal will then be outputted to indicate if there is fluorescence or no.
+
+  <a id="3fdd65dd82be8040b4c2ca07d7abec08" />
+
+  <Img url="https://static.igem.wiki/teams/6279/wiki/assets/27c3a84fd53d511ea5209bdab40942fe.avif" alt="" scale={0} align="center" />
+
+  <a id="3fdd65dd82be80a794c7e00c30b0c64b" />Image demonstrates how absorbed photons create a voltage difference, allowing the photodiode to convert light into electrical current.<Cite refs={[{"n":14,"key":"PHOTODIODEBASICSWavelength"}]} />
+
+  <br id="3fed65dd82be80fc989ceba94a85f454" />
+</details>
 
 # <a id="3f9d65dd82be808f844aec659af2f946" />Bill of Materials
 
@@ -431,6 +522,12 @@ title: "Fluorescence Detector"
 | <a id="3fed65dd82be801aa104fcb495883cad" />                            |                     | **Total:**                 |
 
 # <a id="3fbd65dd82be8042b94cfa15b5b4a7f3" />User Manual
+
+<a id="3ffd65dd82be807b8236cfea6d2e38eb" />
+
+<Downloadable name="Fluorescence Detector.pdf" url="https://static.igem.wiki/teams/6279/wiki/assets/afecbf9f9e6f5c36ba8f8cf0f6bd932f.pdf" kind="pdf">
+  <Fragment slot="preview" />
+</Downloadable>
 
 # <a id="3fed65dd82be80a682bff627e911ba85" />Final Product
 
@@ -454,4 +551,4 @@ title: "Fluorescence Detector"
 
 # References
 
-<Bibliography refs={[{"n":1,"key":"sandersonFluorescenceMicroscopy2014"},{"n":2,"key":"WhatFullSpectrum2012"},{"n":3,"key":"DetectionMadeEasy2026"},{"n":4,"key":"DarkBoxUV"},{"n":5,"key":"ltdFluorescenceSpectrophotometerNFS100"},{"n":6,"key":"TeamMunich2017igemorg"},{"n":7,"key":"ThorlabsFiltersFluorescence"},{"n":8,"key":"DichroicLongpassFilters"},{"n":9,"key":"PHOTODIODEBASICSWavelength"}]} />
+<Bibliography refs={[{"n":1,"key":"sandersonFluorescenceMicroscopy2014"},{"n":2,"key":"WhatFullSpectrum2012"},{"n":3,"key":"DetectionMadeEasy2026"},{"n":4,"key":"DarkBoxUV"},{"n":5,"key":"ltdFluorescenceSpectrophotometerNFS100"},{"n":6,"key":"TeamMunich2017igemorg"},{"n":7,"key":"ThorlabsFiltersFluorescence"},{"n":8,"key":"DichroicLongpassFilters"},{"n":9,"key":"HowBuildFluorometer"},{"n":10,"key":"circuitsarduinoArduinoFluorometer"},{"n":11,"key":"TeamBITFluorescence"},{"n":12,"key":"ubcvan"},{"n":13,"key":"DevelopmentIntegratedSystem"},{"n":14,"key":"PHOTODIODEBASICSWavelength"}]} />

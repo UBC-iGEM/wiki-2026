@@ -1,0 +1,180 @@
+---
+type: "database"
+title: "SOP for Calibration of SEN0169 pH Probe"
+path: "Hardware/Protocol Databse/SOP for Calibration of SEN0169 pH Probe"
+---
+
+# <a id="3ffd65dd82be8037aa36eccf585931d8" />OBJECTIVE
+
+> <a id="3ffd65dd82be80a7aea3ee610eee4856" />Ensure that pH readings during experimentation will be fully accurate and reflect the true pH value of the probe tip environment.
+
+## <a id="3ffd65dd82be80f99704e2d18b0936e1" />**PRODUCT:**
+
+<a id="3ffd65dd82be80a2a52ce29bf9b3f286" />DFRobot SEN0169 Gravity: Analog pH Sensor (PRO)
+
+## <a id="3ffd65dd82be80cc87ffe2cc6d2bcf21" />**DOCUMENTATION:**
+
+- <a id="3ffd65dd82be80e3bc82e48bd5c4ee4c" />Official DFRobot product page: [https://wiki.dfrobot.com/sen0169/](https://wiki.dfrobot.com/sen0169/)
+- <a id="3ffd65dd82be800dbe6acf50f622a300" />Official code & calibration reference: [https://wiki.dfrobot.com/sen0169/docs/19888](https://wiki.dfrobot.com/sen0169/docs/19888)
+
+# <a id="3ffd65dd82be8009bce8fb3c6f4632e9" />OVERVIEW
+
+<a id="3ffd65dd82be80ab8e32f117f0edcf87" />Calibration is done by adjusting **BOTH** the software code on arduino IDE, as well as manually adjusting the potentiometer on the pH meter board.
+
+- <a id="3ffd65dd82be80c7910ce1452214a826" />The potentiometer is the blue block close to the BNC connector (probe attachment). Note that there is a small screw at the top that must be adjusted with a flathead screwdriver
+
+# <a id="3ffd65dd82be80a290b6fd7b02f269f6" />PROCEDURE
+
+## <a id="3ffd65dd82be80c88d9ed1ba821a2d39" />MATERIAL PREP
+
+- <a id="3ffd65dd82be8064bd4adf32bcc1bd86" />pH 7.0 solution
+- <a id="3ffd65dd82be801ebe64c1c64bf671fc" />pH 4.0 solution
+- <a id="3ffd65dd82be80b8bef1f257de8e5ede" />distilled water & kimiwipes
+
+<br id="3ffd65dd82be80cb8eb5c9346d3556e6" />
+
+- <a id="3ffd65dd82be8074b159f7fe4486df5b" />***Do not wipe or rub the tip of the probe harshly***
+- <a id="3ffd65dd82be8030ba32da13209a8ec6" />***Always rinse probe with distilled water when moving between solutions***
+
+## <a id="3ffd65dd82be802d8ce1f4446aca5326" />HARDWARE SETUP
+
+1. <a id="3ffd65dd82be80359f00eeffa302eabb" />pH probe ↔ pH meter board via BNC connector
+2. <a id="3ffd65dd82be80e1b0a2d2af535e3a11" />pH meter board ↔ arduino via 3-pin connector
+   1. <a id="3ffd65dd82be806ab955e469e352f679" />blue: signal out to any analog pin
+      1. <a id="3ffd65dd82be80ca9bd5c19aa867c337" />should keep in mind which pin is being used, as this will reflect in the code
+   2. <a id="3ffd65dd82be802d90badaec99302ac5" />red: power to 5V
+   3. <a id="3ffd65dd82be80f08bfdd322fd537b1c" />black: gnd to gnd
+3. <a id="3ffd65dd82be802daf83c8766cff29d5" />arduino ↔ connect to laptop for power
+4. <a id="3ffd65dd82be80c5a63edd0ee3ae09df" />flash code onto arduino:
+   <a id="3ffd65dd82be803c9084f6284362a79c" />
+   ```c
+   /*
+    # This sample code is used to test the pH meter Pro V1.0.
+    # Editor : YouYou
+    # Ver    : 1.0
+    # Product: analog pH meter Pro
+    # SKU    : SEN0169
+   */
+
+   #define SensorPin A0  //pH meter Analog output to Arduino Analog Input 0
+   #define Offset 0.00  //deviation compensate
+   #define LED 13
+   #define samplingInterval 20
+   #define printInterval 800
+   #define ArrayLength  40  //times of collection
+
+   int pHArray[ArrayLength]; //Store the average value of the sensor feedback
+   int pHArrayIndex=0;
+
+   void setup(void)
+   {
+     pinMode(LED,OUTPUT);
+     Serial.begin(9600);
+     Serial.println("pH meter experiment!"); //Test the serial monitor
+   }
+
+   void loop(void)
+   {
+     static unsigned long samplingTime = millis();
+     static unsigned long printTime = millis();
+     static float pHValue,voltage;
+     
+     if(millis()-samplingTime > samplingInterval)
+     {
+         pHArray[pHArrayIndex++]=analogRead(SensorPin);
+         if(pHArrayIndex==ArrayLength)pHArrayIndex=0;
+         voltage = avergearray(pHArray, ArrayLength)*5.0/1024;
+         pHValue = 3.5*voltage+Offset;
+         samplingTime=millis();
+     }
+     //Every 800 milliseconds, print the state of the LED indicator
+     if(millis() - printTime > printInterval) 
+     {
+       Serial.print("Voltage:");
+           Serial.print(voltage,2);
+           Serial.print("    pH value: ");
+       Serial.println(pHValue,2);
+           digitalWrite(LED,digitalRead(LED)^1);
+           printTime=millis();
+     }
+   }
+
+   double avergearray(int* arr, int number){
+     int i;
+     int max,min;
+     double avg;
+     long amount=0;
+     if(number<=0){
+       Serial.println("Error number for the array to avraging!/n");
+       return 0;
+     }
+     // less than 5, calculated directly statistics
+     if(number<5){   
+       for(i=0;i<number;i++){
+         amount+=arr[i];
+       }
+       avg = amount/number;
+       return avg;
+     }
+     else{
+       if(arr[0]<arr[1]){
+         min = arr[0];max=arr[1];
+       }
+       else{
+         min=arr[1];max=arr[0];
+       }
+       for(i=2;i<number;i++){
+         if(arr[i]<min){
+           amount+=min;        //arr<min
+           min=arr[i];
+         }else {
+           if(arr[i]>max){
+             amount+=max;    //arr>max
+             max=arr[i];
+           }else{
+             amount+=arr[i]; //min<=arr<=max
+           }
+         }//if
+       }//for
+       avg = (double)amount/(number-2);
+     }//if
+     return avg;
+   }
+   ```
+   1. <a id="3ffd65dd82be80718097d7c54516d77a" />letting the probe run while looking at the terminal on the Arduino IDE interface should read continuous values of voltage AND pH
+
+## <a id="3ffd65dd82be8067b5d0e202e7f93d9e" />CALIBRATION SOFTWARE
+
+1. <a id="3ffd65dd82be80ee91bae4839cb59691" />Rinse probe tip with distilled water and gently dry
+2. <a id="3ffd65dd82be8020ae60c857c9b67fcb" />Submerge tip into pH 7 solution
+3. <a id="3ffd65dd82be805fa50acee20c4a9233" />Watch the terminal until a steady pH value is read
+4. <a id="3ffd65dd82be803c87e8c085e6c51a22" />Record steady pH value
+5. <a id="3ffd65dd82be80adb40bccccc69aa857" />Determine offset
+   > <a id="3ffd65dd82be801fa4cac3881fd84e8e" />Offset = 7.00 - steady pH value
+6. <a id="3ffd65dd82be80179b81cbefc47daee1" />Implement offset into .ino code
+   <a id="3ffd65dd82be80588381c58eb6396042" />
+   ```javascript
+   #define Offset 0.00   // change this value!
+   ```
+7. <a id="3ffd65dd82be80a6adfae03ae659535f" />Save file and reflash the code onto the arduino
+8. <a id="3ffd65dd82be80e9868ec6e0ede79589" />Check that pH readings are within range of pH 7
+
+<Callout icon="🥼">
+  <a id="3ffd65dd82be80c7a296ec082a409e29" />Operator notes: Offset is set to 0.35
+</Callout>
+
+## <a id="3ffd65dd82be803ba3d4cf391ae1ecc8" />CALIBRATION HARDWARE
+
+1. <a id="3ffd65dd82be801e9115fc5c1d1c336b" />Rinse probe tip with distilled water and gently dry
+2. <a id="3ffd65dd82be8063b7f5e9ae6c18cf5c" />Submerge tip into pH 4 solution
+3. <a id="3ffd65dd82be8028bcc0e143557436e4" />Watch the terminal until a steady pH value is read
+4. <a id="3ffd65dd82be804d984ac446d9b143b2" />Adjust the potentiometer until a pH value of 4 is read
+   1. <a id="3ffd65dd82be80f2b14ff10ef0ff84af" />2 way knob: one way is increasing pH, other way is decreasing pH
+5. <a id="3ffd65dd82be80339572d8650dde76de" />DONE WITH POTENTIOMETER! DO NOT ADJUST ANYMORE!
+6. <a id="3ffd65dd82be80ba839fcbe5ba30d7fd" />Once both sets of calibration have been completed, check back that the probe is correctly reading pH 7.0 in pH 7.0 solution and pH 4.0 in pH 4.0 solution
+
+<br id="3ffd65dd82be8027879ec474904f4f0f" />
+
+<Callout icon="🥼">
+  <a id="3ffd65dd82be8081b0f6e457b3dcc670" />Operator notes: Calibration did not work on first try due to dehydration of the probe tip. Probe tip was soaked in 0.1 HCl solution for 24 hours, then in 3M KCl solution for 6 hours before use.
+</Callout>

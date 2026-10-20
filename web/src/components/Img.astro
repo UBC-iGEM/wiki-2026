@@ -9,5 +9,31 @@ const style = [imageScaleStyle(scale), align === "center" && "display: block; ma
     .join("; ");
 ---
 
-<!-- Sized by `.page-content img` in style.css, like a markdown image -->
-<img src={url} alt={alt} style={style} />
+<!-- Sized by `.page-content img` in style.css, like a markdown image; a positive scale also enlarges it below -->
+<img src={url} alt={alt} style={style} data-img-enlarge={scale > 0 ? 1 + scale / 100 : undefined} />
+
+<script>
+    import { onPage } from "../utils/page";
+
+    /**
+     * The size constraints only cap an image, so one smaller than its caps stays at its natural size whatever its
+     * scale. This widens an enlarged image to its natural width times its scale, still within those caps.
+     */
+    function enlarge(img: HTMLImageElement): void {
+        const { naturalWidth, naturalHeight } = img;
+        // An SVG without a size of its own has nothing to multiply
+        if (!naturalWidth || !naturalHeight) return;
+        const factor = Number(img.dataset.imgEnlarge);
+        // Capped by the max height here, as the max width would distort it; that cap keeps the aspect ratio itself
+        const maxHeight = parseFloat(getComputedStyle(img).maxHeight);
+        const width = naturalWidth * factor;
+        img.style.width = `${Number.isFinite(maxHeight) ? Math.min(width, (maxHeight * naturalWidth) / naturalHeight) : width}px`;
+    }
+
+    onPage((signal) => {
+        for (const img of document.querySelectorAll<HTMLImageElement>("img[data-img-enlarge]")) {
+            if (img.complete) enlarge(img);
+            else img.addEventListener("load", () => enlarge(img), { signal, once: true });
+        }
+    });
+</script>
