@@ -108,6 +108,7 @@ import { BASE_URL } from "../utils/base-url";
 
 <script>
     import { onPage } from "../utils/page";
+    import { arrivedBy } from "../utils/transitions";
     import { gsap } from "gsap";
     import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
     import { MotionPathPlugin } from "gsap/MotionPathPlugin";
@@ -196,6 +197,7 @@ import { BASE_URL } from "../utils/base-url";
                 })
                 .to(".chip-3", { opacity: 1, duration: 0.2 })
                 .to(".chip-1, .chip-2", { opacity: 0, duration: 0.3 }, "+=0.1")
+                .addLabel("chip-shown")
                 .to(".chip-stage", { x: () => -stageShift(), duration: 0.6, ease: "power2.inOut" }, "+=0.2")
                 .call(() => {
                     stageShifted = true;
@@ -369,6 +371,13 @@ import { BASE_URL } from "../utils/base-url";
                     trigger: ".chip-line-second",
                 });
             }
+
+            // The intro waits for the page transition, so it isn't half over by the time the page is revealed.
+            // Arriving by the navbar's logo, which grew into the chip, it picks up from the chip
+            const { kind, finished } = arrivedBy();
+            introTimeline.pause();
+            if (kind === "logo") introTimeline.seek("chip-shown");
+            void finished.then(() => introTimeline.play());
         });
 
         return () => context.revert();

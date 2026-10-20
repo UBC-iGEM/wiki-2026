@@ -100,7 +100,14 @@ function buildMonth(key: string): CalendarMonth {
 
 {
     months.length > 0 && (
-        <details class="db-calendar" open aria-label={`${parent_db.name().toString()} entries by date`}>
+        <details
+            class="db-calendar"
+            open
+            data-db={parent_db_path}
+            transition:name={`db-calendar-${parent_db_path}`}
+            transition:animate="initial"
+            aria-label={`${parent_db.name().toString()} entries by date`}
+        >
             <summary>Calendar</summary>
 
             {months.length > 1 && (
@@ -197,6 +204,13 @@ function buildMonth(key: string): CalendarMonth {
     import { onPage } from "../utils/page";
     import { makeDismissable } from "../utils/dismissable";
 
+    // Each page renders its own calendar, marking its own day, but one opened or closed stays that way
+    let carried: { key?: string; open: boolean } | undefined;
+    document.addEventListener("astro:before-swap", () => {
+        const calendar = document.querySelector<HTMLDetailsElement>("details.db-calendar");
+        carried = calendar ? { key: calendar.dataset.db, open: calendar.open } : undefined;
+    });
+
     onPage((signal) => {
         for (const day_menu of document.querySelectorAll<HTMLDetailsElement>("details.day-menu")) {
             makeDismissable(day_menu, signal);
@@ -206,8 +220,11 @@ function buildMonth(key: string): CalendarMonth {
         const stacked = window.matchMedia("(max-width: 1000px)");
 
         for (const calendar of document.querySelectorAll<HTMLDetailsElement>("details.db-calendar")) {
-            calendar.open = !stacked.matches;
+            // Only within one database, as another one's is a different calendar
+            const kept = carried?.key === calendar.dataset.db ? carried?.open : undefined;
+            calendar.open = kept ?? !stacked.matches;
         }
+        carried = undefined;
 
         // Only months holding entries are rendered, so stepping skips empty stretches
         for (const calendar of document.querySelectorAll<HTMLElement>(".db-calendar")) {

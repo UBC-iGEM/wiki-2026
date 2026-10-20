@@ -262,3 +262,148 @@ pre.astro-code {
         width: 1.75rem;
     }
 }
+
+/*
+ * Page transitions, for the ClientRouter's navigations (html[data-astro-transition], which holds the navigation's
+ * direction, or the kind utils/transitions.ts picks for it).
+ * The page fades as one, while the navbar (and, within a database, its dropdown and calendar) holds still.
+ * The home logo grows into the hero chip, and the previous/next buttons push the page aside for the new one.
+ * Astro turns everything off for reduced motion.
+ */
+:root {
+    --transition-easing: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@keyframes vt-fade-out {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes vt-fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+/* The old page goes first, so the two pages' text never overlaps */
+html[data-astro-transition]::view-transition-old(root) {
+    animation: vt-fade-out 150ms ease-in both;
+    mix-blend-mode: normal;
+}
+
+html[data-astro-transition]::view-transition-new(root) {
+    animation: vt-fade-in 250ms ease-out 100ms both;
+    mix-blend-mode: normal;
+}
+
+/* The previous/next page buttons push the whole page aside, the new one following the old in from the side as if the
+   two lay next to each other; the navbar and anything else held still stay put over them */
+@keyframes vt-from-right {
+    from {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes vt-from-left {
+    from {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes vt-to-left {
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes vt-to-right {
+    to {
+        transform: translateX(100%);
+    }
+}
+
+/* A dropdown or calendar left behind (or newly met) moves with its page rather than fading */
+html[data-astro-transition="next"]::view-transition-old(root),
+html[data-astro-transition="next"]::view-transition-old(*.db-hold):only-child {
+    animation: vt-to-left 500ms var(--transition-easing) both;
+}
+
+html[data-astro-transition="next"]::view-transition-new(root),
+html[data-astro-transition="next"]::view-transition-new(*.db-hold):only-child {
+    animation: vt-from-right 500ms var(--transition-easing) both;
+}
+
+html[data-astro-transition="prev"]::view-transition-old(root),
+html[data-astro-transition="prev"]::view-transition-old(*.db-hold):only-child {
+    animation: vt-to-right 500ms var(--transition-easing) both;
+}
+
+html[data-astro-transition="prev"]::view-transition-new(root),
+html[data-astro-transition="prev"]::view-transition-new(*.db-hold):only-child {
+    animation: vt-from-left 500ms var(--transition-easing) both;
+}
+
+/* The navbar, with any menu left open, stays over the changing page, shown as it is on the new page throughout */
+::view-transition-group(site-nav) {
+    animation: none;
+    z-index: 1;
+}
+
+::view-transition-old(site-nav) {
+    animation: none;
+    opacity: 0;
+}
+
+::view-transition-new(site-nav) {
+    animation: none;
+}
+
+/* Within a database, its dropdown and calendar carry over like the navbar, with any menu left open over the page.
+   Their names carry the database's path, so only there do the two pages' ones pair up. They glide to where the new page has them (e.g. from where scrolling had stuck them further down), easing out
+   rather than in and out so they settle instead of snapping. Their old and new looks cross-fade in step and
+   additively (the browser's own way), which keeps what the two share solid and only fades what changed, like the
+   marked day */
+.db-dropdown,
+.db-calendar {
+    view-transition-class: db-hold;
+}
+
+::view-transition-group(*.db-hold) {
+    animation-duration: 450ms;
+    animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 1;
+}
+
+/* One without a match on the other page (another database's, or none) fades with the page instead */
+::view-transition-old(*.db-hold):only-child {
+    animation: vt-fade-out 150ms ease-in both;
+}
+
+::view-transition-new(*.db-hold):only-child {
+    animation: vt-fade-in 250ms ease-out 100ms both;
+}
+
+/* The home logo grows into the hero chip, over the navbar it starts out in. The home page has the logo too, so it is
+   only named on the page being left. The chip starts hidden for the home page's intro, whose script only runs once
+   the new page has been captured, so it is shown here until the intro picks up from it (see HeroChipIntro) */
+html[data-astro-transition="logo"]:not(:has(.chip-3)) .home-logo,
+html[data-astro-transition="logo"] .chip-3 {
+    view-transition-name: hero-logo;
+}
+
+html[data-astro-transition="logo"] .chip-3 {
+    opacity: 1;
+}
+
+::view-transition-group(hero-logo) {
+    animation-duration: 500ms;
+    animation-timing-function: var(--transition-easing);
+    z-index: 2;
+}
+
+/* An enlarged figure grows out of its place on the page (see Lightbox) */
+::view-transition-group(lightbox) {
+    animation-duration: 350ms;
+    animation-timing-function: var(--transition-easing);
+}

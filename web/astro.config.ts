@@ -16,6 +16,11 @@ const projectPage = (ext: string): string => `${INTERNAL_LINK_ROOT}/project/${ex
 // https://astro.build/config
 export default defineConfig({
     base: INTERNAL_LINK_ROOT,
+    // Every internal link starts fetching its page on hover, so the ClientRouter rarely waits on the network
+    prefetch: {
+        prefetchAll: true,
+        defaultStrategy: "hover",
+    },
     redirects: {
         "/description": projectPage("description"),
         "/engineering": projectPage("engineering-success"),

@@ -14,6 +14,65 @@
 <script>
     const dialog = document.querySelector<HTMLDialogElement>("dialog.lightbox")!;
     const view = dialog.querySelector<HTMLImageElement>(".lightbox-img")!;
+    const reduced_motion = matchMedia("(prefers-reduced-motion: reduce)");
+
+    // The figure that was enlarged, for the image to shrink back into
+    let source: HTMLImageElement | null = null;
+
+    /** Runs `update`, growing `from` into `to` across it where the browser can (see the lightbox rule in style.css). */
+    function morph(from: HTMLElement | null, to: () => HTMLElement | null, update: () => Promise<void> | void): void {
+        if (!document.startViewTransition || reduced_motion.matches || !from) {
+            void update();
+            return;
+        }
+        // Only one element may carry the name at a time: the old end, then the new one
+        from.style.viewTransitionName = "lightbox";
+        let target: HTMLElement | null = null;
+        const transition = document.startViewTransition(async () => {
+            from.style.removeProperty("view-transition-name");
+            await update();
+            target = to();
+            if (target) target.style.viewTransitionName = "lightbox";
+        });
+        void transition.finished.finally(() => target?.style.removeProperty("view-transition-name"));
+    }
+
+    /** Whether any of `element` is on screen, as growing out of a figure scrolled away would fly in from afar. */
+    function onScreen(element: Element): boolean {
+        const rect = element.getBoundingClientRect();
+        return rect.bottom > 0 && rect.top < innerHeight && rect.right > 0 && rect.left < innerWidth;
+    }
+
+    function open(img: HTMLImageElement): void {
+        source = img;
+        morph(
+            img,
+            () => view,
+            async () => {
+                view.src = img.currentSrc || img.src;
+                view.alt = img.alt;
+                // The enlarged image must be drawn before it is captured, or the figure grows into a blank
+                await view.decode().catch(() => undefined);
+                // Its shape, for CSS to scale it up to the screen (an SVG without a size of its own takes the figure's)
+                const ratio =
+                    view.naturalWidth && view.naturalHeight
+                        ? view.naturalWidth / view.naturalHeight
+                        : img.width / img.height;
+                view.style.setProperty("--ratio", String(ratio));
+                dialog.showModal();
+            },
+        );
+    }
+
+    function close(): void {
+        if (!dialog.open) return;
+        const target = source?.isConnected && onScreen(source) ? source : null;
+        morph(
+            target ? view : null,
+            () => target,
+            () => dialog.close(),
+        );
+    }
 
     // Capture phase, so a peeking carousel slide is checked before its own click handler brings it to the front
     document.addEventListener(
@@ -23,16 +82,22 @@
             if (!img) return;
             // A peeking carousel slide navigates rather than enlarges
             if (img.closest('.carousel-slide[data-role]:not([data-role="active"])')) return;
-            view.src = img.currentSrc || img.src;
-            view.alt = img.alt;
-            dialog.showModal();
+            open(img);
         },
         { capture: true },
     );
 
-    // Any click inside closes it, as the image fills the dialog; Escape is handled by <dialog> itself
-    dialog.addEventListener("click", () => dialog.close());
-    dialog.addEventListener("close", () => view.removeAttribute("src"));
+    // Any click inside closes it, as the image fills the dialog
+    dialog.addEventListener("click", close);
+    // Escape too, shrinking back rather than vanishing
+    dialog.addEventListener("cancel", (event) => {
+        event.preventDefault();
+        close();
+    });
+    dialog.addEventListener("close", () => {
+        view.removeAttribute("src");
+        source = null;
+    });
 
     // The dialog is kept between pages, so back/forward with it open must not carry the image along
     document.addEventListener("astro:before-preparation", () => dialog.close());
@@ -54,6 +119,9 @@
         max-width: none;
         padding: 0;
         width: 100%;
+        /* The room left around the image: on top and bottom, enough to clear the close button */
+        --margin-x: max(var(--page-gutter), 8vw);
+        --margin-y: max(4.5rem, 8vh);
     }
 
     .lightbox[open] {
@@ -70,9 +138,10 @@
     .lightbox-img {
         border-radius: 22px;
         box-shadow: 0 0 2.5rem color-mix(in srgb, var(--color-cornflower) 40%, transparent);
-        max-height: calc(100vh - 4rem);
-        max-width: calc(100vw - 2 * var(--page-gutter));
-        object-fit: contain;
+        /* As large as fits inside the margins, however small the file: the full width, or the full height at its --ratio */
+        aspect-ratio: var(--ratio, auto);
+        height: auto;
+        width: min(100vw - 2 * var(--margin-x), (100dvh - 2 * var(--margin-y)) * var(--ratio, 1));
     }
 
     .lightbox-close {

@@ -23,7 +23,14 @@ const current_page = parent_db_entries.find((entry) => entry.toString() === curr
 const current_page_title = (current_page ?? PagePath.fromString(current_page_path)).name().toString();
 ---
 
-<details class="db-dropdown">
+<!-- A way around the database, so it holds still between its pages (as the navbar does): the name is only shared
+     within one database (see the "Page transitions" rules in style.css) -->
+<details
+    class="db-dropdown"
+    data-db={parent_db_path}
+    transition:name={`db-dropdown-${parent_db_path}`}
+    transition:animate="initial"
+>
     <summary>
         <span class="page-name">{current_page_title}</span>
         <span class="marker" aria-hidden="true">▾</span>
@@ -54,6 +61,21 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
 
 <script>
     import { onPage } from "../utils/page";
+    import { closeWhenMouseLeaves } from "../utils/hover-menu";
+
+    // With a mouse, it closes once the pointer leaves it, as the navbar's menus do
+    const hover_menus = matchMedia("(hover: hover) and (pointer: fine)");
+
+    // Each page renders its own dropdown, marking its own page, but one left open stays open, scrolled where it was
+    let carried: { key?: string; open: boolean; scroll: number } | null = null;
+    document.addEventListener("astro:before-swap", () => {
+        const dropdown = document.querySelector<HTMLDetailsElement>("details.db-dropdown");
+        carried = dropdown && {
+            key: dropdown.dataset.db,
+            open: dropdown.open,
+            scroll: dropdown.querySelector("nav")?.scrollTop ?? 0,
+        };
+    });
     import { makeDismissable } from "../utils/dismissable";
 
     onPage((signal) => {
@@ -68,7 +90,40 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
                     });
                 }
             });
+
+            closeWhenMouseLeaves(dropdown, dropdown.querySelector("nav"), () => hover_menus.matches, signal);
+
+            // After a page change, the browser can go on aiming the wheel at the page until the mouse moves, though the
+            // open list is under it, and scroll the page instead. A wheel it sends elsewhere over the list is turned to
+            // the list here, judged by where the pointer is; one it already sends to the list is left to scroll natively
+            const list = dropdown.querySelector("nav")!;
+            document.addEventListener(
+                "wheel",
+                (event) => {
+                    // Not one the browser is already scrolling with (mid-gesture), or the list would move twice as far
+                    if (!dropdown.open || event.ctrlKey || !event.cancelable) return;
+                    if (event.target instanceof Node && list.contains(event.target)) return;
+                    const rect = list.getBoundingClientRect();
+                    const { clientX: x, clientY: y } = event;
+                    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) return;
+                    event.preventDefault();
+                    // In pixels, lines or pages
+                    const unit = [1, 20, list.clientHeight][event.deltaMode] ?? 1;
+                    list.scrollBy({ top: event.deltaY * unit, behavior: "smooth" });
+                },
+                { passive: false, signal },
+            );
+
+            // Only within one database, as another one's is a different list
+            if (carried?.open && carried.key === dropdown.dataset.db) {
+                // Already open, so it shouldn't roll down again (see the styles)
+                dropdown.dataset.arrived = "";
+                dropdown.open = true;
+                dropdown.querySelector("nav")!.scrollTop = carried.scroll;
+                requestAnimationFrame(() => delete dropdown.dataset.arrived);
+            }
         }
+        carried = null;
     });
 </script>
 
@@ -119,8 +174,10 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
     .marker {
         color: white;
         display: inline-block;
-        font-size: 0.7rem;
-        padding-left: 0.5rem;
+        font-size: 1.1rem;
+        line-height: 1;
+        /* A margin rather than padding, so it turns about the triangle itself */
+        margin-left: 0.5rem;
         transition: transform 150ms ease;
     }
 
@@ -135,6 +192,8 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
         max-height: min(60vh, 24rem);
         overflow-y: auto;
+        /* Reaching either end doesn't carry on into scrolling the page */
+        overscroll-behavior: contain;
         padding: 0.3rem;
         position: absolute;
         right: 0;
@@ -176,6 +235,31 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
         background: var(--color-cornflower);
         color: white;
         font-weight: 700;
+    }
+
+    /* The list rolls down from its top edge on opening and back up on closing. The clip leaves room at the sides and
+       bottom for the shadow; ::details-content stays shown until the roll-up ends (browsers without it just snap) */
+    @media (prefers-reduced-motion: no-preference) {
+        .db-dropdown::details-content {
+            transition: content-visibility 150ms allow-discrete;
+        }
+
+        nav {
+            clip-path: inset(0 -2rem -2rem -2rem);
+            transition: clip-path 150ms ease-out;
+        }
+
+        .db-dropdown:not([open]) nav {
+            clip-path: inset(0 -2rem 100% -2rem);
+            transition-timing-function: ease-in;
+        }
+
+        /* Not when it arrives open from the last page (see the script) */
+        @starting-style {
+            .db-dropdown[open]:not([data-arrived]) nav {
+                clip-path: inset(0 -2rem 100% -2rem);
+            }
+        }
     }
 
     @media (max-width: 1000px) {

@@ -72,6 +72,11 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
 
         <!-- A special surprise 👀 -->
         <Gemy />
+
+        <!-- Picks each navigation's animation (see the "Page transitions" rules in style.css) -->
+        <script>
+            import "../utils/transitions";
+        </script>
     </body>
 </html>
 

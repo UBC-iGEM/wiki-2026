@@ -22,14 +22,8 @@ const nav_items = content_map.aggregates.map((agg) => {
 const static_links = content_map.static_links;
 ---
 
-<!-- Kept between pages rather than re-rendered, and held still while the page under it fades -->
-<nav
-    class="primary"
-    aria-label="Primary navigation"
-    transition:persist="site-nav"
-    transition:name="site-nav"
-    transition:animate="none"
->
+<!-- Kept between pages rather than re-rendered, and held still while the page under it fades (see the styles) -->
+<nav class="primary" aria-label="Primary navigation" transition:persist="site-nav">
     <a class="home-logo" href={BASE_URL} aria-label="Home" set:html={logoSvg} />
 
     <button class="chip menu-toggle" type="button" aria-expanded="false" aria-controls="nav-sections">
@@ -73,6 +67,7 @@ const static_links = content_map.static_links;
 
 <script>
     import { makeDismissable } from "../utils/dismissable";
+    import { closeWhenMouseLeaves } from "../utils/hover-menu";
 
     const nav = document.querySelector<HTMLElement>("nav.primary");
     const toggle = nav?.querySelector<HTMLButtonElement>(".menu-toggle");
@@ -117,19 +112,12 @@ const static_links = content_map.static_links;
 
     for (const group of groups) {
         const summary = group.querySelector("summary")!;
-        let close_timer: number | undefined;
 
         group.addEventListener("pointerenter", () => {
-            if (!hover_menus.matches) return;
-            window.clearTimeout(close_timer);
-            group.open = true;
+            if (hover_menus.matches) group.open = true;
         });
 
-        // A short grace period, so brushing past the edge on the way to the submenu does not close it
-        group.addEventListener("pointerleave", () => {
-            if (!hover_menus.matches) return;
-            close_timer = window.setTimeout(() => (group.open = false), 150);
-        });
+        closeWhenMouseLeaves(group, group.querySelector(".submenu"), () => hover_menus.matches);
 
         // Hovering already opened it, so a click on the chip must not close it again under the cursor
         summary.addEventListener("click", (event) => {
@@ -137,6 +125,12 @@ const static_links = content_map.static_links;
             event.preventDefault();
             group.open = true;
         });
+    }
+
+    // The ClientRouter moves the bar into each new page, which would roll an open menu down again (see the styles)
+    if (nav) {
+        document.addEventListener("astro:before-swap", () => (nav.dataset.arrived = ""));
+        document.addEventListener("astro:after-swap", () => requestAnimationFrame(() => delete nav.dataset.arrived));
     }
 </script>
 
@@ -152,6 +146,9 @@ const static_links = content_map.static_links;
         font-family: var(--font-geist);
         gap: 1.25rem;
         padding: 1rem var(--page-gutter);
+        /* Named here rather than with transition:name, whose generated name is keyed to the element's place in the
+           render order: the bar moves into each new page keeping the old page's key, which the new page may not use */
+        view-transition-name: site-nav;
         /* Its view-transition-name makes the bar a stacking context, which traps the submenus' z-index inside it,
            so the bar itself is lifted to their level, over the page (e.g. the home hero) but under tooltips */
         position: relative;
@@ -328,6 +325,46 @@ const static_links = content_map.static_links;
     .submenu a:focus-visible {
         outline: 2px solid var(--color-lime-yellow);
         outline-offset: -2px;
+    }
+
+    /* On the full-width bar, where it floats (stacked, it pushes the chips below it down instead).
+       The list rolls down from its top edge on opening and back up on closing. The clip leaves room at the sides and
+       bottom for the shadow; ::details-content stays shown until the roll-up ends (browsers without it just snap) */
+    @media (min-width: 1001px) and (prefers-reduced-motion: no-preference) {
+        .nav-group::details-content {
+            transition: content-visibility 150ms allow-discrete;
+        }
+
+        .submenu {
+            clip-path: inset(0 -2rem -2rem -2rem);
+            transition: clip-path 150ms ease-out;
+        }
+
+        .nav-group:not([open]) .submenu {
+            clip-path: inset(0 -2rem 100% -2rem);
+            transition-timing-function: ease-in;
+        }
+
+        /* The chip stays lit and wide until its list has rolled up, as the list is as wide as the chip and would
+           otherwise rewrap its names on the way */
+        .nav-group:not([open]) > .chip {
+            transition:
+                background 120ms ease 150ms,
+                color 120ms ease 150ms,
+                padding 160ms ease 150ms;
+        }
+
+        /* But a hovered chip lights up at once */
+        .nav-group:not([open]) > .chip:hover {
+            transition-delay: 0ms;
+        }
+
+        /* Not when the bar is moved into the next page with a menu open (see the script) */
+        @starting-style {
+            nav.primary:not([data-arrived]) .nav-group[open] .submenu {
+                clip-path: inset(0 -2rem 100% -2rem);
+            }
+        }
     }
 
     /* The layout stacks its sidebar at this width too, so the bar collapses with it */

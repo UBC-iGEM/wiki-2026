@@ -1,5 +1,5 @@
 ---
-import { ContentMap, DatabaseMap, PagePath, PagePathComponent, type JsonMap } from "@exporter/map";
+import { ContentMap, PagePath, PagePathComponent, type JsonMap } from "@exporter/map";
 import config from "../../docs/content_map.json";
 import { BASE_URL } from "../utils/base-url";
 
@@ -8,17 +8,11 @@ const content_map = ContentMap.fromJSON(config as JsonMap);
 // The route's own slug, which every page has whether or not its attrs carry a path
 const current_slug = new PagePathComponent(Astro.params.page_path ?? "").toSlug();
 
-// A database page steps through its database; any other page through the top level of its section,
-// where a database stands in for its first page
+// Every page steps through its section in order, with each database's pages in its place: so a database's last page
+// leads on to the section's next page, and its first page back to the one before
 function siblings(): PagePath[] | undefined {
     for (const agg of content_map.aggregates) {
-        for (const { path, item } of agg.entries) {
-            if (!(item instanceof DatabaseMap)) continue;
-            const db_pages = item.entries.map(({ path: page }) => new PagePath([agg.name, path, page]));
-            if (db_pages.some((page) => page.toSlug() === current_slug)) return db_pages;
-        }
-
-        const section_pages = Array.from(agg.topLevelPages()).map(([, dest]) => dest);
+        const section_pages = Array.from(agg.pages(), ({ path }) => path);
         if (section_pages.some((page) => page.toSlug() === current_slug)) return section_pages;
     }
     return undefined;

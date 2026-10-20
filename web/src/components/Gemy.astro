@@ -37,6 +37,7 @@
 <script>
     import { onPage } from "../utils/page";
     import { BASE_URL } from "../utils/base-url";
+    import { arrivedBy } from "../utils/transitions";
 
     const GEMY_CHANCE = 1 / 20;
     const WOBBLE_DEGREES = 7.5;
@@ -125,7 +126,7 @@
                 pet();
             });
 
-            // Peek once both the page and Gemy's image have loaded
+            // Peek once the page and Gemy's image have loaded, and the page transition has revealed the page
             const img = gemy.querySelector("img")!;
             const img_loaded = new Promise((resolve) => img.addEventListener("load", resolve, { once: true }));
             img.src = `${BASE_URL}assets/gemy.png`;
@@ -133,7 +134,7 @@
                 document.readyState === "complete"
                     ? Promise.resolve()
                     : new Promise((resolve) => window.addEventListener("load", resolve, { once: true }));
-            void Promise.all([img_loaded, page_loaded]).then(peek);
+            void Promise.all([img_loaded, page_loaded, arrivedBy().finished]).then(peek);
         }
     });
 </script>
