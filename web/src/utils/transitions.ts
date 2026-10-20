@@ -14,7 +14,8 @@ export type TransitionKind = "logo" | "prev" | "next";
 type Arrival = { kind?: TransitionKind; finished: Promise<void> };
 
 // finished: when the current page's transition ends
-const STATE: { finished: Promise<void> } = { finished: Promise.resolve() };
+// navAway: the page being pushed aside had been scrolled past the navbar
+const STATE: { finished: Promise<void>; navAway: boolean } = { finished: Promise.resolve(), navAway: false };
 
 /** How the current page was arrived at, and when its transition ends; for a page's own intro to wait on. */
 export function arrivedBy(): Arrival {
@@ -53,6 +54,10 @@ document.addEventListener("astro:before-preparation", (event: TransitionBeforePr
     if (rel === "prev" || rel === "next") event.direction = rel;
     else if (toLogo) event.direction = "logo";
 
+    // Read now, before the new page resets the scroll
+    const nav = document.querySelector("nav.primary");
+    STATE.navAway = (rel === "prev" || rel === "next") && !!nav && nav.getBoundingClientRect().bottom <= 0;
+
     const loader = event.loader;
     event.loader = async (): Promise<void> => {
         await loader();
@@ -73,4 +78,11 @@ async function decodeChip(event: TransitionBeforePreparationEvent): Promise<void
 
 document.addEventListener("astro:before-swap", (event: TransitionBeforeSwapEvent) => {
     STATE.finished = event.viewTransition.finished;
+
+    // Set on the new page's <html>, as the swap replaces the old one's attributes with its
+    if (STATE.navAway) {
+        const root = event.newDocument.documentElement;
+        root.dataset.navAway = "";
+        event.viewTransition.finished.finally(() => delete document.documentElement.dataset.navAway);
+    }
 });

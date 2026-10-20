@@ -359,6 +359,12 @@ html[data-astro-transition="prev"]::view-transition-new(*.db-hold):only-child {
     animation: none;
 }
 
+/* Except when the page pushed aside had been scrolled past the bar (data-nav-away, see utils/transitions.ts), which
+   only fades in once the new page has settled */
+html[data-nav-away]::view-transition-new(site-nav) {
+    animation: vt-fade-in 250ms ease-out 500ms both;
+}
+
 /* Within a database, its dropdown and calendar carry over like the navbar, with any menu left open over the page.
    Their names carry the database's path, so only there do the two pages' ones pair up. They glide to where the new page has them (e.g. from where scrolling had stuck them further down), easing out
    rather than in and out so they settle instead of snapping. Their old and new looks cross-fade in step and
