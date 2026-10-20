@@ -53,6 +53,7 @@ import reset_icon from "../../public/assets/hero_interactive/reset-icon.svg?raw"
 </section>
 
 <script>
+    import { onPage } from "../utils/page";
     import { gsap } from "gsap";
     import { BASE_URL } from "../utils/base-url";
     import { createSound } from "../utils/sfx";
@@ -217,36 +218,42 @@ import reset_icon from "../../public/assets/hero_interactive/reset-icon.svg?raw"
         return timeline;
     }
 
-    const caseTimelines = [
-        setupCaseInteraction({
-            tubeSelector: ".tube-visual--green",
-            chipSelector: ".chip-visual--left",
-            emptySelector: ".tube-visual--empty-left",
-            rotation: -116,
-            color: "#5CA18F",
-            id: "liquid-left",
-            litChipSelector: ".chip-visual--left-lit",
-            captionSelector: ".case-caption--left",
-            soundSrc: `${BASE_URL}assets/audio/audio-fluorescent.mp3`,
-        }),
+    onPage(() => {
+        if (!document.querySelector(".interactive-section")) return;
 
-        // Mirror of the left tube
-        setupCaseInteraction({
-            tubeSelector: ".tube-visual--pink",
-            chipSelector: ".chip-visual--right",
-            emptySelector: ".tube-visual--empty-right",
-            rotation: 116,
-            color: "#E650DB",
-            id: "liquid-right",
-            captionSelector: ".case-caption--right",
-            soundSrc: `${BASE_URL}assets/audio/audio-not-fluorescent.mp3`,
-        }),
-    ];
+        const caseTimelines = [
+            setupCaseInteraction({
+                tubeSelector: ".tube-visual--green",
+                chipSelector: ".chip-visual--left",
+                emptySelector: ".tube-visual--empty-left",
+                rotation: -116,
+                color: "#5CA18F",
+                id: "liquid-left",
+                litChipSelector: ".chip-visual--left-lit",
+                captionSelector: ".case-caption--left",
+                soundSrc: `${BASE_URL}assets/audio/audio-fluorescent.mp3`,
+            }),
 
-    // Rewinding each timeline to 0 puts every tube, chip, liquid band and
-    // caption back where it started, ready to be clicked again
-    document.querySelector(".reset-button")?.addEventListener("click", () => {
-        for (const timeline of caseTimelines) timeline.pause(0);
+            // Mirror of the left tube
+            setupCaseInteraction({
+                tubeSelector: ".tube-visual--pink",
+                chipSelector: ".chip-visual--right",
+                emptySelector: ".tube-visual--empty-right",
+                rotation: 116,
+                color: "#E650DB",
+                id: "liquid-right",
+                captionSelector: ".case-caption--right",
+                soundSrc: `${BASE_URL}assets/audio/audio-not-fluorescent.mp3`,
+            }),
+        ];
+
+        // Rewinding each timeline to 0 puts every tube, chip, liquid band and
+        // caption back where it started, ready to be clicked again
+        document.querySelector(".reset-button")?.addEventListener("click", () => {
+            for (const timeline of caseTimelines) timeline.pause(0);
+        });
+
+        return () => caseTimelines.forEach((timeline) => timeline.kill());
     });
 </script>
 

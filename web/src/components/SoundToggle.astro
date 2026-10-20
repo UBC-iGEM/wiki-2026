@@ -9,14 +9,17 @@ import sfxOnSvg from "../../public/assets/hero/sfx-on-toggle.svg?raw";
 </button>
 
 <script>
+    import { onPage } from "../utils/page";
     import { setSoundOn } from "../utils/sfx";
 
-    const toggle = document.querySelector<HTMLButtonElement>(".sound-toggle");
+    onPage(() => {
+        const toggle = document.querySelector<HTMLButtonElement>(".sound-toggle");
 
-    toggle?.addEventListener("click", () => {
-        const on = toggle.getAttribute("aria-pressed") !== "true";
-        toggle.setAttribute("aria-pressed", String(on));
-        setSoundOn(on);
+        toggle?.addEventListener("click", () => {
+            const on = toggle.getAttribute("aria-pressed") !== "true";
+            toggle.setAttribute("aria-pressed", String(on));
+            setSoundOn(on);
+        });
     });
 </script>
 

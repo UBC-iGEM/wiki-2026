@@ -5,7 +5,8 @@
  */
 ---
 
-<dialog class="lightbox" aria-label="Enlarged image">
+<!-- Kept between pages, as the script below holds on to it -->
+<dialog class="lightbox" aria-label="Enlarged image" transition:persist="lightbox">
     <button class="lightbox-close" aria-label="Close">×</button>
     <img class="lightbox-img" alt="" />
 </dialog>
@@ -32,6 +33,9 @@
     // Any click inside closes it, as the image fills the dialog; Escape is handled by <dialog> itself
     dialog.addEventListener("click", () => dialog.close());
     dialog.addEventListener("close", () => view.removeAttribute("src"));
+
+    // The dialog is kept between pages, so back/forward with it open must not carry the image along
+    document.addEventListener("astro:before-preparation", () => dialog.close());
 </script>
 
 <style is:global>

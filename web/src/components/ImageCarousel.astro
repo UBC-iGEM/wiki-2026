@@ -51,63 +51,72 @@ const multiple = slides.length > 1;
 </div>
 
 <script>
-    for (const carousel of document.querySelectorAll<HTMLElement>(".carousel:not(.single)")) {
-        const slides = Array.from(carousel.querySelectorAll<HTMLElement>(".carousel-slide"));
-        const descs = Array.from(carousel.querySelectorAll<HTMLElement>(".carousel-desc"));
-        const dots = Array.from(carousel.querySelectorAll<HTMLElement>(".nav-dot"));
-        const n = slides.length;
-        if (n < 2) continue;
+    import { onPage } from "../utils/page";
 
-        // Match by `data-index` rather than DOM/array position, so slides (rendered directly
-        // in this template) and descriptions (arriving via <slot>) can't silently drift apart
-        const indexOf = (el: HTMLElement) => Number(el.dataset.index);
+    onPage(() => {
+        const observers: ResizeObserver[] = [];
 
-        // The current slide is centred in a stage as tall as the tallest slide;
-        // its caption is lifted into the space below it, so it stays beside it, while the dots stay put
-        const stage = carousel.querySelector<HTMLElement>(".carousel-stage")!;
-        const liftBelow = () => {
-            const active = slides.find((slide) => slide.dataset.role === "active");
-            if (!active) return;
-            const style = getComputedStyle(stage);
-            const content = stage.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
-            // Layout sizes, unaffected by the slides' transforms mid-transition
-            const space = Math.max(0, (content - active.offsetHeight) / 2);
-            carousel.style.setProperty("--below-lift", `${-space}px`);
-        };
-        // Images load, and the stage resizes with the window
-        const resizes = new ResizeObserver(liftBelow);
-        resizes.observe(stage);
-        slides.forEach((slide) => resizes.observe(slide));
+        for (const carousel of document.querySelectorAll<HTMLElement>(".carousel:not(.single)")) {
+            const slides = Array.from(carousel.querySelectorAll<HTMLElement>(".carousel-slide"));
+            const descs = Array.from(carousel.querySelectorAll<HTMLElement>(".carousel-desc"));
+            const dots = Array.from(carousel.querySelectorAll<HTMLElement>(".nav-dot"));
+            const n = slides.length;
+            if (n < 2) continue;
 
-        let current = 0;
-        const show = (index: number) => {
-            current = (index + n) % n;
-            for (const slide of slides) {
-                // Position relative to the current slide, wrapping around
-                const offset = (indexOf(slide) - current + n) % n;
-                const role = offset === 0 ? "active" : offset === 1 ? "next" : offset === n - 1 ? "prev" : "hidden";
-                slide.dataset.role = role;
-                slide.inert = role !== "active";
-            }
-            descs.forEach((desc) => desc.classList.toggle("active", indexOf(desc) === current));
-            dots.forEach((dot) => dot.classList.toggle("active", indexOf(dot) === current));
-            liftBelow();
-        };
+            // Match by `data-index` rather than DOM/array position, so slides (rendered directly
+            // in this template) and descriptions (arriving via <slot>) can't silently drift apart
+            const indexOf = (el: HTMLElement) => Number(el.dataset.index);
 
-        carousel.querySelector(".carousel-arrow.prev")?.addEventListener("click", () => show(current - 1));
-        carousel.querySelector(".carousel-arrow.next")?.addEventListener("click", () => show(current + 1));
-        dots.forEach((dot) => dot.addEventListener("click", () => show(indexOf(dot))));
-        // The peeking slides bring themselves to the front
-        for (const slide of slides)
-            slide.addEventListener("click", () => {
-                if (slide.dataset.role !== "active") show(indexOf(slide));
-            });
+            // The current slide is centred in a stage as tall as the tallest slide;
+            // its caption is lifted into the space below it, so it stays beside it, while the dots stay put
+            const stage = carousel.querySelector<HTMLElement>(".carousel-stage")!;
+            const liftBelow = () => {
+                const active = slides.find((slide) => slide.dataset.role === "active");
+                if (!active) return;
+                const style = getComputedStyle(stage);
+                const content = stage.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+                // Layout sizes, unaffected by the slides' transforms mid-transition
+                const space = Math.max(0, (content - active.offsetHeight) / 2);
+                carousel.style.setProperty("--below-lift", `${-space}px`);
+            };
+            // Images load, and the stage resizes with the window
+            const resizes = new ResizeObserver(liftBelow);
+            observers.push(resizes);
+            resizes.observe(stage);
+            slides.forEach((slide) => resizes.observe(slide));
 
-        // Everything up to here is a no-JS fallback (CSS shows only the first slide);
-        // this flips the carousel into JS-driven mode once navigation is wired up
-        carousel.classList.add("js-ready");
-        show(current);
-    }
+            let current = 0;
+            const show = (index: number) => {
+                current = (index + n) % n;
+                for (const slide of slides) {
+                    // Position relative to the current slide, wrapping around
+                    const offset = (indexOf(slide) - current + n) % n;
+                    const role = offset === 0 ? "active" : offset === 1 ? "next" : offset === n - 1 ? "prev" : "hidden";
+                    slide.dataset.role = role;
+                    slide.inert = role !== "active";
+                }
+                descs.forEach((desc) => desc.classList.toggle("active", indexOf(desc) === current));
+                dots.forEach((dot) => dot.classList.toggle("active", indexOf(dot) === current));
+                liftBelow();
+            };
+
+            carousel.querySelector(".carousel-arrow.prev")?.addEventListener("click", () => show(current - 1));
+            carousel.querySelector(".carousel-arrow.next")?.addEventListener("click", () => show(current + 1));
+            dots.forEach((dot) => dot.addEventListener("click", () => show(indexOf(dot))));
+            // The peeking slides bring themselves to the front
+            for (const slide of slides)
+                slide.addEventListener("click", () => {
+                    if (slide.dataset.role !== "active") show(indexOf(slide));
+                });
+
+            // Everything up to here is a no-JS fallback (CSS shows only the first slide);
+            // this flips the carousel into JS-driven mode once navigation is wired up
+            carousel.classList.add("js-ready");
+            show(current);
+        }
+
+        return () => observers.forEach((observer) => observer.disconnect());
+    });
 </script>
 
 <!-- Global, as the descriptions arrive through a slot and don't carry Astro's scoping attribute -->

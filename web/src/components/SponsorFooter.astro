@@ -62,8 +62,12 @@ const sponsors: Sponsor[] = [
 </footer>
 
 <script>
-    document.querySelectorAll<HTMLElement>(".sponsor-footer").forEach((footer) => {
-        footer.dataset.ready = "true";
+    import { onPage } from "../utils/page";
+
+    onPage(() => {
+        document.querySelectorAll<HTMLElement>(".sponsor-footer").forEach((footer) => {
+            footer.dataset.ready = "true";
+        });
     });
 </script>
 

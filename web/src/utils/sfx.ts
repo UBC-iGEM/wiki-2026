@@ -1,4 +1,4 @@
-// Sound-effects permission for the home page, set by SoundToggle. Starts muted on every load.
+// Sound-effects permission for the home page, set by SoundToggle. Starts muted on every page.
 // Sound effects go through createSound() (audio files) or getAudioContext() (synthesized), both of which stay
 // silent while muted; createBackgroundSound() registers a looping track that follows the toggle.
 // The toggle click doubles as the user gesture browsers require before a page may play audio.
@@ -83,6 +83,17 @@ function fadeBackground(background: Background, on: boolean): void {
         background.pause_timer = window.setTimeout(() => background.audio.pause(), FADE_SECONDS * 1000);
     }
 }
+
+// The ClientRouter keeps this module between pages, but sound stays on the page that turned it on: leaving it mutes
+// everything and drops that page's background tracks, which the next page registers afresh if it has any
+document.addEventListener("astro:before-swap", () => {
+    STATE.on = false;
+    for (const background of BACKGROUNDS.splice(0)) {
+        window.clearTimeout(background.pause_timer);
+        background.audio.pause();
+        background.gain?.disconnect();
+    }
+});
 
 // Background music pauses while the tab is hidden and picks back up when it's shown again, if sound is still on
 document.addEventListener("visibilitychange", () => {

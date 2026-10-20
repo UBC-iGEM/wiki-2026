@@ -107,6 +107,7 @@ import { BASE_URL } from "../utils/base-url";
 </div>
 
 <script>
+    import { onPage } from "../utils/page";
     import { gsap } from "gsap";
     import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
     import { MotionPathPlugin } from "gsap/MotionPathPlugin";
@@ -114,242 +115,264 @@ import { BASE_URL } from "../utils/base-url";
 
     gsap.registerPlugin(DrawSVGPlugin, MotionPathPlugin, ScrollTrigger);
 
-    const hero = document.querySelector(".home-hero");
-    if (!hero) throw new Error("'.home-hero' not found");
-    // Narrow windows get the stacked layout (keep in sync with the
-    // max-width: 1250px styles): a single centered column, so there's no
-    // side-by-side composition to shift, and the chip lines/dots are
-    // display: none, so their path work is skipped.
-    const stackedQuery = window.matchMedia("(max-width: 1250px)");
-    const isStacked = stackedQuery.matches;
-    const stage = document.querySelector<HTMLElement>(".chip-stage");
+    onPage((signal) => {
+        const hero = document.querySelector(".home-hero");
+        if (!hero) return;
 
-    // The side-by-side composition's width in --chip-w, out to the FAST
-    // text's right edge (.fast-text-final's left 1.14 + width 548/594)
-    const COMPOSITION_WIDTH = 1.14 + 548 / 594;
+        // Collects every tween and ScrollTrigger made below, so leaving the page can stop them all
+        const context = gsap.context(() => {
+            // Narrow windows get the stacked layout (keep in sync with the
+            // max-width: 1250px styles): a single centered column, so there's no
+            // side-by-side composition to shift, and the chip lines/dots are
+            // display: none, so their path work is skipped.
+            const stackedQuery = window.matchMedia("(max-width: 1250px)");
+            const isStacked = stackedQuery.matches;
+            const stage = document.querySelector<HTMLElement>(".chip-stage");
 
-    // How far the stage slides left to make room for the FAST text: enough to
-    // centre the whole composition, but never so far the chip leaves the left edge.
-    function stageShift(): number {
-        if (stackedQuery.matches || !hero || !stage) return 0;
-        const chipWidth = stage.offsetWidth;
-        return Math.min(((COMPOSITION_WIDTH - 1) * chipWidth) / 2, (hero.clientWidth - chipWidth) / 2);
-    }
+            // The side-by-side composition's width in --chip-w, out to the FAST
+            // text's right edge (.fast-text-final's left 1.14 + width 548/594)
+            const COMPOSITION_WIDTH = 1.14 + 548 / 594;
 
-    // Keeps the shift right while the window is resized, once the intro has applied it
-    let stageShifted = false;
-    window.addEventListener("resize", () => {
-        if (stageShifted) gsap.set(".chip-stage", { x: -stageShift() });
-    });
+            // How far the stage slides left to make room for the FAST text: enough to
+            // centre the whole composition, but never so far the chip leaves the left edge.
+            function stageShift(): number {
+                if (stackedQuery.matches || !hero || !stage) return 0;
+                const chipWidth = stage.offsetWidth;
+                return Math.min(((COMPOSITION_WIDTH - 1) * chipWidth) / 2, (hero.clientWidth - chipWidth) / 2);
+            }
 
-    // Widening out of the stacked layout needs the chip lines/dots, which
-    // weren't set up at load - reloading is the simplest way to get them.
-    stackedQuery.addEventListener("change", (event) => {
-        if (isStacked && !event.matches) location.reload();
-    });
+            // Keeps the shift right while the window is resized, once the intro has applied it
+            let stageShifted = false;
+            window.addEventListener(
+                "resize",
+                () => {
+                    if (stageShifted) gsap.set(".chip-stage", { x: -stageShift() });
+                },
+                { signal },
+            );
 
-    // traces chip line in 4 segments
-    const chipLineSegments = [
-        { el: document.querySelector<SVGGeometryElement>(".chip-line #stroke2_208_2980"), reverse: false },
-        { el: document.querySelector<SVGGeometryElement>(".chip-line #stroke1_208_2980"), reverse: true },
-        {
-            el: document.querySelector<SVGGeometryElement>('.chip-line path[stroke="url(#paint2_linear_208_2980)"]'),
-            reverse: false,
-        },
-        { el: document.querySelector<SVGGeometryElement>(".chip-line #stroke0_208_2980"), reverse: true },
-    ].filter((segment): segment is { el: SVGGeometryElement; reverse: boolean } => !isStacked && segment.el !== null);
+            // Widening out of the stacked layout needs the chip lines/dots, which
+            // weren't set up at load - reloading is the simplest way to get them.
+            stackedQuery.addEventListener(
+                "change",
+                (event) => {
+                    if (isStacked && !event.matches) location.reload();
+                },
+                { signal },
+            );
 
-    const chipLineTotalLength = chipLineSegments.reduce((sum, { el }) => sum + el.getTotalLength(), 0);
-    // Total seconds the whole line takes to draw itself in - tune this,
-    // not the per-segment durations below (those stay proportional).
-    const chipLineDrawInTotalDuration = 2.4;
+            // traces chip line in 4 segments
+            const chipLineSegments = [
+                { el: document.querySelector<SVGGeometryElement>(".chip-line #stroke2_208_2980"), reverse: false },
+                { el: document.querySelector<SVGGeometryElement>(".chip-line #stroke1_208_2980"), reverse: true },
+                {
+                    el: document.querySelector<SVGGeometryElement>(
+                        '.chip-line path[stroke="url(#paint2_linear_208_2980)"]',
+                    ),
+                    reverse: false,
+                },
+                { el: document.querySelector<SVGGeometryElement>(".chip-line #stroke0_208_2980"), reverse: true },
+            ].filter(
+                (segment): segment is { el: SVGGeometryElement; reverse: boolean } => !isStacked && segment.el !== null,
+            );
 
-    const chip3 = document.querySelector<HTMLImageElement>(".chip-3");
-    // A failed load or decode still resolves, so the intro never stalls
-    const chip3Ready = chip3 ? chip3.decode().catch(() => undefined) : Promise.resolve();
+            const chipLineTotalLength = chipLineSegments.reduce((sum, { el }) => sum + el.getTotalLength(), 0);
+            // Total seconds the whole line takes to draw itself in - tune this,
+            // not the per-segment durations below (those stay proportional).
+            const chipLineDrawInTotalDuration = 2.4;
 
-    const introTimeline = gsap
-        .timeline()
-        .addLabel("chip-intro")
-        .to(".chip-1", { opacity: 1, duration: 0.9 })
-        .to(".chip-2", { opacity: 1, duration: 0.1 }, "+=0.2")
-        // chip-3 is a separate image (not inline SVG), so hold here until it can actually be shown
-        .addPause("+=0.2", () => {
-            void chip3Ready.then(() => introTimeline.resume());
-        })
-        .to(".chip-3", { opacity: 1, duration: 0.2 })
-        .to(".chip-1, .chip-2", { opacity: 0, duration: 0.3 }, "+=0.1")
-        .to(".chip-stage", { x: () => -stageShift(), duration: 0.6, ease: "power2.inOut" }, "+=0.2")
-        .call(() => {
-            stageShifted = true;
-        })
-        .addLabel("text-intro", "+=0.2")
-        .to(".connector-line", { opacity: 1, duration: 0.6 }, "text-intro")
-        .to(".fast-text-final", { opacity: 1, duration: 0.01 }, "text-intro")
-        .fromTo(
-            ".fast-text-final",
-            { clipPath: "inset(0% 100% 0% 0%)" },
-            { clipPath: "inset(0% 0% 0% 0%)", duration: 0.6 },
-            "<",
-        )
-        .to(".motion-dot", { opacity: 1, duration: 0.6 }, "text-intro+=0.4")
-        .addLabel("line-intro", "+=0.3")
-        .to(".chip-line", { opacity: 1, duration: 0.01 }, "line-intro")
-        .to(".susceptibility-blurb", { opacity: 1, duration: 0.3 }, "line-intro");
+            const chip3 = document.querySelector<HTMLImageElement>(".chip-3");
+            // A failed load or decode still resolves, so the intro never stalls
+            const chip3Ready = chip3 ? chip3.decode().catch(() => undefined) : Promise.resolve();
 
-    chipLineSegments.forEach(({ el, reverse }, index) => {
-        const duration = chipLineDrawInTotalDuration * (el.getTotalLength() / chipLineTotalLength);
-        introTimeline.fromTo(
-            el,
-            { drawSVG: reverse ? "100% 100%" : "0%" },
-            { drawSVG: reverse ? "0% 100%" : "100%", duration },
-        );
+            const introTimeline = gsap
+                .timeline()
+                .addLabel("chip-intro")
+                .to(".chip-1", { opacity: 1, duration: 0.9 })
+                .to(".chip-2", { opacity: 1, duration: 0.1 }, "+=0.2")
+                // chip-3 is a separate image (not inline SVG), so hold here until it can actually be shown
+                .addPause("+=0.2", () => {
+                    void chip3Ready.then(() => introTimeline.resume());
+                })
+                .to(".chip-3", { opacity: 1, duration: 0.2 })
+                .to(".chip-1, .chip-2", { opacity: 0, duration: 0.3 }, "+=0.1")
+                .to(".chip-stage", { x: () => -stageShift(), duration: 0.6, ease: "power2.inOut" }, "+=0.2")
+                .call(() => {
+                    stageShifted = true;
+                })
+                .addLabel("text-intro", "+=0.2")
+                .to(".connector-line", { opacity: 1, duration: 0.6 }, "text-intro")
+                .to(".fast-text-final", { opacity: 1, duration: 0.01 }, "text-intro")
+                .fromTo(
+                    ".fast-text-final",
+                    { clipPath: "inset(0% 100% 0% 0%)" },
+                    { clipPath: "inset(0% 0% 0% 0%)", duration: 0.6 },
+                    "<",
+                )
+                .to(".motion-dot", { opacity: 1, duration: 0.6 }, "text-intro+=0.4")
+                .addLabel("line-intro", "+=0.3")
+                .to(".chip-line", { opacity: 1, duration: 0.01 }, "line-intro")
+                .to(".susceptibility-blurb", { opacity: 1, duration: 0.3 }, "line-intro");
 
-        // fade in alongside chip lines
-        if (index === 2) {
-            introTimeline.addLabel("stats-reveal", `<${duration * 0.8}`);
-        }
-    });
+            chipLineSegments.forEach(({ el, reverse }, index) => {
+                const duration = chipLineDrawInTotalDuration * (el.getTotalLength() / chipLineTotalLength);
+                introTimeline.fromTo(
+                    el,
+                    { drawSVG: reverse ? "100% 100%" : "0%" },
+                    { drawSVG: reverse ? "0% 100%" : "100%", duration },
+                );
 
-    introTimeline.to(".solution-blurb", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.6");
-    introTimeline.to(".chip-line-second", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.9");
-    introTimeline.to(".motion-dot-2", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.9");
-    introTimeline.to(".microfluidics-overlay", { opacity: 1, duration: 0.5 }, "stats-reveal+=1.2");
-    introTimeline.to(".outcome-blurb", { opacity: 1, duration: 0.5 }, "stats-reveal+=1.5");
-    introTimeline.to(".interactive-overlay", { opacity: 1, duration: 0.5 }, "stats-reveal+=1.8");
+                // fade in alongside chip lines
+                if (index === 2) {
+                    introTimeline.addLabel("stats-reveal", `<${duration * 0.8}`);
+                }
+            });
 
-    // Someone scrolling straight away shouldn't wait on the intro to reveal what they've scrolled to,
-    // so it plays out faster from the first scroll (or at once, if the page loads already scrolled)
-    const introScrolledTimeScale = 4;
-    const hurryIntro = () => gsap.to(introTimeline, { timeScale: introScrolledTimeScale, duration: 0.3 });
-    if (window.scrollY > 0) hurryIntro();
-    else window.addEventListener("scroll", hurryIntro, { once: true, passive: true });
+            introTimeline.to(".solution-blurb", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.6");
+            introTimeline.to(".chip-line-second", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.9");
+            introTimeline.to(".motion-dot-2", { opacity: 1, duration: 0.5 }, "stats-reveal+=0.9");
+            introTimeline.to(".microfluidics-overlay", { opacity: 1, duration: 0.5 }, "stats-reveal+=1.2");
+            introTimeline.to(".outcome-blurb", { opacity: 1, duration: 0.5 }, "stats-reveal+=1.5");
+            introTimeline.to(".interactive-overlay", { opacity: 1, duration: 0.5 }, "stats-reveal+=1.8");
 
-    // The 3 stat bubbles reveal on their own once scrolled into view, rather
-    // than with the intro: left, then middle, then right, each wiping in
-    // downwards (connector stub, then circle) before its number and caption
-    // fade in. In chip-line's SVG the stubs sit at x=209/569/929 and the
-    // circles are filled with paint11/paint10/paint9, left to right.
-    const statBubbles = [
-        { stub: 'rect[x="209"]', circle: "paint11", stat: "stat-1" },
-        { stub: 'rect[x="569"]', circle: "paint10", stat: "stat-2" },
-        { stub: 'rect[x="929"]', circle: "paint9", stat: "stat-3" },
-    ];
-    // Seconds between one bubble starting and the next
-    const statBubbleStagger = 0.7;
-    const statsTimeline = gsap.timeline({
-        scrollTrigger: {
-            // "top 70%": waits until the bubbles are well into the viewport
-            start: "top 70%",
-            toggleActions: "play none none none",
-            trigger: ".stat.stat-1",
-        },
-    });
-    statBubbles.forEach(({ stub, circle, stat }, index) => {
-        const at = index * statBubbleStagger;
-        statsTimeline
-            .fromTo(
-                `.chip-line ${stub}`,
-                { clipPath: "inset(0% 0% 100% 0%)" },
-                { clipPath: "inset(0% 0% 0% 0%)", duration: 0.3, ease: "none" },
-                at,
-            )
-            .fromTo(
-                `.chip-line path[fill^="url(#${circle}_"]`,
-                { clipPath: "inset(0% 0% 100% 0%)" },
-                { clipPath: "inset(0% 0% 0% 0%)", duration: 0.7, ease: "power1.out" },
-                ">",
-            )
-            .to(`.stat.${stat}`, { opacity: 1, duration: 0.5 }, "<0.3")
-            .to(`.stat-caption.${stat}`, { opacity: 1, duration: 0.5 }, "<0.2");
-    });
+            // Someone scrolling straight away shouldn't wait on the intro to reveal what they've scrolled to,
+            // so it plays out faster from the first scroll (or at once, if the page loads already scrolled)
+            const introScrolledTimeScale = 4;
+            const hurryIntro = () => gsap.to(introTimeline, { timeScale: introScrolledTimeScale, duration: 0.3 });
+            if (window.scrollY > 0) hurryIntro();
+            else window.addEventListener("scroll", hurryIntro, { once: true, passive: true, signal });
 
-    // chip-line-3 no path added yet
-    const chipLine3Path = document.querySelector<SVGGeometryElement>(
-        '.chip-line-3 path[stroke="url(#paint0_linear_900_69)"]',
-    );
-    if (chipLine3Path && !isStacked) {
-        introTimeline
-            .to(".chip-line-3", { opacity: 1, duration: 0.01 }, "stats-reveal+=2.1")
-            .fromTo(chipLine3Path, { drawSVG: "0%" }, { drawSVG: "100%", duration: 1.2 }, "<");
-    }
-
-    // A dot chases the line as the user scrolls, via MotionPathPlugin
-    // walking the same 4 path segments (in the same order/direction) used
-    // for the draw-in reveal above.
-    const dot = document.querySelector<HTMLElement>(".motion-dot");
-
-    if (dot && chipLineSegments.length > 0) {
-        const dotTimeline = gsap.timeline({ paused: true });
-        for (const { el, reverse } of chipLineSegments) {
-            dotTimeline.to(dot, {
-                duration: el.getTotalLength(),
-                ease: "none",
-                motionPath: {
-                    align: el,
-                    alignOrigin: [0.5, 0.5],
-                    path: el,
-                    start: reverse ? 1 : 0,
-                    end: reverse ? 0 : 1,
+            // The 3 stat bubbles reveal on their own once scrolled into view, rather
+            // than with the intro: left, then middle, then right, each wiping in
+            // downwards (connector stub, then circle) before its number and caption
+            // fade in. In chip-line's SVG the stubs sit at x=209/569/929 and the
+            // circles are filled with paint11/paint10/paint9, left to right.
+            const statBubbles = [
+                { stub: 'rect[x="209"]', circle: "paint11", stat: "stat-1" },
+                { stub: 'rect[x="569"]', circle: "paint10", stat: "stat-2" },
+                { stub: 'rect[x="929"]', circle: "paint9", stat: "stat-3" },
+            ];
+            // Seconds between one bubble starting and the next
+            const statBubbleStagger = 0.7;
+            const statsTimeline = gsap.timeline({
+                scrollTrigger: {
+                    // "top 70%": waits until the bubbles are well into the viewport
+                    start: "top 70%",
+                    toggleActions: "play none none none",
+                    trigger: ".stat.stat-1",
                 },
             });
-        }
-
-        // Controls how much scroll distance maps to the full dot path -
-        // lower = less scrolling needed = dot feels faster.
-        const scrollDistanceFactor = 0.27;
-        ScrollTrigger.create({
-            animation: dotTimeline,
-            end: `+=${dotTimeline.duration() * scrollDistanceFactor}`,
-            scrub: true,
-            start: "top top",
-            trigger: ".chip-stage",
-        });
-    }
-
-    // Second dot traces second chip line, responsive to scroll
-    const chipLineSecondSegments = [
-        { el: document.querySelector<SVGGeometryElement>(".chip-line-second #stroke0_893_68"), reverse: true },
-        { el: document.querySelector<SVGGeometryElement>(".chip-line-second #stroke1_893_68"), reverse: false },
-        {
-            el: document.querySelector<SVGGeometryElement>(
-                '.chip-line-second path[stroke="url(#paint0_linear_893_68)"]',
-            ),
-            reverse: true,
-        },
-    ].filter((segment): segment is { el: SVGGeometryElement; reverse: boolean } => !isStacked && segment.el !== null);
-
-    const dot2 = document.querySelector<HTMLElement>(".motion-dot-2");
-
-    if (dot2 && chipLineSecondSegments.length > 0) {
-        const dot2Timeline = gsap.timeline({ paused: true });
-        for (const { el, reverse } of chipLineSecondSegments) {
-            dot2Timeline.to(dot2, {
-                duration: el.getTotalLength(),
-                ease: "none",
-                motionPath: {
-                    align: el,
-                    alignOrigin: [0.5, 0.5],
-                    path: el,
-                    start: reverse ? 1 : 0,
-                    end: reverse ? 0 : 1,
-                },
+            statBubbles.forEach(({ stub, circle, stat }, index) => {
+                const at = index * statBubbleStagger;
+                statsTimeline
+                    .fromTo(
+                        `.chip-line ${stub}`,
+                        { clipPath: "inset(0% 0% 100% 0%)" },
+                        { clipPath: "inset(0% 0% 0% 0%)", duration: 0.3, ease: "none" },
+                        at,
+                    )
+                    .fromTo(
+                        `.chip-line path[fill^="url(#${circle}_"]`,
+                        { clipPath: "inset(0% 0% 100% 0%)" },
+                        { clipPath: "inset(0% 0% 0% 0%)", duration: 0.7, ease: "power1.out" },
+                        ">",
+                    )
+                    .to(`.stat.${stat}`, { opacity: 1, duration: 0.5 }, "<0.3")
+                    .to(`.stat-caption.${stat}`, { opacity: 1, duration: 0.5 }, "<0.2");
             });
-        }
 
-        // Same control as scrollDistanceFactor above, for this second dot.
-        const scrollDistanceFactor2 = 0.27;
-        ScrollTrigger.create({
-            animation: dot2Timeline,
-            end: `+=${dot2Timeline.duration() * scrollDistanceFactor2}`,
-            scrub: true,
-            // Starts once chip-line-second's top is halfway up the viewport, not
-            // at the very top, so the dot is already moving as the line scrolls in.
-            // Higher % = earlier ("top 60%" starts sooner, "top 30%" later).
-            start: "top 50%",
-            trigger: ".chip-line-second",
+            // chip-line-3 no path added yet
+            const chipLine3Path = document.querySelector<SVGGeometryElement>(
+                '.chip-line-3 path[stroke="url(#paint0_linear_900_69)"]',
+            );
+            if (chipLine3Path && !isStacked) {
+                introTimeline
+                    .to(".chip-line-3", { opacity: 1, duration: 0.01 }, "stats-reveal+=2.1")
+                    .fromTo(chipLine3Path, { drawSVG: "0%" }, { drawSVG: "100%", duration: 1.2 }, "<");
+            }
+
+            // A dot chases the line as the user scrolls, via MotionPathPlugin
+            // walking the same 4 path segments (in the same order/direction) used
+            // for the draw-in reveal above.
+            const dot = document.querySelector<HTMLElement>(".motion-dot");
+
+            if (dot && chipLineSegments.length > 0) {
+                const dotTimeline = gsap.timeline({ paused: true });
+                for (const { el, reverse } of chipLineSegments) {
+                    dotTimeline.to(dot, {
+                        duration: el.getTotalLength(),
+                        ease: "none",
+                        motionPath: {
+                            align: el,
+                            alignOrigin: [0.5, 0.5],
+                            path: el,
+                            start: reverse ? 1 : 0,
+                            end: reverse ? 0 : 1,
+                        },
+                    });
+                }
+
+                // Controls how much scroll distance maps to the full dot path -
+                // lower = less scrolling needed = dot feels faster.
+                const scrollDistanceFactor = 0.27;
+                ScrollTrigger.create({
+                    animation: dotTimeline,
+                    end: `+=${dotTimeline.duration() * scrollDistanceFactor}`,
+                    scrub: true,
+                    start: "top top",
+                    trigger: ".chip-stage",
+                });
+            }
+
+            // Second dot traces second chip line, responsive to scroll
+            const chipLineSecondSegments = [
+                { el: document.querySelector<SVGGeometryElement>(".chip-line-second #stroke0_893_68"), reverse: true },
+                { el: document.querySelector<SVGGeometryElement>(".chip-line-second #stroke1_893_68"), reverse: false },
+                {
+                    el: document.querySelector<SVGGeometryElement>(
+                        '.chip-line-second path[stroke="url(#paint0_linear_893_68)"]',
+                    ),
+                    reverse: true,
+                },
+            ].filter(
+                (segment): segment is { el: SVGGeometryElement; reverse: boolean } => !isStacked && segment.el !== null,
+            );
+
+            const dot2 = document.querySelector<HTMLElement>(".motion-dot-2");
+
+            if (dot2 && chipLineSecondSegments.length > 0) {
+                const dot2Timeline = gsap.timeline({ paused: true });
+                for (const { el, reverse } of chipLineSecondSegments) {
+                    dot2Timeline.to(dot2, {
+                        duration: el.getTotalLength(),
+                        ease: "none",
+                        motionPath: {
+                            align: el,
+                            alignOrigin: [0.5, 0.5],
+                            path: el,
+                            start: reverse ? 1 : 0,
+                            end: reverse ? 0 : 1,
+                        },
+                    });
+                }
+
+                // Same control as scrollDistanceFactor above, for this second dot.
+                const scrollDistanceFactor2 = 0.27;
+                ScrollTrigger.create({
+                    animation: dot2Timeline,
+                    end: `+=${dot2Timeline.duration() * scrollDistanceFactor2}`,
+                    scrub: true,
+                    // Starts once chip-line-second's top is halfway up the viewport, not
+                    // at the very top, so the dot is already moving as the line scrolls in.
+                    // Higher % = earlier ("top 60%" starts sooner, "top 30%" later).
+                    start: "top 50%",
+                    trigger: ".chip-line-second",
+                });
+            }
         });
-    }
+
+        return () => context.revert();
+    });
 </script>
 
 <style>

@@ -23,22 +23,31 @@ const interactive = /"(tooltip|params|selection|signals)"\s*:/.test(code);
 </figure>
 
 <script>
-    import embed from "vega-embed";
+    import { onPage } from "../utils/page";
+    import embed, { type Result } from "vega-embed";
 
-    for (const vega of document.querySelectorAll<HTMLElement>(".vega")) {
-        const spec = JSON.parse(vega.querySelector(".vega-data")!.textContent!);
-        const host = vega.querySelector<HTMLElement>(".vega-host")!;
-        embed(host, spec, {
-            renderer: "svg",
-            // No export menu, which links out to the online Vega editor
-            actions: false,
-            // Styled below to match the citation popups and tables
-            tooltip: { disableDefaultStyle: true },
-        }).catch((error: unknown) => {
-            console.error("Vega chart could not be rendered:", error);
-            host.textContent = "This chart could not be displayed.";
-        });
-    }
+    onPage(() => {
+        const charts: Promise<Result | void>[] = [];
+
+        for (const vega of document.querySelectorAll<HTMLElement>(".vega")) {
+            const spec = JSON.parse(vega.querySelector(".vega-data")!.textContent!);
+            const host = vega.querySelector<HTMLElement>(".vega-host")!;
+            const chart = embed(host, spec, {
+                renderer: "svg",
+                // No export menu, which links out to the online Vega editor
+                actions: false,
+                // Styled below to match the citation popups and tables
+                tooltip: { disableDefaultStyle: true },
+            }).catch((error: unknown) => {
+                console.error("Vega chart could not be rendered:", error);
+                host.textContent = "This chart could not be displayed.";
+            });
+            charts.push(chart);
+        }
+
+        // Stops each chart's listeners and timers
+        return () => charts.forEach((chart) => void chart.then((result) => result?.finalize()));
+    });
 </script>
 
 <!-- Global, as the chart is created by Vega and doesn't carry Astro's scoping attribute -->

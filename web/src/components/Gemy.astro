@@ -35,101 +35,105 @@
 </style>
 
 <script>
+    import { onPage } from "../utils/page";
     import { BASE_URL } from "../utils/base-url";
 
     const GEMY_CHANCE = 1 / 20;
     const WOBBLE_DEGREES = 7.5;
 
-    const should_show = Math.random() < GEMY_CHANCE;
-    if (should_show) {
-        const gemy = document.getElementById("gemy")!;
-        const corners = [
-            { bottom: "-20px", left: "-20px", angle: 30, dx: -1, dy: 1 },
-            { bottom: "-20px", right: "-20px", angle: -30, dx: 1, dy: 1 },
-        ];
-        const c = corners[Math.floor(Math.random() * corners.length)]!;
+    // Rolled again on every page, which brings a new #gemy
+    onPage(() => {
+        const should_show = Math.random() < GEMY_CHANCE;
+        if (should_show) {
+            const gemy = document.getElementById("gemy")!;
+            const corners = [
+                { bottom: "-20px", left: "-20px", angle: 30, dx: -1, dy: 1 },
+                { bottom: "-20px", right: "-20px", angle: -30, dx: 1, dy: 1 },
+            ];
+            const c = corners[Math.floor(Math.random() * corners.length)]!;
 
-        // Start off screen
-        const hidden = `translate(${c.dx * 150}%, ${c.dy * 150}%) rotate(${c.angle}deg)`;
-        const shown = `translate(0, 0) rotate(${c.angle}deg)`;
+            // Start off screen
+            const hidden = `translate(${c.dx * 150}%, ${c.dy * 150}%) rotate(${c.angle}deg)`;
+            const shown = `translate(0, 0) rotate(${c.angle}deg)`;
 
-        Object.assign(gemy.style, {
-            bottom: c.bottom ?? "auto",
-            left: c.left ?? "auto",
-            right: c.right ?? "auto",
-            display: "block",
-            transform: hidden,
-        });
-
-        const wobble = () =>
-            gemy.animate(
-                [
-                    { transform: `translate(0, 0) rotate(${c.angle}deg)` },
-                    { transform: `translate(0, 0) rotate(${c.angle + WOBBLE_DEGREES}deg)` },
-                    { transform: `translate(0, 0) rotate(${c.angle - WOBBLE_DEGREES}deg)` },
-                    { transform: `translate(0, 0) rotate(${c.angle}deg)` },
-                ],
-                {
-                    duration: 350,
-                    iterations: 2,
-                    // easing: "ease-in-out",
-                },
-            );
-
-        const peek = () => {
-            const slideIn = gemy.animate([{ transform: hidden }, { transform: shown }], {
-                duration: 800,
-                delay: 500,
-                easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
-                fill: "forwards",
+            Object.assign(gemy.style, {
+                bottom: c.bottom ?? "auto",
+                left: c.left ?? "auto",
+                right: c.right ?? "auto",
+                display: "block",
+                transform: hidden,
             });
 
-            slideIn.finished.then(() => {
-                // Save the end position as inline style, then drop the held animation
-                slideIn.commitStyles();
-                slideIn.cancel();
+            const wobble = () =>
+                gemy.animate(
+                    [
+                        { transform: `translate(0, 0) rotate(${c.angle}deg)` },
+                        { transform: `translate(0, 0) rotate(${c.angle + WOBBLE_DEGREES}deg)` },
+                        { transform: `translate(0, 0) rotate(${c.angle - WOBBLE_DEGREES}deg)` },
+                        { transform: `translate(0, 0) rotate(${c.angle}deg)` },
+                    ],
+                    {
+                        duration: 350,
+                        iterations: 2,
+                        // easing: "ease-in-out",
+                    },
+                );
+
+            const peek = () => {
+                const slideIn = gemy.animate([{ transform: hidden }, { transform: shown }], {
+                    duration: 800,
+                    delay: 500,
+                    easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+                    fill: "forwards",
+                });
+
+                slideIn.finished.then(() => {
+                    // Save the end position as inline style, then drop the held animation
+                    slideIn.commitStyles();
+                    slideIn.cancel();
+                    wobble();
+                });
+            };
+
+            // Petting him: a tooltip that follows the cursor, then a squeak and a wiggle on click
+            const tip = document.getElementById("gemy-tip")!;
+            // Plays even with the site's sound turned off
+            const squeak = new Audio(`${BASE_URL}assets/audio/gemy.mp3`);
+            const TIP_OFFSET = 14;
+            gemy.addEventListener("pointermove", (event) => {
+                tip.style.display = "block";
+
+                // Flip to the other side of the cursor near the right/bottom edges, since Gemy lives in a corner
+                const flip_x = event.clientX + TIP_OFFSET + tip.offsetWidth > window.innerWidth;
+                const flip_y = event.clientY + TIP_OFFSET + tip.offsetHeight > window.innerHeight;
+                tip.style.left = `${flip_x ? event.clientX - TIP_OFFSET - tip.offsetWidth : event.clientX + TIP_OFFSET}px`;
+                tip.style.top = `${flip_y ? event.clientY - TIP_OFFSET - tip.offsetHeight : event.clientY + TIP_OFFSET}px`;
+            });
+            gemy.addEventListener("pointerleave", () => (tip.style.display = "none"));
+
+            const pet = () => {
+                squeak.currentTime = 0;
+                /* Not too loud */
+                squeak.volume = 0.25;
+                squeak.play().catch(() => undefined);
                 wobble();
+            };
+            gemy.addEventListener("click", pet);
+            gemy.addEventListener("keydown", (event) => {
+                if (event.key !== "Enter" && event.key !== " ") return;
+                event.preventDefault();
+                pet();
             });
-        };
 
-        // Petting him: a tooltip that follows the cursor, then a squeak and a wiggle on click
-        const tip = document.getElementById("gemy-tip")!;
-        // Plays even with the site's sound turned off
-        const squeak = new Audio(`${BASE_URL}assets/audio/gemy.mp3`);
-        const TIP_OFFSET = 14;
-        gemy.addEventListener("pointermove", (event) => {
-            tip.style.display = "block";
-
-            // Flip to the other side of the cursor near the right/bottom edges, since Gemy lives in a corner
-            const flip_x = event.clientX + TIP_OFFSET + tip.offsetWidth > window.innerWidth;
-            const flip_y = event.clientY + TIP_OFFSET + tip.offsetHeight > window.innerHeight;
-            tip.style.left = `${flip_x ? event.clientX - TIP_OFFSET - tip.offsetWidth : event.clientX + TIP_OFFSET}px`;
-            tip.style.top = `${flip_y ? event.clientY - TIP_OFFSET - tip.offsetHeight : event.clientY + TIP_OFFSET}px`;
-        });
-        gemy.addEventListener("pointerleave", () => (tip.style.display = "none"));
-
-        const pet = () => {
-            squeak.currentTime = 0;
-            /* Not too loud */
-            squeak.volume = 0.25;
-            squeak.play().catch(() => undefined);
-            wobble();
-        };
-        gemy.addEventListener("click", pet);
-        gemy.addEventListener("keydown", (event) => {
-            if (event.key !== "Enter" && event.key !== " ") return;
-            event.preventDefault();
-            pet();
-        });
-
-        // Peek once both the page and Gemy's image have loaded
-        const img = gemy.querySelector("img")!;
-        const img_loaded = new Promise((resolve) => img.addEventListener("load", resolve, { once: true }));
-        img.src = `${BASE_URL}assets/gemy.png`;
-        const page_loaded =
-            document.readyState === "complete"
-                ? Promise.resolve()
-                : new Promise((resolve) => window.addEventListener("load", resolve, { once: true }));
-        void Promise.all([img_loaded, page_loaded]).then(peek);
-    }
+            // Peek once both the page and Gemy's image have loaded
+            const img = gemy.querySelector("img")!;
+            const img_loaded = new Promise((resolve) => img.addEventListener("load", resolve, { once: true }));
+            img.src = `${BASE_URL}assets/gemy.png`;
+            const page_loaded =
+                document.readyState === "complete"
+                    ? Promise.resolve()
+                    : new Promise((resolve) => window.addEventListener("load", resolve, { once: true }));
+            void Promise.all([img_loaded, page_loaded]).then(peek);
+        }
+    });
 </script>

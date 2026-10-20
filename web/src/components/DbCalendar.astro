@@ -194,41 +194,44 @@ function buildMonth(key: string): CalendarMonth {
 }
 
 <script>
+    import { onPage } from "../utils/page";
     import { makeDismissable } from "../utils/dismissable";
 
-    for (const day_menu of document.querySelectorAll<HTMLDetailsElement>("details.day-menu")) {
-        makeDismissable(day_menu);
-    }
+    onPage((signal) => {
+        for (const day_menu of document.querySelectorAll<HTMLDetailsElement>("details.day-menu")) {
+            makeDismissable(day_menu, signal);
+        }
 
-    // Stacked above the article, an open calendar pushes the page itself out of view
-    const stacked = window.matchMedia("(max-width: 1000px)");
+        // Stacked above the article, an open calendar pushes the page itself out of view
+        const stacked = window.matchMedia("(max-width: 1000px)");
 
-    for (const calendar of document.querySelectorAll<HTMLDetailsElement>("details.db-calendar")) {
-        calendar.open = !stacked.matches;
-    }
+        for (const calendar of document.querySelectorAll<HTMLDetailsElement>("details.db-calendar")) {
+            calendar.open = !stacked.matches;
+        }
 
-    // Only months holding entries are rendered, so stepping skips empty stretches
-    for (const calendar of document.querySelectorAll<HTMLElement>(".db-calendar")) {
-        const months = Array.from(calendar.querySelectorAll<HTMLTableElement>("table.month"));
-        const prev = calendar.querySelector<HTMLButtonElement>("button.prev");
-        const next = calendar.querySelector<HTMLButtonElement>("button.next");
+        // Only months holding entries are rendered, so stepping skips empty stretches
+        for (const calendar of document.querySelectorAll<HTMLElement>(".db-calendar")) {
+            const months = Array.from(calendar.querySelectorAll<HTMLTableElement>("table.month"));
+            const prev = calendar.querySelector<HTMLButtonElement>("button.prev");
+            const next = calendar.querySelector<HTMLButtonElement>("button.next");
 
-        let active = Math.max(
-            months.findIndex((month) => month.classList.contains("active")),
-            0,
-        );
+            let active = Math.max(
+                months.findIndex((month) => month.classList.contains("active")),
+                0,
+            );
 
-        const show = (index: number) => {
-            active = Math.min(Math.max(index, 0), months.length - 1);
-            months.forEach((month, index) => month.classList.toggle("active", index === active));
-            if (prev) prev.disabled = active === 0;
-            if (next) next.disabled = active === months.length - 1;
-        };
+            const show = (index: number) => {
+                active = Math.min(Math.max(index, 0), months.length - 1);
+                months.forEach((month, index) => month.classList.toggle("active", index === active));
+                if (prev) prev.disabled = active === 0;
+                if (next) next.disabled = active === months.length - 1;
+            };
 
-        prev?.addEventListener("click", () => show(active - 1));
-        next?.addEventListener("click", () => show(active + 1));
-        show(active);
-    }
+            prev?.addEventListener("click", () => show(active - 1));
+            next?.addEventListener("click", () => show(active + 1));
+            show(active);
+        }
+    });
 </script>
 
 <style>

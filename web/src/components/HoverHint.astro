@@ -25,56 +25,62 @@ const svg = hand.replaceAll("hover-hint-", `hover-hint-${id}-`);
 <span class:list={["hover-hint", `tone-${tone}`, className]} aria-hidden="true" set:html={svg} />
 
 <script>
-    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
-    /** After it comes into view, so the reader's eye has settled before it moves. */
-    const TAP_DELAY = 600;
+    import { onPage } from "../utils/page";
 
-    /** Whether the hint can be seen, as a section faded in by the home page's intro may still be transparent. */
-    const isShown = (hint: HTMLElement) =>
-        !hint.checkVisibility || hint.checkVisibility({ opacityProperty: true, visibilityProperty: true });
+    onPage(() => {
+        const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+        /** After it comes into view, so the reader's eye has settled before it moves. */
+        const TAP_DELAY = 600;
 
-    const tapper = new IntersectionObserver(
-        (entries) => {
-            for (const entry of entries) {
-                if (!entry.isIntersecting) continue;
-                const hint = entry.target as HTMLElement;
-                tapper.unobserve(hint);
+        /** Whether the hint can be seen, as a section faded in by the home page's intro may still be transparent. */
+        const isShown = (hint: HTMLElement) =>
+            !hint.checkVisibility || hint.checkVisibility({ opacityProperty: true, visibilityProperty: true });
 
-                const waitUntilShown = () => {
-                    if (!isShown(hint)) return requestAnimationFrame(waitUntilShown);
-                    setTimeout(() => hint.classList.add("is-tapping"), TAP_DELAY);
-                };
-                waitUntilShown();
+        const tapper = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    if (!entry.isIntersecting) continue;
+                    const hint = entry.target as HTMLElement;
+                    tapper.unobserve(hint);
+
+                    const waitUntilShown = () => {
+                        if (!isShown(hint)) return requestAnimationFrame(waitUntilShown);
+                        setTimeout(() => hint.classList.add("is-tapping"), TAP_DELAY);
+                    };
+                    waitUntilShown();
+                }
+            },
+            // Fully on screen and a little clear of the bottom edge, so it has scrolled in rather than just peeked
+            { threshold: 1, rootMargin: "0px 0px -10% 0px" },
+        );
+
+        for (const hint of document.querySelectorAll<HTMLElement>(".hover-hint")) {
+            const target = hint.parentElement!;
+
+            /** Fades the hint out for good. */
+            const retire = () => {
+                hint.classList.add("is-retired");
+                hint.classList.remove("is-tapping");
+            };
+
+            // A one-off: having tapped, it goes, whether or not the element was hovered or used meanwhile
+            hint.querySelector(".hand")!.addEventListener("animationend", retire);
+
+            // Without the tap to wait for, it goes once a mouse has found the element or the element is used
+            if (reducedMotion.matches) {
+                target.addEventListener("pointerenter", (event) => {
+                    if (event.pointerType === "mouse") retire();
+                });
+                for (const type of ["pointerdown", "wheel", "keydown"])
+                    target.addEventListener(type, retire, { passive: true });
+                continue;
             }
-        },
-        // Fully on screen and a little clear of the bottom edge, so it has scrolled in rather than just peeked
-        { threshold: 1, rootMargin: "0px 0px -10% 0px" },
-    );
 
-    for (const hint of document.querySelectorAll<HTMLElement>(".hover-hint")) {
-        const target = hint.parentElement!;
-
-        /** Fades the hint out for good. */
-        const retire = () => {
-            hint.classList.add("is-retired");
-            hint.classList.remove("is-tapping");
-        };
-
-        // A one-off: having tapped, it goes, whether or not the element was hovered or used meanwhile
-        hint.querySelector(".hand")!.addEventListener("animationend", retire);
-
-        // Without the tap to wait for, it goes once a mouse has found the element or the element is used
-        if (reducedMotion.matches) {
-            target.addEventListener("pointerenter", (event) => {
-                if (event.pointerType === "mouse") retire();
-            });
-            for (const type of ["pointerdown", "wheel", "keydown"])
-                target.addEventListener(type, retire, { passive: true });
-            continue;
+            tapper.observe(hint);
         }
 
-        tapper.observe(hint);
-    }
+        return () => tapper.disconnect();
+    });
 </script>
 
 <style>

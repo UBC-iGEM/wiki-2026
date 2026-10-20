@@ -4,6 +4,7 @@ import "../style.css";
 
 import type { MarkdownHeading } from "astro";
 import { Font } from "astro:assets";
+import { ClientRouter } from "astro:transitions";
 
 import Lightbox from "../components/Lightbox.astro";
 import Navbar from "../components/Navbar.astro";
@@ -38,6 +39,9 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
 
         <Font cssVariable="--font-geist" />
         <Font cssVariable="--font-source-serif-4" />
+
+        <!-- Navigations swap the page in place with a cross-fade. Scripts then run once per visit, not per page: see utils/page.ts -->
+        <ClientRouter />
     </head>
 
     <body>

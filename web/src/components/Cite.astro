@@ -54,94 +54,123 @@ const prose_html = prose ? await Astro.slots.render("default") : "";
 >
 
 <script>
-    // One tooltip for every citation on the page, fixed to the viewport so scrolling tables can't clip it
-    const tip = document.createElement("div");
-    tip.className = "cite-popup";
-    tip.setAttribute("role", "tooltip");
-    tip.hidden = true;
-    document.body.append(tip);
+    import { onPage } from "../utils/page";
 
-    let owner: HTMLElement | null = null;
-    let close_timer: ReturnType<typeof setTimeout> | undefined;
-
-    const citeOf = (target: EventTarget | null) =>
-        target instanceof Element ? target.closest<HTMLElement>(".cite") : null;
-    const within = (target: EventTarget | null) =>
-        target instanceof Node && (tip.contains(target) || (owner?.contains(target) ?? false));
-
-    const GAP = 8;
-    const position = () => {
-        if (!owner) return;
-        // A prose citation can wrap over lines; anchor to its first
-        const trigger = owner.querySelector<HTMLElement>(".cite-prose, .cite-nums")!;
-        const rect = trigger.getClientRects()[0] ?? trigger.getBoundingClientRect();
-        const box = tip.getBoundingClientRect();
-        const left = Math.min(Math.max(GAP, rect.left + rect.width / 2 - box.width / 2), innerWidth - box.width - GAP);
-        const below = rect.bottom + GAP;
-        const above = rect.top - box.height - GAP;
-        tip.style.left = `${left}px`;
-        tip.style.top = `${below + box.height <= innerHeight - GAP || above < GAP ? below : above}px`;
-    };
-
-    const open = (cite: HTMLElement) => {
-        clearTimeout(close_timer);
-        if (owner === cite) return;
-        owner = cite;
-        const entries = cite.querySelector<HTMLElement>(".cite-tip")!.cloneNode(true) as HTMLElement;
-        entries.hidden = false;
-        tip.replaceChildren(entries);
-        tip.hidden = false;
-        position();
-    };
-    const close = () => {
-        clearTimeout(close_timer);
+    onPage((signal) => {
+        // One tooltip for every citation on the page (appended to the body, so a new one for each page), fixed to the viewport so scrolling tables can't clip it
+        const tip = document.createElement("div");
+        tip.className = "cite-popup";
+        tip.setAttribute("role", "tooltip");
         tip.hidden = true;
-        owner = null;
-    };
-    // A short delay, so the pointer can cross the gap into the tooltip to reach its links
-    const closeSoon = () => {
-        clearTimeout(close_timer);
-        close_timer = setTimeout(close, 200);
-    };
+        document.body.append(tip);
 
-    document.addEventListener("pointerover", (event) => {
-        if (event.pointerType === "touch") return;
-        const cite = citeOf(event.target);
-        if (cite) open(cite);
-        else if (tip.contains(event.target as Node)) clearTimeout(close_timer);
-    });
-    document.addEventListener("pointerout", (event) => {
-        if (event.pointerType === "touch" || !owner) return;
-        if (within(event.target) && !within(event.relatedTarget)) closeSoon();
-    });
+        let owner: HTMLElement | null = null;
+        let close_timer: ReturnType<typeof setTimeout> | undefined;
 
-    // Without hover, the first tap on a citation shows its tooltip and a second follows the link
-    let pointer_type = "mouse";
-    document.addEventListener(
-        "pointerdown",
-        (event) => {
-            pointer_type = event.pointerType;
-        },
-        { capture: true },
-    );
-    document.addEventListener("click", (event) => {
-        const cite = citeOf(event.target);
-        if (cite && pointer_type === "touch" && owner !== cite) {
-            event.preventDefault();
-            open(cite);
-        } else if (!within(event.target)) close();
-    });
+        const citeOf = (target: EventTarget | null) =>
+            target instanceof Element ? target.closest<HTMLElement>(".cite") : null;
+        const within = (target: EventTarget | null) =>
+            target instanceof Node && (tip.contains(target) || (owner?.contains(target) ?? false));
 
-    document.addEventListener("focusin", (event) => {
-        const cite = citeOf(event.target);
-        if (cite) open(cite);
-        else if (!within(event.target)) close();
+        const GAP = 8;
+        const position = () => {
+            if (!owner) return;
+            // A prose citation can wrap over lines; anchor to its first
+            const trigger = owner.querySelector<HTMLElement>(".cite-prose, .cite-nums")!;
+            const rect = trigger.getClientRects()[0] ?? trigger.getBoundingClientRect();
+            const box = tip.getBoundingClientRect();
+            const left = Math.min(
+                Math.max(GAP, rect.left + rect.width / 2 - box.width / 2),
+                innerWidth - box.width - GAP,
+            );
+            const below = rect.bottom + GAP;
+            const above = rect.top - box.height - GAP;
+            tip.style.left = `${left}px`;
+            tip.style.top = `${below + box.height <= innerHeight - GAP || above < GAP ? below : above}px`;
+        };
+
+        const open = (cite: HTMLElement) => {
+            clearTimeout(close_timer);
+            if (owner === cite) return;
+            owner = cite;
+            const entries = cite.querySelector<HTMLElement>(".cite-tip")!.cloneNode(true) as HTMLElement;
+            entries.hidden = false;
+            tip.replaceChildren(entries);
+            tip.hidden = false;
+            position();
+        };
+        const close = () => {
+            clearTimeout(close_timer);
+            tip.hidden = true;
+            owner = null;
+        };
+        // A short delay, so the pointer can cross the gap into the tooltip to reach its links
+        const closeSoon = () => {
+            clearTimeout(close_timer);
+            close_timer = setTimeout(close, 200);
+        };
+
+        document.addEventListener(
+            "pointerover",
+            (event) => {
+                if (event.pointerType === "touch") return;
+                const cite = citeOf(event.target);
+                if (cite) open(cite);
+                else if (tip.contains(event.target as Node)) clearTimeout(close_timer);
+            },
+            { signal },
+        );
+        document.addEventListener(
+            "pointerout",
+            (event) => {
+                if (event.pointerType === "touch" || !owner) return;
+                if (within(event.target) && !within(event.relatedTarget)) closeSoon();
+            },
+            { signal },
+        );
+
+        // Without hover, the first tap on a citation shows its tooltip and a second follows the link
+        let pointer_type = "mouse";
+        document.addEventListener(
+            "pointerdown",
+            (event) => {
+                pointer_type = event.pointerType;
+            },
+            { capture: true, signal },
+        );
+        document.addEventListener(
+            "click",
+            (event) => {
+                const cite = citeOf(event.target);
+                if (cite && pointer_type === "touch" && owner !== cite) {
+                    event.preventDefault();
+                    open(cite);
+                } else if (!within(event.target)) close();
+            },
+            { signal },
+        );
+
+        document.addEventListener(
+            "focusin",
+            (event) => {
+                const cite = citeOf(event.target);
+                if (cite) open(cite);
+                else if (!within(event.target)) close();
+            },
+            { signal },
+        );
+        document.addEventListener(
+            "keydown",
+            (event) => {
+                if (event.key === "Escape") close();
+            },
+            { signal },
+        );
+        addEventListener("scroll", position, { passive: true, signal });
+        addEventListener("resize", position, { signal });
+
+        return () => clearTimeout(close_timer);
     });
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") close();
-    });
-    addEventListener("scroll", position, { passive: true });
-    addEventListener("resize", position);
 </script>
 
 <!-- Global, as the tooltip is built by the script and doesn't carry Astro's scoping attribute -->

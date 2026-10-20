@@ -53,20 +53,23 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
 </details>
 
 <script>
+    import { onPage } from "../utils/page";
     import { makeDismissable } from "../utils/dismissable";
 
-    for (const dropdown of document.querySelectorAll<HTMLDetailsElement>("details.db-dropdown")) {
-        makeDismissable(dropdown);
+    onPage((signal) => {
+        for (const dropdown of document.querySelectorAll<HTMLDetailsElement>("details.db-dropdown")) {
+            makeDismissable(dropdown, signal);
 
-        // Reveal the current page, which a long database can push out of view
-        dropdown.addEventListener("toggle", () => {
-            if (dropdown.open) {
-                dropdown.querySelector("a.active")?.scrollIntoView({
-                    block: "nearest",
-                });
-            }
-        });
-    }
+            // Reveal the current page, which a long database can push out of view
+            dropdown.addEventListener("toggle", () => {
+                if (dropdown.open) {
+                    dropdown.querySelector("a.active")?.scrollIntoView({
+                        block: "nearest",
+                    });
+                }
+            });
+        }
+    });
 </script>
 
 <style>

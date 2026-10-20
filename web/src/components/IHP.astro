@@ -19,62 +19,66 @@ IHP_SLOTS satisfies readonly ["people"];
 </div>
 
 <script>
-    // Fade the bottom of a description or a card's text while there is more below to scroll to,
-    // and the top once it has been scrolled down
-    const boxes = Array.from(document.querySelectorAll<HTMLElement>(".ihp-desc, .ihp-content"));
-    const markBox = (box: HTMLElement) => {
-        box.classList.toggle("overflowing", box.scrollHeight > box.scrollTop + box.clientHeight + 1);
-        box.classList.toggle("scrolled", box.scrollTop > 1);
-    };
-    const markOverflow = () => boxes.forEach(markBox);
-    markOverflow();
-    addEventListener("resize", markOverflow, { passive: true });
-    for (const box of boxes) box.addEventListener("scroll", () => markBox(box), { passive: true });
+    import { onPage } from "../utils/page";
 
-    for (const ihp of document.querySelectorAll<HTMLElement>(".ihp")) {
-        const cards = Array.from(ihp.querySelectorAll<HTMLElement>(".ihp-card"));
-        const n = cards.length;
-        // One person needs no carousel
-        if (n < 2) continue;
-
-        // One dot per card, named after its person
-        const dots = cards.map((card) => {
-            const dot = document.createElement("button");
-            dot.className = "nav-dot";
-            dot.dataset.index = card.dataset.index;
-            dot.setAttribute("aria-label", card.querySelector(".ihp-name")?.textContent ?? "");
-            return dot;
-        });
-        ihp.querySelector(".ihp-dots")!.replaceChildren(...dots);
-
-        let current = 0;
-        const show = (index: number) => {
-            current = (index + n) % n;
-            for (const card of cards) {
-                // Position relative to the current card, wrapping around
-                const offset = (Number(card.dataset.index) - current + n) % n;
-                const role = offset === 0 ? "active" : offset === 1 ? "next" : offset === n - 1 ? "prev" : "hidden";
-                card.dataset.role = role;
-                // Only the card in front can be read or tabbed into
-                card.inert = role !== "active";
-            }
-            dots.forEach((dot) => dot.classList.toggle("active", Number(dot.dataset.index) === current));
-            markOverflow();
+    onPage((signal) => {
+        // Fade the bottom of a description or a card's text while there is more below to scroll to,
+        // and the top once it has been scrolled down
+        const boxes = Array.from(document.querySelectorAll<HTMLElement>(".ihp-desc, .ihp-content"));
+        const markBox = (box: HTMLElement) => {
+            box.classList.toggle("overflowing", box.scrollHeight > box.scrollTop + box.clientHeight + 1);
+            box.classList.toggle("scrolled", box.scrollTop > 1);
         };
+        const markOverflow = () => boxes.forEach(markBox);
+        markOverflow();
+        addEventListener("resize", markOverflow, { passive: true, signal });
+        for (const box of boxes) box.addEventListener("scroll", () => markBox(box), { passive: true });
 
-        ihp.querySelector(".ihp-arrow.prev")?.addEventListener("click", () => show(current - 1));
-        ihp.querySelector(".ihp-arrow.next")?.addEventListener("click", () => show(current + 1));
-        dots.forEach((dot) => dot.addEventListener("click", () => show(Number(dot.dataset.index))));
-        // The peeking cards bring themselves to the front
-        for (const card of cards)
-            card.addEventListener("click", () => {
-                if (card.dataset.role !== "active") show(Number(card.dataset.index));
+        for (const ihp of document.querySelectorAll<HTMLElement>(".ihp")) {
+            const cards = Array.from(ihp.querySelectorAll<HTMLElement>(".ihp-card"));
+            const n = cards.length;
+            // One person needs no carousel
+            if (n < 2) continue;
+
+            // One dot per card, named after its person
+            const dots = cards.map((card) => {
+                const dot = document.createElement("button");
+                dot.className = "nav-dot";
+                dot.dataset.index = card.dataset.index;
+                dot.setAttribute("aria-label", card.querySelector(".ihp-name")?.textContent ?? "");
+                return dot;
             });
+            ihp.querySelector(".ihp-dots")!.replaceChildren(...dots);
 
-        // Until now the cards are listed one after another, as a no-JS fallback
-        ihp.classList.add("js-ready");
-        show(0);
-    }
+            let current = 0;
+            const show = (index: number) => {
+                current = (index + n) % n;
+                for (const card of cards) {
+                    // Position relative to the current card, wrapping around
+                    const offset = (Number(card.dataset.index) - current + n) % n;
+                    const role = offset === 0 ? "active" : offset === 1 ? "next" : offset === n - 1 ? "prev" : "hidden";
+                    card.dataset.role = role;
+                    // Only the card in front can be read or tabbed into
+                    card.inert = role !== "active";
+                }
+                dots.forEach((dot) => dot.classList.toggle("active", Number(dot.dataset.index) === current));
+                markOverflow();
+            };
+
+            ihp.querySelector(".ihp-arrow.prev")?.addEventListener("click", () => show(current - 1));
+            ihp.querySelector(".ihp-arrow.next")?.addEventListener("click", () => show(current + 1));
+            dots.forEach((dot) => dot.addEventListener("click", () => show(Number(dot.dataset.index))));
+            // The peeking cards bring themselves to the front
+            for (const card of cards)
+                card.addEventListener("click", () => {
+                    if (card.dataset.role !== "active") show(Number(card.dataset.index));
+                });
+
+            // Until now the cards are listed one after another, as a no-JS fallback
+            ihp.classList.add("js-ready");
+            show(0);
+        }
+    });
 </script>
 
 <!-- Global, as the cards arrive through a slot and don't carry Astro's scoping attribute -->

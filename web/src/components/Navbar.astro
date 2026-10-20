@@ -22,7 +22,14 @@ const nav_items = content_map.aggregates.map((agg) => {
 const static_links = content_map.static_links;
 ---
 
-<nav class="primary" aria-label="Primary navigation">
+<!-- Kept between pages rather than re-rendered, and held still while the page under it fades -->
+<nav
+    class="primary"
+    aria-label="Primary navigation"
+    transition:persist="site-nav"
+    transition:name="site-nav"
+    transition:animate="none"
+>
     <a class="home-logo" href={BASE_URL} aria-label="Home" set:html={logoSvg} />
 
     <button class="chip menu-toggle" type="button" aria-expanded="false" aria-controls="nav-sections">
@@ -88,6 +95,9 @@ const static_links = content_map.static_links;
             setOpen(false);
             toggle.focus();
         });
+
+        // The bar stays between pages, so it closes after a link in it is followed
+        document.addEventListener("astro:before-preparation", () => setOpen(false));
     }
 
     const groups = Array.from(document.querySelectorAll<HTMLDetailsElement>("details.nav-group"));
@@ -142,6 +152,10 @@ const static_links = content_map.static_links;
         font-family: var(--font-geist);
         gap: 1.25rem;
         padding: 1rem var(--page-gutter);
+        /* Its view-transition-name makes the bar a stacking context, which traps the submenus' z-index inside it,
+           so the bar itself is lifted to their level, over the page (e.g. the home hero) but under tooltips */
+        position: relative;
+        z-index: 11;
     }
 
     /* Pinned to the left, while the chips are pushed to the right */

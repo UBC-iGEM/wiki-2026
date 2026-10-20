@@ -22,65 +22,74 @@ const data = seq.replaceAll("<", "\\u003c");
 </figure>
 
 <script>
+    import { onPage } from "../utils/page";
     import type { SeqmapSeq } from "@exporter/seqmap";
     import { createElement, createRef } from "react";
-    import { createRoot } from "react-dom/client";
+    import { createRoot, type Root } from "react-dom/client";
     import { Circular, Linear, SeqViz } from "seqviz";
 
-    /** How much smaller to draw the plasmid than SeqViz would, leaving room around it for feature labels. */
-    const CIRCULAR_SCALE = 0.85;
+    onPage(() => {
+        const roots: Root[] = [];
 
-    for (const seqmap of document.querySelectorAll<HTMLElement>(".seqmap")) {
-        const { name, seq, type, annotations } = JSON.parse(
-            seqmap.querySelector(".seqmap-data")!.textContent!,
-        ) as SeqmapSeq;
+        /** How much smaller to draw the plasmid than SeqViz would, leaving room around it for feature labels. */
+        const CIRCULAR_SCALE = 0.85;
 
-        // One SeqViz container laying out both viewers itself, so they share the selection and scroll position.
-        const circular = createRef<HTMLDivElement>();
-        const linear = createRef<HTMLDivElement>();
-        const host = seqmap.querySelector<HTMLElement>(".seqmap-host")!;
-        createRoot(host).render(
-            createElement(SeqViz, {
-                name,
-                seq,
-                seqType: type,
-                annotations,
-                primers: [],
-                // DO NOT LOAD EXTERNAL FONTS
-                disableExternalFonts: true,
-                refs: { circular, linear } as never,
-                children: ({ circularProps, linearProps, ...handlers }) =>
-                    createElement(
-                        "div",
-                        { className: "seqmap-viewers" },
+        for (const seqmap of document.querySelectorAll<HTMLElement>(".seqmap")) {
+            const { name, seq, type, annotations } = JSON.parse(
+                seqmap.querySelector(".seqmap-data")!.textContent!,
+            ) as SeqmapSeq;
+
+            // One SeqViz container laying out both viewers itself, so they share the selection and scroll position.
+            const circular = createRef<HTMLDivElement>();
+            const linear = createRef<HTMLDivElement>();
+            const host = seqmap.querySelector<HTMLElement>(".seqmap-host")!;
+            const root = createRoot(host);
+            roots.push(root);
+            root.render(
+                createElement(SeqViz, {
+                    name,
+                    seq,
+                    seqType: type,
+                    annotations,
+                    primers: [],
+                    // DO NOT LOAD EXTERNAL FONTS
+                    disableExternalFonts: true,
+                    refs: { circular, linear } as never,
+                    children: ({ circularProps, linearProps, ...handlers }) =>
                         createElement(
                             "div",
-                            { className: "seqmap-viewer circular", ref: circular },
-                            createElement(Circular, {
-                                ...circularProps,
-                                ...handlers,
-                                radius: circularProps.radius * CIRCULAR_SCALE,
-                            }),
+                            { className: "seqmap-viewers" },
+                            createElement(
+                                "div",
+                                { className: "seqmap-viewer circular", ref: circular },
+                                createElement(Circular, {
+                                    ...circularProps,
+                                    ...handlers,
+                                    radius: circularProps.radius * CIRCULAR_SCALE,
+                                }),
+                            ),
+                            createElement(
+                                "div",
+                                { className: "seqmap-viewer linear", ref: linear },
+                                createElement(Linear, { ...linearProps, ...handlers }),
+                            ),
                         ),
-                        createElement(
-                            "div",
-                            { className: "seqmap-viewer linear", ref: linear },
-                            createElement(Linear, { ...linearProps, ...handlers }),
-                        ),
-                    ),
-            }),
-        );
+                }),
+            );
 
-        // Scrolling over the plasmid map rotates it, so it shouldn't scroll the page too.
-        host.addEventListener(
-            "wheel",
-            (event) => {
-                if (event.target instanceof Element && event.target.closest(".seqmap-viewer.circular"))
-                    event.preventDefault();
-            },
-            { passive: false },
-        );
-    }
+            // Scrolling over the plasmid map rotates it, so it shouldn't scroll the page too.
+            host.addEventListener(
+                "wheel",
+                (event) => {
+                    if (event.target instanceof Element && event.target.closest(".seqmap-viewer.circular"))
+                        event.preventDefault();
+                },
+                { passive: false },
+            );
+        }
+
+        return () => roots.forEach((root) => root.unmount());
+    });
 </script>
 
 <!-- Global, as the viewer boxes are created by SeqViz and don't carry Astro's scoping attribute -->

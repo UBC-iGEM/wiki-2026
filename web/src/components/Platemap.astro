@@ -90,6 +90,7 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
 </div>
 
 <script>
+    import { onPage } from "../utils/page";
     import type { Plate } from "@exporter/platemap";
 
     const PALETTE_SIZE = 12;
@@ -144,72 +145,77 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
         );
     }
 
-    for (const platemap of document.querySelectorAll<HTMLElement>(".platemap")) {
-        const { categories, plates } = JSON.parse(platemap.querySelector(".platemap-data")!.textContent!) as {
-            categories: string[];
-            plates: Plate[];
-        };
-        const grid = platemap.querySelector<HTMLElement>(".grid")!;
-        const legend = platemap.querySelector<HTMLElement>(".legend")!;
-        const names = platemap.querySelectorAll<HTMLElement>(".plate-name");
-        const count = platemap.querySelector<HTMLElement>(".plate-count");
-        const tooltip = platemap.querySelector<HTMLElement>(".tooltip")!;
-        const n = plates.length;
+    onPage((signal) => {
+        for (const platemap of document.querySelectorAll<HTMLElement>(".platemap")) {
+            const { categories, plates } = JSON.parse(platemap.querySelector(".platemap-data")!.textContent!) as {
+                categories: string[];
+                plates: Plate[];
+            };
+            const grid = platemap.querySelector<HTMLElement>(".grid")!;
+            const legend = platemap.querySelector<HTMLElement>(".legend")!;
+            const names = platemap.querySelectorAll<HTMLElement>(".plate-name");
+            const count = platemap.querySelector<HTMLElement>(".plate-count");
+            const tooltip = platemap.querySelector<HTMLElement>(".tooltip")!;
+            const n = plates.length;
 
-        let current = 0;
-        const show = (index: number) => {
-            current = (index + n) % n;
-            const plate = plates[current]!;
-            names.forEach((name) => (name.hidden = Number(name.dataset.index) !== current));
-            if (count) count.textContent = `${current + 1} / ${n}`;
-            drawGrid(grid, plate);
-            drawLegend(legend, plate, categories);
-            close();
-        };
-        platemap.querySelector(".arrow.prev")?.addEventListener("click", () => show(current - 1));
-        platemap.querySelector(".arrow.next")?.addEventListener("click", () => show(current + 1));
+            let current = 0;
+            const show = (index: number) => {
+                current = (index + n) % n;
+                const plate = plates[current]!;
+                names.forEach((name) => (name.hidden = Number(name.dataset.index) !== current));
+                if (count) count.textContent = `${current + 1} / ${n}`;
+                drawGrid(grid, plate);
+                drawLegend(legend, plate, categories);
+                close();
+            };
+            platemap.querySelector(".arrow.prev")?.addEventListener("click", () => show(current - 1));
+            platemap.querySelector(".arrow.next")?.addEventListener("click", () => show(current + 1));
 
-        // One tooltip per platemap, fixed to the viewport so the scrolling grid can't clip it
-        const open = (well: HTMLElement) => {
-            const r = Number(well.dataset.r);
-            const c = Number(well.dataset.c);
-            const data = plates[current]!.rows[r]![c];
-            if (!data) return;
+            // One tooltip per platemap, fixed to the viewport so the scrolling grid can't clip it
+            const open = (well: HTMLElement) => {
+                const r = Number(well.dataset.r);
+                const c = Number(well.dataset.c);
+                const data = plates[current]!.rows[r]![c];
+                if (!data) return;
 
-            const heading = document.createElement("strong");
-            heading.textContent = data.label || wellId(r, c);
-            const detail = document.createElement("span");
-            detail.textContent = `${wellId(r, c)} · ${categories[data.category]} · ${data.brightness.toFixed(2)}`;
-            tooltip.replaceChildren(heading, detail);
-            tooltip.hidden = false;
+                const heading = document.createElement("strong");
+                heading.textContent = data.label || wellId(r, c);
+                const detail = document.createElement("span");
+                detail.textContent = `${wellId(r, c)} · ${categories[data.category]} · ${data.brightness.toFixed(2)}`;
+                tooltip.replaceChildren(heading, detail);
+                tooltip.hidden = false;
 
-            const rect = well.getBoundingClientRect();
-            const tip = tooltip.getBoundingClientRect();
-            const left = Math.min(Math.max(8, rect.left + rect.width / 2 - tip.width / 2), innerWidth - tip.width - 8);
-            const above = rect.top - tip.height - 8;
-            tooltip.style.left = `${left}px`;
-            tooltip.style.top = `${above >= 8 ? above : rect.bottom + 8}px`;
-        };
-        const close = () => (tooltip.hidden = true);
+                const rect = well.getBoundingClientRect();
+                const tip = tooltip.getBoundingClientRect();
+                const left = Math.min(
+                    Math.max(8, rect.left + rect.width / 2 - tip.width / 2),
+                    innerWidth - tip.width - 8,
+                );
+                const above = rect.top - tip.height - 8;
+                tooltip.style.left = `${left}px`;
+                tooltip.style.top = `${above >= 8 ? above : rect.bottom + 8}px`;
+            };
+            const close = () => (tooltip.hidden = true);
 
-        // Delegated, so redrawn wells need no listeners of their own
-        const wellAt = (target: EventTarget | null) =>
-            target instanceof Element ? target.closest<HTMLElement>(".well:not(.empty)") : null;
-        grid.addEventListener("pointerover", (event) => {
-            const well = wellAt(event.target);
-            if (well) open(well);
-            else close();
-        });
-        grid.addEventListener("pointerleave", close);
-        grid.addEventListener("focusin", (event) => {
-            const well = wellAt(event.target);
-            if (well) open(well);
-        });
-        grid.addEventListener("focusout", close);
-        addEventListener("scroll", close, { passive: true });
+            // Delegated, so redrawn wells need no listeners of their own
+            const wellAt = (target: EventTarget | null) =>
+                target instanceof Element ? target.closest<HTMLElement>(".well:not(.empty)") : null;
+            grid.addEventListener("pointerover", (event) => {
+                const well = wellAt(event.target);
+                if (well) open(well);
+                else close();
+            });
+            grid.addEventListener("pointerleave", close);
+            grid.addEventListener("focusin", (event) => {
+                const well = wellAt(event.target);
+                if (well) open(well);
+            });
+            grid.addEventListener("focusout", close);
+            addEventListener("scroll", close, { passive: true, signal });
 
-        platemap.classList.add("js-ready");
-    }
+            platemap.classList.add("js-ready");
+        }
+    });
 </script>
 
 <!-- Global, as wells redrawn by the script don't carry Astro's scoping attribute -->
