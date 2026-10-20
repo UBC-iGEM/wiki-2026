@@ -109,6 +109,7 @@ import { BASE_URL } from "../utils/base-url";
 <script>
     import { onPage } from "../utils/page";
     import { arrivedBy } from "../utils/transitions";
+    import { colourAlong } from "../utils/track-colour";
     import { gsap } from "gsap";
     import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
     import { MotionPathPlugin } from "gsap/MotionPathPlugin";
@@ -299,7 +300,13 @@ import { BASE_URL } from "../utils/base-url";
             const dot = document.querySelector<HTMLElement>(".motion-dot");
 
             if (dot && chipLineSegments.length > 0) {
-                const dotTimeline = gsap.timeline({ paused: true });
+                // Coloured as the line under it, wherever it is along it
+                const colourAt = colourAlong(chipLineSegments);
+                const dotTimeline = gsap.timeline({
+                    paused: true,
+                    onUpdate: () => (dot.style.color = colourAt(dotTimeline.time())),
+                });
+                dot.style.color = colourAt(0);
                 for (const { el, reverse } of chipLineSegments) {
                     dotTimeline.to(dot, {
                         duration: el.getTotalLength(),
@@ -343,7 +350,12 @@ import { BASE_URL } from "../utils/base-url";
             const dot2 = document.querySelector<HTMLElement>(".motion-dot-2");
 
             if (dot2 && chipLineSecondSegments.length > 0) {
-                const dot2Timeline = gsap.timeline({ paused: true });
+                const colourAt = colourAlong(chipLineSecondSegments);
+                const dot2Timeline = gsap.timeline({
+                    paused: true,
+                    onUpdate: () => (dot2.style.color = colourAt(dot2Timeline.time())),
+                });
+                dot2.style.color = colourAt(0);
                 for (const { el, reverse } of chipLineSecondSegments) {
                     dot2Timeline.to(dot2, {
                         duration: el.getTotalLength(),
@@ -491,7 +503,20 @@ import { BASE_URL } from "../utils/base-url";
 
     /* dot.svg is 45x45 (the r=12.5 circle plus room for its glow), so the
        circle itself still renders at the same 25-unit size as before */
+    /* Each dot is filled with its colour, which the script keeps to that of the line under it */
+    .motion-dot :global(circle),
+    .motion-dot-2 :global(circle) {
+        fill: currentColor;
+    }
+
+    /* Its glow in the same colour, in place of the file's own fixed one: dot.svg's 5-unit blur, scaled as the dot is */
+    .motion-dot :global(g) {
+        filter: none;
+    }
+
     .motion-dot {
+        color: var(--color-lime-yellow);
+        filter: drop-shadow(0 0 calc(var(--chip-w) * 10 / 594) currentColor);
         height: calc(var(--chip-w) * 45 / 594);
         left: 0;
         opacity: 0;
@@ -503,6 +528,7 @@ import { BASE_URL } from "../utils/base-url";
     /* ball2.svg, chases chip-line-second the same way .motion-dot chases
        chip-line. */
     .motion-dot-2 {
+        color: #7c79d6;
         height: calc(var(--chip-w) * 25 / 594);
         left: 0;
         opacity: 0;
