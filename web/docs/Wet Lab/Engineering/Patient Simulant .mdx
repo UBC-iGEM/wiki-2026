@@ -28,9 +28,13 @@ path: "Wet Lab/Engineering/Patient Simulant "
   </Fragment>
 
   <Fragment slot="learn">
-    - <a id="3fcd65dd82be80628b26ca0e08c7d718" />KanR plasmid: There were no mutations found.
-    - <a id="3fcd65dd82be80f3b479fb05cfb6e1cf" />GmR plasmid: single-base pair mutations were negligible.
-    - <a id="3fcd65dd82be80f9b9b6d5959f77c8bf" />β-lactamase plasmid: Point mutations were negligible.
+    <a id="3ffd65dd82be806ea8f0d59a3dcf4bfd" />Sequencing confirmed that the constructs were assembled as designed. While some point mutations were identified, their impact was negligible:
+
+    - <a id="3fcd65dd82be80628b26ca0e08c7d718" />KanR plasmid: There were no mutations found
+    - <a id="3fcd65dd82be80f3b479fb05cfb6e1cf" />GmR plasmid: single-base pair mutations were negligible
+    - <a id="3fcd65dd82be80f9b9b6d5959f77c8bf" />β-lactamase plasmid: Point mutations were negligible
+
+    <a id="3ffd65dd82be80c59dcad8482d8ef03d" />As such, we proceeded to transform our constructs into EPI300 *E. coli*.
   </Fragment>
 </Dbtl>
 
@@ -57,7 +61,7 @@ path: "Wet Lab/Engineering/Patient Simulant "
     </Fragment>
 
     <Fragment slot="test">
-      <a id="3fcd65dd82be80118275daf41f535c58" />We plated each strain on a titration plate in the presence of different concentrations of each antibiotic prepared by serial dilution. Growth was assessed after incubation for a defined period of time (16–20 h), and absorbance was measured at OD600.
+      <a id="3fcd65dd82be80118275daf41f535c58" />We plated each strain on a titration plate in the presence of different concentrations of each antibiotic prepared by serial dilution. Growth was assessed after incubation for a defined period of time (16–20 h), and absorbance was measured at $OD_{600}$.
     </Fragment>
 
     <Fragment slot="learn">
@@ -85,7 +89,7 @@ path: "Wet Lab/Engineering/Patient Simulant "
     </Fragment>
 
     <Fragment slot="test">
-      <a id="3fcd65dd82be8093b68efce969028795" />We repeated the titration using the updated antibiotic concentration ranges while keeping other experimental variables constant, including the initial OD600 of the simulant strain cultures and the incubation duration. This approach allowed us to isolate the effects of increased antibiotic concentrations on the experimental outcomes.
+      <a id="3fcd65dd82be8093b68efce969028795" />We repeated the titration using the updated antibiotic concentration ranges while keeping other experimental variables constant, including the initial $OD_{600}$ of the simulant strain cultures and the incubation duration. This approach allowed us to isolate the effects of increased antibiotic concentrations on the experimental outcomes.
     </Fragment>
 
     <Fragment slot="learn">
@@ -147,19 +151,19 @@ path: "Wet Lab/Engineering/Patient Simulant "
     <Fragment slot="build">
       <a id="3fcd65dd82be80d78ed5cee81c2f2ee6" />To investigate this, each patient simulant strain (GmR, KanR, β-lactamase simulant) was exposed to 6 ug/ml of its corresponding antibiotic (gentamicin, tobramycin in place of kanamycin, or amoxicillin) for either 6 or 12 hours. This 4-8 ug/ml MIC range was identified in our [Biosensor Challenge Assay](/ubc-vancouver/wet-lab/lab-notebook/biosensor-challenge-assay), establishing the concentration of active antibiotic required to inhibit our biosensors and therefore informing the antibiotic concentration used as an input for exposure to our patient simulant strains.
 
-      <a id="3fcd65dd82be8077ba70fa8607fa4b57" />Following incubation of either 6 or 12 hours, the bacterial cells were removed via centrifugation and the remaining antibiotic-containing supernatants were applied to both our RecA and CpxP biosensors. The readouts were biosensor growth, measured as OD, and fluorescence, measured at an excitation wavelength of 488 nm and emission of 510 nm. These values were then compared with untreated controls to determine the degree of antibiotic activity remaining after exposure to the patient simulants.
+      <a id="3fcd65dd82be8077ba70fa8607fa4b57" />Following incubation of either 6 or 12 hours, the bacterial cells were removed via centrifugation and the remaining antibiotic-containing supernatants were applied to both our RecA and CpxP biosensors. The readouts were biosensor growth, measured as $OD_{600}$, and fluorescence, measured at an excitation wavelength of 488 nm and emission of 510 nm. These values were then compared with untreated controls to determine the degree of antibiotic activity remaining after exposure to the patient simulants.
     </Fragment>
 
     <Fragment slot="test">
-      <a id="3fcd65dd82be804b8f18e0fd5edc55af" />Following 24 hours of biosensor incubation, the **tobramycin- and amoxicillin-containing supernatants** produced **OD values similar to the untreated controls for both biosensor strains.** This indicates that the corresponding KanR and β-lactamase patient simulants reduced the antibiotic activities at a level sufficient to prevent growth inhibition of our biosensor strains, which is a result consistent with antibiotic degradation.
+      <a id="3fcd65dd82be804b8f18e0fd5edc55af" />Following 24 hours of biosensor incubation, the tobramycin- and amoxicillin-containing supernatants produced $OD_{600}$ values similar to the untreated controls for both biosensor strains. This indicates that the corresponding KanR and β-lactamase patient simulants reduced the antibiotic activities at a level sufficient to prevent growth inhibition of our biosensor strains, which is a result consistent with antibiotic degradation.
 
       <a id="3fcd65dd82be8025ad70ff1761c2e9f0" />However, the fl**uorescence intensity measurement was lower than the untreated controls** despite the lack of observed growth inhibition. This suggests that the products generated during the process of antibiotic degradation may still affect biosensor fluorescence ability. This brings to our attention that antibiotic degradation can potentially influence both antibiotic activity and the downstream biosensor readout.
 
-      <a id="3fcd65dd82be80a89b98cd079b20b0b2" />In contrast to the above, the biosensor cultures treated with **gentamicin-containing supernatan**t showed an approximately **two-fold reduction in OD values** when compared with untreated controls. This inhibited growth indicates that gentamicin was only partially degraded by the GmR patient simulant, leaving behind sufficient active antibiotic to inhibit biosensor growth to some degree. This result is in alignment with the Simulant Survival Titration v1 experiment performed previously, which demonstrated partial gentamicin degradation in the 4–8 ug/mL range. One possible explanation for this is that exposure to 6 ug/ml of gentamicin also inhibited the GmR patient simulant itself, reducing its capacity to degrade the gentamicin antibiotic which resulted in the decreased OD.
+      <a id="3fcd65dd82be80a89b98cd079b20b0b2" />In contrast to the above, the biosensor cultures treated with **gentamicin-containing supernatan**t showed an approximately **two-fold reduction in $OD_{600}$ values** when compared with untreated controls. This inhibited growth indicates that gentamicin was only partially degraded by the GmR patient simulant, leaving behind sufficient active antibiotic to inhibit biosensor growth to some degree. This result is in alignment with the Simulant Survival Titration v1 experiment performed previously, which demonstrated partial gentamicin degradation in the 4–8 ug/mL range. One possible explanation for this is that exposure to 6 ug/ml of gentamicin also inhibited the GmR patient simulant itself, reducing its capacity to degrade the gentamicin antibiotic which resulted in the decreased $OD_{600}$.
     </Fragment>
 
     <Fragment slot="learn">
-      <a id="3fcd65dd82be80a0849ff6dcad51306c" />However, we identified an important **confounding variable** in this iteration: **residual patient-simulant bacteria** remained in the supernatants following centrifugation. These bacteria could contribute to the measured OD and potentially continue interacting with the antibiotic during the biosensor assay.
+      <a id="3fcd65dd82be80a0849ff6dcad51306c" />However, we identified an important **confounding variable** in this iteration: **residual patient-simulant bacteria** remained in the supernatants following centrifugation. These bacteria could contribute to the measured $OD_{600}$ and potentially continue interacting with the antibiotic during the biosensor assay.
 
       <a id="3fcd65dd82be80c08b94f054f4d3c74e" />This led us to Iteration 2, where we introduced an additional filtration step to remove residual bacterial cells before the supernatants were applied to the biosensors.
     </Fragment>
@@ -175,21 +179,21 @@ path: "Wet Lab/Engineering/Patient Simulant "
 
   <Dbtl>
     <Fragment slot="design">
-      <a id="3fcd65dd82be80908c73eae5e53901b6" />In the previous iteration, we found that our supernatants contained residual bacteria from the pellet after centrifugation. Thus, this introduced a confounding variable in our analysis because the downstream biosensor assay was intended to measure the remaining antibiotic activity, not the effects of bacteria carried over from the patient simulant. Any residual bacteria could contribute to the measured OD and potentially continue interacting with the antibiotic during the biosensor assay.
+      <a id="3fcd65dd82be80908c73eae5e53901b6" />In the previous iteration, we found that our supernatants contained residual bacteria from the pellet after centrifugation. Thus, this introduced a confounding variable in our analysis because the downstream biosensor assay was intended to measure the remaining antibiotic activity, not the effects of bacteria carried over from the patient simulant. Any residual bacteria could contribute to the measured $OD_{600}$ and potentially continue interacting with the antibiotic during the biosensor assay.
 
-      <a id="3fcd65dd82be8003ac5add038c4c39ec" />To address this, we repeated this experiment with th**e additional of a sterile 0.2 um filtration step** after the centrifugation step before plating the assay.
+      <a id="3fcd65dd82be8003ac5add038c4c39ec" />To address this, we repeated this experiment with th**e additional of a sterile 0.2 μm filtration step** after the centrifugation step before plating the assay.
     </Fragment>
 
     <Fragment slot="build">
-      <a id="3fcd65dd82be8047a918fc8db28d46a4" />For this experiment, we tested antibiotic concentrations of 8ug/ml, since this is the upper limit of the biosensor MIC range identified in our Biosensor Challenge Assay, and 16ug/ml since it is twice the upper limit of the biosensor MIC range. Patient simulants were tested at an initial OD diluted to approximately 0.1, with an additional set of 6-hour conditions using an initial OD of approximately 0.5.
+      <a id="3fcd65dd82be8047a918fc8db28d46a4" />For this experiment, we tested antibiotic concentrations of 8ug/ml, since this is the upper limit of the biosensor MIC range identified in our Biosensor Challenge Assay, and 16ug/ml since it is twice the upper limit of the biosensor MIC range. Patient simulants were tested at an initial $OD_{600}$ diluted to approximately 0.1, with an additional set of 6-hour conditions using an initial $OD_{600}$ of approximately 0.5.
 
       <a id="3fcd65dd82be80e4b6c0e55a6251e7b5" />Each patient simulant was exposed to its corresponding antibiotic for either 6 or 10 hours. Following antibiotic exposure, the cultures were centrifuged and the resulting supernatants were passed through sterile 0.2 µm filters and then applied to both our CpxP-sfGFP and RecA-sfGFP biosensor constructs.
 
-      <a id="3fcd65dd82be80c981fde8a943ea8f4d" />After 24 hours of biosensor incubation, the OD600 was again measured as an indicator of biosensor growth, while fluorescence was measured at an excitation wavelength of 488 nm and an emission wavelength of 510 nm, with subsequent comparison to untreated controls.
+      <a id="3fcd65dd82be80c981fde8a943ea8f4d" />After 24 hours of biosensor incubation, the $OD_{600}$ was again measured as an indicator of biosensor growth, while fluorescence was measured at an excitation wavelength of 488 nm and an emission wavelength of 510 nm, with subsequent comparison to untreated controls.
     </Fragment>
 
     <Fragment slot="test">
-      <a id="3fcd65dd82be8084aa30dfa9d2bb5829" />As expected, **all blank controls had comparably low OD values,** indicating that the LB-Cm media was not contaminated and the the supernatant filtration successfully removed residual bacterial cells before the antibiotic-containing supernatants were introduced to the biosensors. This successfully addressed the confounding variable identified in the previous iteration.
+      <a id="3fcd65dd82be8084aa30dfa9d2bb5829" />As expected, **all blank controls had comparably low** $OD_{600}$ **values,** indicating that the LB-Cm media was not contaminated and the the supernatant filtration successfully removed residual bacterial cells before the antibiotic-containing supernatants were introduced to the biosensors. This successfully addressed the confounding variable identified in the previous iteration.
 
       <a id="3fcd65dd82be80a4be96f7cc317e7246" />The results indicate that the maximum MIC value of 8 ug/mL was generally a more suitable initial antibiotic concentration than the two-fold MIC value of 16 ug/mL for patient simulant-induced degradation, although the β-lactamase simulant strain was able to further reduce the activity of amoxicillin at both concentrations.
 
@@ -201,17 +205,17 @@ path: "Wet Lab/Engineering/Patient Simulant "
     </Fragment>
 
     <Fragment slot="learn">
-      <a id="3fcd65dd82be80b6bb01e3ba66e24053" />Together, these results allowed us to identify suitable conditions for each patient simulant. At an initial simulant OD of approximately 0.1, 8 µg/mL was sufficient for substantial degradation of tobramycin and amoxicillin after 6 hours, while gentamicin required a longer exposure period of up to 10 hours. Increasing the antibiotic concentration to 16 µg/mL did not generally provide a more suitable degradation condition, with the exception of the β-lactamase simulant, which was able to substantially degrade amoxicillin even at this higher concentration.
+      <a id="3fcd65dd82be80b6bb01e3ba66e24053" />Together, these results allowed us to identify suitable conditions for each patient simulant. At an initial simulant $OD_{600}$ of approximately 0.1, 8 µg/mL was sufficient for substantial degradation of tobramycin and amoxicillin after 6 hours, while gentamicin required a longer exposure period of up to 10 hours. Increasing the antibiotic concentration to 16 µg/mL did not generally provide a more suitable degradation condition, with the exception of the β-lactamase simulant, which was able to substantially degrade amoxicillin even at this higher concentration.
 
-      <a id="3fcd65dd82be809eb361d0b0557f5f28" />Our findings for **optimal antibiotic input concentration, initial patient simulant OD, and degradation time can be summarized in a table as follows:**
+      <a id="3fcd65dd82be809eb361d0b0557f5f28" />Our findings for **optimal antibiotic input concentration, initial patient simulant** $OD_{600}$**, and degradation time can be summarized in a table as follows:**
 
       <a id="3fcd65dd82be8074a290fb72f317b337" />
 
-      | <a id="3fcd65dd82be80d3862ce5f55bb85608" />Patient simulant strain | Input antibiotic | Initial OD | Input concentration | Degradation time  |
-      | ------------------------------------------------------------------ | ---------------- | ---------- | ------------------- | ----------------- |
-      | <a id="3fcd65dd82be80a0b8a0fd5b90932f2f" />GmR simulant            | Gentamicin       | 0.1        | 8 µg/mL             | At least 10 hours |
-      | <a id="3fcd65dd82be80f0875bd05f2e649a98" />KanR simulant           | Tobramycin       | 0.1        | 8 µg/mL             | 6 hours           |
-      | <a id="3fcd65dd82be80728fb7ee622be9480b" />β-lactamase simulant    | Amoxicillin      | 0.1        | 8–16 µg/mL          | 6 hours           |
+      | <a id="3fcd65dd82be80d3862ce5f55bb85608" />Patient simulant strain | Input antibiotic | Initial $OD_{600}$ | Input concentration | Degradation time  |
+      | ------------------------------------------------------------------ | ---------------- | ------------------ | ------------------- | ----------------- |
+      | <a id="3fcd65dd82be80a0b8a0fd5b90932f2f" />GmR simulant            | Gentamicin       | 0.1                | 8 µg/mL             | At least 10 hours |
+      | <a id="3fcd65dd82be80f0875bd05f2e649a98" />KanR simulant           | Tobramycin       | 0.1                | 8 µg/mL             | 6 hours           |
+      | <a id="3fcd65dd82be80728fb7ee622be9480b" />β-lactamase simulant    | Amoxicillin      | 0.1                | 8–16 µg/mL          | 6 hours           |
     </Fragment>
   </Dbtl>
 </details>

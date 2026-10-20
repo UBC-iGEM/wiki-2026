@@ -4,6 +4,7 @@ import type { DatabaseAttrs } from "@exporter/markdown/markdown";
 import { PagePath } from "@exporter/map";
 import DbCalendar from "../components/DbCalendar.astro";
 import DbDropdown from "../components/DbDropdown.astro";
+import PageNav from "../components/PageNav.astro";
 import MainLayout from "./MainLayout.astro";
 
 interface Props {
@@ -22,4 +23,5 @@ const parent_db_path = new PagePath(PagePath.fromString(attrs.path).components()
     <DbDropdown slot="sidebar" parent_db_path={parent_db_path} current_page_path={current_page_path} />
 
     <slot />
+    <PageNav />
 </MainLayout>

@@ -10,26 +10,23 @@ path: "Wet Lab/Engineering/Biosensor"
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3fcd65dd82be80d2b360f82188ca775c" />Based on our literature review, we designed two fluorescent reporter constructs. The CpxP reporter uses the CpxP promoter, which responds to cell envelope stress. The RecA reporter uses the RecA promoter and its SOS box, which respond to DNA damage.
+    <a id="3fcd65dd82be80d2b360f82188ca775c" />Based on our literature review, selected two stress response promoters to detect the presence of active antibiotics. This informed our design of two fluorescent reporter constructs. The CpxP reporter construct (2940 bp) uses the *cpxP* promoter, which responds to cell envelope stress. The RecA reporter construct (2855 bp) uses the *recA* promoter and its SOS box, which respond to DNA damage.
 
-    - <a id="3fcd65dd82be80abb525ebed8d998d62" />CpxP reporter plasmid (2940 bp): the pCpxP promoter with sfGFP inco
-    - <a id="3fcd65dd82be80d8ac73f7e1a3e2711a" />RecA reporter plasmid (2855 bp): the pRecA promoter and SOS box with sfGFP.
+    <a id="3fcd65dd82be809da7fcccf06046fa3d" />Both reporters are generated using the pSB1C3 backbone for 3 reasons:
 
-    <a id="3fcd65dd82be809da7fcccf06046fa3d" />Both reporters are built in the pSB1C3 backbone for 3 reasons:
-
-    - <a id="3fcd65dd82be8051b189e1ef765f8d42" />Host compatibility: it carries a pMB1 origin of replication which works in E. coli.
+    - <a id="3fcd65dd82be8051b189e1ef765f8d42" />Host compatibility: it carries a pMB1 origin of replication which works in *E. coli*.
     - <a id="3fcd65dd82be8068a79ed4975f18f6c0" />Copy number: pMB1 is a high-copy origin, which increases signal strength for an sfGFP reporter.
     - <a id="3fcd65dd82be801db5d8f2d4961a8e29" />Selection marker: it carries chloramphenicol resistance (CmR). We avoided AmpR and KanR backbones because those resistance genes would affect our modelling of β-lactam and aminoglycoside induced stress.
   </Fragment>
 
   <Fragment slot="build">
-    <a id="3fcd65dd82be801e882ee015d4402ff9" />For assembly, we ordered gBlocks from IDT with Gibson overhangs built in:
+    <a id="3fcd65dd82be801e882ee015d4402ff9" />For assembly, we ordered gBlocks gene fragments from IDT with Gibson overhangs built in:
 
     - <a id="3fcd65dd82be8002aedcfd42ecba64e6" />Two linearized backbone fragments (2079 bp), each with overhangs specific to one construct.
-    - <a id="3fcd65dd82be8084b400dc30f356c405" />A CpxP reporter insert (947 bp) containing our pCpxP-sfGFP reporter part ([BBa\_26A5JL4T](https://registry.igem.org/parts/bba-26a5jl4t)) and overhangs specific to the regions flanking the pSB1C3 backbone MCS
-    - <a id="3fcd65dd82be8023aa8defcadaa252ff" />A RecA reporter insert (862 bp) containing our pRecA-sfGFP reporter part ([BBa\_267O4B7H](https://registry.igem.org/parts/bba-267o4b7h)) with overhangs specific to the regions flanking the pSB1C3 backbone MCS
+    - <a id="3fcd65dd82be8084b400dc30f356c405" />A CpxP reporter insert (947 bp) containing our $\mathrm{P}_\textit{cpxP}$-*sfGFP* reporter part ([BBa\_26A5JL4T](https://registry.igem.org/parts/bba-26a5jl4t)) and overhangs specific to the regions flanking the pSB1C3 backbone MCS
+    - <a id="3fcd65dd82be8023aa8defcadaa252ff" />A RecA reporter insert (862 bp) containing our $\mathrm{P}_\textit{recA}$-*sfGFP* reporter part ([BBa\_267O4B7H](https://registry.igem.org/parts/bba-267o4b7h)) with overhangs specific to the regions flanking the pSB1C3 backbone MCS
 
-    <a id="3fcd65dd82be807ea659e77608c0f7a4" />We assembled each reporter by Gibson assembly, combining the linearized backbone with the corresponding insert. We transformed the assemblies into competent E. coli DH5α and selected colonies grown on chloramphenicol plates.
+    <a id="3fcd65dd82be807ea659e77608c0f7a4" />We assembled each reporter by Gibson assembly, combining the linearized backbone with the corresponding insert. We transformed the assemblies into competent *E. coli* DH5α and selected colonies grown on chloramphenicol plates.
   </Fragment>
 
   <Fragment slot="test">
@@ -37,7 +34,7 @@ path: "Wet Lab/Engineering/Biosensor"
   </Fragment>
 
   <Fragment slot="learn">
-    <a id="3fcd65dd82be801f9d2efc33c7ee3929" />Sequencing confirmed that both reporters are assembled as designed. We found point mutations in the constructs and as these did not impact function. So, we identified these mutations as negligible.
+    <a id="3fcd65dd82be801f9d2efc33c7ee3929" />Sequencing confirmed that both reporters are assembled as designed. While some point mutations were identified, their impact was negligible. As such, we proceeded to transform our constructs into EPI300 *E. coli*.
   </Fragment>
 </Dbtl>
 
@@ -64,7 +61,7 @@ path: "Wet Lab/Engineering/Biosensor"
     <Fragment slot="build">
       <a id="3fcd65dd82be80ef8a8fd8741f57cdac" />We included the appropriate controls to investigate the use of Cm-free LB media.
 
-      - <a id="3fcd65dd82be80e9824cd41bcbd8d4bb" />Negative control group: WT Epi300 grown in LB media at 37˚C for 0, 1, 2, or 4 hours; then plated on LB-Cm plates for \~18 hours at 37˚C.
+      - <a id="3fcd65dd82be80e9824cd41bcbd8d4bb" />Negative control group: WT EPI300 grown in LB media at 37˚C for 0, 1, 2, or 4 hours; then plated on LB-Cm plates for \~18 hours at 37˚C.
       - <a id="3fcd65dd82be80918efacd61f727b5a7" />Positive control group: CpxP or RecA biosensors were grown in LB-Cm media at 37˚C for 0, 1, 2, or 4 hours; then plated on LB-Cm plates for \~18 hours at 37˚C.
       - <a id="3fcd65dd82be80b2b25fd670d40cd6ed" />Test group: CpxP or RecA biosensors were grown in LB media at 37˚C for 0, 1, 2, or 4 hours; then plated on LB-Cm plates for \~18 hours at 37˚C.
 
@@ -72,7 +69,7 @@ path: "Wet Lab/Engineering/Biosensor"
     </Fragment>
 
     <Fragment slot="test">
-      <a id="3fcd65dd82be8091be72f08f73d5f24c" />As expected, the WT Epi300 strain did not grow in any condition. Colonies were observed in all LB-Cm plates inoculated with biosensor strains cultured in either LB or LB-Cm.
+      <a id="3fcd65dd82be8091be72f08f73d5f24c" />As expected, the WT EPI300 strain did not grow in any condition. Colonies were observed in all LB-Cm plates inoculated with biosensor strains cultured in either LB or LB-Cm.
     </Fragment>
 
     <Fragment slot="learn">
@@ -98,7 +95,7 @@ path: "Wet Lab/Engineering/Biosensor"
     </Fragment>
 
     <Fragment slot="test">
-      <a id="3fcd65dd82be805393c0d9839c404844" />As expected, the WT Epi300 strain did not grow in any condition. We were able to achieve isolated colonies with the 10^-7, 10^-8, and 10^-9 dilutions for biosensor strains cultured in LB-Cm. However, growth was not observed for biosensor strains cultured in LB, with the exception of a few quadrants suspected of being contaminated.
+      <a id="3fcd65dd82be805393c0d9839c404844" />As expected, the WT EPI300 strain did not grow in any condition. We were able to achieve isolated colonies with the 10^-7, 10^-8, and 10^-9 dilutions for biosensor strains cultured in LB-Cm. However, growth was not observed for biosensor strains cultured in LB, with the exception of a few quadrants suspected of being contaminated.
     </Fragment>
 
     <Fragment slot="learn">
@@ -113,23 +110,23 @@ path: "Wet Lab/Engineering/Biosensor"
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3fcd65dd82be80079145cf84a8e845cc" />Before validating our reporter strains, we needed to first generate a curve that measures the baseline growth kinetics of the WT Epi300 strain compared to the biosensor strains. This is helpful for determining the metabolic burden of the plasmid backbone as well as baseline GFP expression.
+    <a id="3fcd65dd82be80079145cf84a8e845cc" />Before validating our reporter strains, we needed to first generate a curve that measures the baseline growth kinetics of the WT EPI300 strain compared to the biosensor strains. This is helpful for determining the metabolic burden of the plasmid backbone as well as baseline GFP expression.
 
     <a id="3fcd65dd82be80009fabf31c86522857" />Additionally, for our microfluidic chip application, we needed to characterize bacterial growth and baseline GFP expression at ambient temperature compared to 37˚C.
   </Fragment>
 
   <Fragment slot="build">
-    <a id="3fcd65dd82be80058160d278e881f463" />We adapted a growth curve protocol for an automated workflow using the BMG PHERAstar FSX microplate reader to measure optical density at 600 nm and sfGFP fluorescence (485 nm excitation, 510 nm emission).
+    <a id="3fcd65dd82be80058160d278e881f463" />We adapted a growth curve protocol for an automated workflow using the BMG PHERAstar FSX microplate reader to measure $OD_{600}$ and sfGFP fluorescence (485 nm excitation, 510 nm emission).
 
-    <a id="3fcd65dd82be800e91c8c676e59e68ef" />We considered all necessary control conditions to elucidate metabolic burden, including a WT Epi300 strain for baseline growth kinetics, Epi300 transformed with the reporter backbone to determine metabolic burden of the plasmid, as well as the RecA and CpxP biosensor strains to determine the impact of baseline GFP expression on growth.
+    <a id="3fcd65dd82be800e91c8c676e59e68ef" />We considered all necessary control conditions to elucidate metabolic burden, including a WT EPI300 strain for baseline growth kinetics, EPI300 transformed with the reporter backbone to determine metabolic burden of the plasmid, as well as the RecA and CpxP biosensor strains to determine the impact of baseline GFP expression on growth.
   </Fragment>
 
   <Fragment slot="test">
-    <a id="3fcd65dd82be80a887aed3060df0af91" />We measured OD600 and fluorescence intensity throughout a 24-hour timeframe. For the first 12 hours, we took measurements every 30 minutes for the curve generated at 37˚C and every 60 minutes for the curve generated at ambient temperature. For the last 12 hours, we took measurements every 60 minutes for both curves.
+    <a id="3fcd65dd82be80a887aed3060df0af91" />We measured $OD_{600}$ and fluorescence intensity throughout a 24-hour timeframe. For the first 12 hours, we took measurements every 30 minutes for the curve generated at 37˚C and every 60 minutes for the curve generated at ambient temperature. For the last 12 hours, we took measurements every 60 minutes for both curves.
   </Fragment>
 
   <Fragment slot="learn">
-    <a id="3fcd65dd82be80729cd8cc1a1b367db7" />We observed that introducing the backbone decreases the growth maximum relative to WT Epi300. However, biosensor growth remains similar at 37˚C and 22˚C. Additionally, we observed basal GFP expression in the CpxP biosensor strain. However, this basal  expression ceases at 22˚C.
+    <a id="3fcd65dd82be80729cd8cc1a1b367db7" />We observed that introducing the backbone decreases the growth maximum relative to WT EPI300. However, biosensor growth remains similar at 37˚C and 22˚C. Additionally, we observed basal GFP expression in the CpxP biosensor strain. However, this basal  expression ceases at 22˚C.
 
     <a id="3fcd65dd82be80da8b12fc40ccc377fa" />Overall, the generated growth curve will serve as a standard to normalize our fluorescent readouts in downstream reporter validation assays, accounting for the impact of bacterial density on GFP expression.
   </Fragment>
@@ -148,11 +145,11 @@ path: "Wet Lab/Engineering/Biosensor"
 
   <Dbtl>
     <Fragment slot="design">
-      <a id="3fcd65dd82be8072a215f2804c410c94" />After transformation, we needed to validate our construct’s biological function as a sensor. To this end, we started by looking for differential expression of green fluorescent protein (GFP) to determine a range of subinhibitory antibiotic concentrations to use, as well its incubation time. We also considered the effect of optical density (OD600) on GFP expression, and included this as a variable in the experiment.
+      <a id="3fcd65dd82be8072a215f2804c410c94" />After transformation, we needed to validate our construct’s biological function as a sensor. To this end, we started by looking for differential expression of green fluorescent protein (GFP) to determine a range of subinhibitory antibiotic concentrations to use, as well its incubation time. We also considered the effect of optical density ($OD_{600}$) on sfGFP expression, and included this as a variable in the experiment.
     </Fragment>
 
     <Fragment slot="build">
-      <a id="3fdd65dd82be80009425f14d82729f70" />RecA and CpxP biosensor strains were inoculated and harvested, then diluted to 1x at OD600 of 0.4. Antibiotics (Amoxicillin, Kanamycin, Gentamicin, Cephalexin) were reconstituted, and serially diluted twice. In a clear, U-bottom 96-well plate, LB-Cm media was added into the wells for antibiotic conditions, then given the associated serial dilution of antibiotic. This combination was diluted further using the biosensor strains at an equal volume. Wells were allotted for blank LB-Cm and unstimulated biosensor strain controls. Each condition was done in triplicate, including controls.
+      <a id="3fdd65dd82be80009425f14d82729f70" />RecA and CpxP biosensor strains were inoculated and harvested, then diluted to 1x at $OD_{600}$ of 0.4. Antibiotics (Amoxicillin, Kanamycin, Gentamicin, Cephalexin) were reconstituted, and serially diluted twice. In a clear, U-bottom 96-well plate, LB-Cm media was added into the wells for antibiotic conditions, then given the associated serial dilution of antibiotic. This combination was diluted further using the biosensor strains at an equal volume. Wells were allotted for blank LB-Cm and unstimulated biosensor strain controls. Each condition was done in triplicate, including controls.
     </Fragment>
 
     <Fragment slot="test">
@@ -163,11 +160,11 @@ path: "Wet Lab/Engineering/Biosensor"
       <a id="3fdd65dd82be8073ab21d4bf46a75006" />We had four major findings:
 
       1. <a id="3fdd65dd82be8006badce739f5b400fe" />The RecA biosensor appeared more sensitive, with significantly higher fold changes observed in the same timescale
-      2. <a id="3fdd65dd82be80a49c8fc64e0f8c0d20" />Higher OD values resulted in more discernible GFP signals
+      2. <a id="3fdd65dd82be80a49c8fc64e0f8c0d20" />Higher $OD_{600}$ values resulted in more discernible GFP signals
       3. <a id="3fdd65dd82be80ab93fac6a1a7d39e1d" />Most conditions had a peak between 10-30 minutes
       4. <a id="3fdd65dd82be80fba8d0de6c7cdb3c88" />We identified potential antibiotic concentration and time value ranges for optimal GFP-stimulation response in both CpxP and RecA, although RecA showed more promise.
 
-      <a id="3fdd65dd82be802ab633fdfd4e9f238f" />However, this experiment had some setbacks, like the U-bottom plates not being optimal for plate reading, as well as low overall expression, OD600, and identified ranges.
+      <a id="3fdd65dd82be802ab633fdfd4e9f238f" />However, this experiment had some setbacks, like the U-bottom plates not being optimal for plate reading, as well as low overall expression, $OD_{600}$, and identified ranges.
     </Fragment>
   </Dbtl>
 </details>
@@ -181,13 +178,13 @@ path: "Wet Lab/Engineering/Biosensor"
 
   <Dbtl>
     <Fragment slot="design">
-      <a id="3fcd65dd82be802c9f54dc363be020f6" />In the previous experiment, we identified potential ranges for antibiotic concentrations and treatment times. However, these ranges were narrow, and we did not adequately assess the lower and upper limits of the GFP stimulation response, as changes in response across different antibiotic concentrations were minimal. Additionally, the cell density (by way of OD600) was low, and our findings in the previous experiment show that OD600 values increased with GFP output — we elected to test one condition this time for simplicity. Finally, the results from this experiment were intended to inform a full factorial design experiment that could characterize our biosensor with greater resolution than manual work.
+      <a id="3fcd65dd82be802c9f54dc363be020f6" />In the previous experiment, we identified potential ranges for antibiotic concentrations and treatment times. However, these ranges were narrow, and we did not adequately assess the lower and upper limits of the GFP stimulation response, as changes in response across different antibiotic concentrations were minimal. Additionally, the cell density (by way of $OD_{600}$) was low, and our findings in the previous experiment show that $OD_{600}$ values increased with sfGFP output. As such, we elected to test one condition this time for simplicity. Finally, the results from this experiment were intended to inform a full factorial design experiment that could characterize our biosensor with greater resolution than manual work.
     </Fragment>
 
     <Fragment slot="build">
-      <a id="3fdd65dd82be80369d92c602c139e050" />We learned in the last experiment that the OD600 was too low, so the biosensor strains were grown to OD600 = 0.8 instead of 0.4. Reconstituted antibiotics (Amoxicillin, Kanamycin, Gentamicin, Cephalexin) were serially diluted five times instead of twice, with the exact concentrations depending on the antibiotic.
+      <a id="3fdd65dd82be80369d92c602c139e050" />We learned in the last experiment that the $OD_{600}$ was too low, so the biosensor strains were grown to an $OD_{600}$ of 0.8 instead of 0.4. Reconstituted antibiotics (Amoxicillin, Kanamycin, Gentamicin, Cephalexin) were serially diluted five times instead of twice, with the exact concentrations depending on the antibiotic.
 
-      <a id="3fdd65dd82be809bbb1fef9922614a11" />In an opaque, flat-bottom, 96-well plate, LB-Cm media was pipetted into the wells allotted for antibiotic conditions, then given the associated antibiotic dilutions at 2x concentration. These were diluted by an identical volume of the associated biosensor strain at OD600 0.8, to a final OD600 of 0.4 and antibiotic concentration of 1x.
+      <a id="3fdd65dd82be809bbb1fef9922614a11" />In an opaque, flat-bottom, 96-well plate, LB-Cm media was pipetted into the wells allotted for antibiotic conditions, then given the associated antibiotic dilutions at 2x concentration. These were diluted by an identical volume of the associated biosensor strain at $OD_{600}$ of 0.8, to a final $OD_{600}$ of 0.4 and antibiotic concentration of 1x.
     </Fragment>
 
     <Fragment slot="test">
@@ -213,11 +210,11 @@ path: "Wet Lab/Engineering/Biosensor"
     </Fragment>
 
     <Fragment slot="build">
-      <a id="3fcd65dd82be8099a695e114ce3f086b" />CpxP and RecA were exposed to 13 two-fold serial dilutions of gentamicin, kanamycin, amoxicillin, cephalexin ranging from 0.0156-320 µg/mL, each condition tested in triplicate. The cultures were mixed 1:1 with antibiotic containing media alongside untreated controls, a backbone control, and media blanks. Because cultures were plated before reaching the intended density, the final starting OD600 was 0.2 rather than 0.4. Fluorescence and OD600 measurements were collected every 10 minutes over the 50-minute assay.
+      <a id="3fcd65dd82be8099a695e114ce3f086b" />CpxP and RecA were exposed to 13 two-fold serial dilutions of gentamicin, kanamycin, amoxicillin, cephalexin ranging from 0.0156-320 µg/mL, each condition tested in triplicate. The cultures were mixed 1:1 with antibiotic containing media alongside untreated controls, a backbone control, and media blanks. Because cultures were plated before reaching the intended density, the final starting $OD_{600}$ was 0.2 rather than 0.4. Fluorescence and $OD_{600}$ measurements were collected every 10 minutes over the 50-minute assay.
     </Fragment>
 
     <Fragment slot="test">
-      <a id="3fcd65dd82be8018a6f8c27d964c4cf9" />Fluorescence changed minimally across the tested conditions and remained close to the media control, making fold-change calculations sensitive to variations in background signal. Unusually low OD600 measurements affected an entire plate column at a single time point, suggesting a measurement artifact rather. OD600 generally did not decrease following antibiotic exposure and in some cases increased, although these measurements alone could not determine between bacterial growth or increased turbidity.
+      <a id="3fcd65dd82be8018a6f8c27d964c4cf9" />Fluorescence changed minimally across the tested conditions and remained close to the media control, making fold-change calculations sensitive to variations in background signal. Unusually low $OD_{600}$ measurements affected an entire plate column at a single time point, suggesting a measurement artifact rather. $OD_{600}$ generally did not decrease following antibiotic exposure and in some cases increased, although these measurements alone could not determine between bacterial growth or increased turbidity.
     </Fragment>
 
     <Fragment slot="learn">
@@ -241,13 +238,13 @@ path: "Wet Lab/Engineering/Biosensor"
     </Fragment>
 
     <Fragment slot="build">
-      <a id="3fcd65dd82be8065a3d6eee10b76ef20" />CpxP and RecA were exposed to 9 two-fold serial dilutions of gentamicin, tobramycin, or amoxicillin, each condition tested in triplicate. The cultures were mixed 1:1 with antibiotic-containing media to a final starting OD600 of 0.1, alongside untreated biosensor controls, a backbone control, and media blanks. OD600 and fluorescence were measured from 0.5 to 8 hours.
+      <a id="3fcd65dd82be8065a3d6eee10b76ef20" />CpxP and RecA were exposed to 9 two-fold serial dilutions of gentamicin, tobramycin, or amoxicillin, each condition tested in triplicate. The cultures were mixed 1:1 with antibiotic-containing media to a final starting $OD_{600}$ of 0.1, alongside untreated biosensor controls, a backbone control, and media blanks. $OD_{600}$ and fluorescence were measured from 0.5 to 8 hours.
     </Fragment>
 
     <Fragment slot="test">
       <a id="3fcd65dd82be80718068e86bf4da7724" />CpxP showed dose-dependent fluorescence responses at later time points. At the highest  amoxicillin concentration, fluorescence was approximately two- to three-fold higher than the untreated control between four- to eight-hours. Gentamicin and tobramycin, fluorescence peaked at the four-hour interval for the highest tested concentration condition.
 
-      <a id="3fcd65dd82be80afa684fc2950a7baf7" />RecA showed a different pattern. Increase fluorescence associated with amoxicillin concentration was observed at four to eight hours, particularly at the highest tested concentration. However, the aminoglycosides, gentamicin and tobramycin, did not produce a dose-dependent response. OD600 also increased over the assay, indicating that difference in bacterial growth could contribute to total fluorescence.
+      <a id="3fcd65dd82be80afa684fc2950a7baf7" />RecA showed a different pattern. Increase fluorescence associated with amoxicillin concentration was observed at four to eight hours, particularly at the highest tested concentration. However, the aminoglycosides, gentamicin and tobramycin, did not produce a dose-dependent response. $OD_{600}$ also increased over the assay, indicating that difference in bacterial growth could contribute to total fluorescence.
     </Fragment>
 
     <Fragment slot="learn">

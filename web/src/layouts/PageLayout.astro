@@ -1,6 +1,7 @@
 ---
 import type { MarkdownHeading } from "astro";
 import type { PageAttrs } from "@exporter/markdown/markdown";
+import PageNav from "../components/PageNav.astro";
 import MainLayout from "./MainLayout.astro";
 
 interface Props {
@@ -12,4 +13,5 @@ const { attrs, headings } = Astro.props;
 
 <MainLayout title={attrs.title} headings={headings}>
     <slot />
+    <PageNav />
 </MainLayout>

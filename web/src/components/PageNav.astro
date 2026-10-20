@@ -1,0 +1,135 @@
+---
+import { ContentMap, DatabaseMap, PagePath, PagePathComponent, type JsonMap } from "@exporter/map";
+import config from "../../docs/content_map.json";
+import { BASE_URL } from "../utils/base-url";
+
+const content_map = ContentMap.fromJSON(config as JsonMap);
+
+// The route's own slug, which every page has whether or not its attrs carry a path
+const current_slug = new PagePathComponent(Astro.params.page_path ?? "").toSlug();
+
+// A database page steps through its database; any other page through the top level of its section,
+// where a database stands in for its first page
+function siblings(): PagePath[] | undefined {
+    for (const agg of content_map.aggregates) {
+        for (const { path, item } of agg.entries) {
+            if (!(item instanceof DatabaseMap)) continue;
+            const db_pages = item.entries.map(({ path: page }) => new PagePath([agg.name, path, page]));
+            if (db_pages.some((page) => page.toSlug() === current_slug)) return db_pages;
+        }
+
+        const section_pages = Array.from(agg.topLevelPages()).map(([, dest]) => dest);
+        if (section_pages.some((page) => page.toSlug() === current_slug)) return section_pages;
+    }
+    return undefined;
+}
+
+const pages = siblings() ?? [];
+const index = pages.findIndex((page) => page.toSlug() === current_slug);
+const prev = index > 0 ? pages[index - 1] : undefined;
+const next = index >= 0 ? pages[index + 1] : undefined;
+---
+
+{
+    (prev || next) && (
+        <nav class="page-nav" aria-label="Adjacent pages">
+            {prev && (
+                <a class="prev" href={`${BASE_URL}${prev.toSlug()}`} rel="prev" title={prev.name().toString()}>
+                    <span class="arrow" aria-hidden="true" />
+                    Last page
+                </a>
+            )}
+            {next && (
+                <a class="next" href={`${BASE_URL}${next.toSlug()}`} rel="next" title={next.name().toString()}>
+                    Next page
+                    <span class="arrow" aria-hidden="true" />
+                </a>
+            )}
+        </nav>
+    )
+}
+
+<style>
+    .page-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        justify-content: space-between;
+        margin-top: 4rem;
+    }
+
+    /* A lone next button still sits on the right */
+    .next {
+        margin-left: auto;
+    }
+
+    nav.page-nav > a {
+        align-items: center;
+        border: 3px solid var(--color-lime-yellow);
+        border-radius: 999px;
+        box-shadow: 0 0 8px color-mix(in srgb, var(--color-lime-yellow) 45%, transparent);
+        box-sizing: border-box;
+        color: var(--color-lime-yellow);
+        display: flex;
+        font: 700 1.25rem / normal var(--font-geist);
+        gap: 0.5rem;
+        justify-content: center;
+        min-height: 4rem;
+        min-width: 16rem;
+        padding: 0 2rem;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition:
+            background 120ms ease,
+            box-shadow 120ms ease,
+            color 120ms ease;
+    }
+
+    /* The same lime-to-green gradient and green glow as the Colab and download buttons */
+    nav.page-nav > a:is(:hover, :focus-visible) {
+        background: linear-gradient(154deg, var(--color-lime-yellow), #8dfe54) border-box;
+        border-color: transparent;
+        box-shadow:
+            0 0 10px #00ff92,
+            0 4px 4px rgb(0 0 0 / 25%);
+        color: var(--color-ebony-clay);
+    }
+
+    nav.page-nav > a:focus-visible {
+        outline: 2px solid var(--color-lime-yellow);
+        outline-offset: 4px;
+    }
+
+    /* A triangle in the text colour, pointing away from the label */
+    .arrow {
+        border-bottom: 0.4em solid transparent;
+        border-top: 0.4em solid transparent;
+        height: 0;
+        width: 0;
+    }
+
+    .next .arrow {
+        border-left: 0.6em solid currentColor;
+    }
+
+    .prev .arrow {
+        border-right: 0.6em solid currentColor;
+    }
+
+    @media (max-width: 700px) {
+        .page-nav {
+            flex-direction: column;
+        }
+
+        nav.page-nav > a {
+            font-size: 1rem;
+            min-height: 3.25rem;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .next {
+            margin-left: 0;
+        }
+    }
+</style>

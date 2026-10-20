@@ -224,9 +224,54 @@ title: "Fluorescence Detector"
 
 <a id="3fed65dd82be804e91bad68e923f5e3a" />The 30mm x 90mm PCB board is used for fluorescence detection. The photodiode, LED, and microfluidic chip well are aligned on the same vertical axis.
 
-<br id="3fed65dd82be800881c6e9e05373f393" />
+<br id="3ffd65dd82be80a59633f62083be557f" />
+
+## <a id="3ffd65dd82be80cc86e3e2490f4ea650" />Build Process
+
+<br id="3ffd65dd82be80baaa76f8eb23c48178" />
+
+<a id="3ffd65dd82be80bcb16ed59b30863993" />
+
+<Dbtl>
+  <Fragment slot="design">
+    <a id="3ffd65dd82be8088a371f1bef3b5bf2e" />Design
+  </Fragment>
+
+  <Fragment slot="build">
+    <a id="3ffd65dd82be80338f37d1b98d21a357" />Build
+  </Fragment>
+
+  <Fragment slot="test">
+    <a id="3ffd65dd82be8006a02afba41bf0de35" />Test
+
+    <a id="3ffd65dd82be80f7941cc31c75262489" />Set up
+
+    - <a id="3ffd65dd82be8068aa6acbedaf3e920a" />Connect circuit to +5V, GND, and A0 (analog in) pins on arduino
+    - <a id="3ffd65dd82be80278229d05213240292" />Code arduino to read A0 and print to serial monitor (below)
+    - <a id="3ffd65dd82be80e7a72ccb592cd714bf" />Cite trimmer potentiometer datasheet ([https://www.bourns.com/docs/Product-Datasheets/pv36.pdf](https://www.bourns.com/docs/Product-Datasheets/pv36.pdf))
+      - <a id="3ffd65dd82be8063a80bc5cd302df34c" />Upto 100k ohms over 25 turns
+
+    <a id="3ffd65dd82be800685f7c41a17645d72" />
+
+    ```javascript
+    void setup() { 
+    Serial.begin(9600); 
+    } 
+    void loop() { 
+    Serial.println(analogRead(A0)); 
+    delay(100); 
+    } 
+    ```
+  </Fragment>
+
+  <Fragment slot="learn">
+    <a id="3ffd65dd82be80b28f3fcd6eebb47684" />Learn
+  </Fragment>
+</Dbtl>
 
 # <a id="3f9d65dd82be808f844aec659af2f946" />Bill of Materials
+
+<br id="3ffd65dd82be809baae4f6dbb2581a1d" />
 
 <a id="3fad65dd82be8025b08ec928df6ba23c" />
 
@@ -248,8 +293,6 @@ title: "Fluorescence Detector"
 # <a id="3fbd65dd82be8042b94cfa15b5b4a7f3" />User Manual
 
 # <a id="3fed65dd82be80a682bff627e911ba85" />Final Product
-
-<br id="3fbd65dd82be8023913adfada4de8751" />
 
 # <a id="3fbd65dd82be8034992cdf993e9976df" />Improvements for Future Iterations
 

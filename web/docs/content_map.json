@@ -42,23 +42,23 @@
                     "type": "db",
                     "item": [
                         {
-                            "path": "Assembly of CpxP and RecA",
+                            "path": "Assembly of CpxP and RecA constructs",
                             "item": "37ad65dd82be80b6998fe86801e1e445"
                         },
                         {
-                            "path": "Transformation of CpxP/RecA into DH5a",
+                            "path": "Transformation of CpxP and RecA constructs into DH5α",
                             "item": "388d65dd82be80519270e56b78d9e4a2"
                         },
                         {
-                            "path": "Preparing CpxP and RecA cultures for sequencing",
+                            "path": "Preparing CpxP and RecA biosensor cultures for sequencing",
                             "item": "388d65dd82be80f1b9aded9137bcdb37"
                         },
                         {
-                            "path": "Miniprep for CpxP and RecA plasmids",
+                            "path": "Miniprep for CpxP and RecA reporter plasmids",
                             "item": "388d65dd82be80f7addff8006cdf17a9"
                         },
                         {
-                            "path": "Transformation of CpxP/RecA into EPI300",
+                            "path": "Transformation of CpxP and RecA constructs into EPI300",
                             "item": "3a0d65dd82be8006a207f9238485ada8"
                         },
                         {
