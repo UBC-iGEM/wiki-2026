@@ -124,12 +124,16 @@ import { BASE_URL } from "../utils/base-url";
     const isStacked = stackedQuery.matches;
     const stage = document.querySelector<HTMLElement>(".chip-stage");
 
-    // How far the stage slides left to make room for the FAST text: a quarter
-    // of the hero, but never so far the chip leaves the left edge once
-    // --chip-w shrinks in a narrower window.
+    // The side-by-side composition's width in --chip-w, out to the FAST
+    // text's right edge (.fast-text-final's left 1.14 + width 548/594)
+    const COMPOSITION_WIDTH = 1.14 + 548 / 594;
+
+    // How far the stage slides left to make room for the FAST text: enough to
+    // centre the whole composition, but never so far the chip leaves the left edge.
     function stageShift(): number {
         if (stackedQuery.matches || !hero || !stage) return 0;
-        return Math.min(hero.clientWidth / 4, (hero.clientWidth - stage.offsetWidth) / 2);
+        const chipWidth = stage.offsetWidth;
+        return Math.min(((COMPOSITION_WIDTH - 1) * chipWidth) / 2, (hero.clientWidth - chipWidth) / 2);
     }
 
     // Keeps the shift right while the window is resized, once the intro has applied it
