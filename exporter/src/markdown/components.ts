@@ -79,12 +79,9 @@ type FigureSlots = SlotRecord<typeof FIGURE_SLOTS>;
 
 async function figure({ items, ctx }: ComponentInput): ComponentOutput {
     // A figure starts with one or more images, followed by its description
-    const content = trimBlank(items);
+    const content = [...items];
     const image_blocks: ImageBlock[] = [];
-    while (content[0]?.type === "image" || (content[0] && isBlank(content[0]) && image_blocks.length > 0)) {
-        const block = content.shift()!;
-        if (block.type === "image") image_blocks.push(block);
-    }
+    while (content[0]?.type === "image") image_blocks.push(content.shift() as ImageBlock);
 
     if (image_blocks.length === 0)
         return new ExporterError(
@@ -100,7 +97,7 @@ async function figure({ items, ctx }: ComponentInput): ComponentOutput {
     return generateComponent<FigureAttrs, FigureSlots>({
         tag: "Figure",
         attrs: { imgs },
-        slots: { content: await convertItems(trimBlank(content), ctx) },
+        slots: { content: await convertItems(content, ctx) },
     });
 }
 
@@ -150,7 +147,7 @@ type Model3dSlots = SlotRecord<typeof MODEL3D_SLOTS>;
 
 async function model3d({ items }: ComponentInput): ComponentOutput {
     // A single uploaded model
-    const [file_block, ...rest] = trimBlank(items);
+    const [file_block, ...rest] = items;
     if (file_block?.type !== "file") return malformedModel3d("it does not start with an uploaded file");
     if (rest.length > 0) return malformedModel3d("it has content after its model");
 
@@ -204,7 +201,7 @@ async function carousel({ items, ctx }: ComponentInput): ComponentOutput {
     const converted = await Promise.all(
         sections.map(async ([image, ...description]) => ({
             slide: await imageAttr(image as ImageBlock, ctx),
-            description: await convertItems(trimBlank(description), ctx),
+            description: await convertItems(description, ctx),
         })),
     );
 
@@ -270,7 +267,7 @@ async function ihp({ items, ctx }: ComponentInput): ComponentOutput {
                             : []),
                         jsxFlow("div", { class: "ihp-desc" }, description),
                     ]),
-                    jsxFlow("div", { class: "ihp-content" }, await convertItems(trimBlank(rest), ctx)),
+                    jsxFlow("div", { class: "ihp-content" }, await convertItems(rest, ctx)),
                 ]),
             ]),
         );
@@ -308,7 +305,7 @@ const notebookMarkdownParser = unified().use(remarkParse).use(remarkGfm).use(rem
 
 async function colab({ items, ctx }: ComponentInput): ComponentOutput {
     // A link to the notebook, followed by its description
-    const [link_block, ...content] = trimBlank(items);
+    const [link_block, ...content] = items;
     const url = link_block === undefined ? undefined : blockLink(link_block);
     const file_id = url === undefined ? undefined : parseColabFileId(url);
     if (url === undefined || file_id === undefined)
@@ -346,7 +343,7 @@ async function colab({ items, ctx }: ComponentInput): ComponentOutput {
         attrs: { url },
         slots: {
             notebook: cells,
-            content: await convertItems(trimBlank(content), ctx),
+            content: await convertItems(content, ctx),
         },
     });
 }
@@ -430,7 +427,7 @@ type PlatemapSlots = SlotRecord<typeof PLATEMAP_SLOTS>;
 
 async function platemap({ items, ctx }: ComponentInput): ComponentOutput {
     // A title, then a subtitle followed by an uploaded CSV for each plate
-    const [title_block, ...rest] = items.filter((item) => !isBlank(item));
+    const [title_block, ...rest] = items;
     const title = title_block === undefined ? undefined : blockText(title_block);
     if (title === undefined || title === "") return malformedPlatemap("it does not start with a title");
 
@@ -507,7 +504,7 @@ type SeqmapSlots = SlotRecord<typeof SEQMAP_SLOTS>;
 
 async function seqmap({ items, ctx }: ComponentInput): ComponentOutput {
     // A title, then an uploaded GenBank file
-    const [title_block, file_block, ...rest] = items.filter((item) => !isBlank(item));
+    const [title_block, file_block, ...rest] = items;
     const title = title_block === undefined ? undefined : blockText(title_block);
     if (title === undefined || title === "") return malformedSeqmap("it does not start with a title");
 
@@ -552,7 +549,7 @@ const CSV_FILE = /\.csv$/i;
 
 async function csv({ items, ctx }: ComponentInput): ComponentOutput {
     // A single uploaded CSV
-    const [file_block, ...rest] = trimBlank(items);
+    const [file_block, ...rest] = items;
     if (file_block?.type !== "file" || !CSV_FILE.test(mediaFileName(file_block)))
         return malformedCsv("it does not start with an uploaded .csv file");
     if (rest.length > 0) return malformedCsv("it has content after its CSV file");
@@ -611,7 +608,7 @@ function malformedCsv(problem: string): ExporterError {
 export type DownloadableKind = "pdf" | "model" | "csv" | "none";
 
 export interface DownloadableAttrs {
-    /** The file's name, as uploaded to Notion. */
+    /** The name to show: the file's own, unless the component gives one. */
     name: string;
     url: string;
     kind: DownloadableKind;
@@ -628,13 +625,20 @@ function downloadableKind(file_name: string): DownloadableKind {
 }
 
 async function downloadable({ items, ctx }: ComponentInput): ComponentOutput {
-    // A single uploaded file
-    const [file_block, ...rest] = trimBlank(items);
-    if (file_block?.type !== "file") return malformedDownloadable("it does not start with an uploaded file");
+    // An optional paragraph or heading naming the file, then a single uploaded file
+    const name_block = items[0]?.type === "file" ? undefined : items[0];
+    const name_override = name_block === undefined ? undefined : blockText(name_block);
+    if (name_block !== undefined && !name_override)
+        return malformedDownloadable("it does not start with an uploaded file, or a paragraph or heading naming it");
+
+    const [file_block, ...rest] = name_block === undefined ? items : items.slice(1);
+    if (file_block?.type !== "file")
+        return malformedDownloadable(`its name "${name_override}" is not followed by an uploaded file`);
     if (rest.length > 0) return malformedDownloadable("it has content after its file");
 
-    const name = mediaFileName(file_block);
-    const kind = downloadableKind(name);
+    // The kind always comes from the file, as an override may not have an extension
+    const kind = downloadableKind(mediaFileName(file_block));
+    const name = name_override ?? mediaFileName(file_block);
 
     const url = await uploadMedia(file_block, { keep_original_file: true });
     if (isExporterErr(url)) return url;
@@ -672,7 +676,7 @@ type VegaSlots = SlotRecord<typeof VEGA_SLOTS>;
 
 async function vega({ items }: ComponentInput): ComponentOutput {
     // A single uploaded file of compiled Vega
-    const [file_block, ...rest] = trimBlank(items);
+    const [file_block, ...rest] = items;
     if (file_block?.type !== "file" || !/\.json$/i.test(mediaFileName(file_block)))
         return malformedVega("it does not start with an uploaded .json file");
     if (rest.length > 0) return malformedVega("it has content after its JSON file");
@@ -745,26 +749,15 @@ async function imageAttr(block: ImageBlock, ctx: ConvertContext): Promise<ImageA
     return { url, alt, scale };
 }
 
-function isBlank(item: Item): boolean {
+/** An empty paragraph, as used for spacing; components never see these (see `convertGroup`). */
+export function isBlank(item: Item): boolean {
     return (
         item.type === "paragraph" && asPlainText(item.paragraph.rich_text).trim() === "" && item.children.length === 0
     );
 }
 
 /**
- * Removes leading and trailing empty paragraphs.
- */
-function trimBlank(items: Item[]): Item[] {
-    let start = 0;
-    let end = items.length;
-    while (start < end && isBlank(items[start]!)) start++;
-    while (end > start && isBlank(items[end - 1]!)) end--;
-    return items.slice(start, end);
-}
-
-/**
- * Splits items into sections at each divider, trimming blank paragraphs from each and dropping empty sections,
- * so doubled or trailing dividers don't add any.
+ * Splits items into sections at each divider, dropping empty sections, so doubled or trailing dividers don't add any.
  */
 function splitOnDividers(items: Item[]): Item[][] {
     const sections: Item[][] = [[]];
@@ -772,7 +765,7 @@ function splitOnDividers(items: Item[]): Item[][] {
         if (item.type === "divider") sections.push([]);
         else sections.at(-1)!.push(item);
     }
-    return sections.map(trimBlank).filter((section) => section.length > 0);
+    return sections.filter((section) => section.length > 0);
 }
 
 /** The rich text of a heading or paragraph. */

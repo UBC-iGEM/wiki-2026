@@ -1,11 +1,11 @@
 import type { ContentMap } from "../map";
 import { Id, PageId, type NotionBlock } from "../notion";
 import { ExporterError, isExporterErr, type WarningContext } from "../utils";
-import { COMPONENT_MAP, componentDocSuggestion, type ImgAttrs } from "./components";
+import { COMPONENT_MAP, componentDocSuggestion, isBlank, type ImgAttrs } from "./components";
 import { pageMention, warnGoogleLink } from "./link";
 import { anchorFlow, anchorText, jsxFlow, jsxInlineBlock, type FlowContent } from "./mdx";
 import { mediaFileName, parseImageCaption, uploadMedia } from "./media";
-import { convertRichText, asPlainText } from "./rich-text";
+import { convertRichText, asPlainText, warnLatexIssues } from "./rich-text";
 import type { RichTextItemResponse } from "@notionhq/client";
 import type { Heading, List, ListItem, Paragraph, PhrasingContent, Table, TableRow } from "mdast";
 import type { MdxJsxFlowElement } from "mdast-util-mdx-jsx";
@@ -161,7 +161,8 @@ async function convertGroup(group: ItemGroup, ctx: ConvertContext): Promise<Flow
         return [];
     }
 
-    const res = await parseComponent({ items: item.items, ctx: component_ctx });
+    // Empty paragraphs are only spacing, so components are written as if they weren't there
+    const res = await parseComponent({ items: item.items.filter((child) => !isBlank(child)), ctx: component_ctx });
     if (isExporterErr(res)) {
         res.warn(component_ctx);
         return [];
@@ -258,6 +259,7 @@ async function convertBlock(block: NotionBlock, parent_ctx: ConvertContext): Pro
                 },
             ];
         case "equation":
+            warnLatexIssues(block.equation.expression, ctx);
             return [anchorFlow(anchor), { type: "math", value: block.equation.expression }];
         case "divider":
             return [anchorFlow(anchor), { type: "thematicBreak" }];

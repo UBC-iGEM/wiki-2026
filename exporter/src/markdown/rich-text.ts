@@ -21,6 +21,13 @@ type ProseRule = {
     guidance: string;
     italics?: "required" | "forbidden";
     correct_spelling?: string;
+    /** A correct use the term would otherwise match, tested where the match starts. */
+    exempt?: RegExp;
+    /**
+     * Only checks text that directly follows a promoter equation, like `\mathrm{P}_\text{CpxP}`. `{promoter}` in the
+     * guidance is replaced by the promoter's name.
+     */
+    after_promoter?: true;
 };
 
 /** Add prose checklist terms here. Gene and protein spellings are intentionally case-sensitive. */
@@ -39,6 +46,22 @@ const PROSE_RULES: ProseRule[] = [
     },
     { id: "cpxp-italics", term: wholeTerm(/cpxP/), guidance: "should be italicized", italics: "required" },
     { id: "reca-italics", term: wholeTerm(/recA/), guidance: "should be italicized", italics: "required" },
+    // The gene is italic, but the protein and plasmid names (sfGFP fluorescence, pCpxP-sfGFP) are not
+    {
+        id: "sfgfp-gene-italics",
+        term: wholeTerm(/sfGFP(?=\s+genes?\b)/),
+        guidance: "should be italicized when it names the gene",
+        italics: "required",
+    },
+    // A promoter followed by the gene it drives, like P_CpxP-sfGFP, names the gene
+    {
+        id: "sfgfp-construct-italics",
+        term: /(?<=^\s*[-–]\s*)sfGFP(?![\p{L}\p{N}])/gu,
+        guidance:
+            "should be italicized: a promoter followed by sfGFP describes the reporter construct, so sfGFP names the gene there (\\mathrm{P}_\\text{{promoter}}-*sfGFP*). To refer to the plasmid itself, use its name instead, like p{promoter}-sfGFP",
+        italics: "required",
+        after_promoter: true,
+    },
     { id: "CpxP-plain", term: wholeTerm(/CpxP/), guidance: "should not be italicized", italics: "forbidden" },
     { id: "RecA-plain", term: wholeTerm(/RecA/), guidance: "should not be italicized", italics: "forbidden" },
     { id: "beta-lactam", term: wholeTerm(/Beta-lactam/, true), guidance: "should be β-lactam" },
@@ -58,7 +81,7 @@ const PROSE_RULES: ProseRule[] = [
     },
     {
         id: "micro-symbol",
-        term: /(?<=\d\s?)u(?:l|m|amp|k|p)(?![\p{L}\p{N}])/giu,
+        term: /(?<=\d\s?)u(?:l|m|amp|k)(?![\p{L}\p{N}])/giu,
         guidance: "should use μ, not u",
     },
     // Inline equations aren't scanned, so these only fire on plain-text spellings.
@@ -66,14 +89,45 @@ const PROSE_RULES: ProseRule[] = [
     {
         id: "preca-latex",
         term: wholeTerm(/P[\s_-]?recA/, true),
-        guidance: "should be an equation: P_\\text{RecA}",
+        // The plasmid's name
+        exempt: /^pRecA-sfGFP/,
+        guidance: "should be an equation: \\mathrm{P}_\\text{RecA}",
     },
     {
         id: "pcpxp-latex",
         term: wholeTerm(/P[\s_-]?cpxP/, true),
-        guidance: "should be an equation: P_\\text{CpxP}",
+        // The plasmid's name
+        exempt: /^pCpxP-sfGFP/,
+        guidance: "should be an equation: \\mathrm{P}_\\text{CpxP}",
     },
 ];
+
+/** Promoters, written in equations as `\mathrm{P}_\text{<name>}`. */
+const PROMOTERS = ["CpxP", "RecA"];
+
+/**
+ * Warns about promoters in an equation not written as `\mathrm{P}_\text{<name>}`, such as `P_{cpxP}` (an italic P) or
+ * `\mathrm{P}_\textit{CpxP}`.
+ */
+export function warnLatexIssues(expression: string, ctx: ConvertContext): void {
+    for (const name of PROMOTERS) {
+        // A P, however it is styled, with a subscript naming the promoter, however it is styled or cased
+        const promoter = new RegExp(
+            String.raw`(?:\\(?:mathrm|text|textrm|mathit|textit)\s*\{\s*P\s*\}|(?<![\\\p{L}])P)\s*_\s*\{?\s*(?:\\[a-z]+\s*\{)?\s*${name}\s*\}?\s*\}?`,
+            "giu",
+        );
+        const expected = String.raw`\mathrm{P}_\text{${name}}`;
+        for (const match of expression.matchAll(promoter)) {
+            const found = match[0].replace(/\s+/g, "");
+            if (found === expected || found === String.raw`\mathrm{P}_{\text{${name}}}`) continue;
+
+            const issue_key = [ctx.page.toString(), ctx.block?.toString() ?? "", `promoter-latex-${name}`].join(":");
+            if (WARNED_PROSE_ISSUES.has(issue_key)) continue;
+            WARNED_PROSE_ISSUES.add(issue_key);
+            new ExporterError(`[${match[0]}: should be ${expected}]`, ["malformed content"]).warn(ctx);
+        }
+    }
+}
 
 /** Regex matches complete terms, including terms split across Notion rich-text segments. */
 function wholeTerm(term: RegExp, ignore_case = false): RegExp {
@@ -161,6 +215,7 @@ async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Prom
                 ]);
         }
         case "equation":
+            warnLatexIssues(item.equation.expression, ctx);
             return [{ node: { type: "inlineMath", value: item.equation.expression }, props }];
         case "mention": {
             const mention = item.mention;
@@ -228,6 +283,13 @@ function warnProseIssues(leaves: Leaf[], ctx: ConvertContext): void {
             continue;
         }
 
+        const before = leaves[position - 1]?.node;
+        // The promoter an equation just before this text ends with, if any
+        const after_promoter =
+            before !== undefined && before !== "newline" && before.type === "inlineMath"
+                ? new RegExp(String.raw`\\text\s*\{\s*(${PROMOTERS.join("|")})\s*\}\s*\}?\s*$`).exec(before.value)?.[1]
+                : undefined;
+
         const spans: { start: number; end: number; italic: boolean }[] = [];
         let text = "";
         while (position < leaves.length) {
@@ -240,11 +302,13 @@ function warnProseIssues(leaves: Leaf[], ctx: ConvertContext): void {
         }
 
         for (const rule of PROSE_RULES) {
+            if (rule.after_promoter && !after_promoter) continue;
             for (const match of text.matchAll(rule.term)) {
                 const found = match[0];
                 if (found === rule.correct_spelling) continue;
 
                 const start = match.index!;
+                if (rule.exempt?.test(text.slice(start))) continue;
                 const end = start + found.length;
                 const covered = spans.filter((span) => span.start < end && span.end > start);
                 if (rule.italics === "required" && covered.every((span) => span.italic)) continue;
@@ -253,7 +317,8 @@ function warnProseIssues(leaves: Leaf[], ctx: ConvertContext): void {
                 const issue_key = [ctx.page.toString(), ctx.block?.toString() ?? "", rule.id].join(":");
                 if (WARNED_PROSE_ISSUES.has(issue_key)) continue;
                 WARNED_PROSE_ISSUES.add(issue_key);
-                new ExporterError("[" + found + ": " + rule.guidance + "]", ["malformed content"]).warn(ctx);
+                const guidance = rule.guidance.replaceAll("{promoter}", after_promoter ?? "");
+                new ExporterError("[" + found + ": " + guidance + "]", ["malformed content"]).warn(ctx);
             }
         }
     }

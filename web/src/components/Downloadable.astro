@@ -16,7 +16,7 @@ const Header = kind === "none" ? "div" : "summary";
         <Header class="header">
             {kind !== "none" && <span class="marker" aria-hidden="true" />}
             <span class="title">{name}</span>
-            <a class="download" href={url} download={name} aria-label={`Download ${name}`}>
+            <a class="download" href={url} download aria-label={`Download ${name}`}>
                 <svg class="icon" viewBox="0 0 120 120" fill="none" aria-hidden="true">
                     <circle cx="60" cy="60" r="60" fill="#6A67FF"></circle>
                     <path
