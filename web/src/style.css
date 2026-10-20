@@ -112,6 +112,7 @@ pre.astro-code {
     font-size: 0.875rem;
     line-height: 1.55;
     padding: 15px;
+    border: 1px solid color-mix(in srgb, var(--color-cornflower) 50%, transparent);
     border-radius: 10px;
     overflow-x: auto;
 }

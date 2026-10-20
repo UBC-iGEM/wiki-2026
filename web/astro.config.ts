@@ -1,5 +1,6 @@
 // @ts-check
 import { CONFIG } from "../exporter/src/config";
+import { codeTheme } from "./src/code-theme";
 import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
 import linkValidator from "astro-link-validator";
@@ -39,7 +40,7 @@ export default defineConfig({
         },
     ],
     markdown: {
-        shikiConfig: { theme: "tokyo-night" },
+        shikiConfig: { theme: codeTheme },
         processor: unified({
             remarkPlugins: [remarkMath, remarkBreaks],
             rehypePlugins: [
