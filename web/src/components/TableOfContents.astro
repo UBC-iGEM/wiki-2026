@@ -56,11 +56,28 @@ const min_depth = headings.reduce((min, h) => Math.min(min, h.depth), 6);
 
             const visible = new Set<string>();
 
+            // The sidebar's own scroll area, when the list is too long for the screen
+            const scroller = document.querySelector<HTMLElement>(".page-toc");
+
+            // Scrolls the list (not the page, as scrollIntoView would) just enough to show the entry, with a little room
+            const keepInView = (link: HTMLElement) => {
+                if (!scroller || scroller.scrollHeight <= scroller.clientHeight) return;
+                const margin = 24;
+                const view = scroller.getBoundingClientRect();
+                const entry = link.getBoundingClientRect();
+                let delta = 0;
+                if (entry.top < view.top + margin) delta = entry.top - view.top - margin;
+                else if (entry.bottom > view.bottom - margin) delta = entry.bottom - view.bottom + margin;
+                if (delta !== 0) scroller.scrollBy({ top: delta, behavior: "smooth" });
+            };
+
             // Mark a heading as active
             const setActive = (slug: string | null) => {
                 for (const [key, link] of link_by_slug) {
                     link.classList.toggle("active", key === slug);
                 }
+                const link = slug ? link_by_slug.get(slug) : undefined;
+                if (link) keepInView(link);
             };
 
             // Determine which heading is active (in user view)
