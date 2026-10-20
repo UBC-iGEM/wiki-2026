@@ -237,23 +237,6 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
         color: var(--color-periwinkle);
     }
 
-    .page-toc :global(a) {
-        color: var(--color-periwinkle);
-        text-decoration: none;
-    }
-
-    .page-toc :global(a:hover) {
-        color: var(--color-northern-lights);
-        text-decoration-color: var(--color-cornflower);
-        text-decoration-line: underline;
-        text-underline-offset: 0.15em;
-    }
-
-    .page-toc :global(a:focus-visible) {
-        outline: 2px solid var(--color-cornflower);
-        outline-offset: 2px;
-    }
-
     @media (max-width: 1000px) {
         .page-layout {
             padding: 1.25rem var(--page-gutter) 3rem;

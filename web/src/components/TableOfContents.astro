@@ -32,7 +32,7 @@ const min_depth = headings.reduce((min, h) => Math.min(min, h.depth), 6);
 <script>
     import { onPage } from "../utils/page";
 
-    onPage(() => {
+    onPage((signal) => {
         let observer: IntersectionObserver | undefined;
 
         // Stacked above the article, an open list pushes the page itself out of view
@@ -88,6 +88,22 @@ const min_depth = headings.reduce((min, h) => Math.min(min, h.depth), 6);
                 setActive(active);
             };
 
+            // A clicked entry stays the active one until the reader scrolls themselves. Otherwise the jump, which lands its
+            // heading above the band watched below, would pick whichever close heading follows it
+            let clicked = false;
+            for (const [slug, link] of link_by_slug) {
+                link.addEventListener("click", () => {
+                    clicked = true;
+                    setActive(slug);
+                });
+            }
+            const release = (): void => {
+                clicked = false;
+            };
+            for (const type of ["wheel", "touchmove", "keydown", "pointerdown"]) {
+                window.addEventListener(type, release, { passive: true, signal });
+            }
+
             // Pick new active heading on scroll
             observer = new IntersectionObserver(
                 (entries) => {
@@ -95,7 +111,7 @@ const min_depth = headings.reduce((min, h) => Math.min(min, h.depth), 6);
                         if (entry.isIntersecting) visible.add(entry.target.id);
                         else visible.delete(entry.target.id);
                     }
-                    pickActive();
+                    if (!clicked) pickActive();
                 },
                 { rootMargin: "-80px 0px -60% 0px", threshold: 0 },
             );
@@ -112,10 +128,12 @@ const min_depth = headings.reduce((min, h) => Math.min(min, h.depth), 6);
         font: var(--text-small);
     }
 
+    /* A serif heading, set apart from the bold entries under it */
     summary {
+        color: var(--color-periwinkle);
         cursor: pointer;
-        font: var(--text-caption);
-        margin-bottom: 0.5rem;
+        font: var(--text-subtitle);
+        margin: 1rem 0 0.5rem;
         user-select: none;
     }
 
@@ -130,21 +148,32 @@ const min_depth = headings.reduce((min, h) => Math.min(min, h.depth), 6);
         padding: 0;
     }
 
+    /* The current entry is picked out as the DbDropdown marks its current page */
     a {
-        border-left: 2px solid transparent;
+        border-radius: 6px;
+        color: var(--color-periwinkle);
         display: block;
-        padding: 0.25rem 0.5rem;
+        font: var(--text-caption);
+        padding: 0.4rem 0.55rem;
         text-decoration: none;
+        transition:
+            background 120ms ease,
+            color 120ms ease;
     }
 
-    a:hover,
-    a.active {
-        color: var(--color-northern-lights);
+    a:hover {
+        background: var(--color-periwinkle);
+        color: var(--color-ebony-clay);
+    }
+
+    a:focus-visible {
+        outline: 2px solid var(--color-cornflower);
+        outline-offset: 1px;
     }
 
     a.active {
-        border-left-color: var(--color-northern-lights);
-        font-weight: 600;
+        background: var(--color-cornflower);
+        color: white;
     }
 
     /* Beside the article there is room for the whole list, so only a narrow screen
