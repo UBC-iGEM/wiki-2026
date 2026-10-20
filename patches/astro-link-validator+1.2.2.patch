@@ -1,0 +1,17 @@
+diff --git a/node_modules/astro-link-validator/dist/link-checker.js b/node_modules/astro-link-validator/dist/link-checker.js
+--- a/node_modules/astro-link-validator/dist/link-checker.js
++++ b/node_modules/astro-link-validator/dist/link-checker.js
+@@ -187,6 +187,13 @@ async function checkInternalLink(link, buildDir, redirects, base) {
+     }
+     // Remove hash fragments and query parameters for file checking
+     let cleanHref = href.split('#')[0].split('?')[0];
++    // Markdown percent-encodes non-ASCII URLs (e.g. Greek letters), but files on disk use the decoded name
++    try {
++        cleanHref = decodeURIComponent(cleanHref);
++    }
++    catch {
++        // Malformed encoding, check the path as written
++    }
+     // Root-relative links carry the site's base prefix, but the build output
+     // does not — strip it before matching redirects or files. A root-relative
+     // link without the prefix would 404 on the deployed site even when a

@@ -262,6 +262,41 @@ title: "Fluorescence Detector"
     delay(100); 
     } 
     ```
+
+    <a id="3ffd65dd82be80e1afa6e1b36081bcbc" />
+
+    <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/62e98057c26f5c2b9cfc6ddcfef60d14.avif","alt":"","scale":0}]}>
+      <Fragment slot="content">
+        <a id="3ffd65dd82be80178eaec8af82e1f474" />Image of testing set up
+      </Fragment>
+    </Figure>
+
+    <a id="3ffd65dd82be80ea92d9c66454845860" />Result:
+
+    - <a id="3ffd65dd82be8076b1bdf2e84031e385" />Powered on circuit and was reading around 4.3V from ambient room light
+    - <a id="3ffd65dd82be80718ec4dd7370446a68" />Changing resistance through potentiometer had minimal change on voltage output
+    - <a id="3ffd65dd82be80ed87a3eb74a9c58ebf" />Covering photodiode didn’t change the value, ie. circuit not responsive to light
+    - <a id="3ffd65dd82be80c88c43e2225937680f" />Arduino reads value from 0 to 1023 as it has a 10-bit ADC
+      - <a id="3ffd65dd82be802ba666e368336d6c9d" />Formula for number of discrete steps for an ADC is 2^n where n is number of bits
+      - <a id="3ffd65dd82be80a094bec437553aa9ac" />2^10 = 1024, so 0-1023
+    - <a id="3ffd65dd82be80e3af4ce1ff89f5dad2" />Dividing the number of steps by total voltage range gives volts per step, calculation shown below, used to convert from ADC reading to voltage
+
+    <a id="3ffd65dd82be80c7a4c3f86a07e3c523" />
+
+    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/5124e83ef9505d16a74b581c2c8771ba.avif" alt="" scale={0} align="center" />
+
+    <a id="3ffd65dd82be80f293c5ea66188feb7c" />
+
+    |                                                         |                    |             |
+    | ------------------------------------------------------- | ------------------ | ----------- |
+    | <a id="3ffd65dd82be80c19c2eef90ad776dd2" />Turns on Pot | ADC Value (0-1023) | Voltage (V) |
+    | <a id="3ffd65dd82be80229c11cb8eef7c31ba" />0            |                    |             |
+    | <a id="3ffd65dd82be80aa838ae5dd537e32e8" />1            |                    |             |
+    | <a id="3ffd65dd82be804499c7f93e72bd1b1a" />2            |                    |             |
+    | <a id="3ffd65dd82be80a8a083d0468cf25617" />3            |                    |             |
+    | <a id="3ffd65dd82be80308eb4de484cc01316" />4            |                    |             |
+    | <a id="3ffd65dd82be8093a302e24b520dc21b" />5            |                    |             |
+    | <a id="3ffd65dd82be80b381b8d0326f9a7e3e" />6+           |                    |             |
   </Fragment>
 
   <Fragment slot="learn">
@@ -270,8 +305,6 @@ title: "Fluorescence Detector"
 </Dbtl>
 
 # <a id="3f9d65dd82be808f844aec659af2f946" />Bill of Materials
-
-<br id="3ffd65dd82be809baae4f6dbb2581a1d" />
 
 <a id="3fad65dd82be8025b08ec928df6ba23c" />
 
