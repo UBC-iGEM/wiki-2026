@@ -287,20 +287,127 @@ title: "Fluorescence Detector"
 
     <a id="3ffd65dd82be80f293c5ea66188feb7c" />
 
-    |                                                         |                    |             |
-    | ------------------------------------------------------- | ------------------ | ----------- |
-    | <a id="3ffd65dd82be80c19c2eef90ad776dd2" />Turns on Pot | ADC Value (0-1023) | Voltage (V) |
-    | <a id="3ffd65dd82be80229c11cb8eef7c31ba" />0            |                    |             |
-    | <a id="3ffd65dd82be80aa838ae5dd537e32e8" />1            |                    |             |
-    | <a id="3ffd65dd82be804499c7f93e72bd1b1a" />2            |                    |             |
-    | <a id="3ffd65dd82be80a8a083d0468cf25617" />3            |                    |             |
-    | <a id="3ffd65dd82be80308eb4de484cc01316" />4            |                    |             |
-    | <a id="3ffd65dd82be8093a302e24b520dc21b" />5            |                    |             |
-    | <a id="3ffd65dd82be80b381b8d0326f9a7e3e" />6+           |                    |             |
+    |                                                                    |                    |             |
+    | ------------------------------------------------------------------ | ------------------ | ----------- |
+    | <a id="3ffd65dd82be80c19c2eef90ad776dd2" />Turns on Potientiometer | ADC Value (0-1023) | Voltage (V) |
+    | <a id="3ffd65dd82be80229c11cb8eef7c31ba" />0                       | 895                | 4.37        |
+    | <a id="3ffd65dd82be80aa838ae5dd537e32e8" />1                       | 895                | 4.37        |
+    | <a id="3ffd65dd82be804499c7f93e72bd1b1a" />2                       | 897                | 4.38        |
+    | <a id="3ffd65dd82be80a8a083d0468cf25617" />3                       | 908                | 4.43        |
+    | <a id="3ffd65dd82be80308eb4de484cc01316" />4                       | 920                | 4.49        |
+    | <a id="3ffd65dd82be8093a302e24b520dc21b" />5                       | 921                | 4.50        |
+    | <a id="3ffd65dd82be80b381b8d0326f9a7e3e" />6+                      | 922                | 4.50        |
+
+    <a id="3ffd65dd82be80b08790fad2dd506530" />These results indicate that something in our circuit is a miss.
+
+    <a id="3ffd65dd82be80009b8bd6aa2565269f" />When you refer to the paper that our circuit was based on, you can see that they use voltage rails of +9V and -9V and that the OP07 op-amp used works within a supply voltage range of ± 3V to ± 18V, whereas we are powering the circuit using the ±5V and 0V rails of an Arduino, meaning that the supply voltage is outside the range that the OP07 are rated for. Therefore, we need to redesign the circuit to suit our purposes better.
+
+    <a id="3ffd65dd82be801ea636c5a5e2a3e39f" />To go into more detail, since the op-amps were operating outside of their rated supply voltage, the internal circuitry cannot work as intended, and the performance is impacted. It appears the op-amp output was stuck at its maximum output around 3.7 V; since the OP07 is not a rail-to-rail op-amp, its output cannot reach its rails. The internal circuitry requires some voltage across it, around 1-2V, preventing the output from reaching the rails the op-amp is supplied with. This was the case for both op-amps, and as such, increasing the gain only pushed the voltage slightly higher rather than multiplying it as the op-amp outputs were already saturated. This also explains why the output signal of the circuit was not responsive to light, as we rely on the op-amps to convert the photocurrent into a readable voltage, and they were not set up correctly to do so. Additionally, the clipping diode has a forward voltage drop of around 0.7V, which is why the Arduino read around 4.4V.
+
+    <a id="3ffd65dd82be8056a41cf9636f160cb0" />We now need to verify the change in performance between the research paper setup and our setup. To quantify this difference we created a simulation of the circuit connected to both supply rails in LTSpice, a free circuit simulator software.
+
+    - <a id="3ffd65dd82be8039bc04c71910ac9b17" />The photodiode was modelled using a current source of 18nA to represent 1 lux of light as a standard reference point and its accurate capacitance of 48 pF
+    - <a id="3ffd65dd82be801995a9dd196cb9b275" />Both circuit simulations used a gain of 2 with R5 set to 20 K**Ω**
+
+    <a id="3ffd65dd82be80959462f9cb8649589b" />
+
+    <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/1760ed74f3dc575d97b03dc82e6d1ede.avif","alt":"","scale":0}]}>
+      <Fragment slot="content">
+        <a id="3ffd65dd82be8068b261fe53f468e914" />The simulation of our setup (+5 V to 0V rails)
+      </Fragment>
+    </Figure>
+
+    <a id="3ffd65dd82be80988be9fc50204a4976" />
+
+    <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/619642967e7f52309907511edd524360.avif","alt":"","scale":0}]}>
+      <Fragment slot="content">
+        <a id="3ffd65dd82be80eeac8efaccac5603cb" />The simulation of the setup from the paper (+9V and -9V rails with +5V clipping diode to protect ADC)
+      </Fragment>
+    </Figure>
+
+    <a id="3ffd65dd82be809489b0d4263319983e" />
+
+    <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/5f4d702cc20a54859cd54dc642802c05.avif","alt":"","scale":0}]}>
+      <Fragment slot="content">
+        <a id="3ffd65dd82be80e58c73f24a38d877f7" />Results from simulations compared to expected values (voltages are taken from different nodes in the circuit, with “U1 input difference” being a subtraction between both input nodes  on the U1 op amp)
+      </Fragment>
+    </Figure>
+
+    <a id="3ffd65dd82be80d48c37dbf248909f2c" />**Expected value calculations:**
+
+    <a id="3ffd65dd82be805e9ff3d63e0de15910" />V\_TIA: The voltage node that converts the photodiode’s current into a voltage.
+
+    <a id="3ffd65dd82be80f69f21d3443e776b56" />
+
+    $$
+    V_{TIA} =I_p \cdot R_2 \\
+    V_{TIA} = 18 nA \cdot 1 MQ \\
+    V_{TIA} = 18.0 mV
+
+    $$
+
+    <a id="3ffd65dd82be8069a8e4e7994ed5f134" />V\_GAIN: This voltage node follows a non-inverting amplifier, meaning it multiplies V\_TIA by the value set by R5 (our potentiometer) and R3. The op-amp will adjust it’s output until the R5/R3 divider feeds back a voltage equal to V\_TIA.
+
+    <a id="3ffd65dd82be801ea9a7c34ecb39983d" />
+
+    $$
+    Gain = 1 + \frac{R_5}{R_3} \\
+    Gain = 1 + \frac{20 k\Omega}{20 k\Omega} \\
+    Gain = 2 \\
+    $$
+
+    <a id="3ffd65dd82be80f9850af6ddc006384f" />
+
+    $$
+    V_{GAIN}=Gain \cdot V_{TIA} \\
+    V_{GAIN}= 2 \cdot 18 mV \\
+    V_{GAIN} = 36.0 mV
+    $$
+
+    <a id="3ffd65dd82be80758e6af3f5d41434e0" />ARD\_IN: R4 creates a potential difference with ARD\_IN which pulls this voltage node’s current through R4 and the diode into the gain stage output. Because a conducting diode will hold a fixed voltage drop across itself ARD\_IN sits one diode drop above V\_GAIN.
+
+    <a id="3ffd65dd82be80a4bb6fd8bc90c594ee" />
+
+    $$
+    ARD\_IN = V_{GAIN}+V_F \\
+    ARD\_IN = 36 mV + 0.69 V \\
+    ARD\_IN \approx0.726 V
+    $$
+
+    <a id="3ffd65dd82be806e93d6e514910fdb75" />We know V\_F as a diode will forward drop at \~4mA.
+
+    <a id="3ffd65dd82be80e6a935f19e22a6fce4" />What the simulated results mean:
+
+    - <a id="3ffd65dd82be802892a0d340ba7f7e4a" />The +/-9V test results met aligns with the expected values, while the +5V/0V test does not
+    - <a id="3ffd65dd82be8017a8b0d5b00e37bc6c" />A working op-amp holds its inputs within nanovolts of each other, the difference between the test indicates that under +5V/0V supply voltage conditions, the op-amp isn’t working properly
+    - <a id="3ffd65dd82be8096b2cfff6c740d2fb3" />This aligns with the hypothesis as the supply rails of +5V/0V are outside of what this op-amp is rated for
+    - <a id="3ffd65dd82be80c2a9a0c4b9060306e6" />This error is carried through the voltage values throughout the circuit
+
+    <a id="3ffd65dd82be80af88bee6fa8d98205d" />This confirms the hypothesis that our op-amp is not working as expected.
   </Fragment>
 
   <Fragment slot="learn">
-    <a id="3ffd65dd82be80b28f3fcd6eebb47684" />Learn
+    <a id="3ffd65dd82be8055b71fc382c50a8cb1" />We need to redesign our circuit to fit with our specific set up.
+  </Fragment>
+</Dbtl>
+
+<a id="3ffd65dd82be80609d7de503d33f9977" />
+
+<Dbtl>
+  <Fragment slot="design">
+    <a id="3ffd65dd82be80dbb4d5cbeef2ac30c1" />Design
+  </Fragment>
+
+  <Fragment slot="build">
+    <a id="3ffd65dd82be8045966ce30cf1cd87c5" />Build
+  </Fragment>
+
+  <Fragment slot="test">
+    <a id="3ffd65dd82be80a3a58dfd7069ed520e" />Test
+  </Fragment>
+
+  <Fragment slot="learn">
+    <a id="3ffd65dd82be8019b9f9f57dd31d9709" />Learn
   </Fragment>
 </Dbtl>
 

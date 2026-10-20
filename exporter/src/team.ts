@@ -61,8 +61,7 @@ const SECTION_ORDER: string[] = [
 ];
 
 function sortDirectorsBeforeLeads(sections: Record<string, TeamSection>): void {
-    const section = sections[POSITION_TAG_SECTIONS["Director"]!.slug];
-    if (!section) return;
+    const section = sections[POSITION_TAG_SECTIONS["Director"]!.slug]!;
 
     const rolePriority = (role: string): number => (role.endsWith("Director") ? 0 : role.endsWith("Lead") ? 1 : 2);
     section.members.sort((a, b) => rolePriority(a.role) - rolePriority(b.role));
@@ -72,6 +71,11 @@ function alphabeticizeSections(sections: Record<string, TeamSection>): void {
     for (const [, section] of Object.entries(sections)) {
         section.members.sort((a, b) => a.name.localeCompare(b.name));
     }
+}
+
+function groupLeadsBySubteam(sections: Record<string, TeamSection>): void {
+    const section = sections[POSITION_TAG_SECTIONS["Lead"]!.slug]!;
+    section.members.sort((a, b) => a.role.localeCompare(b.role));
 }
 
 function orderSections(sections: Record<string, TeamSection>): Record<string, TeamSection> {
@@ -108,6 +112,7 @@ export async function exportTeamPage(): Promise<ExporterResult<void>> {
     }
 
     alphabeticizeSections(sections);
+    groupLeadsBySubteam(sections);
     sortDirectorsBeforeLeads(sections);
 
     return await saveFile({
