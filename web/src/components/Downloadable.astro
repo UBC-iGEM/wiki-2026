@@ -1,6 +1,5 @@
 ---
-import downloadIcon from "../../public/assets/icons/download.svg?raw";
-import downloadHoverIcon from "../../public/assets/icons/download-hover.svg?raw";
+import { BASE_URL } from "../utils/base-url";
 import Model3D from "./Model3D.astro";
 import { type DownloadableAttrs, DOWNLOADABLE_SLOTS } from "@exporter/markdown/components";
 type Props = DownloadableAttrs;
@@ -19,9 +18,9 @@ const Header = kind === "none" ? "div" : "summary";
             {kind !== "none" && <span class="marker" aria-hidden="true" />}
             <span class="title">{name}</span>
             <a class="download" href={url} download aria-label={`Download ${name}`}>
-                <span class="icon" aria-hidden="true" set:html={downloadIcon} />
+                <img class="icon" src={`${BASE_URL}assets/icons/download.svg`} alt="" />
                 <!-- Drawn 10 units larger on each side to fit the glow, so it is positioned to keep the circle in place -->
-                <span class="icon icon-hover" aria-hidden="true" set:html={downloadHoverIcon} />
+                <img class="icon icon-hover" src={`${BASE_URL}assets/icons/download-hover.svg`} alt="" />
             </a>
         </Header>
         {
@@ -110,14 +109,9 @@ const Header = kind === "none" ? "div" : "summary";
 
     .icon {
         display: block;
-        height: 100%;
-        width: 100%;
-    }
-
-    .icon :global(svg) {
-        display: block;
-        height: 100%;
-        width: 100%;
+        height: var(--size);
+        max-width: none;
+        width: var(--size);
     }
 
     /* 10 of its 140 units are padding, so it overhangs the 120-unit circle by 1/12 of the size on each side */
