@@ -24,8 +24,8 @@ type ProseRule = {
     /** A correct use the term would otherwise match, tested where the match starts. */
     exempt?: RegExp;
     /**
-     * Only checks text that directly follows a promoter equation, like `\mathrm{P}_\text{CpxP}`. `{promoter}` in the
-     * guidance is replaced by the promoter's name.
+     * Only checks text that directly follows a promoter equation, like `\mathrm{P}_\textit{cpxP}`. `{gene}` and
+     * `{plasmid}` in the guidance are replaced by the promoter's gene and the reporter plasmid's name.
      */
     after_promoter?: true;
 };
@@ -53,17 +53,28 @@ const PROSE_RULES: ProseRule[] = [
         guidance: "should be italicized when it names the gene",
         italics: "required",
     },
-    // A promoter followed by the gene it drives, like P_CpxP-sfGFP, names the gene
+    // A promoter followed by the gene it drives, like P_cpxP-sfGFP, names the gene
     {
         id: "sfgfp-construct-italics",
         term: /(?<=^\s*[-–]\s*)sfGFP(?![\p{L}\p{N}])/gu,
         guidance:
-            "should be italicized: a promoter followed by sfGFP describes the reporter construct, so sfGFP names the gene there (\\mathrm{P}_\\text{{promoter}}-*sfGFP*). To refer to the plasmid itself, use its name instead, like p{promoter}-sfGFP",
+            "should be italicized: a promoter followed by sfGFP describes the reporter construct, so sfGFP names the gene there (\\mathrm{P}_\\textit{{gene}}-*sfGFP*). To refer to the plasmid itself, use its name instead, like {plasmid}-sfGFP",
         italics: "required",
         after_promoter: true,
     },
-    { id: "CpxP-plain", term: wholeTerm(/CpxP/), guidance: "should not be italicized", italics: "forbidden" },
-    { id: "RecA-plain", term: wholeTerm(/RecA/), guidance: "should not be italicized", italics: "forbidden" },
+    // Capitalized, these name the proteins; the genes and promoters are lowercase (cpxP, recA)
+    {
+        id: "CpxP-plain",
+        term: wholeTerm(/CpxP/),
+        guidance: "should not be italicized: CpxP names the protein; write the gene or promoter as *cpxP*",
+        italics: "forbidden",
+    },
+    {
+        id: "RecA-plain",
+        term: wholeTerm(/RecA/),
+        guidance: "should not be italicized: RecA names the protein; write the gene or promoter as *recA*",
+        italics: "forbidden",
+    },
     { id: "beta-lactam", term: wholeTerm(/Beta-lactam/, true), guidance: "should be β-lactam" },
     {
         id: "caulobacter",
@@ -91,35 +102,41 @@ const PROSE_RULES: ProseRule[] = [
         term: wholeTerm(/P[\s_-]?recA/, true),
         // The plasmid's name
         exempt: /^pRecA-sfGFP/,
-        guidance: "should be an equation: \\mathrm{P}_\\text{RecA}",
+        guidance: "should be an equation: \\mathrm{P}_\\textit{recA}",
     },
     {
         id: "pcpxp-latex",
         term: wholeTerm(/P[\s_-]?cpxP/, true),
         // The plasmid's name
         exempt: /^pCpxP-sfGFP/,
-        guidance: "should be an equation: \\mathrm{P}_\\text{CpxP}",
+        guidance: "should be an equation: \\mathrm{P}_\\textit{cpxP}",
     },
 ];
 
-/** Promoters, written in equations as `\mathrm{P}_\text{<name>}`. */
-const PROMOTERS = ["CpxP", "RecA"];
+/**
+ * Promoters, written in equations as `\mathrm{P}_\textit{<gene>}`: an upright P, subscripted with the italic gene it
+ * belongs to. `plasmid` is the name of the reporter plasmid built on it.
+ */
+const PROMOTERS = [
+    { gene: "cpxP", plasmid: "pCpxP" },
+    { gene: "recA", plasmid: "pRecA" },
+];
 
 /**
- * Warns about promoters in an equation not written as `\mathrm{P}_\text{<name>}`, such as `P_{cpxP}` (an italic P) or
- * `\mathrm{P}_\textit{CpxP}`.
+ * Warns about promoters in an equation not written as `\mathrm{P}_\textit{<gene>}`, such as `P_{cpxP}` (an italic P),
+ * `\mathrm{P}_\text{cpxP}` (an upright gene) or `\mathrm{P}_\textit{CpxP}` (the protein's name).
  */
 export function warnLatexIssues(expression: string, ctx: ConvertContext): void {
-    for (const name of PROMOTERS) {
+    for (const { gene: name } of PROMOTERS) {
         // A P, however it is styled, with a subscript naming the promoter, however it is styled or cased
         const promoter = new RegExp(
             String.raw`(?:\\(?:mathrm|text|textrm|mathit|textit)\s*\{\s*P\s*\}|(?<![\\\p{L}])P)\s*_\s*\{?\s*(?:\\[a-z]+\s*\{)?\s*${name}\s*\}?\s*\}?`,
             "giu",
         );
-        const expected = String.raw`\mathrm{P}_\text{${name}}`;
+        const expected = String.raw`\mathrm{P}_\textit{${name}}`;
         for (const match of expression.matchAll(promoter)) {
             const found = match[0].replace(/\s+/g, "");
-            if (found === expected || found === String.raw`\mathrm{P}_{\text{${name}}}`) continue;
+            if (found === expected || found === String.raw`\mathrm{P}_{\textit{${name}}}`) continue;
 
             const issue_key = [ctx.page.toString(), ctx.block?.toString() ?? "", `promoter-latex-${name}`].join(":");
             if (WARNED_PROSE_ISSUES.has(issue_key)) continue;
@@ -284,11 +301,15 @@ function warnProseIssues(leaves: Leaf[], ctx: ConvertContext): void {
         }
 
         const before = leaves[position - 1]?.node;
-        // The promoter an equation just before this text ends with, if any
-        const after_promoter =
+        // The promoter an equation just before this text ends with, if any, however its subscript is styled or cased
+        const promoter_name =
             before !== undefined && before !== "newline" && before.type === "inlineMath"
-                ? new RegExp(String.raw`\\text\s*\{\s*(${PROMOTERS.join("|")})\s*\}\s*\}?\s*$`).exec(before.value)?.[1]
+                ? new RegExp(
+                      String.raw`\\(?:text|textit|mathit|mathrm)\s*\{\s*(${PROMOTERS.map((p) => p.gene).join("|")})\s*\}\s*\}?\s*$`,
+                      "i",
+                  ).exec(before.value)?.[1]
                 : undefined;
+        const after_promoter = PROMOTERS.find((p) => p.gene.toLowerCase() === promoter_name?.toLowerCase());
 
         const spans: { start: number; end: number; italic: boolean }[] = [];
         let text = "";
@@ -317,7 +338,9 @@ function warnProseIssues(leaves: Leaf[], ctx: ConvertContext): void {
                 const issue_key = [ctx.page.toString(), ctx.block?.toString() ?? "", rule.id].join(":");
                 if (WARNED_PROSE_ISSUES.has(issue_key)) continue;
                 WARNED_PROSE_ISSUES.add(issue_key);
-                const guidance = rule.guidance.replaceAll("{promoter}", after_promoter ?? "");
+                const guidance = rule.guidance
+                    .replaceAll("{gene}", after_promoter?.gene ?? "")
+                    .replaceAll("{plasmid}", after_promoter?.plasmid ?? "");
                 new ExporterError("[" + found + ": " + guidance + "]", ["malformed content"]).warn(ctx);
             }
         }
