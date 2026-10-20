@@ -2,7 +2,6 @@
 import { ContentMap, type JsonMap } from "@exporter/map";
 import config from "../../docs/content_map.json";
 import { BASE_URL } from "../utils/base-url";
-import logoSvg from "../../public/assets/hero/icon.svg?raw";
 import menuSvg from "../../public/assets/icons/menu.svg?raw";
 
 const content_map = ContentMap.fromJSON(config as JsonMap);
@@ -24,7 +23,10 @@ const static_links = content_map.static_links;
 
 <!-- Kept between pages rather than re-rendered, and held still while the page under it fades (see the styles) -->
 <nav class="primary" aria-label="Primary navigation" transition:persist="site-nav">
-    <a class="home-logo" href={BASE_URL} aria-label="Home" set:html={logoSvg} />
+    <a class="home-logo" href={BASE_URL} aria-label="Home">
+        <img class="logo-idle" src={`${BASE_URL}assets/hero/icon.svg`} alt="" />
+        <img class="logo-hovered" src={`${BASE_URL}assets/hero/icon_hovered.svg`} alt="" />
+    </a>
 
     <button class="chip menu-toggle" type="button" aria-expanded="false" aria-controls="nav-sections">
         <span>
@@ -159,23 +161,27 @@ const static_links = content_map.static_links;
     .home-logo {
         display: block;
         flex: none;
-        height: calc(var(--chip-height) * 1.25);
-        transition: opacity 120ms ease;
+        height: calc(var(--chip-height) * 1.4);
+        /* The drawings have wide empty margins, so the extra size spills into the bar's padding rather than growing it */
+        margin-block: calc(var(--chip-height) * -0.125);
     }
 
-    .home-logo :global(svg) {
+    .home-logo img {
         display: block;
         height: 100%;
         width: auto;
     }
 
-    /* The logo file is drawn in periwinkle, which the navbar swaps for lime yellow */
-    .home-logo :global(svg [fill]:not([fill="none"])) {
-        fill: var(--color-lime-yellow);
+    /* Both are loaded up front, so the swap doesn't flash while the hovered one downloads */
+    .home-logo .logo-hovered,
+    .home-logo:hover .logo-idle {
+        display: none;
     }
 
-    .home-logo:hover {
-        opacity: 0.8;
+    /* Its frame fills less of its canvas than the idle one's (133/273 against 207/344 wide), so it is scaled up to match */
+    .home-logo:hover .logo-hovered {
+        display: block;
+        transform: scale(1.237);
     }
 
     .home-logo:focus-visible {
