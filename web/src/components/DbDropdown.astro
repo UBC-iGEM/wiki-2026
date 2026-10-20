@@ -213,6 +213,7 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
         color: var(--color-periwinkle);
         display: block;
         font-size: 0.85rem;
+        font-weight: 700;
         padding: 0.4rem 0.55rem;
         text-decoration: none;
         transition:
@@ -234,7 +235,6 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
     a.active {
         background: var(--color-cornflower);
         color: white;
-        font-weight: 700;
     }
 
     /* The list rolls down from its top edge on opening and back up on closing. The clip leaves room at the sides and
