@@ -12,7 +12,8 @@
         width: clamp(72px, 20vw, 120px);
         z-index: 1000;
         display: none;
-        cursor: pointer;
+        cursor: var(--cursor-sound);
+        --cursor-over-text: var(--cursor-sound);
         transition: transform 0.4s ease;
     }
     #gemy img {
@@ -39,7 +40,7 @@
     import { BASE_URL } from "../utils/base-url";
     import { arrivedBy } from "../utils/transitions";
 
-    const GEMY_CHANCE = 1 / 20;
+    const GEMY_CHANCE = 1 / 25;
     const WOBBLE_DEGREES = 7.5;
 
     // Rolled again on every page, which brings a new #gemy

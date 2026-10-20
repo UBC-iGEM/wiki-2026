@@ -147,7 +147,8 @@ const min_depth = headings.reduce((min, h) => Math.min(min, h.depth), 6);
 
     summary {
         color: var(--color-periwinkle);
-        cursor: pointer;
+        cursor: var(--cursor-interact);
+        --cursor-over-text: var(--cursor-interact);
         font: var(--text-h3);
         margin: 1rem 0 0.5rem;
         user-select: none;

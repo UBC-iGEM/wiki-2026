@@ -153,6 +153,55 @@ pre.astro-code {
     margin-bottom: 1rem;
 }
 
+/**  CURSORS   */
+
+html {
+    cursor: var(--cursor-primary);
+}
+
+/* Links take you somewhere; everything else you can click does something where you are */
+a[href] {
+    cursor: var(--cursor-link);
+    --cursor-over-text: var(--cursor-link);
+}
+
+button,
+summary,
+label[for],
+select,
+[role="button"],
+input:is([type="button"], [type="submit"], [type="checkbox"], [type="radio"]) {
+    cursor: var(--cursor-interact);
+    --cursor-over-text: var(--cursor-interact);
+}
+
+/* The text styles in use; inline text inherits from them. Kept at no specificity so any cursor a component sets wins.
+   Text inside something you click takes that thing's cursor instead, as each rule that sets a cursor also passes it
+   down in --cursor-over-text */
+:where(h1, h2, h3, h4, h5, h6, p, li, dt, dd, td, th, blockquote, figcaption, pre) {
+    cursor: var(--cursor-over-text, var(--cursor-text));
+}
+
+input:not([type="button"], [type="submit"], [type="checkbox"], [type="radio"], [type="range"], [type="color"]),
+textarea,
+[contenteditable] {
+    cursor: var(--cursor-text);
+}
+
+/* Lists in the navbar and sidebar are for layout, not reading */
+nav,
+aside {
+    --cursor-over-text: var(--cursor-primary);
+}
+
+/* Anything with a HoverHint is a widget to play with, so it takes the interact cursor throughout, over any its
+   library sets inline as the pointer moves (Vega's, SeqViz's) */
+:has(> .hover-hint),
+:has(> .hover-hint) * {
+    cursor: var(--cursor-interact) !important;
+    --cursor-over-text: var(--cursor-interact);
+}
+
 /*
  * The glowing panel used by various components.
  * `.glow-panel` wraps a `.glow-panel-body`,
@@ -203,7 +252,8 @@ pre.astro-code {
 .nav-arrow {
     background: var(--color-lime-yellow);
     border: none;
-    cursor: pointer;
+    cursor: var(--cursor-interact);
+    --cursor-over-text: var(--cursor-interact);
     flex-shrink: 0;
     height: 2.75rem;
     padding: 0;
@@ -241,7 +291,8 @@ pre.astro-code {
 .nav-dot {
     background: var(--color-cornflower);
     border: none;
-    cursor: pointer;
+    cursor: var(--cursor-interact);
+    --cursor-over-text: var(--cursor-interact);
     height: 0.6rem;
     padding: 0;
     width: 0.6rem;

@@ -180,14 +180,16 @@ const multiple = slides.length > 1;
     }
 
     .carousel-slide:is([data-role="prev"], [data-role="next"]) {
-        cursor: pointer;
+        cursor: var(--cursor-interact);
+        --cursor-over-text: var(--cursor-interact);
         opacity: 0.1;
         z-index: 1;
     }
 
     /* Clicking a peeking slide navigates, so its image doesn't offer to enlarge */
     .carousel-slide:is([data-role="prev"], [data-role="next"]) img[data-lightbox] {
-        cursor: pointer;
+        cursor: var(--cursor-interact);
+        --cursor-over-text: var(--cursor-interact);
     }
 
     .carousel-slide[data-role="prev"] {

@@ -46,6 +46,20 @@ MODEL3D_SLOTS satisfies readonly [];
 
 <script>
     import "@google/model-viewer";
+    import { onPage } from "../utils/page";
+
+    // model-viewer sets its grab cursors inline inside its shadow root, out of reach of the page's rule for
+    // widgets, so each viewer is given that rule itself
+    onPage(() => {
+        for (const viewer of document.querySelectorAll("model-viewer")) {
+            const root = viewer.shadowRoot;
+            if (!root || root.querySelector("style.interact-cursor")) continue;
+            const style = document.createElement("style");
+            style.className = "interact-cursor";
+            style.textContent = "* { cursor: var(--cursor-interact) !important; }";
+            root.append(style);
+        }
+    });
 </script>
 
 <style>

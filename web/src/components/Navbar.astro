@@ -212,7 +212,8 @@ const static_links = content_map.static_links;
         background: var(--color-cornflower);
         box-sizing: border-box;
         color: var(--color-periwinkle);
-        cursor: pointer;
+        cursor: var(--cursor-interact);
+        --cursor-over-text: var(--cursor-interact);
         display: block;
         font-size: 0.9rem;
         font-weight: 700;
@@ -227,6 +228,11 @@ const static_links = content_map.static_links;
             color 120ms ease,
             padding 160ms ease;
         user-select: none;
+    }
+
+    a.chip {
+        cursor: var(--cursor-link);
+        --cursor-over-text: var(--cursor-link);
     }
 
     .chip > span {

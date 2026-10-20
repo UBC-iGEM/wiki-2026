@@ -132,7 +132,8 @@ IHP_SLOTS satisfies readonly ["people"];
     }
 
     .ihp-card:is([data-role="prev"], [data-role="next"]) {
-        cursor: pointer;
+        cursor: var(--cursor-interact);
+        --cursor-over-text: var(--cursor-interact);
         opacity: 0.2;
         z-index: 1;
     }

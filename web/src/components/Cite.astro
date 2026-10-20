@@ -198,6 +198,8 @@ const prose_html = prose ? await Astro.slots.render("default") : "";
         border-radius: 8px;
         box-shadow: 0 0 1.5rem color-mix(in srgb, var(--color-cornflower) 35%, transparent);
         color: var(--color-periwinkle);
+        /* Its references are text to read, but sit in spans in a div, which the page's text cursor rule doesn't cover */
+        cursor: var(--cursor-text);
         font-family: var(--font-source-serif-4);
         font-size: 0.875rem;
         line-height: 1.45;

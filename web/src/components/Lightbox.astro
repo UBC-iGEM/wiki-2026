@@ -105,7 +105,8 @@
 
 <style is:global>
     img[data-lightbox] {
-        cursor: zoom-in;
+        cursor: var(--cursor-zoom);
+        --cursor-over-text: var(--cursor-zoom);
     }
 </style>
 
@@ -113,7 +114,8 @@
     .lightbox {
         background: transparent;
         border: none;
-        cursor: zoom-out;
+        cursor: var(--cursor-zoomout);
+        --cursor-over-text: var(--cursor-zoomout);
         height: 100%;
         max-height: none;
         max-width: none;
@@ -148,7 +150,8 @@
         background: none;
         border: none;
         color: var(--color-periwinkle);
-        cursor: pointer;
+        cursor: var(--cursor-interact);
+        --cursor-over-text: var(--cursor-interact);
         font-family: var(--font-geist);
         font-size: 2.5rem;
         line-height: 1;

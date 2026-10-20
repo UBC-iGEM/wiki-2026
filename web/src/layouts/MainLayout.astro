@@ -27,7 +27,12 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
 ---
 
 <!doctype html>
-<html lang="en">
+<!-- Cursor SVGs live in public/, so their URLs need the base path, which only the layout knows -->
+<html
+    lang="en"
+    style={`--cursor-primary: url("${BASE_URL}assets/cursors/primary.svg") 0 0, auto; --cursor-interact: url("${BASE_URL}assets/cursors/interact.svg") 10 10, pointer; --cursor-link: url("${BASE_URL}assets/cursors/link.svg") 1 0, pointer; --cursor-sound: url("${BASE_URL}assets/cursors/sound.svg") 19 18, pointer; --cursor-zoom: url("${BASE_URL}assets/cursors/zoom.svg") 16 16, zoom-in; --cursor-zoomout: url("${BASE_URL}assets/cursors/zoomout.svg") 13 13, zoom-out;
+    --cursor-text: url("${BASE_URL}assets/cursors/text.svg") 10 13, text;`}
+>
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

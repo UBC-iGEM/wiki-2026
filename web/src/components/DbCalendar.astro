@@ -272,7 +272,8 @@ function buildMonth(key: string): CalendarMonth {
 
     .db-calendar > summary {
         color: var(--color-periwinkle);
-        cursor: pointer;
+        cursor: var(--cursor-interact);
+        --cursor-over-text: var(--cursor-interact);
         display: none;
         font-size: 0.8rem;
         font-weight: 700;
@@ -361,7 +362,8 @@ function buildMonth(key: string): CalendarMonth {
         background: color-mix(in srgb, var(--color-periwinkle) 18%, transparent);
         border-radius: 6px;
         color: inherit;
-        cursor: pointer;
+        cursor: var(--cursor-interact);
+        --cursor-over-text: var(--cursor-interact);
         display: flex;
         flex-direction: column;
         height: 100%;
@@ -490,7 +492,8 @@ function buildMonth(key: string): CalendarMonth {
         border: 2px solid var(--color-periwinkle);
         border-radius: 5px;
         color: var(--color-periwinkle);
-        cursor: pointer;
+        cursor: var(--cursor-interact);
+        --cursor-over-text: var(--cursor-interact);
         font-size: 0.75rem;
         line-height: 1;
         padding: 0.1rem 0.35rem;
