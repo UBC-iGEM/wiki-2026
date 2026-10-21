@@ -119,7 +119,7 @@ title: "Description"
 
 <a id="400d65dd82be80229e74f13c5fb0fc90" />**The *cpxP* promoter.** The envelope stress response is a Gram-negative pathway activated when the integrity of the cell envelope is disrupted (17). Under unstressed conditions, the small periplasmic protein CpxP interacts with the sensor kinase CpxA and holds the pathway inactive. Under envelope stress, CpxP is degraded, CpxA autophosphorylates and transfers phosphate to the response regulator CpxR, and phosphorylated CpxR activates downstream genes including *cpxP* itself (18). Because β-lactams act by inactivating the enzymes required for cell wall synthesis, this pathway is a direct route from β-lactam activity to transcriptional output. We built a **P*cpxP*–sfGFP** reporter to exploit it.
 
-<a id="400d65dd82be80e28a8acbc5c89d21d4" />**The recA promoter.** The bacterial SOS response is a conserved global DNA-damage response (19). When antibiotic exposure generates reactive metabolites and single-stranded DNA accumulates, RecA forms an active nucleoprotein filament that promotes self-cleavage of the LexA repressor, relieving repression of LexA-regulated genes including *recA* (20). We built a **P*recA*–sfGFP** reporter as a second, mechanistically independent sensor.
+<a id="400d65dd82be80e28a8acbc5c89d21d4" />**The *recA* promoter.** The bacterial SOS response is a conserved global DNA-damage response (19). When antibiotic exposure generates reactive metabolites and single-stranded DNA accumulates, RecA forms an active nucleoprotein filament that promotes self-cleavage of the LexA repressor, relieving repression of LexA-regulated genes including *recA* (20). We built a **P*recA*–sfGFP** reporter as a second, mechanistically independent sensor.
 
 <a id="400d65dd82be80d3b5fcf0ec56ebb3b3" />Both constructs use the **pSB1C3** backbone in *E. coli* **EPI300**, a derivative of the non-pathogenic K-12 strain. The choice of backbone was deliberate and is worth stating for any team attempting something similar: ampicillin or kanamycin resistance markers would confer resistance to the very β-lactam and aminoglycoside classes under test, making the controls uninterpretable. Chloramphenicol selection avoids that conflict.
 
@@ -130,7 +130,7 @@ title: "Description"
 | <a id="400d65dd82be80c0bbfffe31cd208ffe" />BBa\_26A5JL4T | P*cpxP* + sfGFP | Cell envelope / cell wall stress |
 | <a id="400d65dd82be80d290ecff2bbbcdbefc" />BBa\_267O4B7H | P*recA* + sfGFP | DNA damage (SOS response)        |
 
-### <a id="400d65dd82be80ad9986e25be7d38df2" />**How FAST Works**
+### <a id="400d65dd82be80ad9986e25be7d38df2" />**How the FAST device works**
 
 <a id="400d65dd82be80beb907d1890d226002" />The test separates degradation from detection into two chambers.
 
@@ -138,7 +138,7 @@ title: "Description"
 
 <a id="400d65dd82be809ab928e265ff0c9bf6" />**Chamber B — detection.** The mixture is filtered and the remaining antibiotic reaches the biosensor strain.
 
-- <a id="400d65dd82be8056bbdcfd5b896b56bb" />**Susceptible sample →** the antibiotic survives Chamber A, arrives intact, triggers the Cpx or SOS pathway, and sfGFP is expressed. **Fluorescence.**
+- <a id="400d65dd82be8056bbdcfd5b896b56bb" />**Susceptible sample →** the antibiotic survives Chamber A, arrives intact, triggers the Cpx or SOS pathway, and sfGFP is expressed. This leads to some degree of fluorescence that is proportional to cell stres&#x73;**.**
 - <a id="400d65dd82be807eb7bde3c04af06b0b" />**Resistant sample →** the antibiotic was degraded or modified in Chamber A, the stress pathway is not sufficiently induced, and sfGFP expression stays near baseline. **No fluorescence.**
 
 <a id="400d65dd82be8093acd2f33a8471ef63" />The output is a binary, visually interpretable readout: fluorescence means the drug still works against this patient's infection.
@@ -165,29 +165,27 @@ title: "Description"
 
 ### <a id="400d65dd82be80a087dfe707a3b17e0b" />**Our Models: PRISM and the Degradation Model**
 
-<a id="400d65dd82be8033ae87cc0ae105f8d0" />Two computational efforts inform the design directly.
+<a id="400d65dd82be8085825dec158c76c988" />**PRISM (**&#x50;romoter Response Index and Selection Map) is a relational database and analysis pipeline that integrates RNA-seq expression data (GSE220559), RegulonDB regulatory annotations, and a reference genome to produce a traceable shortlist of antibiotic-responsive promoters for experimental screening (21, 22). It reduced 4,176 measured genes to 925 candidates and then to a proposed panel of **12 promoters**, six per antibiotic class. Every selection traces backwards: a panel entry links to a promoter, which links to a candidate gene, which links to the differential-expression result and source locus that produced it, with reference releases and file checksums recorded at each stage. Manual curation is stored separately from measured evidence.
 
-<a id="400d65dd82be8085825dec158c76c988" />**PRISM** — the Promoter Response Index and Selection Map — is a relational database and analysis pipeline that integrates RNA-seq expression data (GSE220559), RegulonDB regulatory annotations, and a reference genome to produce a traceable shortlist of antibiotic-responsive promoters for experimental screening (21, 22). It reduced 4,176 measured genes to 925 candidates and then to a proposed panel of **12 promoters**, six per antibiotic class. Every selection traces backwards: a panel entry links to a promoter, which links to a candidate gene, which links to the differential-expression result and source locus that produced it, with reference releases and file checksums recorded at each stage. Manual curation is stored separately from measured evidence.
+<a id="400d65dd82be80d29ed1e8871fef3d41" />PRISM exists because expression strength alone was not a sufficient selection criterion, it returned more genes than could be tested and failed to separate independent promoters from genes sharing regulatory context. It also has its limits as gene-level RNA is not promoter activity, 49.3% of our candidates have no promoter annotation at all, and no panel promoter has yet been shown to drive reporter output.
 
-<a id="400d65dd82be80d29ed1e8871fef3d41" />PRISM exists because expression strength alone was not a sufficient selection criterion — it returned more genes than could be tested and failed to separate independent promoters from genes sharing regulatory context. We also report its limits: gene-level RNA is not promoter activity, 49.3% of our candidates have no promoter annotation at all, and no panel promoter has yet been shown to drive reporter output.
+<a id="400d65dd82be80bead64c3373cf5152a" />**The degradation model** is a non-spatial system of three coupled ODEs answering a design question: how long must an antibiotic be exposed to a resistance enzyme before enough degradation occurs to be measurable? It couples Hill-type enzyme induction, Michaelis–Menten degradation, and a sigmoidal Emax pharmacodynamic term for bacterial kill and regrowth (23, 24). It predicts that the bacterial population may fall under antibiotic exposure and then recover once degradation drops killing below growth, a behaviour that directly affects how long Chamber A should run. The model currently provides theoretical predictions rather than experimentally validated degradation times.
 
-<a id="400d65dd82be80bead64c3373cf5152a" />**The degradation model** is a non-spatial system of three coupled ODEs answering a design question: how long must an antibiotic be exposed to a resistance enzyme before enough degradation occurs to be measurable? It couples Hill-type enzyme induction, Michaelis–Menten degradation, and a sigmoidal Emax pharmacodynamic term for bacterial kill and regrowth (23, 24). It predicts that the bacterial population may fall under antibiotic exposure and then recover once degradation drops killing below growth — a behaviour that directly affects how long Chamber A should run. The model currently provides theoretical predictions rather than experimentally validated degradation times.
-
-<a id="400d65dd82be80bb802fea24d5430f51" />Alongside these, a **promoter library screen** run with Biofactorial, UBC's High-Throughput Biology and Automation Facility, tested over 200 promoter–GFP constructs across 30 plates against all four antibiotics at sub-inhibitory concentrations, sampling OD and GFP every 30 minutes for eight hours. Most of the library was unresponsive; hits were clear outliers at roughly 3- to 12-fold induction, with the strongest response at **11.68-fold** under amoxicillin. A **Box-Behnken design of experiments** then tested how urine-like matrix factors affect the readout: sodium had no significant effect across the tested range, suggesting the sensor should tolerate variation in sample composition.
+<a id="400d65dd82be80bb802fea24d5430f51" />Alongside these, a **promoter library screen** run with BioFactorial, UBC's High-throughput Biology and Automation Facility, tested over 200 promoter–GFP constructs across 30 plates against all four antibiotics at sub-inhibitory concentrations, sampling OD and GFP every 30 minutes for eight hours. Most of the library was unresponsive; hits were clear outliers at roughly 3- to 12-fold induction, with the strongest response at **11.68-fold** under amoxicillin. A **Box-Behnken design of experiments** then tested how urine-like matrix factors affect the readout: sodium had no significant effect across the tested range, suggesting the sensor should tolerate variation in sample composition.
 
 ### <a id="400d65dd82be8003b9cbc5c69b7deac5" />**Our Hardware: Chip, Detector, and Bioreactor**
 
 <a id="400d65dd82be8046ada3fa98faa33c8d" />Running a susceptibility test outside a microbiology laboratory takes three devices. We built all three.
 
-<a id="400d65dd82be80e9a9b3e3b6b7601cec" />**The microfluidic chip** incubates the patient sample with the candidate antibiotic and delivers the result to the biosensor wells. It is cast in PDMS from FDM-printed PLA molds and plasma-bonded to a standard glass microscope slide — approximately **\$1–5 per chip**, with no cleanroom and no resin printer. Seven design cycles got us there, four of which failed. Two findings generalize: mold walls are necessary, or the channel floats during curing and becomes encased in set PDMS; and surface finish determines whether the chip leaks, with the printer's ironing function producing a surface that plasma-bonds reliably against a non-ironed control that leaked significantly. A hydraulic resistance model, solved as an equivalent resistor network, predicted a 185% pressure-drop difference between the first and last well in a seven-well linear design, which fell to 32% after moving to two wells. Fluid can be driven through the chip by hydrostatic pressure from a cut pipette tip, removing the need for a syringe pump.
+<a id="400d65dd82be80e9a9b3e3b6b7601cec" />**The microfluidic chip** incubates the patient sample with the candidate antibiotic and delivers the result to the biosensor wells. It is cast in PDMS from FDM-printed PLA molds and plasma-bonded to a standard glass microscope slide, costing approximately **\$1–5 per chip**, with no cleanroom and no resin printer. Seven design cycles got us there, four of which failed. Two findings generalize: mold walls are necessary, or the channel floats during curing and becomes encased in set PDMS; and surface finish determines whether the chip leaks, with the printer's ironing function producing a surface that plasma-bonds reliably against a non-ironed control that leaked significantly. A hydraulic resistance model, solved as an equivalent resistor network, predicted a 185% pressure-drop difference between the first and last well in a seven-well linear design, which fell to 32% after moving to two wells. Fluid can be driven through the chip by hydrostatic pressure from a cut pipette tip, removing the need for a syringe pump.
 
-<a id="400d65dd82be8029a133e0f5c415026a" />**The fluorescence detector** reads the output for **\$204.48**, against commercial instruments starting around \$630 and reaching beyond \$42,000 — none of which accept our chip format. The saving comes from the optical layout. Conventional detectors arrange source, sample, and detector at 90° and use both excitation and emission filters, where a single excitation filter alone can cost around \$300. We aligned a 488 nm LED, the sample, a 500 nm long-pass filter, and a photodiode along one vertical axis, eliminating a filter entirely. A 10 MΩ transimpedance stage with programmable gain and the Arduino's 1.1 V internal reference gives approximately 1 pA resolution. We document our first board's failure in full: it was adapted from a published circuit designed for ±9 V rails and powered instead from 5 V, which drove the op-amps outside their rated supply and saturated the output, so the circuit did not respond to light at all.
+<a id="400d65dd82be8029a133e0f5c415026a" />**The fluorescence detector** reads the output for **\$204.48**, against commercial instruments starting around \$630 and reaching beyond \$42,000. The saving comes from the optical layout. Conventional detectors arrange source, sample, and detector at 90° and use both excitation and emission filters, where a single excitation filter alone can cost around \$300. We aligned a 488 nm LED, the sample, a 500 nm long-pass filter, and a photodiode along one vertical axis, eliminating a filter entirely. A 10 MΩ transimpedance stage with programmable gain and the Arduino's 1.1 V internal reference gives approximately 1 pA resolution. We document our first board's failure in full: it was adapted from a published circuit designed for ±9 V rails and powered instead from 5 V, which drove the op-amps outside their rated supply and saturated the output, so the circuit did not respond to light at all.
 
 <a id="400d65dd82be8015a700ed8adff9f994" />**The bioreactor** produces the biosensor cultures for **\$106.68** from off-the-shelf components, monitoring temperature and pH with an Arduino. Across three validation experiments it reached **2.38 to 2.74 times** the normalized growth of a conventional flask control.
 
 ### <a id="400d65dd82be80c8b42fde85984a2a5a" />**Standardization of Measurement**
 
-<a id="400d65dd82be802db0cdd41234f482db" />Measurement is not a supporting activity for FAST — it is the readout the entire platform depends on. A susceptibility call means something only if fluorescence can be measured reproducibly and read against controls.
+<a id="400d65dd82be802db0cdd41234f482db" />Measurement is not a supporting activity for FAST, it is the readout the entire platform depends on. A susceptibility call means something only if fluorescence can be measured reproducibly and read against controls.
 
 <a id="400d65dd82be802ca72ee7074055aee5" />We have documented the full chain: baseline growth and basal expression for both strains and wild type, OD600 calibration curves, the MIC titration that established the subinhibitory window, same-plate untreated controls as the fold-change denominator, blank media subtraction, and a per-run LED-on-minus-LED-off baseline on the detector.
 
@@ -201,49 +199,49 @@ title: "Description"
 
 <a id="400d65dd82be800489c6e411717a40f2" />Putting it all together, this is how FAST integrates with the world.
 
-### <a id="400d65dd82be806a9bb8f8d2dd00daf3" />**SAMPLE AND PANEL SELECTION**
+### <a id="400d65dd82be806a9bb8f8d2dd00daf3" />**Sample and Panel Selection**
 
-#### <a id="400d65dd82be80149711fd921dbbc694" />**SPECIMEN COLLECTION**
+#### <a id="400d65dd82be80149711fd921dbbc694" />**Specimen Collection**
 
 <a id="400d65dd82be80ce95cbe2f6e1362fde" />A urine sample is collected at the point of care — a community pharmacy, family practice, urgent care clinic, or remote nursing station. No transport to a microbiology laboratory and no prior isolation step is required.
 
 <a id="400d65dd82be80db930ce72c33a0ae75" />*Visit our Human Practices page to learn how clinical and patient perspectives shaped this choice.*
 
-#### <a id="400d65dd82be8055b691d1e02c0ee85e" />**ANTIBIOTIC PANEL LOADING**
+#### <a id="400d65dd82be8055b691d1e02c0ee85e" />Loading Antibiotic Panel
 
 <a id="400d65dd82be809bb6e8cc6c791b0ce6" />The candidate antibiotics are loaded into the chip at the concentrations established by our MIC work. Because resistance to one class does not predict susceptibility to another, the chip is designed to carry multiple antibiotics in parallel rather than testing a single drug.
 
 <a id="400d65dd82be800db2ddc304a537a1b7" />*Visit our Modelling page to learn more about PRISM and the promoter library screen.*
 
-### <a id="400d65dd82be8030b033c081d7502b8c" />**ON-CHIP DEGRADATION**
+### <a id="400d65dd82be8030b033c081d7502b8c" />**On-chip Degradation**
 
-#### <a id="400d65dd82be8025bdb0d878dce4288c" />**CHAMBER A — INCUBATION**
+#### <a id="400d65dd82be8025bdb0d878dce4288c" />**CHAMBER A — Incubation**
 
 <a id="400d65dd82be80a8bae4e6c4fea2f24e" />Patient sample and antibiotic are combined and held for the degradation window. If the patient's organism carries a degrading or modifying enzyme, the antibiotic is inactivated here. The incubation time is informed by our degradation model and validated against engineered patient simulants.
 
 <a id="400d65dd82be8091823ce0a3902c8774" />*Visit our Hardware page to learn more about the microfluidic chip.*
 
-#### <a id="400d65dd82be8063900fe63412939978" />**FILTRATION AND TRANSFER**
+#### <a id="400d65dd82be8063900fe63412939978" />**Filtration and Transfer**
 
 <a id="400d65dd82be807db9edcb8565542017" />The mixture is filtered to remove the patient's bacteria, and the remaining antibiotic is carried to the biosensor wells by hydrostatic flow.
 
 <a id="400d65dd82be80df9569e0698161fae5" />*Visit our Results page to learn more about the antibiotic degradation assay.*
 
-### <a id="400d65dd82be8009854acefebdafff7a" />**READOUT AND CLINICAL DECISION**
+### <a id="400d65dd82be8009854acefebdafff7a" />**Readout and Clinical Result**
 
-#### <a id="400d65dd82be807db297f9da1d500795" />**CHAMBER B — BIOSENSOR RESPONSE**
+#### <a id="400d65dd82be807db297f9da1d500795" />**CHAMBER B — Biosensor Response**
 
 <a id="400d65dd82be8036a891cd7033e51004" />The surviving antibiotic reaches the CpxP or RecA biosensor strain. An active antibiotic induces the corresponding stress promoter and sfGFP is expressed; an inactivated one does not.
 
 <a id="400d65dd82be801eba6be483449ad22b" />*Visit our Wet Lab page to learn more about biosensor characterization.*
 
-#### <a id="400d65dd82be8029beaec2080369d813" />**FLUORESCENCE DETECTION**
+#### <a id="400d65dd82be8029beaec2080369d813" />**Fluorescence Detector**
 
 <a id="400d65dd82be80518e51dcee80f3694f" />The chip is read on our low-cost detector. Fluorescence indicates the sample is susceptible to that antibiotic; no fluorescence indicates resistance.
 
 <a id="400d65dd82be80449834f066965bd640" />*Visit our Measurement page to learn more about how we established this readout.*
 
-#### <a id="400d65dd82be8068bdfafe13c0e873d5" />**PRESCRIBING DECISION**
+#### <a id="400d65dd82be8068bdfafe13c0e873d5" />**Clinical Impact**
 
 <a id="400d65dd82be800aa577d239bd217126" />The clinician or pharmacist prescribes against a result rather than an assumption — within the first treatment window, not after a failure.
 

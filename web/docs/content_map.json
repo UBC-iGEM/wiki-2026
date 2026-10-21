@@ -389,26 +389,6 @@
                     "item": "359d65dd82be8151b34bf6b8b5f7ca59"
                 }
             ]
-        },
-        {
-            "name": "Testing",
-            "entries": [
-                {
-                    "path": "Content",
-                    "type": "page",
-                    "item": "356d65dd82be809eb77bf5b3704dc316"
-                },
-                {
-                    "path": "hi",
-                    "type": "page",
-                    "item": "3f3d65dd82be80bb87bec926aba92089"
-                },
-                {
-                    "path": "Homepage content holder",
-                    "type": "page",
-                    "item": "3fcd65dd82be8075860cd4348bb5401f"
-                }
-            ]
         }
     ],
     "static_links": [
