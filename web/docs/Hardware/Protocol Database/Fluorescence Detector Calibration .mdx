@@ -4,7 +4,7 @@ title: "Fluorescence Detector Calibration "
 path: "Hardware/Protocol Database/Fluorescence Detector Calibration "
 ---
 
-<a id="400d65dd82be8088baa0ca12fdf3c9c9" />Before regular use, the fluorescence detector needs to be calibrated to a baseline signal that the photodiode reads without any GFP emission. Then the signal the arduino reads from the circuit will be compared to the baseline during use. This is done through recording the fluorescence of a sample with E. Coli without GFP, and comparing this to a sample with GFP. This accounts for the parts of the signal from sources other than the GFP emission itself. This includes the LED light, possible autofluorescence, and any room light leaking into the enclosure as optical noise, and the op-amp offsets and dark current of the photodiode as electrical noise.
+<a id="400d65dd82be8088baa0ca12fdf3c9c9" />Before regular use, the fluorescence detector needs to be calibrated to a baseline signal that the photodiode reads without any GFP emission. Then the signal the arduino reads from the circuit will be compared to the baseline during use. This is done through recording the fluorescence of a sample with *E. Coli* without GFP, and comparing this to a sample with GFP. This accounts for the parts of the signal from sources other than the GFP emission itself. This includes the LED light, possible autofluorescence, and any room light leaking into the enclosure as optical noise, and the op-amp offsets and dark current of the photodiode as electrical noise.
 
 <br id="400d65dd82be8003bf9fee592a063932" />
 
@@ -12,7 +12,7 @@ path: "Hardware/Protocol Database/Fluorescence Detector Calibration "
 
 1. <a id="400d65dd82be80349e2ce7388b260846" />The gain on the second op-amp stage
 2. <a id="400d65dd82be80699710cdaf7cefc65e" />The brightness of the LED
-3. <a id="400d65dd82be80ef95cbecb04f73648f" />The number of E. Coli used in the sample
+3. <a id="400d65dd82be80ef95cbecb04f73648f" />The number of *E. Coli* used in the sample
 4. <a id="400d65dd82be803e947cd3fa722c4948" />LED on and LED off subtraction for baseline signal before data collection
 5. <a id="400d65dd82be8062a6e9e85264d6c772" />Read signal and reference voltage and subtract them during data collection
 6. <a id="400d65dd82be8076aad3c2d33114ead3" />Start with low gain and increase until signal is seen

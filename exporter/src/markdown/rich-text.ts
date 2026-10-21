@@ -255,11 +255,14 @@ async function itemLeaves(item: RichTextItemResponse, ctx: ConvertContext): Prom
                         children: [{ type: "text", value: mention.link_preview.url }],
                     };
                     break;
-                case "page": {
+                case "page":
+                case "database": {
+                    // Database mentions are resolved like page mentions
+                    const id = mention.type === "page" ? mention.page.id : mention.database.id;
                     // A mention of a block is a page mention whose URL names the block
                     const block_id = item.href ? parseNotionUrl(item.href)?.block : undefined;
                     const block = block_id ? { id: block_id, text: item.plain_text.trim() } : undefined;
-                    const page_node_res = await pageMention(new PageId(mention.page.id), ctx, block);
+                    const page_node_res = await pageMention(new PageId(id), ctx, block);
                     if (isExporterErr(page_node_res)) {
                         page_node_res.warn(ctx);
                         return [];

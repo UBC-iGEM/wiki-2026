@@ -25,7 +25,7 @@ title: "Best Measurement"
 
 <a id="2c317f78fad4424190db6674e48f0a24" />That experiment produced no dose-dependent response. Rather than treating this as a failure of the biosensors, we read it as a failure of the measurement window, since 60 minutes is short relative to sfGFP accumulation. We report this openly because the negative result is informative: a team designing a similar assay should not conclude from a flat one-hour curve that their reporter does not work.
 
-<a id="b8e8b72fc2d4484fb446f73586a42531" />Correcting it required knowing where the strains remain viable. We ran a minimum inhibitory concentration titration for gentamicin, tobramycin, and amoxicillin using two-fold serial dilutions, with concentration ranges seeded from published MIC values for susceptible *E. coli* and growth assessed by OD600 after 24 hours at 37°C. Both biosensor strains showed provisional MIC ranges of 4 to 8 µg/mL across all three antibiotics. This defined the subinhibitory window in which the strains stay alive while still experiencing antibiotic stress, and every subsequent measurement was placed inside it.
+<a id="b8e8b72fc2d4484fb446f73586a42531" />Correcting it required knowing where the strains remain viable. We ran a minimum inhibitory concentration titration for gentamicin, tobramycin, and amoxicillin using two-fold serial dilutions, with concentration ranges seeded from published MIC values for susceptible *E. coli* and growth assessed by $OD_{600}$ after 24 hours at 37°C. Both biosensor strains showed provisional MIC ranges of 4 to 8 µg/mL across all three antibiotics. This defined the subinhibitory window in which the strains stay alive while still experiencing antibiotic stress, and every subsequent measurement was placed inside it.
 
 # <a id="6764a7a97de6431dab40d5ac7508f4c0" />Measuring the Response
 
@@ -49,7 +49,7 @@ title: "Best Measurement"
 
 <a id="17d8fb90b60d45528db4485615682827" />We first derived apparent MIC values for amoxicillin, cephalexin, gentamicin, and tobramycin from endpoint growth across a dilution series built around literature values cross-checked against EUCAST, then selected subinhibitory concentrations at roughly 0.25 to 0.5 times the apparent MIC. This produced the working concentrations of 2, 1, 1, and 1 µg/mL respectively, which we applied to the full library.
 
-<a id="dfe0dfc2f131444789736dc697e0dc6e" />The screen ran across 30 384-well plates with OD600 and GFP sampled every 30 minutes over eight hours, with one no-antibiotic control plate and a media-only blank. Each promoter's response was calculated as GFP normalized to OD600 and then to its own control, which is what makes the resulting values comparable across constructs with different growth characteristics. Expressed this way, most of the library clusters at a growth ratio and induction ratio near 1, and genuine hits are identifiable as outliers ranging from roughly 3-fold to 12-fold.
+<a id="dfe0dfc2f131444789736dc697e0dc6e" />The screen ran across 30 384-well plates with $OD_{600}$ and GFP sampled every 30 minutes over eight hours, with one no-antibiotic control plate and a media-only blank. Each promoter's response was calculated as GFP normalized to $OD_{600}$ and then to its own control, which is what makes the resulting values comparable across constructs with different growth characteristics. Expressed this way, most of the library clusters at a growth ratio and induction ratio near 1, and genuine hits are identifiable as outliers ranging from roughly 3-fold to 12-fold.
 
 # <a id="fb6503bc90404bd0b12a269d4b855fb9" />Measuring Without a Plate Reader
 
@@ -65,7 +65,7 @@ title: "Best Measurement"
 
 # <a id="528bc6efdb02485186882eb02ca4c37b" />Limitations
 
-<a id="1e611e274b624a9e8f65386d5c4c33fd" />Our MIC values are provisional. They were determined by endpoint OD600 in a two-fold series rather than by a standardized broth microdilution against a reference strain, so they locate a working range rather than establish a clinical breakpoint.
+<a id="1e611e274b624a9e8f65386d5c4c33fd" />Our MIC values are provisional. They were determined by endpoint $OD_{600}$ in a two-fold series rather than by a standardized broth microdilution against a reference strain, so they locate a working range rather than establish a clinical breakpoint.
 
 <a id="6e9cb257d02e4e898018da2d203d73f1" />Our fold-change values are reported against untreated growth controls and are not calibrated to an absolute fluorescence standard, which means they are comparable within our dataset and between our strains, but not directly against values measured on another instrument. Adopting the iGEM Fluorescence Measurement Calibrants Kit to express results in molecules of equivalent fluorescein is the clearest next step, and would make our characterization comparable across labs.
 

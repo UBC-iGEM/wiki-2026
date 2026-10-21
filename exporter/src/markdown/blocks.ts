@@ -286,15 +286,21 @@ async function convertBlock(block: NotionBlock, parent_ctx: ConvertContext): Pro
             return [anchorFlow(anchor), ...(await children())];
         case "link_to_page": {
             const target = block.link_to_page;
-            if (target.type !== "page_id") {
-                new ExporterError(
-                    `A link to a ${target.type === "database_id" ? "database" : "comment"} is unsupported and was ignored.`,
-                    ["malformed content"],
-                ).warn(ctx);
+            // Database links are resolved like page links
+            const target_id =
+                target.type === "page_id"
+                    ? target.page_id
+                    : target.type === "database_id"
+                      ? target.database_id
+                      : undefined;
+            if (!target_id) {
+                new ExporterError(`A link to a ${target.type} is unsupported and was ignored.`, [
+                    "malformed content",
+                ]).warn(ctx);
                 return [];
             }
 
-            const link = await pageMention(new PageId(target.page_id), ctx);
+            const link = await pageMention(new PageId(target_id), ctx);
             if (isExporterErr(link)) {
                 link.warn(ctx);
                 return [];

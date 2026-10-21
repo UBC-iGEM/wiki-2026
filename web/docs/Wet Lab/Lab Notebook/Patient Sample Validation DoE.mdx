@@ -1,7 +1,7 @@
 ---
 type: "database"
-title: "Patient Sample"
-path: "Wet Lab/Lab Notebook/Patient Sample"
+title: "Patient Sample Validation DoE"
+path: "Wet Lab/Lab Notebook/Patient Sample Validation DoE"
 date: "2026-10-16"
 ---
 
@@ -17,18 +17,18 @@ date: "2026-10-16"
 
 <a id="400d65dd82be804b8395dee3047d60ac" />
 
-|                                                                  |           |
-| ---------------------------------------------------------------- | --------- |
-| <a id="400d65dd82be8035addfffe7b63afe11" />**Patient simulant**  | **Media** |
-| <a id="400d65dd82be800a8752c2b6ecf68f61" />No bacteria (control) | LB        |
-| <a id="400d65dd82be8043baaef89403633bf6" />Untransformed EPI300  | LB        |
-| <a id="400d65dd82be80d78091c7c8cec8fd64" />β-lactamase           | LB, LB-Cm |
-| <a id="400d65dd82be805eb547efb443a75c83" />GMR                   | LB, LB-Cm |
-| <a id="400d65dd82be807cabd6db7e23d4c93a" />KanR                  | LB, LB-Cm |
+|                                                                                |           |
+| ------------------------------------------------------------------------------ | --------- |
+| <a id="400d65dd82be8035addfffe7b63afe11" />**Patient simulant**                | **Media** |
+| <a id="400d65dd82be800a8752c2b6ecf68f61" />Media blank (contamination control) | LB        |
+| <a id="400d65dd82be8043baaef89403633bf6" />Untransformed EPI300                | LB        |
+| <a id="400d65dd82be80d78091c7c8cec8fd64" />β-lactamase patient simulant        | LB, LB-Cm |
+| <a id="400d65dd82be805eb547efb443a75c83" />GmR patient simulant                | LB, LB-Cm |
+| <a id="400d65dd82be807cabd6db7e23d4c93a" />KanR patient simulant               | LB, LB-Cm |
 
 ## <a id="400d65dd82be80cb9561c92a74aaa294" />Biosensors
 
-<a id="400d65dd82be8090a492feb4a2401e56" />CpxP and RecA, each prepared in LB and LB-Cm.
+<a id="400d65dd82be8090a492feb4a2401e56" />CpxP and RecA biosensor strains, each prepared in LB and LB-Cm.
 
 ## <a id="400d65dd82be8025ac4bf9896af7657d" />**Reagents**
 
@@ -45,9 +45,17 @@ date: "2026-10-16"
 
 ## <a id="400d65dd82be800f9282c325ea560f61" />**Culture preparation**
 
-- <a id="400d65dd82be8030aec2e23ea7c293e4" />Grow overnight cultures of CpxP, RecA, and patient simulants.
-- <a id="400d65dd82be808186cef491501217be" />Normalize cultures to $OD_{600}$ = 0.2, if required.
-- <a id="400d65dd82be80d48cd2d0550c7d50e1" />Centrifuge designated culture aliquots and resuspend pellets in LB without chloramphenicol.
+- <a id="400d65dd82be8030aec2e23ea7c293e4" />For each strain, inoculate 2 tubes containing 5 ml of LB-Cm from glycerol stocks:
+  - <a id="400d65dd82be807cb439f5bfaa3ef911" />CpxP biosensor
+  - <a id="400d65dd82be80739461ea19fe20c4a0" />RecA biosensor
+  - <a id="400d65dd82be805da8abdf20e28a87a7" />β-lactamase patient simulant
+  - <a id="400d65dd82be802894e0d64aeff585c2" />GmR patient simulant
+  - <a id="400d65dd82be80da919afe2390292704" />KanR patient simulant
+  - <a id="400d65dd82be80d4a8c3e41ec028750d" />Untransformed EPI300 (culture in LB)
+- <a id="400d65dd82be80ad9ec5db0dafe7ee51" />Incubate cultures at 37˚C overnight.
+- <a id="400d65dd82be808186cef491501217be" />Measure $OD_{600}$ of overnight cultures.
+- <a id="400d65dd82be8061afa2e55ca10d6d10" />For one set of tubes, normalize culture $OD_{600}$ to 0.2 using LB-Cm.
+- <a id="400d65dd82be804aa4d4cddec6c533ee" />For the remaining set of tubes, centrifuge at 4000 x g for 10 minutes. Resuspend pellets in 5 ml of LB. Normalize culture $OD_{600}$ to 0.2 using LB.
 - <a id="400d65dd82be801d8fa0c82cfd549947" />Label all tubes and prepare the Echo input plate with antibiotics, sodium, and glucose.
 
 ## <a id="400d65dd82be8071b1c2c4354075d3c7" />**Degradation Phase (2 hours)**
@@ -64,7 +72,7 @@ date: "2026-10-16"
 
 # <a id="400d65dd82be803d9e97f7ed35175f8c" />Results
 
-<a id="400d65dd82be801082adc0e187ac463e" />GFP fluorescence and OD600 measurements were collected for both plates and analyzed using JMP.
+<a id="400d65dd82be801082adc0e187ac463e" />GFP fluorescence and $OD_{600}$ measurements were collected for both plates and analyzed using JMP.
 
 <a id="400d65dd82be8016987cd6631dff2d55" />Read the results analysis here: [Patient Sample Design Of Experiments](/ubc-vancouver/modelling/patient-sample-design-of-experiments)
 

@@ -8,7 +8,7 @@ title: "Promoter Library"
 <Callout icon="">
   <a id="3fdd65dd82be800fa6b1eca1360f5bcd" />As our project this year was to develop an *E. coli* promoter-GFP biosensor, we sought to identify high quality promoters—characterized by dynamic range, low basal expression, and low cross-activation—that enable quantifying presence of antibiotic in solution. Our biosensor depends on a promoter that produces a strong, rapid, and specific fluorescence when a relevant antibiotic is present, therefore promoter performance is critical to the success of FAST’s accuracy: a leaky promoter would yield false susceptibility calls, a slow promoter would reduce our advantage over culture-based testing, etc. However, rather than relying solely on literature review, we wanted to validate our findings through a library screen. We screened a promoter-GFP library against four antibiotics: Amoxicillin, Cephalexin, Gentamicin, and Tobramycin. These antibiotics were chosen as they are β-lactams and aminoglycosides, pertinent to our project for their clinical relevance to UTIs.
 
-  <a id="3fdd65dd82be80cfa295f1cb77877fc7" />To characterize over 200 promoter candidates, we developed the experimental design of a high-throughput experiment executed in collaboration with Biofactorial, an automation facility. Our experiment consisted of three components: assay development, the library screen, then sequencing. By exposing the promoter library to each antibiotic at a selected sub-inhibitory concentration, we collected GFP and OD600 measurements and ranked candidates based on sustained induction, response speed, and low baseline expression. Through our criterion we were able to identify the top ten promoters from the library, and sequenced the top candidates back to its well for further validation.
+  <a id="3fdd65dd82be80cfa295f1cb77877fc7" />To characterize over 200 promoter candidates, we developed the experimental design of a high-throughput experiment executed in collaboration with Biofactorial, an automation facility. Our experiment consisted of three components: assay development, the library screen, then sequencing. By exposing the promoter library to each antibiotic at a selected sub-inhibitory concentration, we collected GFP and $OD_{600}$ measurements and ranked candidates based on sustained induction, response speed, and low baseline expression. Through our criterion we were able to identify the top ten promoters from the library, and sequenced the top candidates back to its well for further validation.
 </Callout>
 
 <a id="3fdd65dd82be8087975be726f6e6e36e" />
@@ -294,7 +294,7 @@ title: "Promoter Library"
   <Fragment slot="content" />
 </Figure>
 
-<a id="3ffd65dd82be80b5b27cc0e3414f704c" />In the figure above we can see that Cephalexin is the only antibiotic that increased GFP in all three candidates.
+<a id="3ffd65dd82be80b5b27cc0e3414f704c" />In the figure above we can see that Cephalexin is the only antibiotic that increased GFP induction in all three candidates. On the other hand, Gentamicin and Tobramycin reduced GFP induction, and Amoxicillin leaves Tube 7 almost unchanged. One caveat however, is that if Tube 1 and 7 are identical regions, then their map should look very similiar. Although general similarity can be concluded in Amoxicillin, Cephalexin, and Gentamicin, Tobramycin resulted in opposite induction directions between the two candidates. So, the overall pattern matches in 3 out of 4 conditions. The mixed result in Tobramycin can be a result of various potential factors, ranging from measurement noise to even where the well was position within the plate.
 
 <br id="3e5d65dd82be80abb6f8edee810f78af" />
 
@@ -306,11 +306,11 @@ title: "Promoter Library"
   </Fragment>
 
   <Fragment slot="build">
-    <a id="3ebd65dd82be80bfb86ccbe8429cb7d9" />The selected candidates were inoculated, cultured, and grown. The tubes were sent to Plasmidsaurus for long-read sequencing. We analyzed the resulting GeneBank files, comparing the assemblies against the plasmid backbone to isolate the variable insertions, then aligned each insert to the E. coli MG1655 reference genome. We then used each insert’s position and orientation relative to GFP to infer the likely reporter-facing gene.
+    <a id="3ebd65dd82be80bfb86ccbe8429cb7d9" />The selected candidates were inoculated, cultured, and grown. The tubes were sent to Plasmidsaurus for long-read sequencing.
   </Fragment>
 
   <Fragment slot="test">
-    <a id="400d65dd82be80fbb259f4067371f546" />The resulting GeneBank files were analyzed. We compared the assemblies against the plasmid backbone to isolate the variable insertions, then aligned each insert to the E. coli MG1655 reference genome. We then used each insert’s position and orientation relative to GFP to infer the likely reporter-facing gene.
+    <a id="400d65dd82be80fbb259f4067371f546" />We analyzed the resulting GeneBank files, comparing the assemblies against the plasmid backbone to isolate the variable insertions, then aligned each insert to the *E. coli* MG1655 reference genome. We then used each insert’s position and orientation relative to GFP to infer the likely reporter-facing gene.
   </Fragment>
 
   <Fragment slot="learn">
@@ -334,8 +334,6 @@ title: "Promoter Library"
 
 <a id="400d65dd82be8060b09dc1be5fbb7225" />We also made sure to document any changes and decisions made throughout our design process; our [experimental protocols](/ubc-vancouver/wet-lab/lab-notebook/biofactorial-part-1-mic-assay) reflect the final version of our protocol that was performed by Biofactorial.
 
-<br id="3fcd65dd82be800b894bc9d1a172c60d" />
-
 # <a id="3fcd65dd82be806c8729e1abcaac83d4" />Errors, Limitations, and Future Work
 
 <a id="400d65dd82be8047b929d2b42190fcef" />**Errors**
@@ -352,7 +350,7 @@ title: "Promoter Library"
 
 <a id="3e8d65dd82be80bd9608e9da7e045123" />**Future Work (addressing our errors)**
 
-<a id="400d65dd82be807bbc49e46d9965ffcc" />Due to time constraints we were not able to carry out our troubleshooting, but we have identified the steps we would like to take to continue building upon this. To continue refining our results, particularly the sequencing aspect, we would like to re-prep and re-sequence the remaining candidates. If the failed assembly were in fact a result of mixed colonies, re-streaking can ensure a fresh culture is grown from the new isolated colony. If re-prepping were not an option (as re-sending our samples to a sequencing company can have time or financial constraints) it would also be useful to locate a reference backbone to aid the failed-sequences and troubleshoot from there. Lastly, to strengthen confidence in measurements from the library screen, sequencing additional clones and/or replicating the screen can increase reliability. Ultimately, we hope to continue sequencing and mapping more of the promoter library to expand our range of top candidates, in addition to determining more of the 96-well plates to 384-well plate mapping.
+<a id="400d65dd82be807bbc49e46d9965ffcc" />Due to time constraints we were not able to carry out our troubleshooting, but we have identified the steps we would like to take to continue building upon this. To continue refining our results, particularly the sequencing aspect, we would like to re-prep and re-sequence the remaining candidates from the top 10. If the failed assembly were in fact a result of mixed colonies, re-streaking can ensure a fresh culture is grown from the new isolated colony. If re-prepping were not an option (as re-sending our samples to a sequencing company can have time or financial constraints) it would also be useful to locate a reference backbone to aid the failed sequences and troubleshoot from there. Lastly, to strengthen confidence in measurements from the library screen, sequencing additional clones and/or replicating the screen can increase reliability. Ultimately, we hope to continue sequencing and mapping more of the promoter library to expand our range of top candidates, in addition to determining more of the 96-well to 384-well plate mapping.
 
 <br id="3e8d65dd82be80f6b624c85d8fbacb9f" />
 
