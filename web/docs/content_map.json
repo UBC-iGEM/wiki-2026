@@ -1,6 +1,51 @@
 {
     "aggregates": [
         {
+            "name": "Project",
+            "entries": [
+                {
+                    "path": "Description",
+                    "type": "page",
+                    "item": "3fcd65dd82be80f980bce59993e8829c"
+                },
+                {
+                    "path": "Engineering Success",
+                    "type": "page",
+                    "item": "3fad65dd82be8064b4d2fd929f74d04a"
+                },
+                {
+                    "path": "Results",
+                    "type": "page",
+                    "item": "3fcd65dd82be807e9eaafd92041063b4"
+                },
+                {
+                    "path": "Contribution",
+                    "type": "page",
+                    "item": "3fad65dd82be80ffb6d8f8d5c65f8225"
+                },
+                {
+                    "path": "Human Practices",
+                    "type": "page",
+                    "item": "3fad65dd82be80019c3dc5829472d6e6"
+                },
+                {
+                    "path": "Best Measurement",
+                    "type": "page",
+                    "item": "3fcd65dd82be802bac08db629d0d6184"
+                },
+                {
+                    "path": "Best Hardware",
+                    "type": "page",
+                    "item": "400d65dd82be81d38dbdc2780bdb1730"
+                },
+                {
+                    "path": "Best Integrated Human Practices",
+                    "type": "page",
+                    "item": "400d65dd82be811a9ad9f2948ed9f14b"
+                }
+            ]
+        },
+        {
             "name": "Wet Lab",
             "entries": [
                 {
@@ -152,6 +197,10 @@
                         {
                             "path": "Biofactorial Part 2: Library Screen",
                             "item": "3fcd65dd82be80508eacf33e7e0ce89d"
+                        },
+                        {
+                            "path": "Patient Sample",
+                            "item": "400d65dd82be8003ab86cd8c0b642cf9"
                         }
                     ]
                 },
@@ -236,6 +285,10 @@
                         {
                             "path": "SOP for Calibration and Setup of TSL2591 OD Sensor",
                             "item": "3ffd65dd82be80be8176c79e03919382"
+                        },
+                        {
+                            "path": "Fluorescence Detector Calibration ",
+                            "item": "400d65dd82be8075a92fe7f0c445d23f"
                         }
                     ]
                 }
@@ -343,41 +396,6 @@
                     "path": "Long Term Growth",
                     "type": "page",
                     "item": "359d65dd82be8151b34bf6b8b5f7ca59"
-                }
-            ]
-        },
-        {
-            "name": "Project",
-            "entries": [
-                {
-                    "path": "Description",
-                    "type": "page",
-                    "item": "3fcd65dd82be80f980bce59993e8829c"
-                },
-                {
-                    "path": "Engineering Success",
-                    "type": "page",
-                    "item": "3fad65dd82be8064b4d2fd929f74d04a"
-                },
-                {
-                    "path": "Results",
-                    "type": "page",
-                    "item": "3fcd65dd82be807e9eaafd92041063b4"
-                },
-                {
-                    "path": "Contribution",
-                    "type": "page",
-                    "item": "3fad65dd82be80ffb6d8f8d5c65f8225"
-                },
-                {
-                    "path": "Human Practices",
-                    "type": "page",
-                    "item": "3fad65dd82be80019c3dc5829472d6e6"
-                },
-                {
-                    "path": "Best Measurement",
-                    "type": "page",
-                    "item": "3fcd65dd82be802bac08db629d0d6184"
                 }
             ]
         },

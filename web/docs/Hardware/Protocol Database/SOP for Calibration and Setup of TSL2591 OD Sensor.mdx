@@ -4,21 +4,21 @@ title: "SOP for Calibration and Setup of TSL2591 OD Sensor"
 path: "Hardware/Protocol Database/SOP for Calibration and Setup of TSL2591 OD Sensor"
 ---
 
-# <a id="3ffd65dd82be801da201f990e92b7597" />OBJECTIVE
+# <a id="3ffd65dd82be801da201f990e92b7597" />Objective
 
 > <a id="3ffd65dd82be80f18b6ccc8b94b6ab1e" />Confirm that the TSL2591 light sensor and LED work, choose an LED current, gain, and integration time that give a strong, non-saturated signal, and set dark and blank references so OD readings are correct.
 
-## <a id="3ffd65dd82be80328ff1fcb4b8cb39a6" />**PRODUCT:**
+## <a id="3ffd65dd82be80328ff1fcb4b8cb39a6" />**Product**
 
 <a id="3ffd65dd82be806691f8c97a60564fdd" />TSL2591 High Dynamic Range Digital Light Sensor (Adafruit breakout) + \~600 nm LED + Arduino
 
-## <a id="3ffd65dd82be80f1a994faccb274466b" />**DOCUMENTATION:**
+## <a id="3ffd65dd82be80f1a994faccb274466b" />**Documentation**
 
 - <a id="3ffd65dd82be8003a0f2fcba5ed6b8d8" />TSL2591 datasheet: [https://look.ams-osram.com/m/c901de8e97608f8/original/TSL2591-DS000338.pdf](https://look.ams-osram.com/m/c901de8e97608f8/original/TSL2591-DS000338.pdf)
 - <a id="3ffd65dd82be805e8e42e43c941fd4aa" />Adafruit wiring & test: [https://learn.adafruit.com/adafruit-tsl2591/wiring-and-test](https://learn.adafruit.com/adafruit-tsl2591/wiring-and-test)
 - <a id="3ffd65dd82be809e8d67ef11a2469b04" />Adafruit library: [https://github.com/adafruit/Adafruit\_TSL2591\_Library](https://github.com/adafruit/Adafruit_TSL2591_Library)
 
-# <a id="3ffd65dd82be8085a45de9399ebf50a7" />OVERVIEW
+# <a id="3ffd65dd82be8085a45de9399ebf50a7" />Overview
 
 <a id="3ffd65dd82be80ef9e03c0ec0a9f05b3" />Calibration is done by adjusting **BOTH** the hardware (resistor sets LED current) and the software (gain and integration time in the Arduino code).
 
@@ -28,9 +28,9 @@ path: "Hardware/Protocol Database/SOP for Calibration and Setup of TSL2591 OD Se
   - <a id="3ffd65dd82be80c188ffedfb80a192d6" />longer integration time = longer reading, better for dim environments
 - <a id="3ffd65dd82be8030bd98eb7fb93eef8f" />LED and sensor position must be fixed during all tests
 
-# <a id="3ffd65dd82be8008a652e6a090a829dd" />PROCEDURE
+# <a id="3ffd65dd82be8008a652e6a090a829dd" />Procedure
 
-## <a id="3ffd65dd82be805eac20edf0e1969fa7" />MATERIAL PREP
+## <a id="3ffd65dd82be805eac20edf0e1969fa7" />Material Prep
 
 - <a id="3ffd65dd82be80c6bcf9e113c4e60f0f" />Arduino, TSL2591 breakout, \~600 nm LED, breadboard, jumper wires
 - <a id="3ffd65dd82be80a5af59d950b0b32ae5" />Various resistors (e.g. 1 kΩ, 680 Ω, 470 Ω, 330 Ω, 220 Ω)
@@ -41,7 +41,7 @@ path: "Hardware/Protocol Database/SOP for Calibration and Setup of TSL2591 OD Se
 - <a id="3ffd65dd82be808b93ccfc04b96eb234" />***Never run the LED without a resistor***
 - <a id="3ffd65dd82be80d5b370fba865ead322" />***Do not change LED or sensor position once testing starts***
 
-## <a id="3ffd65dd82be80adad71e14ee3532d42" />HARDWARE SETUP
+## <a id="3ffd65dd82be80adad71e14ee3532d42" />Hardware Setup
 
 1. <a id="3ffd65dd82be80efbb53c26fe81ebc2e" />TSL2591 ↔ Arduino
    1. <a id="3ffd65dd82be800fa26fc4146e9c2e0f" />VIN: 5V
@@ -55,7 +55,7 @@ path: "Hardware/Protocol Database/SOP for Calibration and Setup of TSL2591 OD Se
 4. <a id="3ffd65dd82be801aa13bfe90579078b9" />Install **Adafruit TSL2591 Library** and **Adafruit Unified Sensor** in Arduino IDE
 5. <a id="3ffd65dd82be801b963eebf0a257dc45" />Connect Arduino to laptop, flash **v1**
 
-## <a id="3ffd65dd82be80f38c1ec38b0474c00d" />CODE
+## <a id="3ffd65dd82be80f38c1ec38b0474c00d" />Code
 
 ### <a id="3ffd65dd82be800f86f6d86af689a77f" />v1: Instantanous Readout
 
@@ -179,7 +179,7 @@ void loop() {
 }
 ```
 
-## <a id="3ffd65dd82be806aaf0deee708a165b0" />SENSOR TEST (LED OFF)
+## <a id="3ffd65dd82be806aaf0deee708a165b0" />Sensor Test (LED Off)
 
 <a id="3ffd65dd82be8047a3caf1fa1827b267" />Flash **v1**. Settings: 100 ms integration, medium gain, CH0.
 
@@ -197,7 +197,7 @@ Bright light → much higher ADC
 
 <a id="3ffd65dd82be805997add15214458ea4" />Verify a drastic difference in CH0 is observed. This directly tells us if the sensor is working.
 
-## <a id="3ffd65dd82be804880fec1f1db003285" />LED TEST
+## <a id="3ffd65dd82be804880fec1f1db003285" />LED Test
 
 1. <a id="3ffd65dd82be80b9a7fbd80ec29dac27" />Start with a large resistor
 2. <a id="3ffd65dd82be80679f19c971d890b16c" />LED OFF (`0`): record CH0
@@ -210,7 +210,7 @@ LED OFF → low ADC
 LED ON  → much higher ADC
 ```
 
-## <a id="3ffd65dd82be80099ff8ecb67b2dd7fb" />LIGHT BLOCKING TEST
+## <a id="3ffd65dd82be80099ff8ecb67b2dd7fb" />Light Blocking Test
 
 <a id="3ffd65dd82be80bfa4b3dd580e65c627" />Keep LED, sensor, gain, and integration time fixed. LED ON.
 
@@ -224,7 +224,7 @@ Opaque       → near the LED OFF reading
 
 <a id="3ffd65dd82be8077b863d3eeae223fcc" />This confirms that less light reaching the sensor gives a lower reading, which is what the OD calculation uses.
 
-## <a id="3ffd65dd82be804080f8c29dba4b10d3" />LED CURRENT TEST
+## <a id="3ffd65dd82be804080f8c29dba4b10d3" />LED Current Test
 
 <a id="3ffd65dd82be80339c52c5c04f61d7d4" />LED current is set by the resistor (Ohm’s law):
 
@@ -250,7 +250,7 @@ $$
   <a id="3ffd65dd82be80ad810be40e02c9094d" />**Operator notes:** The LED rated current and voltage were unknown. With \~470 Ω the difference between dim and bright was small. Stepping the resistor down gave a much larger difference. Settled on \~250 Ω. Since this setup has already verified the sensor to work and produced a large range of values, integration time does not need to be adjusted.
 </Callout>
 
-## <a id="3ffd65dd82be8058a6b6e96aae19f979" />DARK AND BLANK (OD CHECK)
+## <a id="3ffd65dd82be8058a6b6e96aae19f979" />Dark And Blank (OD Check)
 
 <a id="3ffd65dd82be802db1e3e41753273e5b" />Flash **v2** with the chosen `GAIN`, `INTEGRATION`, and `SAT_COUNT`.
 

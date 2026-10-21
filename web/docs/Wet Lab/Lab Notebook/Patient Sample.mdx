@@ -1,0 +1,79 @@
+---
+type: "database"
+title: "Patient Sample"
+path: "Wet Lab/Lab Notebook/Patient Sample"
+date: "2026-10-16"
+---
+
+# <a id="400d65dd82be80ae85f2ff6846308ded" />Purpose
+
+<a id="400d65dd82be8083b917ca610a463159" />Investigate how different patient sample conditions affect antibiotic degradation and the subsequent response of the CpxP and RecA biosensors.
+
+# <a id="400d65dd82be8092bef9eba3d6ca569c" />Materials & Methods
+
+<a id="400d65dd82be8067a119db671fa6abf8" />Two 384-well plates will be used, one for CpxP and one for RecA, with a planned 16 x 16 well layout on each plate.
+
+## <a id="400d65dd82be808781ddc283cb73c801" />Patient Simulant Conditions
+
+<a id="400d65dd82be804b8395dee3047d60ac" />
+
+|                                                                  |           |
+| ---------------------------------------------------------------- | --------- |
+| <a id="400d65dd82be8035addfffe7b63afe11" />**Patient simulant**  | **Media** |
+| <a id="400d65dd82be800a8752c2b6ecf68f61" />No bacteria (control) | LB        |
+| <a id="400d65dd82be8043baaef89403633bf6" />Untransformed EPI300  | LB        |
+| <a id="400d65dd82be80d78091c7c8cec8fd64" />β-lactamase           | LB, LB-Cm |
+| <a id="400d65dd82be805eb547efb443a75c83" />GMR                   | LB, LB-Cm |
+| <a id="400d65dd82be807cabd6db7e23d4c93a" />KanR                  | LB, LB-Cm |
+
+## <a id="400d65dd82be80cb9561c92a74aaa294" />Biosensors
+
+<a id="400d65dd82be8090a492feb4a2401e56" />CpxP and RecA, each prepared in LB and LB-Cm.
+
+## <a id="400d65dd82be8025ac4bf9896af7657d" />**Reagents**
+
+<a id="400d65dd82be80b9abcec36181058012" />
+
+|                                                        |                         |
+| ------------------------------------------------------ | ----------------------- |
+| <a id="400d65dd82be80c1894be3bd08449344" />**Reagent** | **Stock concentration** |
+| <a id="400d65dd82be80c5a0a1d65f85b701e2" />Amoxicillin | 1 mg/mL                 |
+| <a id="400d65dd82be80e9b82aee835ca3a3e8" />Gentamicin  | 1 mg/mL                 |
+| <a id="400d65dd82be80b58b4ef6670e57a71a" />Tobramycin  | 1 mg/mL                 |
+| <a id="400d65dd82be8038bb8ad5736d66ceaa" />Sodium      | 250 µg/µL               |
+| <a id="400d65dd82be8058a1ced0648694ebc9" />Glucose     | 250 µg/µL               |
+
+## <a id="400d65dd82be800f9282c325ea560f61" />**Culture preparation**
+
+- <a id="400d65dd82be8030aec2e23ea7c293e4" />Grow overnight cultures of CpxP, RecA, and patient simulants.
+- <a id="400d65dd82be808186cef491501217be" />Normalize cultures to $OD_{600}$ = 0.2, if required.
+- <a id="400d65dd82be80d48cd2d0550c7d50e1" />Centrifuge designated culture aliquots and resuspend pellets in LB without chloramphenicol.
+- <a id="400d65dd82be801d8fa0c82cfd549947" />Label all tubes and prepare the Echo input plate with antibiotics, sodium, and glucose.
+
+## <a id="400d65dd82be8071b1c2c4354075d3c7" />**Degradation Phase (2 hours)**
+
+1. <a id="400d65dd82be80129e27e23eb32f8b82" />Using a multichannel pipette, dispense each of the eight patient simulant conditions into two columns.
+2. <a id="400d65dd82be8083b4fde7b7ad704071" />Use Echo to dispense antibiotics, sodium, and glucose according to the experimental plate map.
+3. <a id="400d65dd82be80408d29d5e91c8a7922" />Incubate for 2 hours.
+
+## <a id="400d65dd82be80d9a3eee7018be1efb1" />**Sensing Phase (8 hours)**
+
+1. <a id="400d65dd82be8097a183f78d21d26735" />Add biosensor cultures using a multichannel pipette, alternating columns between LB and LB-Cm conditions.
+2. <a id="400d65dd82be8036a946e00ac2ac90e5" />Use CpxP for one plate and RecA for the other.
+3. <a id="400d65dd82be807c8696ee21c33e451e" />Incubate for 8 hours.
+
+# <a id="400d65dd82be803d9e97f7ed35175f8c" />Results
+
+<a id="400d65dd82be801082adc0e187ac463e" />GFP fluorescence and OD600 measurements were collected for both plates and analyzed using JMP.
+
+<a id="400d65dd82be8016987cd6631dff2d55" />Read the results analysis here: [Patient Sample Design Of Experiments](/ubc-vancouver/modelling/patient-sample-design-of-experiments)
+
+# <a id="400d65dd82be80e69dc9dd6fb5f445c5" />Summary
+
+<a id="400d65dd82be80ca9dc3d6beceb74058" />The experiment identified preliminary differences in biosensor responses across antibiotic treatments. Similar RecA responses in LB and LB-Cm suggest possible plasmid retention without antibiotic selection.
+
+# <a id="400d65dd82be806da603cab18309e93d" />Hand off/ Next Steps
+
+<a id="400d65dd82be80139bbdc449265e8345" />Evaluate different antibiotic degradation incubation times beyond 2 hours to characterize degradation kinetics and validate the degradation model.
+
+<br id="400d65dd82be80bd8306da7881efceaf" />

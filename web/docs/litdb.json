@@ -1,7 +1,35 @@
 {
-    "PharmacodynamicFunctionsMultiparameter": {
-        "citation_key": "PharmacodynamicFunctionsMultiparameter",
-        "bib": "Pharmacodynamic Functions: a Multiparameter Approach to the Design of Antibiotic Treatment Regimens | Antimicrobial Agents and Chemotherapy [Internet]. [cited 2026 Oct 21]. Available from: <a href=\"https://journals.asm.org/doi/10.1128/aac.48.10.3670-3676.2004\">https://journals.asm.org/doi/10.1128/aac.48.10.3670-3676.2004</a>"
+    "AndrewLiPRISM_figures": {
+        "citation_key": "AndrewLiPRISM_figures",
+        "bib": "Andrew Li / PRISM_figures &#xB7; GitLab [Internet]. [cited 2026 Oct 21]. Available from: <a href=\"https://gitlab.igem.org/andrewyzli/prism_figures\">https://gitlab.igem.org/andrewyzli/prism_figures</a>"
+    },
+    "AndrewLiPRISM_figures2026a": {
+        "citation_key": "AndrewLiPRISM_figures2026a",
+        "bib": "GitLab [Internet]. 2026 [cited 2026 Oct 21]. Andrew Li / PRISM_figures &#xB7; GitLab. Available from: <a href=\"https://gitlab.igem.org/andrewyzli/prism_figures\">https://gitlab.igem.org/andrewyzli/prism_figures</a>"
+    },
+    "AndrewLiPRISM_figures2026": {
+        "citation_key": "AndrewLiPRISM_figures2026",
+        "bib": "GitLab [Internet]. 2026 [cited 2026 Oct 21]. Andrew Li / PRISM_figures &#xB7; GitLab. Available from: <a href=\"https://gitlab.igem.org/andrewyzli/prism_figures\">https://gitlab.igem.org/andrewyzli/prism_figures</a>"
+    },
+    "adaAdafruitTSL2591High": {
+        "citation_key": "adaAdafruitTSL2591High",
+        "bib": "Ada, Lady. Adafruit Learning System. [cited 2026 Oct 21]. Adafruit TSL2591 High Dynamic Range Digital Light Sensor. Available from: <a href=\"https://learn.adafruit.com/adafruit-tsl2591/wiring-and-test\">https://learn.adafruit.com/adafruit-tsl2591/wiring-and-test</a>"
+    },
+    "MilesburtonArduinoTemperatureControlLibraryArduino": {
+        "citation_key": "MilesburtonArduinoTemperatureControlLibraryArduino",
+        "bib": "milesburton/Arduino-Temperature-Control-Library: Arduino library for interfacing with Maxim temperature sensors [Internet]. [cited 2026 Oct 21]. Available from: <a href=\"https://github.com/milesburton/Arduino-Temperature-Control-Library\">https://github.com/milesburton/Arduino-Temperature-Control-Library</a>"
+    },
+    "GravityIndustrialPH": {
+        "citation_key": "GravityIndustrialPH",
+        "bib": "DFRobot Wiki [Internet]. [cited 2026 Oct 21]. Gravity: Industrial pH Meter Kit for Arduino | Precision in Aquaculture. Available from: <a href=\"https://wiki.dfrobot.com/sen0169/\">https://wiki.dfrobot.com/sen0169/</a>"
+    },
+    "regoesPharmacodynamicFunctionsMultiparameter2004": {
+        "citation_key": "regoesPharmacodynamicFunctionsMultiparameter2004",
+        "bib": "Regoes RR, Wiuff C, Zappala RM, Garner KN, Baquero F, Levin BR. Pharmacodynamic Functions: a Multiparameter Approach to the Design of Antibiotic Treatment Regimens [Internet]. 3670&#x2013;3676: Antimicrobial Agents and Chemotherapy; 2004 [cited 2026 Oct 21]. Available from: <a href=\"https://journals.asm.org/doi/10.1128/aac.48.10.3670-3676.2004\">https://journals.asm.org/doi/10.1128/aac.48.10.3670-3676.2004</a>"
+    },
+    "PV36Potentiometer": {
+        "citation_key": "PV36Potentiometer",
+        "bib": "DigiKey [Internet]. [cited 2026 Oct 19]. PV36 Potentiometer. Available from: <a href=\"https://www.digikey.ca/en/products/detail/bourns-inc/PV36W103C01B00/666502\">https://www.digikey.ca/en/products/detail/bourns-inc/PV36W103C01B00/666502</a>"
     },
     "1N4148WE308": {
         "citation_key": "1N4148WE308",
@@ -131,8 +159,8 @@
         "citation_key": "DevelopmentIntegratedSystem",
         "bib": "Towards development of an integrated system for diagnosis of infectious diseases of the blood [Internet]. [cited 2026 Oct 20]. Available from: <a href=\"https://www.researchgate.net/publication/337293987_Towards_development_of_an_integrated_system_for_diagnosis_of_infectious_diseases_of_the_blood?channel=doi&amp;linkId=5dcfdb9d299bf1b74b45af8f&amp;showFulltext=true\">https://www.researchgate.net/publication/337293987_Towards_development_of_an_integrated_system_for_diagnosis_of_infectious_diseases_of_the_blood?channel=doi&amp;linkId=5dcfdb9d299bf1b74b45af8f&amp;showFulltext=true</a>"
     },
-    "ubcvan": {
-        "citation_key": "ubcvan",
+    "UBC_VancouverSynaestivumHeat": {
+        "citation_key": "UBC_VancouverSynaestivumHeat",
         "bib": "UBC_Vancouver: Synaestivum - Heat Resistant Transgenic Wheat (2022) - Project Promotion [English] - iGEM Video Universe [Internet]. [cited 2026 Oct 20]. Available from: <a href=\"https://video.igem.org/videos/embed/a2853a01-d199-4aab-94fb-48b1fc916641\">https://video.igem.org/videos/embed/a2853a01-d199-4aab-94fb-48b1fc916641</a>"
     },
     "TeamBITFluorescence": {

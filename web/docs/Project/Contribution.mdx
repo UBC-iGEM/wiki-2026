@@ -2,3 +2,94 @@
 type: "page"
 title: "Contribution"
 ---
+
+<a id="2d1cf6cde3594ba5a1ebd36118422807" />Check out UBC Vancouver's 2026 contributions to the iGEM community!
+
+<a id="605b5d590d3f4b23b41267326909896a" />This season, UBC Vancouver worked to produce contributions that other iGEM teams can reuse, across our Wet Lab, Hardware, Modelling, and Human Practices subteams.
+
+<a id="d644200198924422a6bdb68f846ec087" />Our team spent the early part of the season reviewing possible project directions before settling on *FAST*. We wanted a project that addressed a problem with a documented clinical need, while producing tools that would remain useful outside our own application. Antimicrobial resistance met both conditions. The diagnostic gap is well established, and the components required to address it, including stress-responsive biosensors, low-cost microfluidics, and accessible fluorescence detection, are not specific to any one infection or antibiotic class. Following our interview with Dr. Bob Hancock, we selected urinary tract infections as our initial validation target.
+
+<a id="0cd2dd9554a8484980fa611b2b08d92c" />Our contributions are documented in detail throughout the team Wiki and are summarized below.
+
+# <a id="d4816f3f70ff466ba45b788de2ea084b" />Wet Lab
+
+## <a id="8bdeec04a86f47b9a9fa704e51e75adf" />Biosensor Strains and Characterization Data
+
+<a id="c25287aca40c4ba8a94877d6ee4f474f" />Our wet lab team generated and characterized two antibiotic-responsive biosensor strains in EPI300 *E. coli*: a CpxP-sfGFP reporter that responds to cell wall stress, and a RecA-sfGFP reporter that responds to DNA damage. Both constructs use the pSB1C3 backbone. This selection was deliberate, as ampicillin and kanamycin resistance markers would confer resistance to the β-lactam and aminoglycoside classes we intended to test. Any team developing an antibiotic biosensor will face the same constraint, and it is one that is easy to overlook until the controls become difficult to interpret.
+
+<a id="2dd24b84ae2b4c7eb9c85b2627637e4f" />The full characterization is documented on our [Biosensor](/ubc-vancouver/wet-lab/biosensor) page, along with downloadable annotated plasmid maps. Our results include provisional MIC ranges of 4 to 8 µg/mL for both strains across gentamicin, tobramycin, and amoxicillin, a dose-dependent sfGFP peak between four and eight hours, and a 2-fold to 3-fold response in the CpxP strain at 8 µg/mL amoxicillin.
+
+<a id="3b43686c0d8c4cc095a73e6c2b88786f" />We have also documented where our approach did not work. The RecA strain did not produce a usable aminoglycoside window, and our initial 60-minute measurement window proved too short to generate any differential expression. Documenting these outcomes allows future teams to avoid repeating the same starting assumptions.
+
+<a id="27cf298348294cec8e0458ddb84c9f22" />Two further results are relevant to teams building similar reporters:
+
+- <a id="9fe9b4e2e25a4936947dbc947517005d" />Our growth curves show that the reporter plasmids reduce maximum cell density by approximately 35% relative to wild type EPI300, which is important to account for when normalizing fluorescence to optical density.
+- <a id="a652a0c7edac4da78377f2d0ec99be8c" />Our plasmid retention assay showed that the constructs are lost within one hour in chloramphenicol-free media. Selection therefore cannot be removed during the assay, despite the confounding effect that chloramphenicol has on the bacterial stress response. This tradeoff is worth knowing about before designing a titration series.
+
+## <a id="bea4c712a7ca461ea9ee1c0d21a32f5d" />Protocols
+
+<a id="f4838ba0907c4496ab5f22c7946c9aa4" />All wet lab protocols developed this season have been documented for future use by other teams, covering LB medium preparation, our cloning workflow, bacterial growth curves, the plasmid retention assay, MIC titration, the biosensor dose response assay, and the antibiotic degradation assay. They are available in our  database, alongside our [Patient Simulant](/ubc-vancouver/wet-lab/patient-simulant) work on developing a representative sample matrix.
+
+## <a id="b1cb0501c239469f9cddecb19605a93e" />Promoter Library Screen
+
+<a id="98d737a79fcc4ce9bc93569cc601d113" />In collaboration with Biofactorial, UBC's High-Throughput Biology and Automation Facility, we screened a library of over 200 promoter-GFP constructs against amoxicillin, cephalexin, gentamicin, and tobramycin. The screen was carried out across 30 plates at sub-inhibitory concentrations that we established in a preceding dilution series, with optical density and GFP fluorescence sampled every 30 minutes over an eight-hour period.
+
+<a id="778f8e21ea234cc29df3ce049f964e81" />The majority of the library showed no measurable response at these concentrations, and the hits are identifiable as clear outliers, with induction ranging from approximately 3-fold to 12-fold. The strongest response was 11.68-fold under amoxicillin. The class-level patterns may be the most transferable result: cephalexin produced the greatest number of hits and induced expression without inhibiting growth, amoxicillin behaved similarly, and tobramycin reduced both growth and GFP output per cell.
+
+<a id="3396e58aeb4240f2a018f794be0bbe6e" />Our experimental design, plate layouts, and weighted decision matrix are documented on the [Promoter Library](/ubc-vancouver/modelling/promoter-library) page. We have also recorded how our design changed in response to feedback from the Biofactorial lab manager, which may be useful to teams planning a comparable automation collaboration.
+
+# <a id="59efa9c4e78c4581847949fdee266f91" />Dry Lab
+
+## <a id="3cc2e5f4c2f94454bd084cfe7ae47082" />PRISM
+
+<a id="f1b05131fb594bb1a50ba442d51176e2" />[PRISM](/ubc-vancouver/modelling/prism), the Promoter Response Index and Selection Map, is a relational database and analysis pipeline that integrates RNA-seq expression data, RegulonDB regulatory annotations, and a reference genome to produce a traceable shortlist of antibiotic-responsive promoters for experimental screening. Run against GSE220559, it reduced 4,176 measured genes to 925 candidates, and then to a proposed panel of 12 promoters, with six per antibiotic class.
+
+<a id="7c747ef3d1b047078b5bffb6a29fcd46" />PRISM is reusable because every selection can be traced backwards. A panel entry links to a promoter, which links to a candidate gene, which links to the specific differential-expression result and source locus that produced it, with reference releases and source file checksums recorded at each stage. Manual curation decisions are stored separately from measured evidence, so a reviewer can exclude or annotate a candidate without altering the underlying data. The full build reproduces from seven documented commands.
+
+<a id="6f82cdbdfdfa4e5ba793b601442ba436" />We have documented the limitations of this approach as thoroughly as the results. Differential expression prioritizes genes and does not identify which promoter produced the signal. Of our 925 candidates, 456 have no promoter annotation at all, which reflects a gap in the reference rather than a weak biological response. Our discovery compounds are class proxies rather than the four antibiotics that *FAST* targets directly. Adversarial review of our own build also identified two integrity failures, where a modified export could be accepted alongside stale candidate evidence, and where a panel row could reference an unrelated promoter. Both are now covered by regression tests, which any team adapting PRISM inherits along with the schema.
+
+## <a id="2af4055a3e924378a7ba3243b50c427d" />Microfluidic Chip Fabrication
+
+<a id="adbe19ce93244aaea53529eacd603f21" />Over seven design cycles, our hardware team developed a protocol for fabricating PDMS microfluidic chips from FDM-printed PLA molds at approximately one to five dollars per chip, without requiring a cleanroom or a resin printer. The [Microfluidic Chip](/ubc-vancouver/hardware/microfluidic-chip) page documents all seven cycles, including the four that failed and the reasons why.
+
+<a id="84fdde3398874497a8203e76cde9d99a" />Three findings from this process are likely to be useful to other teams:
+
+- <a id="712c233fac034124b29c7312058a3c98" />Walls on the mold are necessary. Without them, the channel floats during the oven step and becomes encased in set PDMS.
+- <a id="c180ef537ba145969dde55c4725cec18" />Surface finish determines whether the chip leaks. Running the printer's ironing function over the mold produces a smoother surface that plasma-bonds more reliably to glass. We demonstrate this against a non-ironed control, where the ironed device showed no leakage and the non-ironed device leaked significantly.
+- <a id="715d018c82084f6ab15ce3325b19bbf6" />A cut pipette tip can drive fluid through the chip using hydrostatic pressure, which removes the need for a syringe or syringe pump. Sealing at the pipette interface still requires further work.
+
+<a id="06a2d817ecc34d329d00829d42d6d7c5" />We also derived a hydraulic resistance model for the outlet wells and solved it as an equivalent resistor network. This predicted a 185% relative difference in pressure drop between the first and last well in a seven-well linear design, which was reduced to 32% after moving to two wells. The model was verified qualitatively using SolidWorks flow simulations, which have been published to the iGEM Video Universe.
+
+<a id="88ed0be602e942f58783bb1d7c5d90d9" />All reproduction materials are available on the page, including CAD models for every iteration as .glb files and engineering drawings for the final straight, gradient-generating, and snaking designs. We benchmarked our fabrication approach against Technion Israel 2016, Munich 2017, and IISER Tirupati 2022, noting where each project documented something we were unable to assess or reproduce.
+
+## <a id="ee28062cf08141a68327d958f74fe965" />Fluorescence Detector
+
+<a id="6777a15a873b4b0b878717a804cb2210" />Fluorescence detection is central to *FAST*, but commercial detectors range from approximately \$630 to over \$42,000 and are not compatible with our chip format. This conflicts with our goal of point-of-care testing, so our hardware team developed a customized detector that can be built for \$204.48. The [Fluorescence Detector](/ubc-vancouver/hardware/fluorescence-detector) page includes a complete bill of materials, a user manual, a 3D model, and both PCB designs.
+
+<a id="903eadce52594e3f8b358bf0aa66a860" />The cost reduction comes primarily from the optical layout. Conventional detectors arrange the light source, sample, and detector at 90° angles and use both an excitation and an emission filter, where a single excitation filter alone can cost around \$300. We instead aligned a 488 nm LED, the sample, a 500 nm long-pass filter, and a photodiode along one vertical axis, which eliminates one filter entirely and reduces optical material costs by at least 50%. The enclosure separates into two magnetically sealed halves that lay flat for loading, and the chip holder includes hemispherical indents that provide tactile feedback as each well reaches the detection site.
+
+<a id="c94262470e7647258c4357bb3a7b8bd8" />Our circuit documentation may be the most useful element for other teams, because we have recorded the failure in full. Our first board was adapted from a published circuit designed for ±9 V rails and powered instead from an Arduino's 5 V supply, which placed the OP07 op-amps outside their rated supply voltage and saturated their output. As a result, the circuit did not respond to light at all. We diagnosed the cause, reproduced both configurations in LTSpice against hand-calculated expected values, and redesigned around the AD8606 with a 0.217 V reference and the Arduino's 1.1 V internal reference. This reduced the gain required for 1 pA resolution from 488 to 107. Our design builds on fluorescence detectors developed by Munich 2017, BIT 2021, and UBC 2022, and we have documented our circuitry in the level of detail we would have found helpful when reviewing theirs.
+
+## <a id="45cfd029d6354b119448c828ec19d1f1" />Hardware Protocols and the Bioreactor
+
+<a id="d3e0ed363bb748adab15b43b647799f6" />Our hardware  documents PDMS casting, bioreactor culture and assembly, flow testing, and calibration SOPs for the SEN0169 pH probe and the TSL2591 OD sensor. The SOPs were written so that an operator without prior laboratory training can obtain consistent readings.
+
+<a id="9546fb78b1ce4499be886178360eb658" />Our [Bioreactor](/ubc-vancouver/hardware/bioreactor) was built from off-the-shelf components for a total of \$106.68, and across three validation experiments it produced 2.38 to 2.74 times the normalized growth of a conventional flask control. Assembly instructions, culturing protocols, and engineering drawings are all available on the page for teams that wish to reproduce it.
+
+# <a id="1ad78af08f2f4d1b82be8cff7b996f50" />Human Practices
+
+## <a id="b384e4abe6a44db68ff7bc34e3d4d4ca" />Education
+
+<a id="d2a51a92cd2a44d3880462c9b6c3d8c1" />Our [Education](/ubc-vancouver/human-practices/education) work produced two resources that other teams can adopt directly.
+
+<a id="e24393a1e7f0476683545272b17029ab" />The first is a wet lab training video series, consisting of six short videos covering pipetting technique, heat-shock transformation, preparing LB media and agar plates, picking and inoculating colonies, autoclaving and waste disposal, and aseptic technique. We developed it because a multidisciplinary team re-teaches the same fundamentals at the start of every season, and asynchronous video allows new members to arrive prepared and returning members to review as needed. The format is straightforward for other teams to replicate.
+
+<a id="9567253e4fd64c2e8b47f3c8c8012339" />The second is Building BioBricks, a workshop we designed and delivered for UBC Science 101, a free course offered by UBC's Faculty of Science to residents of Vancouver's Downtown Eastside and surrounding communities. Participants use Lego bricks to model a promoter, ribosome binding site, coding sequence, and terminator, assemble a fluorescent biosensor for detecting microplastics in drinking water, and then swap parts with other groups to model the iGEM Parts Registry. The complete workshop is downloadable from our page. It requires no laboratory, no reagents, and no prior biology background, and it was designed specifically for adult learners rather than adapted from a school activity.
+
+<a id="31a9e38f60f9405593c3d72687993c3b" />We additionally delivered a keynote at the Youreka Vancouver Symposium, which pairs high school students with undergraduate research mentors, and participated in seed2STEM, a summer research program for Indigenous high school students hosted by UBC iCORD, where our dry lab team demonstrated our bioreactors and microfluidic chips and our members sat on a student panel.
+
+<a id="dcaa4fdb89df4f9c97a280b806bbb542" />
+
+***
+
+<a id="bede42202df74d4cb2bd68d7c31808f2" />Learn more about UBC Vancouver's contributions on their respective deliverable pages using the navigation menu!

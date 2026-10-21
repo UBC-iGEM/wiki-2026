@@ -1,0 +1,100 @@
+---
+type: "page"
+title: "Best Hardware"
+---
+
+# <a id="e85dea3d4c9543a4b955ae321b37959a" />Introduction & Overview of Our Hardware
+
+<a id="3e5090017d97455d94599acb6f88e75f" />*FAST* determines whether the bacteria in a patient sample can inactivate a candidate antibiotic. For that result to be useful at the point of care, three things have to happen outside a microbiology laboratory: the sample and antibiotic must be combined and held while degradation occurs, the resulting signal must be read, and the biosensor strains that produce that signal must be available in sufficient quantity. Our hardware subteam built one device for each of these steps.
+
+# <a id="b68d878dcea14412878c47f7a1fac6b1" />The Need
+
+<a id="c530d085b3984d08a57a056328c9fe7f" />Conventional antibiotic susceptibility testing depends on infrastructure that most points of care do not have. Culture-based methods require a microbiology laboratory and a turnaround measured in days, and fluorescence readers suitable for interpreting our biosensor output range from approximately \$630 to over \$42,000. None of the commercially available readers accept a custom chip format. A rapid test that still requires a plate reader and a central lab is not a point-of-care test, so our hardware work was scoped around removing those dependencies rather than around building the most capable instrument.
+
+<a id="12da514e8c554f0093ad2649685254e2" />A secondary need emerged from our own workflow. Culturing five biosensor strains in parallel using shaker flasks would have occupied considerable space in our 37°C room, and benchtop bioreactors that would solve this cost far more than our subteam budget allowed.
+
+# <a id="a117b29fdd8944579472d799abadd0fc" />Our Devices
+
+<a id="90f1c193c6304fe8b657f454b047a781" />The [Microfluidic Chip](/ubc-vancouver/hardware/microfluidic-chip) is a PDMS chip cast from FDM-printed PLA molds. It combines the patient sample with the candidate antibiotic, holds the mixture while degradation occurs, and delivers the result onward to wells containing our biosensor strains. We developed the fabrication protocol ourselves over seven design cycles, bringing the cost to roughly one to five dollars per chip without requiring a cleanroom or a resin printer.
+
+<a id="4b8b027e30dd42a699a89e9474ed7315" />The [Fluorescence Detector](/ubc-vancouver/hardware/fluorescence-detector) reads the fluorescent output from those wells. By aligning a 488 nm LED, the sample, a 500 nm long-pass filter, and a photodiode on a single vertical axis, we eliminated one of the two optical filters that conventional detectors require and reduced optical material costs by at least 50%. The complete device costs \$204.48 to build.
+
+<a id="e0dcef7e88844dcf805daa96cef23476" />The [Bioreactor](/ubc-vancouver/hardware/bioreactor) produces the biosensor cultures the chip depends on. Built from off-the-shelf components and FDM-printed parts around a reused mason jar vessel, it costs \$106.68 and monitors temperature, pH, and optical density.
+
+# <a id="2125b443924948d793c0ebbd4f2563d0" />Learning from Users and Experts
+
+<a id="127d924983644b469fafebd9e405eb26" />Our hardware subteam worked outside its existing expertise in several places this season, and we sought guidance at each point rather than proceeding on assumption.
+
+<a id="05c7252663004fa1a29e7c19fc1c1e87" />
+
+<IHP>
+  <Fragment slot="people">
+    <div class="ihp-card glow-panel" data-index="0">
+      <div class="ihp-card-body glow-panel-body">
+        <div class="ihp-name">Amin Abdolkhani, MSc.</div>
+
+        <div class="ihp-profile">
+          <div class="ihp-desc">
+            Biomedical Engineering PhD candidate in UBC SBME's CMED lab, which works frequently with PDMS microfluidic chips.
+          </div>
+        </div>
+
+        <div class="ihp-content">
+          <a id="35780811ab2240a5a06f0d3e8cd9d832" />When our first chips failed, we were preparing to switch from PLA to resin printing, which would have been more expensive, more wasteful, and would have required administrative access to another lab's printer. Amin was uncertain that PLA would work and raised the concern that a porous mold would absorb PDMS and make demolding impossible. He advised us to attempt the PLA molds once more against our revised requirements before committing to resin. We did, and the approach ultimately worked.
+        </div>
+      </div>
+    </div>
+
+    <div class="ihp-card glow-panel" data-index="1">
+      <div class="ihp-card-body glow-panel-body">
+        <div class="ihp-name">Bram Banik</div>
+
+        <div class="ihp-profile">
+          <div class="ihp-desc">
+            Fourth-year Engineering Physics student at UBC specializing in Electrical Engineering, currently working in PCB design at the quantum computing company D-Wave.
+          </div>
+        </div>
+
+        <div class="ihp-content">
+          <a id="00afe3785a324e56893234f36a1ecf59" />No one on our team had prior PCB design experience. Bram reviewed our research on existing fluorescence detectors and explained that adapting published circuits is standard practice rather than deriving everything from first principles. He later led a KiCad tutorial for our members, walking through the design of a simple voltage comparator and the considerations behind component placement and trace routing.
+        </div>
+      </div>
+    </div>
+
+    <div class="ihp-card glow-panel" data-index="2">
+      <div class="ihp-card-body glow-panel-body">
+        <div class="ihp-name">Dr. Celestine Hong</div>
+
+        <div class="ihp-profile">
+          <div class="ihp-desc">
+            Assistant Professor of Teaching in the Chemical and Biological Engineering department at UBC, researching biomaterials and drug delivery and working closely with laboratory and industrial-grade bioreactor systems.
+          </div>
+        </div>
+
+        <div class="ihp-content">
+          <a id="0a11e13256a04db7b627ddebbbb6ffaa" />Dr. Hong reviewed our bioreactor and hosted a lab tour of an industrial-grade system. She recommended feedback control loops for automation, and suggested simplifying to a microcontroller, a sensor, and a single control element given our budget. The tour showed us how industry maintains sterility through screws and O-rings, positive internal pressure, sterile filtration of inlet and outlet air, and clamp-and-syringe aseptic sampling. On cell quantification, she noted that the commonly assumed optical density to cell count conversion is poorly supported below an OD of 1, and recommended generating a dry cell weight calibration curve instead.
+        </div>
+      </div>
+    </div>
+  </Fragment>
+</IHP>
+
+<a id="f272cf807c384558bcab9a19220b59e6" />We also tested the usability of our own concepts outside the team. When we ran a microfluidic chip design activity at a Geering Up workshop, students built channels in crayon on paper and tested them with coloured water. The paper absorbed fluid poorly and leaked, so we rebuilt the activity using paper towels and paint for the following session.
+
+<a id="2914252a241b48709fb5094c85cfde88" />Each bioreactor iteration was additionally assessed against a fixed set of questions covering ease of use, comparability to benchtop standards, modularity, and monitoring, with the outcomes recorded as what worked and what did not.
+
+# <a id="2ad5ce1f48d246d0bc0de2527a7a8f96" />Demonstrating Functionality
+
+<a id="7be52cd565ee4b28bc4864e40f4d3508" />Our bioreactor was validated against a conventional flask culture control across three experiments conducted in triplicate, using the same strain, media, temperature, and sampling procedure throughout. Normalized optical density showed the bioreactor producing 2.38 to 2.74 times the growth of the control.
+
+<a id="0756fcd69c6e429daeea912d93220476" />For the microfluidic chip, we ran indicator solution through the device and compared an ironed mold against a non-ironed control. The ironed device showed no leakage while the non-ironed device leaked significantly, which established surface finish as the determining factor in plasma bonding quality. We additionally derived a hydraulic resistance model for the outlet wells, solved it as an equivalent resistor network, and verified it qualitatively against SolidWorks flow simulations.
+
+<a id="0f8a2409f2be465c87d5d9864578dad0" />Our fluorescence detector reached a completed second-revision board. The first revision did not respond to light, which we traced to op-amps operating outside their rated supply voltage, reproduced in LTSpice, and corrected in the redesign. We did not complete validation of the second revision before wiki freeze, and we have documented the remaining steps rather than presenting the device as fully tested.
+
+# <a id="11e5a4bbee2249bdb1a5d49b86d7789c" />Reproduction Materials
+
+<a id="bac9c4e2be26455da5a6632fcc133f09" />All three devices are documented so that another team can build them. Each page carries a complete bill of materials with current prices, and our  covers PDMS casting, bioreactor culture and assembly, flow testing, and calibration SOPs for the SEN0169 pH probe and TSL2591 OD sensor. The SOPs were written so that an operator without prior laboratory training can obtain consistent readings.
+
+<a id="ab4d18b9caa449f2b59b839804272f1c" />The microfluidic chip page provides CAD models for every design iteration as .glb files, alongside engineering drawings for the final straight, gradient-generating, and snaking designs. The fluorescence detector page provides both PCB designs, a 3D model, and a user manual. The bioreactor page provides assembly instructions, a culturing protocol, and engineering drawings.
+
+<a id="32646d207eb4462b9c499e6c0c8c9252" />We have documented the iterations that failed as thoroughly as the ones that worked, including the floating channel, the leaking molds, and the saturated op-amps, because those are the outcomes another team is most likely to encounter and least likely to find written down elsewhere.

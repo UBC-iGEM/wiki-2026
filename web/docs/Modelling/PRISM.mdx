@@ -13,7 +13,7 @@ title: "PRISM"
 
 <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/97d635d143b9521caeb98bfe1a1a5156.svg","alt":"","scale":0}]}>
   <Fragment slot="content">
-    <a id="3fdd65dd82be80fa8fd2c2d69b2463b4" />Expression data and regulatory annotations enter the evidence database, which links them to candidate promoters for experimental screening.
+    <a id="3fdd65dd82be80fa8fd2c2d69b2463b4" />Expression data and regulatory annotations enter the evidence database, which links them to candidate promoters for experimental screening @Andrew Li / PRISM\_figures.
   </Fragment>
 </Figure>
 
@@ -317,31 +317,33 @@ title: "PRISM"
 
 ## <a id="3ffd65dd82be80a6a5d0cf97ad7a9ebc" />Engineering iteration
 
-<a id="3ffd65dd82be80a39021cd10830a4d6b" />
+<a id="abe5e34f594e409fb1c5701f705c763c" />
+
+<a id="633f6cb8b65c4b0f85395ec5a02f8a88" />
 
 <Dbtl>
   <Fragment slot="design">
-    ### <a id="3ffd65dd82be8031bfc2c2ed4434584b" />Design
+    ### <a id="bb2fa400d2144388a0ec320f79c146bf" />Design
 
-    <a id="3ffd65dd82be80e49915f93c541f0714" />The project objective was to develop a reproducible method for selecting a manageable promoter-screening panel from antibiotic-responsive genes. The selection process combines expression strength, regulatory context, promoter availability, response to other antibiotic classes, and data provenance.
+    <a id="ba23a0f71a884617a2a94184fafa52ff" />The project objective was to develop a reproducible method for selecting a manageable promoter-screening panel from antibiotic-responsive genes. The selection process combines expression strength, regulatory context, promoter availability, response to other antibiotic classes, and data provenance.
   </Fragment>
 
   <Fragment slot="build">
-    ### <a id="3ffd65dd82be80da8a26d566abd1c4d5" />Build
+    ### <a id="6536d0247d91486f86b571381af37fff" />Build
 
-    <a id="3ffd65dd82be80c9bda7e4a9d1f06c45" />The team developed a joint differential-expression workflow, integrated curated RegulonDB relationships, mapped candidates to promoters and transcription units, and stored the evidence in a searchable SQLite database and explorer.
+    <a id="2ae1535e70b24fca8597aa68fb867223" />The team developed a joint differential-expression workflow, integrated curated RegulonDB relationships, mapped candidates to promoters and transcription units, and stored the evidence in a searchable SQLite database and explorer.
   </Fragment>
 
   <Fragment slot="test">
-    ### <a id="3ffd65dd82be80b69321f0c7b98e4a48" />Test
+    ### <a id="32f49772f5934f059d933988bf6ec968" />Test
 
-    <a id="3ffd65dd82be80e1a96bd0441a2a07f8" />The team assessed candidate stability under alternative thresholds, inspected biological replicates, compared responses to challenge antibiotics, checked promoter sequences against MG1655, and added automated tests for regulatory semantics, database integrity, and candidate queries.
+    <a id="79698cac8b7a4f0eb09b799148d9d509" />The team assessed candidate stability under alternative thresholds, inspected biological replicates, compared responses to challenge antibiotics, checked promoter sequences against MG1655, and added automated tests for regulatory semantics, database integrity, and candidate queries.
   </Fragment>
 
   <Fragment slot="learn">
-    ### <a id="3ffd65dd82be80f7a0caf6feb401d194" />Learn
+    ### <a id="39fcdaa6ddae4345a645271e49d65270" />Learn
 
-    <a id="3ffd65dd82be80608156c12bc7ae29c8" />Expression strength alone identified more genes than could be tested and did not distinguish independent promoters from genes with shared regulatory context. Some interactions lacked promoter-level support, and the public dataset provided only class-level proxy evidence. The workflow was extended to include promoter mapping, explicit relationship types, assessment of responses to antibiotics from other classes, sequence review, and a 12-promoter panel selected for diversity.
+    <a id="90c682ab052d4d1f969a09620de12433" />Expression strength alone identified more genes than could be tested and did not distinguish independent promoters from genes with shared regulatory context. Some interactions lacked promoter-level support, and the public dataset provided only class-level proxy evidence. The workflow was extended to include promoter mapping, explicit relationship types, assessment of responses to antibiotics from other classes, sequence review, and a 12-promoter panel selected for diversity.
   </Fragment>
 </Dbtl>
 
