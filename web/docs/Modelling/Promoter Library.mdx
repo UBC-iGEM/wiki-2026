@@ -322,8 +322,6 @@ title: "Promoter Library"
 
 <a id="400d65dd82be804abdddc8b4b5aa6435" />The above graph was produced by normalizing each promoter’s GFP response by $OD_{600}$ and its control. Using the above graph, we can derive a handful of conclusions. First, most of the promoters are clouded around growth = 1 and GFP induction = 1, meaning most of the library was unaffected by the sub-inhibitory concentrations. However, the top candidates are recognizable as they are outliers. The top candidates were hits with high GFP induction (\~ 3x to 12x), with the top hit being 11.68x induction under Amoxicillin. We can also see that majority of the top candidates were for Cephalexin, especially without inhibiting growth (candidates lie more within the right side of the cloud). On the other hand, Tobramycin lies mostly to the lower left, meaning growth is slowed and GFP is lower per cell. Amoxicillin is mostly induced without slowing growth.
 
-<br id="400d65dd82be803b9ba1e36c2603ae86" />
-
 <a id="400d65dd82be809ba680ec392f5e4609" />However, given that the library was initially on 96-well plates and had been re-mapped onto our 384-well plate, we also needed to account for this. Through this theory, each single well in the 96-well plate corresponds to a 2x2 block of four wells in the 384-well plate. Therefore we aimed for 4 wells from each 2x2 quadrant across the 384-well plate. Furthermore, we deliberately picked four wells from plate 6 (one from each quadrant) to determine the quadranting order.
 
 ### <a id="3ffd65dd82be806f8147f222d6ce182b" />Results
@@ -410,51 +408,27 @@ title: "Promoter Library"
   </Fragment>
 </Dbtl>
 
-<br id="3e8d65dd82be809d993cc363e0bee96c" />
-
-<br id="3e5d65dd82be80f0b1abd2d4c159f5ce" />
-
 # <a id="3e8d65dd82be80e4970cf11676387a74" />**Iterations**
 
 <a id="3fcd65dd82be801e83f5dba024111211" />Throughout all parts of our experiment conducted with Biofactorial, we consulted thoroughly with the Biofactorial lab manager for feedback on our experimental design to ensure it was both feasible in terms of execution, but also would produce the most reliable results. Whether it was during the development of our protocol or last minute adaptations during testing, all decisions reflected our pursuit for reliability and accuracy.
 
-<br id="400d65dd82be8061be79d100411d5e74" />
-
 <a id="400d65dd82be80ea9ef7dd64d97c75b6" />When designing our protocol, we sought feedback on design considerations like how many source wells to use in our subset in part 1 to ensure we were accurately representing the entire library, or how many concentration levels to test to capture a complete antibiotic concentration curve. On the other hand, we also received valuable feedback on the feasibility of our design, like learning how to design a CSV for the antibiotic source plate, or what equipment at Biofactorial’s facility would be most compatible for our experiment. We held meetings with the lab manager as needed, and iterated our experimental design to ensure we would be confident in its results.
-
-<br id="400d65dd82be80a09d0cef15c09f64ba" />
 
 <a id="400d65dd82be8060b09dc1be5fbb7225" />We also made sure to document any changes and decisions made throughout our design process; our [experimental protocols](/ubc-vancouver/wet-lab/lab-notebook/biofactorial-part-1-mic-assay) reflect the final version of our protocol that was performed by Biofactorial.
 
 # <a id="3fcd65dd82be806c8729e1abcaac83d4" />Errors, Limitations, and Future Work
 
-<a id="400d65dd82be8047b929d2b42190fcef" />**Errors**
+## <a id="400d65dd82be8047b929d2b42190fcef" />**Errors**
 
 <a id="400d65dd82be80b6b63fc8a73e77be91" />Our experimental outputs came out generally as expected until we reached sequencing. The first error we ran into was growing the cultures of the top 10 candidates, resulting in only 7 successful inoculations. As a result, this limited the range of promoters we could sequence. Furthermore, upon receiving the GeneBank files from Plasmidsaurus, only candidates 1, 4, and 7 were successfully sequenced. Therefore we ultimately only determined sequencing for 3 promoters. The remaining samples generated sequencing data but were unable to assemble a plasmid sequence. This can be attributed to a variety of reasons such as if there are multiple plasmids in one sample, or if the structure is unusually complex.
 
-<br id="400d65dd82be80089bf3f878f33c0be3" />
-
-<a id="400d65dd82be8084aaf7d54f7cc87654" />**Limitations**
+## <a id="400d65dd82be8084aaf7d54f7cc87654" />**Limitations**
 
 <a id="400d65dd82be80569e60fd9a2e1c2eb9" />Ultimately, various limitations affect the confidence in our conclusions. First, our final promoter sample size was small. Only three candidates were successfully sequenced, and although the malE-malK region appeared twice among them, this is too few data points to generalize to the broader promoter library. Furthermore, determining the reporter-facing gene of the three promoters was done through inference (from the insert’s position relative to GFP) and was not experimentally validated. So, further testing would strengthen these conclusions. Third, some of our assumptions throughout the project can be subjective. For example, the weighting in the WDM used to select top promoter candidates was based on our own individual team’s needs, and could produce a different ranking under a different team’s priorities. Lastly, any noise or interference with the measurements collected from the library screen would carry through to our selection and characterization of top candidates.
 
-<br id="400d65dd82be80f19fd0d1515fe6ebbc" />
-
-<a id="3e8d65dd82be80bd9608e9da7e045123" />**Future Work (addressing our errors)**
+## <a id="3e8d65dd82be80bd9608e9da7e045123" />**Future Work (addressing our errors)**
 
 <a id="400d65dd82be807bbc49e46d9965ffcc" />Due to time constraints we were not able to carry out our troubleshooting, but we have identified the steps we would like to take to continue building upon this. To continue refining our results, particularly the sequencing aspect, we would like to re-prep and re-sequence the remaining candidates from the top 10. If the failed assembly were in fact a result of mixed colonies, re-streaking can ensure a fresh culture is grown from the new isolated colony. If re-prepping were not an option (as re-sending our samples to a sequencing company can have time or financial constraints) it would also be useful to locate a reference backbone to aid the failed sequences and troubleshoot from there. Lastly, to strengthen confidence in measurements from the library screen, sequencing additional clones and/or replicating the screen can increase reliability. Ultimately, we hope to continue sequencing and mapping more of the promoter library to expand our range of top candidates, in addition to determining more of the 96-well to 384-well plate mapping.
-
-<br id="3e8d65dd82be80f6b624c85d8fbacb9f" />
-
-<br id="3e5d65dd82be804b9995c175844c5d8f" />
-
-<br id="3e5d65dd82be804cac39f0f163efe70e" />
-
-<br id="3e8d65dd82be801f80bfdaacf82c8b82" />
-
-<br id="3e8d65dd82be80438f76ddde56538cfb" />
-
-<br id="3e5d65dd82be80b2836ec28b0f64bba0" />
 
 # References
 
