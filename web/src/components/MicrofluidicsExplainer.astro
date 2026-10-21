@@ -1,5 +1,6 @@
 ---
 import { BASE_URL } from "../utils/base-url";
+import HoverHint from "./HoverHint.astro";
 ---
 
 <section class="ast-diagram">
@@ -8,13 +9,46 @@ import { BASE_URL } from "../utils/base-url";
 
     <div class="diagram-body">
         <div class="chip-visual">
-            <img src={`${BASE_URL}assets/hero/how-it-works-chip.svg`} alt="" width="256" height="720" loading="lazy" />
+            <img
+                class="chip-blank"
+                src={`${BASE_URL}assets/hero/chip-prototype-blank.svg`}
+                alt=""
+                width="512"
+                height="1293"
+                loading="lazy"
+            />
+            <!-- One at a time over the blank, which stays put beneath them: whichever chambers' labels are on -->
+            <img
+                class="chip-highlight chip-highlight--a"
+                src={`${BASE_URL}assets/hero/chip-prototype-a.svg`}
+                alt=""
+                width="512"
+                height="1293"
+                loading="lazy"
+            />
+            <img
+                class="chip-highlight chip-highlight--b"
+                src={`${BASE_URL}assets/hero/chip-prototype-b.svg`}
+                alt=""
+                width="512"
+                height="1293"
+                loading="lazy"
+            />
+            <img
+                class="chip-highlight chip-highlight--ab"
+                src={`${BASE_URL}assets/hero/chip-prototype-ab.svg`}
+                alt=""
+                width="512"
+                height="1293"
+                loading="lazy"
+            />
         </div>
 
         <div class="diagram-col diagram-col--right">
             <div class="chamber">
-                <div class="info-trigger info-trigger--left info-trigger--chamber-a" tabindex="0">
+                <div class="info-trigger info-trigger--left info-trigger--chamber-a" role="button" aria-pressed="false" tabindex="0">
                     <div class="info-bubble-art" aria-hidden="true"></div>
+                    <HoverHint class="chamber-hint" retireOnUse />
                     <h3>Chamber A</h3>
                     <p>
                         Where patient sample and antibiotic interacts, and antibiotic degradation occurs within 1-4
@@ -22,9 +56,14 @@ import { BASE_URL } from "../utils/base-url";
                     </p>
                 </div>
             </div>
+        </div>
+
+        <!-- After chamber A in the markup, so the stacked layout still reads chip, A, B -->
+        <div class="diagram-col diagram-col--left">
             <div class="chamber">
-                <div class="info-trigger info-trigger--left info-trigger--chamber-b" tabindex="0">
+                <div class="info-trigger info-trigger--right info-trigger--chamber-b" role="button" aria-pressed="false" tabindex="0">
                     <div class="info-bubble-art" aria-hidden="true"></div>
+                    <HoverHint class="chamber-hint" retireOnUse />
                     <h3>Chamber B</h3>
                     <p>Biosensor <i>E. coli</i> interacts with intact/degraded antibiotic</p>
                 </div>
@@ -37,6 +76,30 @@ import { BASE_URL } from "../utils/base-url";
         <p>No fluorescence = sample is <mark class="legend-resistant">resistant</mark></p>
     </div>
 </section>
+
+<script>
+    import { onPage } from "../utils/page";
+
+    onPage(() => {
+        for (const trigger of document.querySelectorAll<HTMLElement>(".ast-diagram .info-trigger")) {
+            // Clicking (or Enter/Space) turns a chamber on until it's clicked again, so both can be on at once
+            const toggle = () =>
+                trigger.setAttribute("aria-pressed", String(trigger.getAttribute("aria-pressed") !== "true"));
+            trigger.addEventListener("click", toggle);
+            trigger.addEventListener("keydown", (event) => {
+                if (event.key !== "Enter" && event.key !== " ") return;
+                event.preventDefault();
+                toggle();
+            });
+
+            // Hovering previews it, by mouse only: a touch's :hover would stick after the tap that turned it off
+            trigger.addEventListener("pointerenter", (event) => {
+                if (event.pointerType === "mouse") trigger.classList.add("is-hovered");
+            });
+            trigger.addEventListener("pointerleave", () => trigger.classList.remove("is-hovered"));
+        }
+    });
+</script>
 
 <style>
     .ast-diagram {
@@ -89,9 +152,20 @@ import { BASE_URL } from "../utils/base-url";
         margin-right: 4rem;
     }
 
+    /* grid-row pinned, since chamber B's column comes last in the markup
+       and would otherwise be auto-placed on a new row */
     .diagram-col--right {
         grid-column: 3;
-        justify-content: space-between;
+        grid-row: 1;
+        justify-content: flex-start;
+    }
+
+    /* Chamber B sits beside the chip's outlets, at the bottom of the left side */
+    .diagram-col--left {
+        grid-column: 1;
+        grid-row: 1;
+        justify-content: flex-end;
+        text-align: right;
     }
 
     /* Real <h3>s - color/font-family/font-weight come from the global
@@ -111,11 +185,12 @@ import { BASE_URL } from "../utils/base-url";
         margin: 0;
     }
 
-    /* Hover/focus target wrapping each label + its always-visible
-       description; the bubble art behind them is decorative only and
-       stays hidden until hover/focus. */
+    /* Toggle wrapping each label + its always-visible description; the
+       bubble art behind them is decorative only and stays hidden until the
+       chamber is on - clicked on (aria-pressed), or hovered (is-hovered, set
+       by the script for a mouse only). */
     .info-trigger {
-        cursor: default;
+        cursor: pointer;
         position: relative;
     }
 
@@ -124,9 +199,9 @@ import { BASE_URL } from "../utils/base-url";
         outline-offset: 2px;
     }
 
-    /* :hover/:focus-within already out-specificity MainLayout's global
-       h3/p color rule on their own (pseudo-classes count like a class),
-       no extra qualifier needed here. */
+    /* The on states already out-specificity MainLayout's global h3/p color
+       rule on their own (an attribute or class counts like a class), no
+       extra qualifier needed here. */
     .info-trigger h3,
     .info-trigger p {
         position: relative;
@@ -134,10 +209,8 @@ import { BASE_URL } from "../utils/base-url";
         z-index: 1;
     }
 
-    .info-trigger:hover h3,
-    .info-trigger:hover p,
-    .info-trigger:focus-within h3,
-    .info-trigger:focus-within p {
+    .info-trigger:is(.is-hovered, [aria-pressed="true"]) h3,
+    .info-trigger:is(.is-hovered, [aria-pressed="true"]) p {
         color: var(--color-ebony-clay);
     }
 
@@ -162,29 +235,70 @@ import { BASE_URL } from "../utils/base-url";
         background: linear-gradient(135deg, #bbd1ff, #e650db);
     }
 
-    .info-trigger:hover .info-bubble-art,
-    .info-trigger:focus-within .info-bubble-art {
+    .info-trigger:is(.is-hovered, [aria-pressed="true"]) .info-bubble-art {
         opacity: 1;
     }
 
-    /* how-it-works-chip.svg is 256x720 (tall/narrow) - width-driven, height
-       auto so it keeps that aspect ratio instead of the old placeholder
-       box's. */
-    /* Kept in the middle column, with the chambers' labels to its right */
+    /* In the bubble's bottom-right corner rather than HoverHint's own, which
+       would sit on the text: the bubble spills past the text (inset above) */
+    .info-trigger :global(.chamber-hint) {
+        bottom: -0.5rem;
+        right: -0.75rem;
+    }
+
+    /* Chamber B's on its outer (left) side instead, mirrored to point in
+       from there - scaleX first, so its lean mirrors too */
+    .info-trigger--chamber-b :global(.chamber-hint) {
+        left: -0.75rem;
+        right: auto;
+        transform: scaleX(-1) rotate(-15deg);
+    }
+
+    /* The chip-prototype SVGs are 512x1293 (tall/narrow) - width-driven,
+       height auto so they keep that aspect ratio. */
+    /* Kept in the middle column, between chamber B's label and chamber A's */
     .chip-visual {
         grid-column: 2;
+        grid-row: 1;
+        position: relative;
         width: min(16rem, 30vw);
     }
 
-    /* Flipped upside down to match the descriptions */
     .chip-visual img {
         display: block;
         height: auto;
         /* Opt out of the .page-content img size caps */
         max-height: none;
         max-width: none;
-        transform: scaleY(-1);
+        transition: opacity 0.15s ease;
         width: 100%;
+    }
+
+    /* Laid exactly over the blank - all are exported from the same frame -
+       which alone sets the box's size, so hovering never shifts the layout.
+       The blank itself never fades, so swapping one for another doesn't
+       flash the background through. */
+    .chip-visual .chip-highlight {
+        left: 0;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+    }
+
+    /* a or b for one chamber on, ab for both */
+    .diagram-body:has(.info-trigger--chamber-a:is(.is-hovered, [aria-pressed="true"])):not(
+            :has(.info-trigger--chamber-b:is(.is-hovered, [aria-pressed="true"]))
+        )
+        .chip-highlight--a,
+    .diagram-body:has(.info-trigger--chamber-b:is(.is-hovered, [aria-pressed="true"])):not(
+            :has(.info-trigger--chamber-a:is(.is-hovered, [aria-pressed="true"]))
+        )
+        .chip-highlight--b,
+    .diagram-body:has(.info-trigger--chamber-a:is(.is-hovered, [aria-pressed="true"])):has(
+            .info-trigger--chamber-b:is(.is-hovered, [aria-pressed="true"])
+        )
+        .chip-highlight--ab {
+        opacity: 1;
     }
 
     .legend {
@@ -221,9 +335,10 @@ import { BASE_URL } from "../utils/base-url";
             grid-template-columns: 1fr;
         }
 
-        .diagram-col--right {
-            gap: 1rem;
+        .diagram-col--right,
+        .diagram-col--left {
             grid-column: auto;
+            grid-row: auto;
             /* Centred and capped, so the text doesn't run the full width of a wide window */
             margin: 0 auto;
             max-width: 36rem;
@@ -240,8 +355,20 @@ import { BASE_URL } from "../utils/base-url";
             inset: 0;
         }
 
+        /* Text padded inside the bubble now, so HoverHint's own corner is clear of it */
+        .info-trigger :global(.chamber-hint) {
+            bottom: 0.75rem;
+            right: 0.75rem;
+        }
+
+        .info-trigger--chamber-b :global(.chamber-hint) {
+            left: 0.75rem;
+            right: auto;
+        }
+
         .chip-visual {
             grid-column: auto;
+            grid-row: auto;
             margin: 0 auto;
             /* Narrower cap than the desktop min() above - at 100% width
                this tall/narrow image would be very tall on a phone. */

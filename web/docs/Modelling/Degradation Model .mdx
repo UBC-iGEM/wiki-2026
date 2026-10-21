@@ -69,7 +69,7 @@ $$
 \frac{dE}{dt}= \alpha \cdot \frac{A^{n_{hill}}}{K_{ind}^{n_{hill}} + A^{n_{hill}}} - \delta \cdot E
 $$
 
-<a id="3d6d65dd82be806ebfb0fb949cab3e7b" />The first term is a Hill activation function describing enzyme production as a saturating function of antibiotic concentration, which becomes sigmoidal when the Hill coefficient is greater than one ([Likhoshvai & Ratushny, 2007](https://www.worldscientific.com/doi/abs/10.1142/S0219720007002837)). $\alpha$ represents the maximum enzyme production rate, $K_{ind} $ represents the antibiotic concentration associated with half-maximal induction, $n_{hill}$ describes the steepness of the induction response, and $\delta$ represents enzyme decay.
+<a id="3d6d65dd82be806ebfb0fb949cab3e7b" />The first term is a Hill activation function describing enzyme production as a saturating function of antibiotic concentration, which becomes sigmoidal when the Hill coefficient is greater than one <Cite refs={[{"n":6,"key":"likhoshvaiGENERALIZEDHILLFUNCTION2007"}]} />. $\alpha$ represents the maximum enzyme production rate, $K_{ind} $ represents the antibiotic concentration associated with half-maximal induction, $n_{hill}$ describes the steepness of the induction response, and $\delta$ represents enzyme decay.
 
 <a id="3e9d65dd82be80038474cdd4040a7182" />When $A = K_{ind}$, the activation fraction is exactly 0.5, regardless of $n_{hill}$.
 
@@ -97,7 +97,7 @@ $$
 \frac{dN}{dt} = \mu \cdot N - E_{max} \cdot \frac{A^{n_{pd}}}{EC_{50}^{n_{pd}} + A^{n_{pd}}} \cdot N
 $$
 
-<a id="3d6d65dd82be80b7b0d6f439a3207a73" />The downstream bacterial response was modelled using a growth term combined with a sigmoidal $E_{max}$ pharmacodynamic relationship <Cite refs={[{"n":6,"key":"regoesPharmacodynamicFunctionsMultiparameter2004"}]} />. The first term describes unconstrained exponential bacterial growth at per capita rate ($\mu$) ($time^{-1}$), and the second term is a sigmoidal $E_{max}$ model describing concentration-dependent bacterial killing.
+<a id="3d6d65dd82be80b7b0d6f439a3207a73" />The downstream bacterial response was modelled using a growth term combined with a sigmoidal $E_{max}$ pharmacodynamic relationship <Cite refs={[{"n":7,"key":"regoesPharmacodynamicFunctionsMultiparameter2004"}]} />. The first term describes unconstrained exponential bacterial growth at per capita rate ($\mu$) ($time^{-1}$), and the second term is a sigmoidal $E_{max}$ model describing concentration-dependent bacterial killing.
 
 <a id="400d65dd82be80d29804de0397587029" />Here, $E_{max}$ represents the maximum antibiotic-mediated killing rate, $EC_{50}$  represents the antibiotic concentration producing half of the maximum killing effect, and $n_{pd}$ controls the steepness of the pharmacodynamic response. These parameters are conceptually distinct from the MIC, which describes inhibition of visible bacterial growth under specified testing conditions.
 
@@ -255,7 +255,7 @@ $$
 
 <a id="3ead65dd82be8000a181c01651d1a3e7" />When antibiotic concentration is high, the killing effect is stronger. When the antibiotic is degraded and its concentration decreases, the amount of bacterial killing also decreases. If the antibiotic concentration becomes low enough, the bacterial population can begin to recover. Adding this part of the model connects antibiotic degradation to its predicted effects on bacterial growth.
 
-<a id="400d65dd82be80a0b7d9f6a3359fdca3" />The bacterial response component is based on a concentration-dependent pharmacodynamic relationship, where the effect of an antibiotic on bacterial growth and death varies with antibiotic concentration <Cite refs={[{"n":6,"key":"regoesPharmacodynamicFunctionsMultiparameter2004"}]} />.
+<a id="400d65dd82be80a0b7d9f6a3359fdca3" />The bacterial response component is based on a concentration-dependent pharmacodynamic relationship, where the effect of an antibiotic on bacterial growth and death varies with antibiotic concentration <Cite refs={[{"n":7,"key":"regoesPharmacodynamicFunctionsMultiparameter2004"}]} />.
 
 <br id="400d65dd82be80a89eb3ccb42d69c5be" />
 
@@ -283,39 +283,29 @@ $$
 
 # <a id="3c7d65dd82be80078eb4d0ea22298e4f" />**Results**
 
-<a id="3cfd65dd82be8013a309ce891cac5628" />
+## <a id="400d65dd82be80188a8ac0918f6bcd31" />**Degradation Model Visualization**
 
-<Img url="https://static.igem.wiki/teams/6279/wiki/assets/89cd211f16c15859865352441a0d527a.avif" alt="" scale={0} align="center" />
+<a id="400d65dd82be80958037d6ea53677ff5" />
 
-<a id="3cfd65dd82be8011ad8df06ae5a2b941" />**Figure 1. Degradation Model Visualization**
+<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/89cd211f16c15859865352441a0d527a.avif","alt":"","scale":0}]}>
+  <Fragment slot="content">
+    <a id="3c0d65dd82be80d0bbbfeacc36987202" />The complete model visualizes three coupled biological processes: enzyme induction, antibiotic degradation, and bacterial kill/regrowth. The three trajectories illustrate how changes in antibiotic concentration and enzyme production influence one another, as well as the predicted downstream bacterial response.
+  </Fragment>
+</Figure>
 
-<a id="3c0d65dd82be80d0bbbfeacc36987202" />The complete model visualizes three coupled biological processes: enzyme induction, antibiotic degradation, and bacterial kill/regrowth. The three trajectories illustrate how changes in antibiotic concentration and enzyme production influence one another, as well as the predicted downstream bacterial response.
-
-<a id="3c1d65dd82be80978f92d322c60520ac" />
-
-***
-
-<a id="3c0d65dd82be80abbfaaf75a7089ac25" />**Enzyme Induction**
+## <a id="3c0d65dd82be80abbfaaf75a7089ac25" />**Enzyme Induction**
 
 <a id="3e9d65dd82be80759686cf5a7253e010" />The enzyme trajectory represents how enzyme concentration changes over time after antibiotic exposure. Enzyme production depends on the antibiotic concentration through the Hill function. Enzyme decay reduces the amount of enzyme present over time. The enzyme decay decreases the amount of enzyme present over time, however, as antibiotic concentration changes, the amount of enzyme being produced can also change.
 
 <a id="400d65dd82be804bae1fdbc6d8cca253" />The balance between enzyme production and decay determines whether enzyme concentration increases, decreases, or approaches a steady state.
 
-<a id="3c1d65dd82be80f4842edae4ef6ff2b0" />
-
-***
-
-<a id="3c0d65dd82be806c8be0d80f098f848b" />**Antibiotic Degradation**
+## <a id="3c0d65dd82be806c8be0d80f098f848b" />**Antibiotic Degradation**
 
 <a id="3ead65dd82be802d989ff5e450c3b167" />Antibiotic concentration decreases over time as it is degraded by the resistance enzyme. The rate of degradation depends on the amount of enzyme present and the kinetic parameters. As enzyme concentration increases, antibiotic degradation occurs quickly, assuming the remaining antibiotic concentration and kinetic parameters are unchanged.
 
 <a id="400d65dd82be8061aeaddc8440a33e12" />As antibiotic concentration decreases, substrate availability may also become limiting, reducing the degradation rate even when enzyme is still present.
 
-<a id="3c1d65dd82be80b79888ee64fb7ba726" />
-
-***
-
-<a id="3c0d65dd82be8038bdceeeb2f027fe3c" />**Bacterial Kill/Regrowth**
+## <a id="3c0d65dd82be8038bdceeeb2f027fe3c" />**Bacterial Kill/Regrowth**
 
 <a id="3e9d65dd82be804cbba3e95901681d42" />When antibiotic concentration is high, bacterial killing is stronger. As the antibiotic is degraded, the killing effect decreases.
 
@@ -331,7 +321,7 @@ $$
 
 <a id="400d65dd82be805a9a2ad08c879db85d" />When experimentally determined values are unavailable, the corresponding parameters should be identified as assumptions rather than presented as experimentally validated measurements.
 
-<a id="3e9d65dd82be801c91a2d325ef70fd50" />**Discussion**
+# <a id="3e9d65dd82be801c91a2d325ef70fd50" />**Discussion**
 
 <a id="3e9d65dd82be80559141f3497bd74248" />The degradation model was developed to estimate how long it may take for a resistance enzyme to produce a measurable decrease in antibiotic concentration. This model follows how changes in one part of the system influence the other model components. The main use of the model is to guide Wet Lab experiments. Predicted degradation times can help Wet Lab select preliminary incubation periods before experimental testing.
 
@@ -343,7 +333,7 @@ $$
 
 <a id="400d65dd82be80b19761efae9513cc21" />However, the model currently provides theoretical predictions rather than experimentally validated degradation times. Whether the predicted changes can be detected within the microfluidic chip will depend on the sensitivity of the experimental measurement method and the behaviour of the selected resistance system.
 
-<a id="3e9d65dd82be80829073ca19511533a3" />**Limitations**
+# <a id="3e9d65dd82be80829073ca19511533a3" />**Limitations**
 
 <a id="3e9d65dd82be807386afef6cfd3f6e71" />The model is a simplified representation of the biological system and bacterial response. It does not account for every variable that may influence results experimentally.
 
@@ -357,7 +347,7 @@ $$
 
 <a id="400d65dd82be800b9b28ef98ce3e8349" />Finally, the model assumes that a decrease in antibiotic concentration can be interpreted as enzymatic degradation. Although percentage-based thresholds provide a convenient way to compare simulations, they do not establish the minimum detectable change required for the experimental assay. Experimental validation will therefore be necessary to determine whether the predicted degradation can be reliably measured.
 
-<a id="3e9d65dd82be806086d4e8413b34a1d9" />**Future Work**
+# <a id="3e9d65dd82be806086d4e8413b34a1d9" />**Future Work**
 
 <a id="3e9d65dd82be8041be4fd38a73e2e86a" />Future work will focus on improving the model using experimental data from Wet Lab. The measured degradation rates and enzyme concentrations can help replace estimated values and improve the accuracy of the predictions. Furthermore, observed results from experimental data can be compared against the predicted degradation timelines to determine how well the model represents the system.
 
@@ -367,7 +357,7 @@ $$
 
 <a id="400d65dd82be80318679c8175712c2fa" />Ultimately, the goal is to develop a model that can be refined alongside Wet Lab experiments, allowing experimental findings to improve future predictions and helping identify enzyme-antibiotic combinations suitable for rapid detection.
 
-<a id="3e9d65dd82be80b8aea1ceba4ca0a53d" />**Conclusion**
+# <a id="3e9d65dd82be80b8aea1ceba4ca0a53d" />**Conclusion**
 
 <a id="3e9d65dd82be80cc9baec9d56edd70d9" />A kinetic degradation model was developed to predict how enzyme concentration, antibiotic concentration, and bacterial population change over time. The model is intended to act as a starting point to  estimate the time required for a selected amount of antibiotic degradation to occur and help guide Wet Lab with experimental design.
 
@@ -383,4 +373,4 @@ $$
 
 # References
 
-<Bibliography refs={[{"n":1,"key":"hattabRapidPhenotypicGenotypic2024"},{"n":2,"key":"mahrousPointofCareDiagnosticTechnologies2026"},{"n":3,"key":"wrightBacterialResistanceAntibiotics2005"},{"n":4,"key":"johnsonCenturyEnzymeKinetic2013"},{"n":5,"key":"tammaPrimerAmpCVLactamases2019"},{"n":6,"key":"regoesPharmacodynamicFunctionsMultiparameter2004"}]} />
+<Bibliography refs={[{"n":1,"key":"hattabRapidPhenotypicGenotypic2024"},{"n":2,"key":"mahrousPointofCareDiagnosticTechnologies2026"},{"n":3,"key":"wrightBacterialResistanceAntibiotics2005"},{"n":4,"key":"johnsonCenturyEnzymeKinetic2013"},{"n":5,"key":"tammaPrimerAmpCVLactamases2019"},{"n":6,"key":"likhoshvaiGENERALIZEDHILLFUNCTION2007"},{"n":7,"key":"regoesPharmacodynamicFunctionsMultiparameter2004"}]} />

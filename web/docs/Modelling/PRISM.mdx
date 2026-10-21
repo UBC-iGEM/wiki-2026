@@ -77,7 +77,7 @@ title: "PRISM"
 | <a id="3ffd65dd82be80a39845f869c0931e4f" />Reference genome       | *E. coli* K-12 MG1655, U00096.3 <Cite refs={[{"n":5,"key":"EscherichiaColiStr2025"}]} /> | Verifies promoter coordinates and sequence matches                    |
 | <a id="3ffd65dd82be80579280f62ab22cf134" />Analysis configuration | Versioned PRISM configuration <Cite refs={[{"n":1,"key":"AndrewLiPRISM2026"}]} />        | Records antibiotic roles, selection thresholds and reference versions |
 
-<a id="3fdd65dd82be8099bdd8dacbac38fb7c" />PRISM combines expression measurements, regulatory annotations a strain specific reference genome, and an analysis configuration. These inputs were chosen to keep the analysis consistent internally as PRISM favours traceability within one dataset and strain. Dataset GSE220559 provides antibiotic test conditions to reference. Due to the lack of available data directly applicable to our project, ceftazidime and kanamycin serve as `β-lactam` and aminoglycoside proxies respectively.  Ciprofloxacin and polymyxin E act as cross-reactivity challenges while imipenem checks for study robustness.
+<a id="3fdd65dd82be8099bdd8dacbac38fb7c" />PRISM combines expression measurements, regulatory annotations a strain specific reference genome, and an analysis configuration. These inputs were chosen to keep the analysis consistent internally as PRISM favours traceability within one dataset and strain. Dataset GSE220559 provides antibiotic test conditions to reference. Due to the lack of available data directly applicable to our project, ceftazidime and kanamycin serve as `β-lactam` and aminoglycoside proxies respectively.  Ciprofloxacin and polymyxin E act as cross-reactivity challenges while imipenem checks for dataset robustness.
 
 ## <a id="3fdd65dd82be8059a61dfb30dc23998a" />Input Validation
 
@@ -392,7 +392,7 @@ title: "PRISM"
 
 <a id="3ffd65dd82be80ca894fdeee8a1ae156" />Define the experimental unit and distinguish biological from technical replicates before collecting data. Record the construct sequence and version, chassis, reporter and vector context, batch, plate and well, compound, dose and units, exposure time, instrument settings, and calibration. Preserve raw fluorescence and growth measurements alongside normalised values and quality-control decisions. Set inclusion and exclusion rules and acceptance criteria before evaluating the panel.
 
-<a id="3ffd65dd82be80b4aeb1ff6b8b763b2f" />Reporter maturation can delay fluorescence after transcription, so an RNA response may differ from the measured fluorescence response. Reporter performance must be assessed under the target conditions. PRISM has not yet collected reporter measurements <Cite refs={[{"n":9,"key":"ballezaSystematicCharacterizationMaturation2018"}]} />.
+<a id="3ffd65dd82be80b4aeb1ff6b8b763b2f" />Reporter maturation can possibly delay fluorescence after transcription, so an RNA response may differ from the measured fluorescence response <Cite refs={[{"n":9,"key":"ballezaSystematicCharacterizationMaturation2018"}]} />. Reporter performance must be assessed under the target conditions.
 
 <a id="3ffd65dd82be806285cfd3c6bb713109" />
 
@@ -410,7 +410,7 @@ title: "PRISM"
 
 <a id="3ffd65dd82be80bb9842ee16668af0fb" />PRISM’s main contribution is a database and review workflow that links gene-expression results with source identifiers, curated regulatory relationships, promoter annotations, candidate assessments, and analysis provenance. The explorer and programmatic interfaces let users inspect these linked records, while the curation archive preserves review decisions separately from measured data.
 
-<a id="3ffd65dd82be800b96f7d5ed71fd8bbe" />The FAST case study shows how this structure can support a screening decision. The analysis identified 925 candidate genes, but only 469 had promoter mappings and were eligible for the current panel. PRISM used expression evidence, annotation support, and diversity criteria to propose 12 promoters. This narrows the set for experimental review and makes the basis for each selection traceable.
+<a id="3ffd65dd82be800b96f7d5ed71fd8bbe" />The FAST application of this dataset shows how this structure can support a screening decision. The analysis identified 925 candidate genes, but only 469 had promoter mappings and were eligible for the current panel. PRISM used expression evidence, annotation support, and diversity criteria to propose 12 promoters. This narrows the set for experimental review and makes the basis for each selection traceable.
 
 ## <a id="3ffd65dd82be8083bbfccd6dbb56ade0" />Limitations
 

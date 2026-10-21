@@ -12,17 +12,24 @@ import hand from "../../public/assets/icons/hover-hint.svg?raw";
 interface Props {
     /** Dark, for a hint over a light card such as SeqViz's or Vega's. */
     tone?: "light" | "dark";
+    /** Also goes as soon as the element is hovered or used, rather than only once it has tapped. */
+    retireOnUse?: boolean;
     class?: string;
 }
 
-const { tone = "light", class: className } = Astro.props;
+const { tone = "light", retireOnUse = false, class: className } = Astro.props;
 
 // The SVG is inlined once per hint, so its gradients need ids of their own.
 const id = Math.random().toString(36).slice(2, 8);
 const svg = hand.replaceAll("hover-hint-", `hover-hint-${id}-`);
 ---
 
-<span class:list={["hover-hint", `tone-${tone}`, className]} aria-hidden="true" set:html={svg} />
+<span
+    class:list={["hover-hint", `tone-${tone}`, className]}
+    data-retire-on-use={retireOnUse || undefined}
+    aria-hidden="true"
+    set:html={svg}
+/>
 
 <script>
     import { onPage } from "../utils/page";
@@ -64,17 +71,19 @@ const svg = hand.replaceAll("hover-hint-", `hover-hint-${id}-`);
             };
 
             // A one-off: having tapped, it goes, whether or not the element was hovered or used meanwhile
+            // (unless retireOnUse, below, sent it already)
             hint.querySelector(".hand")!.addEventListener("animationend", retire);
 
-            // Without the tap to wait for, it goes once a mouse has found the element or the element is used
-            if (reducedMotion.matches) {
+            // Without the tap to wait for (or asked to with retireOnUse), it goes once a mouse has found the
+            // element or the element is used
+            if (reducedMotion.matches || hint.dataset.retireOnUse !== undefined) {
                 target.addEventListener("pointerenter", (event) => {
                     if (event.pointerType === "mouse") retire();
                 });
                 for (const type of ["pointerdown", "wheel", "keydown"])
                     target.addEventListener(type, retire, { passive: true });
-                continue;
             }
+            if (reducedMotion.matches) continue;
 
             tapper.observe(hint);
         }

@@ -5,15 +5,15 @@ title: "Patient Sample Design Of Experiments"
 
 # <a id="3fcd65dd82be8018b984cd9454040b94" />Abstract
 
-<a id="3fcd65dd82be80abace3f8c39492880e" />Bacterial biosensors have potential applications in detecting biological relevant signals, such as infection biomarkers or antibiotics in clinical samples. However, theri performance can be heavily influenced by the chemical and biological conditions of the sample environment in which they operate. In our project, an *E. coli* promoter-GFP biosensor is used to detect pathogen-associated signals in urine. However, urine introduces uncharacterized environmental variability that can potentially alter biosensor output.
+<a id="3fcd65dd82be80abace3f8c39492880e" />Bacterial biosensors have potential applications in detecting biological relevant signals, such as infection biomarkers or antibiotics in clinical samples.  However, their performance can be heavily influenced by the chemical and biological conditions of the sample environment in which they operate. In our project, an *E. coli* promoter-GFP biosensor is used to detect pathogen-associated signals in urine. However, urine introduces uncharacterized environmental variability that can potentially alter biosensor output.
 
-<a id="3fcd65dd82be808db2dcecc17e9642c6" />Therefore, this study aims to investigate the performance of the E. coli promoter-GFP biosensor under simulated patient-infection conditions and characterize matrix factors that may influence their response including antibiotic concentration, bacterial resistance backgrounds, and environmental conditions such as sodium and glucose concentrations. Using a Design of Experiments (DOE) approach n collaboration with Biofactorial, an automation facility at the University of British Columbia, we systematically evaluate biosensor responses across selected experimental conditions. The resulting data will directly inform upstream sample preparation and filtration design, allowing for reliable biosensor performance in clinical applications.
+<a id="3fcd65dd82be808db2dcecc17e9642c6" />Therefore, this study aims to investigate the performance of the E. coli promoter-GFP biosensor under simulated patient-infection conditions and characterize matrix factors that may influence their response including antibiotic concentration, bacterial resistance backgrounds, and environmental conditions such as sodium and glucose concentrations. Using a Design of Experiments (DOE) approach n collaboration with Biofactorial , an automation facility at the University of British Columbia, we systematically evaluate biosensor responses across selected experimental conditions. The resulting data found a significant interaction between antibiotic concentration and glucose for both CpxP and RecA biosensors (p \< 0.0001). Glucose was negatively associated with maximum GFP for CpxP, but not significantly for RecA. Sodium showed no significant effect on either sensor. In a separate growth-medium analysis, LB-Cm was associated with higher maximum GFP per OD for both biosensors, suggesting that growth medium can influence normalized sensor output.
 
 # <a id="3fcd65dd82be806eb174ef24ed0cff57" />Background
 
 <a id="3fcd65dd82be80d39a00d948d7dd42a3" />Urine consists of primarily water, some salts and metabolic byproducts , and other compounds whose concentrations vary between individual and physiological conditions . These differences can influence the growth of bacteria and the performance of bacterial biosensors intended for use in patient samples. To investigate these effects, we decided to focus determining urine-associated factors that could be experimentally controlled and incorporated into an automated screening workflow.
 
-<a id="3fdd65dd82be80b7b079cd636e58491e" />The experimental factors were selected to represent different aspects of the urinary environment. Sodium concentration was included to investigate the effect of  ionic conditions on bacterial growth and biosensor output, while glucose concentration was included to examine whether the availability of an additional carbon source influences bacterial activity or sensor performance. pH was also included as a chemical factor as acidity and alkalinity can affect the bacterial physiology and chemical environment in which the biosensors operate. Finally, antibiotic concentration was investigated to characterize biosensor responses across different exposure levels relevant to antibiotic detection and susceptibility-related experiments.
+<a id="3fdd65dd82be80b7b079cd636e58491e" />The experimental factors were selected to represent different aspects of the urinary environment. Sodium concentration was included to investigate the effect of  ionic conditions on bacterial growth and biosensor output, while glucose concentration was included to examine whether the availability of an additional carbon source influences bacterial activity or sensor performance. Although pH was initially considered because it can affect bacterial physiology, it was excluded from the final design due to the buffering capacity of LB broth. Finally, antibiotic concentration was investigated to characterize biosensor responses across different exposure levels relevant to antibiotic detection and susceptibility-related experiments.
 
 <a id="3fcd65dd82be80d8a8ffef0d62979a43" />To characterize biosensor performance under simulated infection conditions and guide future validation and optimization, a DOE using the Box Behnken method was used via the JMP software. The Box-Behnken design is especially useful as it approach supports the evaluation of individual factor effects and potential interactions between factors using fewer runs to help identify conditions that may substantially affect the measured response.
 
@@ -24,6 +24,8 @@ title: "Patient Sample Design Of Experiments"
 # <a id="3fcd65dd82be803a8955e012f9b78687" />Methodology
 
 <a id="3fcd65dd82be808697e9d3cdfd6317ad" />The objective of the Patient Sensor DOE was to characterize the performance of the bacterial sensors by varying biological and chemical conditions and analyzing the fluorescence data.
+
+<a id="400d65dd82be801f9aecdbc2ca9c391c" />**Note: complete protocols can be found under [Patient Sample](/ubc-vancouver/wet-lab/lab-notebook/patient-sample)**
 
 #### <a id="3fcd65dd82be801188b8ecefca65e81c" />1.  Selection and Justification of Experimental Factors
 
@@ -56,7 +58,7 @@ title: "Patient Sample Design Of Experiments"
 
   #### <a id="400d65dd82be80359636d7e030cd8c9a" />Iteration #1: Initial Design
 
-  <a id="3fcd65dd82be809ca37cfda5da015c36" />In our first iteration of selecting experimental factors, we utilized literature review to categorize and develop biological ranges for them to test. Initially, we wanted to test four chemical factors to simulate urine conditions: these were pH, sodium, glucose and urea. However, we decided to eventually omit urea due to its naturally low occurring percentage, and lack of access within our particular laboratory. In addition, we initially anticipated testing with one promoter recA. The reason for this is this was the first promoter Wet Lab had transformed, hence the only one we had some basic readings on.
+  <a id="3fcd65dd82be809ca37cfda5da015c36" />In our first iteration of selecting experimental factors, we utilized literature review to categorize and develop biological ranges for them to test. Initially, we wanted to test four chemical factors to simulate urine conditions: these were pH   , sodium  , glucose  and urea. However, we decided to eventually omit urea due to its naturally low occurring percentage, and lack of access within our particular laboratory. In addition, we initially anticipated testing with one promoter recA. The reason for this is this was the first promoter Wet Lab had transformed, hence the only one we had some basic readings on.
 
   #### <a id="3fcd65dd82be8028b2d7e30e2f61e21d" />**Iteration #2: Updated Factor Table**
 
@@ -66,7 +68,7 @@ title: "Patient Sample Design Of Experiments"
 
   <a id="3fdd65dd82be80498c2fcf6d457da905" />The finalized factor table included multiple antibiotic resistance backgrounds, and paired each factor with its automated delivery method. Although pH was initially considered as a chemical factor to simulate urinary conditions, it was excluded from the final design because LB broth has buffering capacity, which can resist changes in pH .
 
-  <a id="400d65dd82be80dfb43eed0680b10cf9" />The final factor levels were informed by literature research [Biosensor MIC Screening Titration v1](/ubc-vancouver/wet-lab/lab-notebook/biosensor-mic-screening-titration-v1)  and practical constraints associated with the laboratory setup
+  <a id="400d65dd82be80dfb43eed0680b10cf9" />The final factor levels were informed by literature research  [Biosensor MIC Screening Titration v1](/ubc-vancouver/wet-lab/lab-notebook/biosensor-mic-screening-titration-v1)  and practical constraints associated with the laboratory setup
 
   <a id="3fcd65dd82be80238195cc23f6ba1511" />
 
@@ -85,9 +87,7 @@ title: "Patient Sample Design Of Experiments"
 
 ### <a id="400d65dd82be80babc0dd9b5cae96e34" />2. Experimental Design
 
-<a id="400d65dd82be802d899bd9f165141537" />A reduced DOE approach using Box Behnken design was developed using JMP in collaboration with Biofactorial to investigate the effects of bacterial and environmental conditions on the promoter-GFP biosensor fluorescence output. This approach was chosen over a full factorial design to reduce the number of experimental conditions while allowing the evaluation of multiple factors.
-
-<a id="400d65dd82be80bea7a0fd64d57b2375" />The number of possible experimental conditions depends on the number of factors and their respective levels. In a full factorial design, every possible combination of factor levels is tested. As the number of factors increases, the number of required experimental conditions grows rapidly. The team therefore adopted a Box–Behnken-style design to investigate selected factor combinations while reducing the number of conditions compared with a full factorial approach.In a full factorial design, every possible combination of factor levels is tested. The number of possible combinations increases rapidly as the number of factors increases. For (F) factors, each with (L) levels, the total number of combinations is:
+<a id="400d65dd82be80bea7a0fd64d57b2375" />The number of possible experimental conditions depends on the number of factors and their respective levels. In a full factorial design, every possible combination of factor levels is tested. The number of possible combinations increases rapidly as the number of factors increases. For (F) factors, each with (L) levels, the total number of combinations is:
 
 <Callout icon="">
   <a id="3fcd65dd82be8060aadbce4372c8c614" />**Factorial Design**
@@ -123,13 +123,13 @@ title: "Patient Sample Design Of Experiments"
   <br id="400d65dd82be80cbb497fb6404271278" />
 </Callout>
 
-<br id="400d65dd82be80b0b5f5f4f3037d923b" />
+<a id="400d65dd82be80b0b5f5f4f3037d923b" />As the number of factors increases, the number of required experimental conditions grows rapidly.  The team therefore adopted a Box–Behnken-style design to investigate selected factor combinations while reducing the number of conditions compared with a full factorial approach.  This approach was chosen over a full factorial design to reduce the number of experimental conditions while allowing the evaluation of multiple factors.
 
 <a id="400d65dd82be80bdb736cae9b5bba34b" />The study examined the *E. coli* biosensor’s fluorescence output, which was evaluated under different simulated patient-infection conditions.
 
 <a id="400d65dd82be8015b508d16c3adde509" />Experimental conditions were established using two liquid-handling systems. Multichannel pipetting delivered bacterial cultures and media, while the Echo dispensed chemical treatments. Fluorescence was measured as the reporter readout to assess biosensor responses across the tested conditions.
 
-#### <a id="400d65dd82be80c1ad81ea3ba7e7f7a4" />Biological Factors -Multichannel Pipette Delivery
+#### <a id="400d65dd82be80c1ad81ea3ba7e7f7a4" />Biological Factors - Multichannel Pipette Delivery
 
 <a id="400d65dd82be807e86f4e6b2df0b79b4" />The biological factors included the biosensor promoter, culture medium, and patient-infection condition. The patient-infection conditions included a no-infection control, untransformed *E. coli* EPI300, and bacterial cultures representing different antibiotic-resistance backgrounds: β-lactamase, gentamicin resistance (GMR), and kanamycin resistance (KanR). LB and LB-Cm media were used as applicable to the corresponding cultures.
 
@@ -137,99 +137,187 @@ title: "Patient Sample Design Of Experiments"
 
 <Img url="https://static.igem.wiki/teams/6279/wiki/assets/4d6c16e2e85350cc9aea0a7370081284.svg" alt="" scale={0} align="center" />
 
-#### <a id="400d65dd82be80d3a8d8fd3818a05fc6" />Chemical Factors -Echo delivery
+#### <a id="400d65dd82be80d3a8d8fd3818a05fc6" />Chemical Factors - Echo delivery
 
-<a id="400d65dd82be800f91ddc5069de87f9d" />The chemical factors were introduced using the Echo liquid-handling system. Antibiotic was used as a factor, and was varied as a categorical condition, either with no antibiotic or varying concentrations. Amoxicillin, gentamicin, and tobramycin were the antibiotics used. Sodium and glucose were also used as chemical variables, each with three planned concentration levels.
-
-<a id="400d65dd82be80c5b9ebcc7afa1f9d8a" />The experimental factors and their corresponding conditions are summarized in the table below.
-
-<a id="400d65dd82be80869d20ceb4d5c9cfea" />**STOCKS**
-
-- <a id="400d65dd82be800c9322d008c8a78469" />Sodium 250 µg/µL
-- <a id="400d65dd82be80fcae8cd2fad4a0a4ea" />Glucose 250 µg/µL
+<a id="400d65dd82be800f91ddc5069de87f9d" />The chemical factors were introduced using the Echo liquid-handling system. Three antibiotics, amoxicillin, gentamicin, and tobramycin, were tested at different combinations. Sodium and glucose were also used as chemical variables, each with three planned concentration levels. A plate map was developed to define the chemical conditions assigned to each destination well and guide the Echo liquid-handling process. Using this map, the Echo transferred the corresponding chemical solutions from their source plates into the same destination plate, combining the assigned chemical factors according to the experimental design.
 
 ### <a id="400d65dd82be8052bd8efea2ed699b16" />Antibiotic Source Plate Layout //TODO/
 
-<br id="400d65dd82be80b7a20dfd8def45cd15" />
-
-<a id="400d65dd82be803ca5d0f606e0a94e66" /><u>Antibiotic Source Plate Layout</u>
-
-<a id="400d65dd82be8086992ec38be214d076" /><u>Destination Plate Layout</u>
+<br id="400d65dd82be803ca5d0f606e0a94e66" />
 
 # <a id="3fcd65dd82be806ebb0ff353e1cac3ff" />Results
 
 <a id="400d65dd82be800eb29ffdcdf04b8dec" />Over the duration of 8 hours, OD600 was measured every 30 minutes along with GFP fluorescence with 488 nm excitation and detected at 510 nm emission.
 
-<a id="400d65dd82be80bab913d31dc64fcea7" />Sodium:
+<br id="400d65dd82be808089f3f1c22acdaa37" />
 
-<a id="400d65dd82be8041b881dbfe584f470a" />CpxP
+<a id="400d65dd82be8088b344deac59a2bfe7" />
 
-<a id="400d65dd82be8033b461c07a2934978d" />
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/261052551c5a5dd699b07e97cc0c76db.avif" alt="" scale={0} align="center" />
+
+<a id="400d65dd82be80f0a4d5ed44a0cbbf23" />
+
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/57699821f3205ebbae5d0a24ae9f6b0a.avif" alt="" scale={0} align="center" />
+
+<a id="400d65dd82be80b89a19ebb7c4b04480" />
+
+<Img url="https://static.igem.wiki/teams/6279/wiki/assets/738396d797ff59768d81c17836568908.avif" alt="" scale={0} align="center" />
+
+## <a id="400d65dd82be8068a6e2f677f2c1fcab" />Culture Fluorescence and OD
+
+### <a id="400d65dd82be8008b358de7c8b499923" />Amoxicillin
+
+> <a id="400d65dd82be800387b2da435dcd7d4a" />BEGIN vega
+
+### <a id="400d65dd82be807a8444e5f12f73096a" />Gentamicin
+
+> <a id="400d65dd82be80fbb1ead75138139acf" />BEGIN vega
+
+### <a id="400d65dd82be807c96aee05345828a8f" />Tobramycin
+
+> <a id="400d65dd82be80d8ab78cfd9e36a89ea" />BEGIN vega
+
+### <a id="400d65dd82be8016ad9ff204962d3987" />Glucose
+
+> <a id="400d65dd82be8098a51bef54d33b7f25" />BEGIN vega
+
+### <a id="400d65dd82be80dd8607f71d5226e57d" />Sodium
+
+> <a id="400d65dd82be805492e3f15f5923515d" />BEGIN vega
+
+### <a id="400d65dd82be8046bdc6f4fa78b9e7ad" />Patient Strain
+
+> <a id="400d65dd82be809792e1cafe4adfb839" />BEGIN vega
+
+### <a id="400d65dd82be80d0853cdb780098d5b7" />Media Type
+
+> <a id="400d65dd82be8017bbdaf74b8a4989d7" />BEGIN vega
+
+<br id="400d65dd82be805494ecc6b2ad7ba75c" />
+
+<br id="400d65dd82be805f902be946e1f190be" />
+
+<a id="400d65dd82be8008add7e4b3e775d7e1" />Sodium:
+
+<a id="400d65dd82be80618d61fb5c3d2d518b" />CpxP
+
+<a id="400d65dd82be80ca9c1ff1b0057f4108" />
 
 <Img url="https://static.igem.wiki/teams/6279/wiki/assets/47ae91baf41254a28411d1b02c235629.avif" alt="" scale={0} align="center" />
 
-<a id="400d65dd82be80c8a966c2aba2df567d" />
+<a id="400d65dd82be802a945ce1da08b134cc" />
 
 <Img url="https://static.igem.wiki/teams/6279/wiki/assets/b90fb51d368e5e9e80fddc35da3b0d95.avif" alt="" scale={0} align="center" />
 
-<a id="400d65dd82be80aa9d9eda49dfda2f19" />
+<a id="400d65dd82be80778670ecee75a0f506" />
 
 <Img url="https://static.igem.wiki/teams/6279/wiki/assets/470d629eadfd5b359eda1d1ea23e951d.avif" alt="" scale={0} align="center" />
 
-<br id="400d65dd82be80ccaa4ae326bc1764a2" />
+<a id="400d65dd82be805abb9fd0adeff1a1e3" />recA
 
-<a id="400d65dd82be80409b90c1e5038b87b1" />recA
-
-<a id="400d65dd82be809cb66fcdb8e6e379a0" />
+<a id="400d65dd82be805598f4d67ad17244b3" />
 
 <Img url="https://static.igem.wiki/teams/6279/wiki/assets/0dffa561490951978341fa7789863c9c.avif" alt="" scale={0} align="center" />
 
-<a id="400d65dd82be806dbbc7c176738b128d" />
+<a id="400d65dd82be808d8e73db436d1efbe0" />
 
 <Img url="https://static.igem.wiki/teams/6279/wiki/assets/bef6bf1364ef5a53857da3069504c03d.avif" alt="" scale={0} align="center" />
 
-<a id="400d65dd82be804dbf0cf92d7aace31f" />
+<a id="400d65dd82be802c8d09e6cdb47163a6" />
 
 <Img url="https://static.igem.wiki/teams/6279/wiki/assets/26bfcb6b1ce15cbaacd8d04e83ede39d.avif" alt="" scale={0} align="center" />
 
-<br id="400d65dd82be80f2bb03e9aca97d75e9" />
+<a id="400d65dd82be8036837eee802566d1de" />Glucose:
 
-<br id="400d65dd82be805c9b53e4b8234ca1ee" />
+<a id="400d65dd82be8005b6b7d68f7bc117fd" />CpxP:
 
-<a id="400d65dd82be80f5aabde5305440a1a4" />Glucose:
-
-<a id="400d65dd82be8016bc82f013643078b4" />CpxP:
-
-<a id="400d65dd82be80c99f78e617747361ae" />
+<a id="400d65dd82be80419e77fa850178f9d3" />
 
 <Img url="https://static.igem.wiki/teams/6279/wiki/assets/a00c6ced9c92558b8cb00cac736d8ffa.avif" alt="" scale={0} align="center" />
 
-<a id="400d65dd82be80dcbd05f612b48d8cae" />
+<a id="400d65dd82be8005b092f0f6792c0d17" />
 
 <Img url="https://static.igem.wiki/teams/6279/wiki/assets/80253866257e5aaa8f1ad38bd693aa74.avif" alt="" scale={0} align="center" />
 
-<a id="400d65dd82be80b8b71defa69a62069e" />
+<a id="400d65dd82be80419cd0f50de583d4a4" />
 
 <Img url="https://static.igem.wiki/teams/6279/wiki/assets/833cc4d29f44546f91ec80a172aafc52.avif" alt="" scale={0} align="center" />
 
-<a id="400d65dd82be80238ae1d6b4cc48b19f" />RecA
+<a id="400d65dd82be808786ffda27d70dbcd2" />RecA
 
-<a id="400d65dd82be80e08e4cebe94de0df5d" />
+<br id="400d65dd82be80e0a878c9ed6703337b" />
+
+<a id="400d65dd82be80c39373f0b4e8c4bc55" />
 
 <Img url="https://static.igem.wiki/teams/6279/wiki/assets/792105879dd75d5fabf30e9e009506c5.avif" alt="" scale={0} align="center" />
 
-<a id="400d65dd82be80b3b82cce5763e2ad25" />
+<a id="400d65dd82be8061914dd598f88b50ea" />
 
 <Img url="https://static.igem.wiki/teams/6279/wiki/assets/959d7ab582765ef3b27381117d447c95.avif" alt="" scale={0} align="center" />
 
-<a id="400d65dd82be80c9ab24fc4864621316" />
+<a id="400d65dd82be805bb679ede79d977c33" />
 
 <Img url="https://static.igem.wiki/teams/6279/wiki/assets/2296aa5dc7ae55fcbfabead92556681b.avif" alt="" scale={0} align="center" />
 
+<br id="400d65dd82be80c5b38afd7b8c670029" />
+
+<a id="400d65dd82be80038788d8a3dd67dfbf" />LB/LB-Cm Variants
+
+<br id="400d65dd82be8024a251d30ebdd3a2a7" />
+
+<br id="400d65dd82be801d8db8cc247776be78" />
+
+<a id="400d65dd82be800ba5c2fa86b9cae313" />**Table 1. Response-surface model of max GFP in the cpxP and recA sensors.**
+
+<a id="400d65dd82be800f9db7f4cc8ba54ee5" />
+
+| <a id="400d65dd82be80949cbfe1a7205cd38d" />Model term                  | CpxP estimate (SE) | CpxP p-value | RecA estimate (SE) | RecA p-value |
+| ---------------------------------------------------------------------- | ------------------ | ------------ | ------------------ | ------------ |
+| <a id="400d65dd82be80d78286c73eaa9f7cdf" />Intercept                   | 8,727 (2,329)      | 0.0002       | 2,390 (165)        | \<0.0001     |
+| <a id="400d65dd82be80ddb6d3f39f3b9ecac4" />Antibiotic concentration    | -1,564 (585)       | 0.008        | -173 (41)          | \<0.0001     |
+| <a id="400d65dd82be8067b476c877675e8228" />Glucose (added)             | -3,595 (1,588)     | 0.025        | -157 (104)         | 0.13         |
+| <a id="400d65dd82be80ec894dff5af23733f2" />Sodium (added)              | -105 (804)         | 0.90         | -5 (58)            | 0.93         |
+| <a id="400d65dd82be80adb8cee44a50794d86" />Concentration x glucose     | +2,706 (616)       | \<0.0001     | +232.5 (42.7)      | \<0.0001     |
+| <a id="400d65dd82be80ff8883c7bd958506d6" />Concentration x sodium      | +561 (643)         | 0.38         | +36 (45)           | 0.43         |
+| <a id="400d65dd82be8094a1dbe388dd368da6" />Sodium x glucose            | -249 (494)         | 0.61         | -5 (34)            | 0.89         |
+| <a id="400d65dd82be8026bacfc4ed53d132ae" />Concentration squared       | +1,329 (976)       | 0.17         | -110 (68)          | 0.11         |
+| <a id="400d65dd82be80b4b819cd4bd2b40a26" />Glucose squared             | -1,407 (2,477)     | 0.57         | -224 (173)         | 0.20         |
+| <a id="400d65dd82be80aca065c2e233fbeccd" />Sodium squared              | +746 (1,336)       | 0.58         | -38 (93)           | 0.68         |
+| <a id="400d65dd82be803fab0ec63be663bc45" />Patient condition (overall) | —                  | 0.001        | —                  | 0.40         |
+
+<a id="400d65dd82be80c3a046f5f6480c7bef" />**Note:** Estimates are scaled coefficients, with continuous factors centred and scaled by half their range. CpxP values represent blank-subtracted maximum GFP, whereas RecA values represent raw maximum GFP. Patient condition was assessed using an overall statistical test on JMP, so no single coefficient estimate is reported. P-values assume independent wells.
+
+<br id="400d65dd82be80eea2c2eb2ddc049887" />
+
 # <a id="3fcd65dd82be80c5b7f1c3f33e86a52b" />Discussion
 
-<a id="400d65dd82be802c8d2fe31f6205efb2" />Sodium:
+#### <a id="400d65dd82be8080a0c5fc358b92d3a2" />Response Surface Analysis
 
+<a id="400d65dd82be80efb767c1e45a51cd4f" />Standard biosensor characterization often evaluates individual factors separately, whereas the response-surface analysis revealed a significant interaction between antibiotic concentration and glucose for both CpxP and RecA (p \< 0.0001). The positive interaction coefficients (+2,706 for CpxP and +232.5 for RecA) indicate that the relationship between antibiotic concentration and maximum GFP changes with glucose level. This highlights the value of evaluating combinations of experimental conditions when characterizing biosensor performance. Although mechanisms such as altered growth or cellular metabolism could contribute to this interaction, further experiments would be needed to establish its biological basis.
+
+<a id="400d65dd82be8055a539f13f4a7a89e1" />The growth-medium analysis further demonstrated the importance of interpreting fluorescence alongside bacterial growth. LB-Cm was associated with higher maximum GFP per OD600 for both sensors, but  CpxP showed increased maximum GFP, whereas RecA showed lower maximum OD600 without a significant change in maximum GFP. Thus, an increased GFP/OD600 ratio does not necessarily indicate increased reporter expression; it may also reflect differences in cell density. Considering both fluorescence and growth measurements is therefore important when evaluating biosensor output.
+
+#### <a id="400d65dd82be805b84eceed03440045b" />Antibiotic Concentrations
+
+<a id="400d65dd82be8096bc35d9723d450f30" />All three antibiotics produced similar OD600 trends. Each antibiotic reduced growth of the CpxP and RecA sensors, particularly after the cells started to exponentially grow (around the 3 hour mark). Higher antibiotic concentrations were found to reduce OD600 levels.
+
+<a id="400d65dd82be80f78a11d0672ce01a34" />The two aminoglycosides,  gentamicin and tobramycin had clear separation between each dose. At the highest concentration of antibiotic (8ug/mL), both the gentamycin and tobramycin curves start to decline, suggesting cell killing.
+
+<a id="400d65dd82be807384b7db7bc22f5247" />In comparison, the OD600 curves for amoxicillin overlap between increasing doses. This may be due to a mix of resistant and
+
+#### <a id="400d65dd82be805d9a03d8d5b2632f01" />Sodium
+
+<a id="400d65dd82be805ebb70ef468845328d" />Across the tested sodium conditions, OD600 levels remained relatively consistent, suggesting that sodium variation had little observable effect on bacterial growth under the conditions tested. Similarly, GFP fluorescence showed limited variation across sodium concentrations under the different antibiotic treatments. These findings suggest that sodium concentration may have a limited influence on biosensor performance within the range investigated. However, further testing would be needed to determine whether this trend holds under the more complex conditions found in actual urine samples.
+
+#### <a id="400d65dd82be80039283c4edfdb2bdce" />Glucose
+
+<a id="400d65dd82be802f975cc503098ef592" />Glucose concentration appeared to influence GFP fluorescence at later measurement time points, with higher glucose concentrations associated with lower fluorescence levels. This trend suggests that glucose may affect biosensor output over time. However, additional analysis is needed to determine whether the observed changes are related to bacterial growth, changes in reporter expression, or other factors affecting the fluorescence signal. Understanding this relationship will help determine whether glucose should be considered an important variable when optimizing biosensor performance in simulated urine conditions.
+
+<br id="400d65dd82be80e793b2f3cf1da0a3bb" />
+
+<br id="3fcd65dd82be802b865cf260e3ac8b4c" />
+
+- <a id="400d65dd82be80c38af1f63d0a2b6b25" />The tra
 - <a id="400d65dd82be807ebb9cdc10fe0328a4" />Did not have significant effect on OD levels across the different sodium levels.
 - <a id="400d65dd82be8021a6c9c11567899b0b" />Increasing antibiotic concentration did not make a difference, fluorescence levels stayed the same
 - <a id="400d65dd82be8043b84de0c6fce5e22b" />This means that the sensor will perform regardless of varying sodium levels in an initial sample of urine.
@@ -237,13 +325,12 @@ title: "Patient Sample Design Of Experiments"
 <a id="400d65dd82be805f9028ec140600b16a" />Glucose:
 
 - <a id="400d65dd82be804482d9f20efff122a9" />At later time points (greater than 8 hours), the GFP levels start to decrease with increasing glucose added.
-- <a id="400d65dd82be80c38af1f63d0a2b6b25" />The tra
 
 <br id="3fcd65dd82be80c78b11c105c08f15ff" />
 
-<br id="3fcd65dd82be805d8c01c640994b9b82" />
+<a id="400d65dd82be802c8d2fe31f6205efb2" />Sodium:
 
-<br id="3fcd65dd82be802b865cf260e3ac8b4c" />
+<br id="3fcd65dd82be805d8c01c640994b9b82" />
 
 <br id="3fcd65dd82be80cc830bd97367955674" />
 
