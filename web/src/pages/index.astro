@@ -7,7 +7,9 @@ import SoundToggle from "../components/SoundToggle.astro";
 <MainLayout>
     <main class="home-hero">
         <div class="home-sound-toggle">
-            <SoundToggle />
+            <div class="home-sound-toggle-pin">
+                <SoundToggle />
+            </div>
         </div>
         <HeroChipIntro />
     </main>
@@ -33,34 +35,70 @@ import SoundToggle from "../components/SoundToggle.astro";
 </script>
 
 <style>
-    /* Top-right, under the nav's rightmost chip: .page-layout's right gutter matches the nav's */
+    /* Top-right, under the nav's rightmost chip (.page-layout's right gutter matches the nav's), then held at the
+       top-right of the screen once the nav scrolls away. The wrapper is a full-width, zero-height row that sticks;
+       the toggle hangs from its right end, out over .home-hero's padding. */
     .home-sound-toggle {
-        position: absolute;
-        right: 0;
-        top: 0;
+        align-self: stretch;
+        height: 0;
+        position: sticky;
+        top: calc(1rem + var(--hero-padding));
         z-index: 5;
     }
 
+    .home-sound-toggle-pin {
+        position: absolute;
+        right: calc(-1 * var(--hero-padding-inline));
+        top: calc(-1 * var(--hero-padding));
+    }
+
+    /* The page fades into green at the bottom, behind the sponsor footer: the layout and footer let the body's
+       gradient show through on this page only */
+    :global(body:has(.home-hero)) {
+        background:
+            linear-gradient(to top, rgb(0 255 146 / 0.5), rgb(115 168 177 / 0.25) 50%, rgb(230 80 219 / 0)) bottom /
+                100% 70rem no-repeat,
+            var(--color-ebony-clay);
+    }
+
+    :global(body:has(.home-hero) .page-layout),
+    :global(body:has(.home-hero) .sponsor-footer) {
+        background: transparent;
+    }
+
+    /* Over the green, the sponsor bar's lines and the site notice are dark rather than light */
+    :global(body:has(.home-hero) .sponsor-viewport) {
+        border-block-color: var(--color-ebony-clay);
+    }
+
+    :global(body:has(.home-hero) .site-notice) {
+        color: var(--color-ebony-clay);
+        font-family: var(--font-geist), sans-serif;
+        font-weight: 700;
+    }
+
     .home-hero {
+        /* The home page's layout is sized against this (see .chip-stage) */
+        --hero-padding: 2rem;
+        --hero-padding-inline: 2rem;
         align-items: center;
+        container-type: inline-size;
         display: flex;
-        justify-content: center;
-        min-height: calc(100vh - 4rem);
+        flex-direction: column;
         /* The chip composition is ~2x --chip-w wide, wider than a phone.
            Without this, Chrome mobile zooms out to fit the overflow (and
            resizes vw units with it); in-app browsers don't - so layout
            differed between them. clip (not hidden) avoids creating a
            scroll container, so ScrollTrigger still uses the page scroll. */
         overflow-x: clip;
-        padding: 2rem;
-        /* Anchors .home-sound-toggle */
-        position: relative;
+        padding: var(--hero-padding) var(--hero-padding-inline);
     }
 
     /* .page-layout already supplies the side gutter on phones */
     @media (max-width: 600px) {
         .home-hero {
-            padding: 1rem 0;
+            --hero-padding: 1rem;
+            --hero-padding-inline: 0px;
         }
     }
 </style>

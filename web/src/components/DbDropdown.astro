@@ -132,6 +132,9 @@ const current_page_title = (current_page ?? PagePath.fromString(current_page_pat
         display: block;
         font-family: var(--font-geist);
         position: relative;
+        /* Its view-transition-name makes it a stacking context, so it is lifted itself for the open list to stay over
+           the page where the sidebar is stacked above the article (and isn't lifted) */
+        z-index: 10;
     }
 
     summary {

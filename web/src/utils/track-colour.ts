@@ -73,14 +73,17 @@ function layerOf(element: Element, svg: SVGSVGElement): Layer {
     };
 }
 
-/** The colour `path` is drawn in at each length along it, as a CSS colour. */
-export function trackColour(path: SVGGeometryElement): (length: number) => string {
+/**
+ * The colour `path` is drawn in at each length along it, as a CSS colour. `overlays` are copies of the same path
+ * drawn over it in other strokes.
+ */
+export function trackColour(path: SVGGeometryElement, overlays: Element[] = []): (length: number) => string {
     const svg = path.ownerSVGElement!;
     const uses = path.id
         ? Array.from(svg.querySelectorAll("use")).filter((use) => use.href.baseVal === `#${path.id}`)
         : [];
     // Kept in <defs>, it is only drawn through its uses
-    const elements = path.closest("defs") ? uses : [path, ...uses];
+    const elements = [...(path.closest("defs") ? uses : [path, ...uses]), ...overlays];
     const layers = elements.map((element) => layerOf(element, svg));
 
     return (length) => {

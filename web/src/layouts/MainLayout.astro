@@ -225,6 +225,9 @@ const show_sidebar = show_toc || Astro.slots.has("sidebar");
         max-height: calc(100vh - 2rem);
         position: sticky;
         top: 1rem;
+        /* Sticking makes it a stacking context, which traps an open dropdown's z-index inside it, so it is lifted
+           over what follows it (e.g. the footer) but stays under the navbar */
+        z-index: 10;
     }
 
     .page-toc {
