@@ -2,15 +2,22 @@
 
 set -euo pipefail
 
+# GitLab's main is a separate squashed history, so local main must not track it.
+jj bookmark untrack main@gitlab-origin 2>/dev/null || true
+
 jj git fetch --remote gitlab-origin
 
-jj new main@gitlab-origin
-# Copy current state of main
-jj restore --from main
-jj desc -m 'deploy: sync squashed commits from github'
+rev() { jj log -r "$1" --no-graph -T commit_id; }
+tree="$(rev main)^{tree}"
+parent="$(rev main@gitlab-origin)"
 
-git push gitlab-origin "$(jj log -r @ --no-graph -T commit_id)":refs/heads/main
+if [ "$(git rev-parse "$tree")" = "$(git rev-parse "$parent^{tree}")" ]; then
+    echo "GitLab is already up to date with main."
+    exit 0
+fi
+
+# Build the deploy commit with git directly so the working copy is untouched.
+commit=$(git commit-tree "$tree" -p "$parent" -m 'deploy: sync squashed commits from github')
+
+git push gitlab-origin "$commit":refs/heads/main
 jj git fetch --remote gitlab-origin
-
-# Back to main!
-jj new main
