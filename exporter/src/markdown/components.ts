@@ -719,21 +719,15 @@ function malformedVega(problem: string): ExporterError {
 // ====================
 
 export interface VideoAttrs {
-    /** The video's UUID on Video Universe, for its embed link. */
+    /** The video's UUID (or short ID) on Video Universe, for its embed link. */
     uuid: string;
-    /** The video's name on Video Universe, as the poster's label. */
-    title: string;
-    /** The video's preview image on Video Universe. */
-    poster: string;
     /** Width over height. */
     aspect_ratio: number;
-    /** In seconds. */
-    duration: number;
 }
 export const VIDEO_SLOTS = [] as const;
 type VideoSlots = SlotRecord<typeof VIDEO_SLOTS>;
 
-async function video({ items }: ComponentInput): ComponentOutput {
+async function video({ items, ctx }: ComponentInput): ComponentOutput {
     // A single link to a Video Universe video
     const [link_block, ...rest] = items;
 
@@ -745,15 +739,19 @@ async function video({ items }: ComponentInput): ComponentOutput {
 
     const info = await fetchVideo(video_id);
     if (isExporterErr(info)) return info;
+    // Only a log line, as the embed shows Video Universe's own notice until the video is approved
+    if (info.pending)
+        new ExporterError(
+            `The Video Universe video ${video_id} is not public yet; it will play once approved. ` +
+                "If it should already be public, check the link is correct.",
+            ["igem video server"],
+        ).warn(ctx);
 
     return generateComponent<VideoAttrs, VideoSlots>({
         tag: "Video",
         attrs: {
             uuid: info.uuid,
-            title: info.name,
-            poster: info.poster_url,
             aspect_ratio: info.aspect_ratio,
-            duration: info.duration,
         },
         slots: {},
     });

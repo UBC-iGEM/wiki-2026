@@ -11,14 +11,12 @@ export const VIDEO_UNIVERSE = "https://video.igem.org";
 const VIDEO_PATH_PATTERN = /^\/(?:w|videos\/(?:watch|embed))\/([\w-]+)\/?$/;
 
 export interface VideoInfo {
+    /** The video's UUID, or for a video still awaiting approval, the ID from its link. */
     uuid: string;
-    name: string;
-    /** In seconds. */
-    duration: number;
     /** Width over height. */
     aspect_ratio: number;
-    /** The full-size preview image on Video Universe. */
-    poster_url: string;
+    /** Set when Video Universe is not yet showing the video, so its details are placeholders. */
+    pending?: true;
 }
 
 /**
@@ -42,26 +40,23 @@ export async function fetchVideo(video_id: string): Promise<ExporterResult<Video
     const response = await $unsafe(
         async () => await axios.get(`${VIDEO_UNIVERSE}/api/v1/videos/${video_id}`, { timeout: 30000 }),
     );
+    // Until approved, Video Universe hides a video from anyone signed out (as not found or not allowed),
+    // so it is embedded by the ID in its link, and the embed plays it once approved
+    if (isErr(response) && axios.isAxiosError(response) && [401, 403, 404].includes(response.response?.status ?? 0))
+        return { uuid: video_id, aspect_ratio: 16 / 9, pending: true };
     if (isErr(response))
         return new ExporterError(
-            `Could not find the Video Universe video ${video_id}. Check that it is public and the link is correct.`,
+            `Could not reach Video Universe for the video ${video_id}.`,
             ["igem video server"],
             response,
         );
 
     const video = response.data as Partial<{
         uuid: string;
-        name: string;
-        duration: number;
         // eslint-disable-next-line @typescript-eslint/naming-convention
         aspectRatio: number | null;
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        previewPath: string;
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        thumbnailPath: string;
     }>;
-    const poster_path = video.previewPath ?? video.thumbnailPath;
-    if (!video.uuid || !poster_path)
+    if (!video.uuid)
         return new ExporterError(`The Video Universe video ${video_id} did not come back as a video.`, [
             "igem video server",
             "bug?",
@@ -69,10 +64,7 @@ export async function fetchVideo(video_id: string): Promise<ExporterResult<Video
 
     return {
         uuid: video.uuid,
-        name: video.name ?? "",
-        duration: video.duration ?? 0,
         // Older uploads have no ratio recorded, and are almost all 16:9
         aspect_ratio: video.aspectRatio || 16 / 9,
-        poster_url: `${VIDEO_UNIVERSE}${poster_path}`,
     };
 }

@@ -1,8 +1,7 @@
 ---
 /*
- * One fullscreen viewer per page, opened by clicking any `img[data-lightbox]`, or any `[data-lightbox-video]` holding a
- * Video Universe embed link (and its `data-ratio`) to play.
- * Components opt in with the attributes; this listens for them page-wide.
+ * One fullscreen viewer per page, opened by clicking any `img[data-lightbox]`.
+ * Components opt in with the attribute; this listens for it page-wide.
  */
 ---
 
@@ -10,17 +9,14 @@
 <dialog class="lightbox" aria-label="Enlarged image" transition:persist="lightbox">
     <button class="lightbox-close" aria-label="Close">×</button>
     <img class="lightbox-img" alt="" />
-    <iframe class="lightbox-video" title="Video" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen hidden
-    ></iframe>
 </dialog>
 
 <script>
     const dialog = document.querySelector<HTMLDialogElement>("dialog.lightbox")!;
     const view = dialog.querySelector<HTMLImageElement>(".lightbox-img")!;
-    const frame = dialog.querySelector<HTMLIFrameElement>(".lightbox-video")!;
     const reduced_motion = matchMedia("(prefers-reduced-motion: reduce)");
 
-    // The figure or poster that was opened, for the viewer to shrink back into
+    // The figure that was opened, for the viewer to shrink back into
     let source: HTMLElement | null = null;
 
     /** Runs `update`, growing `from` into `to` across it where the browser can (see the lightbox rule in style.css). */
@@ -47,20 +43,12 @@
         return rect.bottom > 0 && rect.top < innerHeight && rect.right > 0 && rect.left < innerWidth;
     }
 
-    /** Shows one of the image or the video, labelling the dialog for it. */
-    function show(viewer: HTMLImageElement | HTMLIFrameElement, label: string): void {
-        view.hidden = viewer !== view;
-        frame.hidden = viewer !== frame;
-        dialog.setAttribute("aria-label", label);
-    }
-
     function open(img: HTMLImageElement): void {
         source = img;
         morph(
             img,
             () => view,
             async () => {
-                show(view, "Enlarged image");
                 view.src = img.currentSrc || img.src;
                 view.alt = img.alt;
                 // The enlarged image must be drawn before it is captured, or the figure grows into a blank
@@ -76,29 +64,11 @@
         );
     }
 
-    function openVideo(poster: HTMLElement): void {
-        source = poster;
-        morph(
-            poster,
-            () => frame,
-            () => {
-                show(frame, "Video player");
-                // Playing straight away, as opening it was the click on play
-                const src = new URL(poster.dataset.lightboxVideo!);
-                src.searchParams.set("autoplay", "1");
-                frame.src = src.href;
-                frame.title = poster.getAttribute("aria-label") ?? "Video";
-                frame.style.setProperty("--ratio", poster.dataset.ratio || String(16 / 9));
-                dialog.showModal();
-            },
-        );
-    }
-
     function close(): void {
         if (!dialog.open) return;
         const target = source?.isConnected && onScreen(source) ? source : null;
         morph(
-            target ? (frame.hidden ? view : frame) : null,
+            target ? view : null,
             () => target,
             () => dialog.close(),
         );
@@ -113,15 +83,12 @@
                 // A peeking carousel slide navigates rather than enlarges
                 if (img.closest('.carousel-slide[data-role]:not([data-role="active"])')) return;
                 open(img);
-                return;
             }
-            const poster = (event.target as Element).closest<HTMLElement>("[data-lightbox-video]");
-            if (poster) openVideo(poster);
         },
         { capture: true },
     );
 
-    // Any click inside closes it, as the image fills the dialog (and clicks within the video stay in its frame)
+    // Any click inside closes it, as the image fills the dialog
     dialog.addEventListener("click", close);
     // Escape too, shrinking back rather than vanishing
     dialog.addEventListener("cancel", (event) => {
@@ -130,8 +97,6 @@
     });
     dialog.addEventListener("close", () => {
         view.removeAttribute("src");
-        // Unloading the embed stops it playing; removing `src` alone would leave it running
-        frame.src = "about:blank";
         source = null;
     });
 
@@ -173,19 +138,13 @@
         background: color-mix(in srgb, var(--color-ebony-clay) 90%, transparent);
     }
 
-    .lightbox-img,
-    .lightbox-video {
+    .lightbox-img {
         border-radius: 22px;
         box-shadow: 0 0 2.5rem color-mix(in srgb, var(--color-cornflower) 40%, transparent);
         /* As large as fits inside the margins, however small the file: the full width, or the full height at its --ratio */
         aspect-ratio: var(--ratio, auto);
         height: auto;
         width: min(100vw - 2 * var(--margin-x), (100dvh - 2 * var(--margin-y)) * var(--ratio, 1));
-    }
-
-    .lightbox-video {
-        background: #000;
-        border: none;
     }
 
     .lightbox-close {
@@ -210,8 +169,7 @@
     }
 
     @media (max-width: 700px) {
-        .lightbox-img,
-        .lightbox-video {
+        .lightbox-img {
             border-radius: 14px;
         }
     }
