@@ -34,6 +34,8 @@ export default defineConfig({
         "/results": projectPage("results"),
         "/contribution": projectPage("contribution"),
         "/human-practices": projectPage("human-practices"),
+        "/measurement": projectPage("best-measurement"),
+        "/hardware": projectPage("best-hardware"),
     },
     fonts: [
         {
