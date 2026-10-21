@@ -6,6 +6,13 @@ import pink_tube from "../../public/assets/hero_interactive/pink_tube.svg?raw";
 import empty_tube from "../../public/assets/hero_interactive/empty_tube.svg?raw";
 import chip_light_up from "../../public/assets/hero_interactive/chip_light_up.svg?raw";
 import reset_icon from "../../public/assets/hero_interactive/reset-icon.svg?raw";
+
+// The lit chip's export is 12 units taller than the base chip's (544 vs 532), only for the bottom circle's
+// glow. Workaround for alignment.
+const chip_light_up_framed = chip_light_up.replace(
+    'height="544" viewBox="0 0 233 544"',
+    'height="532" viewBox="0 0 233 532" overflow="visible"',
+);
 ---
 
 <section class="interactive-section">
@@ -14,7 +21,7 @@ import reset_icon from "../../public/assets/hero_interactive/reset-icon.svg?raw"
             <h3 class="case-heading">Case 1<br />Susceptible</h3>
             <div class="overlay-stack">
                 <div class="chip-visual chip-visual--left" set:html={chip_interactive_left} />
-                <div class="chip-visual chip-visual--left-lit" aria-hidden="true" set:html={chip_light_up} />
+                <div class="chip-visual chip-visual--left-lit" aria-hidden="true" set:html={chip_light_up_framed} />
             </div>
             <h3 class="case-caption case-caption--left">Fluorescence</h3>
         </div>
