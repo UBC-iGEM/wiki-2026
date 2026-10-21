@@ -5,9 +5,9 @@ import hand from "../../public/assets/icons/hover-hint.svg?raw";
  * A tapping hand in the corner of an interactive element, telling the reader it can be played with.
  * Its parent is the element: it must be positioned, and is where hovering and use are watched.
  *
- * The hand rests faintly until it comes into view, taps twice, and fades away for good. It takes no part
- * in the page: clicks pass through it to the element, and it can't be selected. With reduced motion it
- * doesn't tap, and goes instead once the element is hovered or used.
+ * The hand rests faintly until it comes into view, taps twice, and fades away for good - or sooner, once the
+ * element is hovered or used. It takes no part in the page: clicks pass through it to the element, and it
+ * can't be selected. With reduced motion it doesn't tap, so only hovering or using the element sends it.
  */
 interface Props {
     /** Dark, for a hint over a light card such as SeqViz's or Vega's. */
@@ -63,18 +63,18 @@ const svg = hand.replaceAll("hover-hint-", `hover-hint-${id}-`);
                 hint.classList.remove("is-tapping");
             };
 
-            // A one-off: having tapped, it goes, whether or not the element was hovered or used meanwhile
+            // A one-off: having tapped, it goes
             hint.querySelector(".hand")!.addEventListener("animationend", retire);
 
-            // Without the tap to wait for, it goes once a mouse has found the element or the element is used
-            if (reducedMotion.matches) {
-                target.addEventListener("pointerenter", (event) => {
-                    if (event.pointerType === "mouse") retire();
-                });
-                for (const type of ["pointerdown", "wheel", "keydown"])
-                    target.addEventListener(type, retire, { passive: true });
-                continue;
-            }
+            // It also goes as soon as a mouse has found the element or the element is used, tapped yet or not
+            target.addEventListener("pointerenter", (event) => {
+                if (event.pointerType === "mouse") retire();
+            });
+            for (const type of ["pointerdown", "wheel", "keydown", "focusin"])
+                target.addEventListener(type, retire, { passive: true });
+
+            // Without the tap, that is the only way it goes
+            if (reducedMotion.matches) continue;
 
             tapper.observe(hint);
         }

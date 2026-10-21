@@ -211,14 +211,14 @@ import { BASE_URL } from "../utils/base-url";
             const introTimeline = gsap
                 .timeline()
                 .addLabel("chip-intro")
-                .to(".chip-1", { opacity: 1, duration: 0.9 })
-                .to(".chip-2", { opacity: 1, duration: 0.1 }, "+=0.2")
+                .to(".chip-1", { opacity: 1, duration: 1 })
+                .to(".chip-2", { opacity: 1, duration: 1 }, "+=0.2")
                 // chip-3 is a separate image (not inline SVG), so hold here until it can actually be shown
                 .addLabel("chip-3-wait", "+=0.2")
                 .addPause("chip-3-wait", () => {
                     void chip3Ready.then(() => introTimeline.resume());
                 })
-                .to(".chip-3", { opacity: 1, duration: 0.2 })
+                .to(".chip-3", { opacity: 1, duration: 1 })
                 // autoAlpha, so once gone their noise and blur filters are no longer painted
                 .to(".chip-1, .chip-2", { autoAlpha: 0, duration: 0.3 }, "+=0.1")
                 .addLabel("chip-shown")
@@ -279,7 +279,7 @@ import { BASE_URL } from "../utils/base-url";
                 { stub: 'rect[x="929"]', circle: "paint9", stat: "stat-3" },
             ];
             // Seconds between one bubble starting and the next
-            const statBubbleStagger = 0.7;
+            const statBubbleStagger = 0.5;
             const statsTimeline = gsap.timeline({
                 scrollTrigger: {
                     // "top 70%": waits until the bubbles are well into the viewport
@@ -294,17 +294,17 @@ import { BASE_URL } from "../utils/base-url";
                     .fromTo(
                         `.chip-line ${stub}`,
                         { clipPath: "inset(0% 0% 100% 0%)" },
-                        { clipPath: "inset(0% 0% 0% 0%)", duration: 0.3, ease: "none" },
+                        { clipPath: "inset(0% 0% 0% 0%)", duration: 0.2, ease: "none" },
                         at,
                     )
                     .fromTo(
                         `.chip-line path[fill^="url(#${circle}_"]`,
                         { clipPath: "inset(0% 0% 100% 0%)" },
-                        { clipPath: "inset(0% 0% 0% 0%)", duration: 0.7, ease: "power1.out" },
+                        { clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power1.out" },
                         ">",
                     )
-                    .to(`.stat.${stat}`, { opacity: 1, duration: 0.5 }, "<0.3")
-                    .to(`.stat-caption.${stat}`, { opacity: 1, duration: 0.5 }, "<0.2");
+                    .to(`.stat.${stat}`, { opacity: 1, duration: 0.35 }, "<0.2")
+                    .to(`.stat-caption.${stat}`, { opacity: 1, duration: 0.35 }, "<0.15");
             });
 
             // chip-line-3 no path added yet
