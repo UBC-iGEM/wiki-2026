@@ -30,7 +30,7 @@ import reset_icon from "../../public/assets/hero_interactive/reset-icon.svg?raw"
         </div>
 
         <div class="prompt">
-            <h4 class="prompt-text">Click on patient samples to conduct the test</h4>
+            <h4 class="prompt-text">Click on patient sample tubes to conduct the test</h4>
             <button class="reset-button" type="button" aria-label="Reset the test" set:html={reset_icon} />
         </div>
 
@@ -248,10 +248,25 @@ import reset_icon from "../../public/assets/hero_interactive/reset-icon.svg?raw"
             }),
         ];
 
+        // The reset button only appears once both tubes have been clicked
+        const resetButton = document.querySelector<HTMLButtonElement>(".reset-button");
+        const tubes = [".tube-visual--green", ".tube-visual--pink"].map((selector) =>
+            document.querySelector<HTMLElement>(selector),
+        );
+        const clickedTubes = new Set<HTMLElement>();
+        for (const tube of tubes) {
+            tube?.addEventListener("click", () => {
+                clickedTubes.add(tube);
+                if (clickedTubes.size === tubes.length) resetButton?.classList.add("is-shown");
+            });
+        }
+
         // Rewinding each timeline to 0 puts every tube, chip, liquid band and
         // caption back where it started, ready to be clicked again
-        document.querySelector(".reset-button")?.addEventListener("click", () => {
+        resetButton?.addEventListener("click", () => {
             for (const timeline of caseTimelines) timeline.pause(0);
+            clickedTubes.clear();
+            resetButton.classList.remove("is-shown");
         });
 
         return () => caseTimelines.forEach((timeline) => timeline.kill());
@@ -312,14 +327,26 @@ import reset_icon from "../../public/assets/hero_interactive/reset-icon.svg?raw"
         font-size: 24px;
     }
 
+    /* Hidden (but still taking its space, so the prompt doesn't shift)
+       until both tubes have been clicked - see the script */
     .reset-button {
         background: none;
         border: none;
         cursor: var(--cursor-interact);
         --cursor-over-text: var(--cursor-interact);
+        opacity: 0;
         padding: 0;
-        transition: transform 0.3s ease;
+        transition:
+            transform 0.3s ease,
+            opacity 0.3s ease,
+            visibility 0.3s;
+        visibility: hidden;
         width: 2.5rem;
+    }
+
+    .reset-button.is-shown {
+        opacity: 1;
+        visibility: visible;
     }
 
     .reset-button:hover {
