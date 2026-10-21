@@ -338,9 +338,9 @@ title: "Fluorescence Detector"
   <Fragment slot="test">
     <a id="29d66f047a844118a8d60ceea559d359" />**Setup**
 
-    - <a id="045fda310950455c9d3787d6d71c07de" />Connect circuit to +5V, GND, and A0 (analog in) pins on arduino
-    - <a id="2452f32406dd42128fa83fca941bc43e" />Code Arduino to read A0 and print to serial monitor (below)
-    - <a id="2c804de1eff54563aaa013956bb6a9c8" />For detailed measurements and data, we referenced DigiKey PV36 potentiometer datasheet <Cite refs={[{"n":14,"key":"PV36Potentiometer"}]} />
+    - <a id="045fda310950455c9d3787d6d71c07de" />Connect circuit to +5V, GND, and A0 (analog in) pins on Arduino.
+    - <a id="2452f32406dd42128fa83fca941bc43e" />Code Arduino to read A0 and print to serial monitor (below).
+    - <a id="2c804de1eff54563aaa013956bb6a9c8" />For detailed measurements and data, we referenced DigiKey PV36 potentiometer datasheet <Cite refs={[{"n":14,"key":"PV36Potentiometer"}]} />.
       - <a id="8898ae18ed3446cfaa2bf584b1e0bc55" />Up to 100k ohms over 25 turns
 
     <a id="b14564f0307946caa84de0661cf15f61" />
@@ -394,7 +394,7 @@ title: "Fluorescence Detector"
 
     <a id="ac7417e1a3aa4176baeb9ea8d8d8da36" />These results indicate that something in our circuit isn’t working as expected.
 
-    <a id="6247cbc87d1a4c2fa28dfaeb2d5cd8e8" />When you refer to the paper that our circuit was based on <Cite refs={[{"n":13,"key":"DevelopmentIntegratedSystem"}]} /> , you can see that they use voltage rails of +9V and -9V and that the OP07 op-amp used works within a supply voltage range of ± 3V to ± 18V, whereas we are powering the circuit using the ±5V and 0V rails of an Arduino, meaning that the supply voltage is outside the range that the OP07 are rated for <Cite refs={[{"n":15,"key":"OP07CDRTexasInstruments"}]} />. Therefore, we need to redesign the circuit to suit our purposes better.
+    <a id="6247cbc87d1a4c2fa28dfaeb2d5cd8e8" />When you refer to the paper that our circuit was based on <Cite refs={[{"n":13,"key":"DevelopmentIntegratedSystem"}]} />, you can see that they use voltage rails of +9V and -9V and that the OP07 op-amp used works within a supply voltage range of ± 3V to ± 18V, whereas we are powering the circuit using the ±5V and 0V rails of an Arduino, meaning that the supply voltage is outside the range that the OP07 are rated for <Cite refs={[{"n":15,"key":"OP07CDRTexasInstruments"}]} />. Therefore, we need to redesign the circuit to suit our purposes better.
 
     <a id="0394c28124014472a6cf55930ab758e0" />To go into more detail, since the op-amps were operating outside of their rated supply voltage, the internal circuitry cannot work as intended, and the performance is impacted. It appears the op-amp output was stuck at its maximum output around 3.7 V; since the OP07 is not a rail-to-rail op-amp, its output cannot reach its rails. The internal circuitry requires some voltage across it, around 1-2V, preventing the output from reaching the rails the op-amp is supplied with. This was the case for both op-amps, and as such, increasing the gain only pushed the voltage slightly higher rather than multiplying it as the op-amp outputs were already saturated. This also explains why the output signal of the circuit was not responsive to light, as we rely on the op-amps to convert the photocurrent into a readable voltage, and they were not set up correctly to do so. Additionally, the clipping diode has a forward voltage drop of around 0.7V, which is why the Arduino read around 4.4V.
 

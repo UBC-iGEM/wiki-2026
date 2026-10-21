@@ -223,7 +223,7 @@ export class DatabaseId extends Id implements Named {
                 }),
             );
 
-            return { item: new DatabaseMap(pages), path: new PagePathComponent(db_name) };
+            return { item: new DatabaseMap(this, pages), path: new PagePathComponent(db_name) };
         });
     }
 

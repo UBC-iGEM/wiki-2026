@@ -1,5 +1,5 @@
 import { CONFIG } from "./config";
-import { Id, PageId } from "./notion";
+import { DatabaseId, Id, PageId } from "./notion";
 import { slug } from "github-slugger";
 
 // Required setup for decorators
@@ -88,14 +88,26 @@ export interface MapPath<T> {
     item: T;
 }
 
+/** A database on the wiki: `path` is the database itself, `first_page` is where links to it lead */
+export interface DatabasePath {
+    path: PagePath;
+    first_page: PagePath;
+    item: DatabaseId;
+}
+
 abstract class PathMap {
     abstract pages(): Generator<MapPath<PageId>>;
+    abstract databases(): Generator<DatabasePath>;
 
     /**
      * fuck your DS&A course, my algorithm can be as inefficient as I want
      */
     get(id: PageId): PagePath | undefined {
         return this.pages().find(({ item }) => item.equals(id))?.path;
+    }
+
+    getDatabase(id: DatabaseId): DatabasePath | undefined {
+        return this.databases().find(({ item }) => item.equals(id));
     }
 }
 
@@ -122,6 +134,12 @@ export class ContentMap extends PathMap {
         }
     }
 
+    override *databases(): Generator<DatabasePath> {
+        for (const entry of this.aggregates) {
+            yield* entry.databases();
+        }
+    }
+
     toJSON(): JsonMap {
         return {
             aggregates: this.aggregates.map((agg) => ({
@@ -135,6 +153,7 @@ export class ContentMap extends PathMap {
                               } as const)
                             : ({
                                   type: "db",
+                                  id: entry.item.id?.toString(),
                                   item: entry.item.entries.map((db_page) => ({
                                       path: db_page.path.toString(),
                                       item: db_page.item.toString(),
@@ -159,6 +178,7 @@ export class ContentMap extends PathMap {
                                 agg_entry.type === "page"
                                     ? new PageId(agg_entry.item)
                                     : new DatabaseMap(
+                                          agg_entry.id ? new DatabaseId(agg_entry.id) : undefined,
                                           agg_entry.item.map((db_entry) => ({
                                               path: new PagePathComponent(db_entry.path),
                                               item: new PageId(db_entry.item),
@@ -190,7 +210,7 @@ export interface JsonMap {
         name: string;
         entries: ({
             path: string;
-        } & ({ type: "page"; item: string } | { type: "db"; item: { path: string; item: string }[] }))[];
+        } & ({ type: "page"; item: string } | { type: "db"; id?: string; item: { path: string; item: string }[] }))[];
     }[];
     static_links?: StaticNavLink[];
 }
@@ -231,6 +251,15 @@ export class AggregateMap extends PathMap {
         }
     }
 
+    override *databases(): Generator<DatabasePath> {
+        for (const { path: entry_path, item } of this.entries) {
+            if (!(item instanceof DatabaseMap) || !item.id || !item.entries[0]) continue;
+
+            const path = new PagePath([this.name, entry_path]);
+            yield { path, first_page: new PagePath([this.name, entry_path, item.entries[0].path]), item: item.id };
+        }
+    }
+
     /**
      * For each entry in this aggregate, yields:
      *   * If entry is a normal page, [<path to page>, <path to page>] (both entries identical)
@@ -255,7 +284,11 @@ export class AggregateMap extends PathMap {
 }
 
 export class DatabaseMap {
-    constructor(public entries: MapItem<PageId>[]) {}
+    // `id` is absent in content maps exported before it was recorded
+    constructor(
+        public id: DatabaseId | undefined,
+        public entries: MapItem<PageId>[],
+    ) {}
 
     push(item: MapItem<PageId>): void {
         this.entries.push(item);

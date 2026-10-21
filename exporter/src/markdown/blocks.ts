@@ -1,5 +1,5 @@
 import type { ContentMap } from "../map";
-import { Id, PageId, type NotionBlock } from "../notion";
+import { DatabaseId, Id, PageId, type NotionBlock } from "../notion";
 import { ExporterError, isExporterErr, type WarningContext } from "../utils";
 import { COMPONENT_MAP, componentDocSuggestion, isBlank, type ImgAttrs } from "./components";
 import { pageMention, warnGoogleLink } from "./link";
@@ -289,9 +289,9 @@ async function convertBlock(block: NotionBlock, parent_ctx: ConvertContext): Pro
             // Database links are resolved like page links
             const target_id =
                 target.type === "page_id"
-                    ? target.page_id
+                    ? new PageId(target.page_id)
                     : target.type === "database_id"
-                      ? target.database_id
+                      ? new DatabaseId(target.database_id)
                       : undefined;
             if (!target_id) {
                 new ExporterError(`A link to a ${target.type} is unsupported and was ignored.`, [
@@ -300,7 +300,7 @@ async function convertBlock(block: NotionBlock, parent_ctx: ConvertContext): Pro
                 return [];
             }
 
-            const link = await pageMention(new PageId(target_id), ctx);
+            const link = await pageMention(target_id, ctx);
             if (isExporterErr(link)) {
                 link.warn(ctx);
                 return [];

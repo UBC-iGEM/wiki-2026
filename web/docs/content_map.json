@@ -61,6 +61,7 @@
                 {
                     "path": "Engineering",
                     "type": "db",
+                    "id": "3fcd65dd82be802c864ee33def6fd6bb",
                     "item": [
                         {
                             "path": "Biosensor",
@@ -80,6 +81,7 @@
                 {
                     "path": "Lab Notebook",
                     "type": "db",
+                    "id": "301d65dd82be8087ab70c2206f39dffc",
                     "item": [
                         {
                             "path": "Assembly of CpxP and RecA constructs",
@@ -194,6 +196,7 @@
                 {
                     "path": "Protocols",
                     "type": "db",
+                    "id": "3fcd65dd82be8038aa4dd88b1b686b61",
                     "item": [
                         {
                             "path": "LB Medium",
@@ -248,6 +251,7 @@
                 {
                     "path": "Protocol Database",
                     "type": "db",
+                    "id": "3fdd65dd82be80a69a13d6c139955d3f",
                     "item": [
                         {
                             "path": "PDMS Casting",

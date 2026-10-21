@@ -1,4 +1,4 @@
-import { Id, PageId } from "../notion";
+import { DatabaseId, Id, PageId } from "../notion";
 import { ExporterError, isExporterErr, type ExporterResult } from "../utils";
 import { findLiterature, type LitEntry } from "../zotero";
 import type { ConvertContext } from "./blocks";
@@ -10,10 +10,25 @@ import type { PhrasingContent } from "mdast";
  * Converts a page mention or link into either an intra-wiki link or a citation.
  */
 export async function pageMention(
-    page: PageId,
+    page: PageId | DatabaseId,
     ctx: ConvertContext,
     block?: { id: Id; text: string },
 ): Promise<ExporterResult<PhrasingContent>> {
+    // Like the navbar, a database links to its first page
+    if (page instanceof DatabaseId) {
+        const db = ctx.routes.getDatabase(page);
+        if (!db)
+            return new ExporterError(`A link to a database that is not on the wiki was ignored.`, [
+                "malformed content",
+            ]);
+
+        return {
+            type: "link",
+            url: db.first_page.toURL(),
+            children: [{ type: "text", value: block?.text || db.path.name().toString() }],
+        };
+    }
+
     const trashed = await trashedError(page);
     if (trashed) return trashed;
 
