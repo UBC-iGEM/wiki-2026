@@ -93,6 +93,8 @@ export default defineConfig({
                 "react-dom/client",
                 "seqviz",
             ],
+            // Vega's bundles are imported as `?url`, which pre-bundling would replace with the bundle itself
+            exclude: ["vega-build", "vega-lite-build", "vega-embed-build"],
         },
         build: {
             rollupOptions: {

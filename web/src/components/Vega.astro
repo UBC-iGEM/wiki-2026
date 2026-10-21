@@ -3,22 +3,17 @@ import { type VegaAttrs, VEGA_SLOTS } from "@exporter/markdown/components";
 import HoverHint from "./HoverHint.astro";
 type Props = VegaAttrs;
 
-const { code } = Astro.props;
+const { url } = Astro.props;
 VEGA_SLOTS satisfies readonly [];
-
-// `<` is escaped so a string in the spec can't close the script tag.
-const data = code.replaceAll("<", "\\u003c");
-// Only a chart with tooltips or selections has anything to hover over
-const interactive = /"(tooltip|params|selection|signals)"\s*:/.test(code);
 ---
 
-<figure class="vega glow-panel">
+<!-- The spec is fetched by the script, which also shows the HoverHint if the chart turns out to be interactive -->
+<figure class="vega glow-panel" data-url={url}>
     <div class="glow-panel-body">
         <div class="vega-stage">
             <div class="vega-host"></div>
-            {interactive && <HoverHint tone="dark" />}
+            <HoverHint tone="dark" class="vega-hint" />
         </div>
-        <script type="application/json" class="vega-data" is:inline set:html={data} />
     </div>
 </figure>
 
@@ -48,6 +43,16 @@ const interactive = /"(tooltip|params|selection|signals)"\s*:/.test(code);
         });
     }
 
+    /** The spec at `url`. The exporter has already checked it is JSON. */
+    async function fetchSpec(url: string): Promise<{ spec: unknown; interactive: boolean }> {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Could not fetch ${url} (${response.status})`);
+        // Editors may save a byte-order mark, which JSON.parse rejects
+        const code = (await response.text()).replace(/^\uFEFF/, "");
+        // Only a chart with tooltips or selections has anything to hover over
+        return { spec: JSON.parse(code), interactive: /"(tooltip|params|selection|signals)"\s*:/.test(code) };
+    }
+
     /** Loads the bundles once, however many pages with charts are visited. */
     let loading: Promise<typeof embed> | undefined;
     function loadEmbed(): Promise<typeof embed> {
@@ -66,18 +71,18 @@ const interactive = /"(tooltip|params|selection|signals)"\s*:/.test(code);
         const charts: Promise<Result | void>[] = [];
 
         for (const vega of vegas) {
-            const spec = JSON.parse(vega.querySelector(".vega-data")!.textContent!);
             const host = vega.querySelector<HTMLElement>(".vega-host")!;
-            const chart = embedding
-                .then((embed) =>
-                    embed(host, spec, {
+            const chart = Promise.all([embedding, fetchSpec(vega.dataset.url!)])
+                .then(([embed, { spec, interactive }]) => {
+                    vega.classList.toggle("interactive", interactive);
+                    return embed(host, spec as Parameters<typeof embed>[1], {
                         renderer: "svg",
                         // No export menu, which links out to the online Vega editor
                         actions: false,
                         // Styled below to match the citation popups and tables
                         tooltip: { disableDefaultStyle: true },
-                    }),
-                )
+                    });
+                })
                 .catch((error: unknown) => {
                     console.error("Vega chart could not be rendered:", error);
                     host.textContent = "This chart could not be displayed.";
@@ -104,6 +109,16 @@ const interactive = /"(tooltip|params|selection|signals)"\s*:/.test(code);
     /* Anchors the HoverHint, outside the host as Vega replaces what's in it */
     .vega .vega-stage {
         position: relative;
+    }
+
+    /* Shown by the script once the fetched spec has something to hover over */
+    .vega:not(.interactive) .vega-hint {
+        display: none;
+    }
+
+    /* Holds some room while the spec is fetched, so the page jumps less when the chart arrives */
+    .vega .vega-host:empty {
+        min-height: 16rem;
     }
 
     /* Vega draws dark text by default, so the chart sits on a light card */

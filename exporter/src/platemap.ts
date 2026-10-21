@@ -1,11 +1,10 @@
-import { $unsafeSync, ExporterError, isErr, type ExporterResult, type Result } from "./utils";
-import { parse } from "csv-parse/sync";
-
 /**
- * Reading plate map CSVs at export time.
+ * Reading plate map CSVs, at export time to check them and in the browser to show them.
  *
  * Each CSV is one plate, with one cell per well: the top-left cell is A1, the cell to its right A2, the first cell of
  * the second row B1, and so on. A cell is either empty (an empty well) or `CATEGORY;LABEL;BRIGHTNESS`.
+ *
+ * Nothing here may import from Node or the rest of the exporter, as `Platemap.astro` sends it to the browser.
  */
 
 export interface Well {
@@ -25,26 +24,17 @@ export interface Plate {
 
 /**
  * Parse a plate CSV. Categories are looked up in (and added to) `categories`, so colours stay the same across plates.
- * Problems with single wells are returned as warnings and the well is left empty.
+ * Problems with single wells are returned as warnings and the well is left empty; a plate that can't be read at all
+ * gives a description of the problem instead.
  */
 export function parsePlate(
     name: string,
     csv: string,
     categories: string[],
-): ExporterResult<{ plate: Plate; warnings: string[] }> {
-    const records: Result<string[][]> = $unsafeSync(() =>
-        parse(csv, {
-            // Spreadsheet exports may start with a byte-order mark, pad cells and leave ragged rows. Rows of empty
-            // cells are rows of empty wells, so only truly blank lines are skipped.
-            bom: true,
-            trim: true,
-            skip_empty_lines: true,
-            relax_column_count: true,
-        }),
-    );
-    if (isErr(records))
-        return new ExporterError(`Plate "${name}" is not a readable CSV file.`, ["malformed content"], records);
-    if (records.length === 0) return new ExporterError(`Plate "${name}" has no wells.`, ["malformed content"]);
+): { plate: Plate; warnings: string[] } | string {
+    const records = readCsv(csv);
+    if (records === undefined) return `Plate "${name}" is not a readable CSV file (a quote is never closed).`;
+    if (records.length === 0) return `Plate "${name}" has no wells.`;
 
     const columns = Math.max(...records.map((cells) => cells.length));
     const warnings: string[] = [];
@@ -63,6 +53,56 @@ export function parsePlate(
     );
 
     return { plate: { name, columns, rows }, warnings };
+}
+
+/**
+ * The cells of a CSV, trimmed. Spreadsheet exports may start with a byte-order mark, pad cells and leave ragged rows;
+ * rows of empty cells are rows of empty wells, so only truly blank lines are skipped. Undefined if a quote is left open.
+ */
+function readCsv(csv: string): string[][] | undefined {
+    const text = csv.replace(/^﻿/, "");
+    const records: string[][] = [];
+    let row: string[] = [];
+    let cell = "";
+    let quoted = false;
+    // Whether anything has been read on this line, so a blank line can be told from a row of one empty cell
+    let started = false;
+
+    const endCell = (): void => {
+        row.push(cell.trim());
+        cell = "";
+    };
+    const endRow = (): void => {
+        if (started) {
+            endCell();
+            records.push(row);
+        }
+        row = [];
+        started = false;
+    };
+
+    for (let i = 0; i < text.length; i++) {
+        const char = text[i]!;
+        if (quoted) {
+            if (char !== '"') cell += char;
+            else if (text[i + 1] === '"') cell += text[++i];
+            else quoted = false;
+        } else if (char === '"') {
+            quoted = started = true;
+        } else if (char === ",") {
+            started = true;
+            endCell();
+        } else if (char === "\n" || char === "\r") {
+            if (char === "\r" && text[i + 1] === "\n") i++;
+            endRow();
+        } else {
+            cell += char;
+            if (char.trim() !== "") started = true;
+        }
+    }
+    if (quoted) return undefined;
+    endRow();
+    return records;
 }
 
 /** `CATEGORY;LABEL;BRIGHTNESS`. The label may itself contain `;`. Returns a problem description if malformed. */

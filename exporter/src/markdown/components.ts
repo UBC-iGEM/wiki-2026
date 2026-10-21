@@ -1,7 +1,7 @@
 import { fetchNotebook, parseColabFileId } from "../colab";
 import { parseCsvTable } from "../csv-table";
 import { Id, type NotionBlock } from "../notion";
-import { parsePlate, type Plate } from "../platemap";
+import { parsePlate } from "../platemap";
 import { parseGenbank } from "../seqmap";
 import { ExporterError, isExporterErr, type ExporterResult } from "../utils";
 import { fetchVideo, parseVideoId } from "../video-universe";
@@ -418,10 +418,23 @@ function blockLink(item: Item): string | undefined {
 export interface PlatemapAttrs {
     /** Plain text, for messages; the styled title is in the `title` slot. */
     title: string;
-    /** Category names, in order of first appearance; a well's `category` indexes into this. */
+    /**
+     * Category names, in order of first appearance across every plate; a well's `category` indexes into this. Given
+     * up front, as the browser reads the plates one at a time.
+     */
     categories: string[];
-    /** The plates as JSON (`Plate[]`). */
-    plates: string;
+    /**
+     * Each plate's name, size and the URL of its uploaded CSV, in order. The browser fetches each CSV when its plate is
+     * first shown, as inlining every well makes for a slow page.
+     */
+    plates: PlateSource[];
+}
+export interface PlateSource {
+    name: string;
+    url: string;
+    columns: number;
+    /** How many rows of wells; with `columns`, enough to lay out the plate before its CSV arrives. */
+    rows: number;
 }
 /** `names` holds one `.plate-name[data-index]` per plate, so names keep their Notion styling. */
 export const PLATEMAP_SLOTS = ["title", "names"] as const;
@@ -437,7 +450,7 @@ async function platemap({ items, ctx }: ComponentInput): ComponentOutput {
         return malformedPlatemap("each plate must be a subtitle followed by an uploaded CSV file");
 
     const categories: string[] = [];
-    const plates: Plate[] = [];
+    const plates: PlateSource[] = [];
     const names: FlowContent[] = [];
     for (let i = 0; i < rest.length; i += 2) {
         const subtitle_block = rest[i]!;
@@ -448,14 +461,20 @@ async function platemap({ items, ctx }: ComponentInput): ComponentOutput {
         if (file_block.type !== "file" || !/\.csv$/i.test(mediaFileName(file_block)))
             return malformedPlatemap(`the subtitle "${name}" is not followed by an uploaded .csv file`);
 
-        const csv = await fetchMedia(file_block);
+        // Parsed here too, so a malformed plate is reported at export rather than by the reader's browser
+        const [csv, url] = await Promise.all([
+            fetchMedia(file_block),
+            uploadMedia(file_block, { keep_original_file: true }),
+        ]);
         if (isExporterErr(csv)) return csv;
+        if (isExporterErr(url)) return url;
 
         const parsed = parsePlate(name, csv.toString(), categories);
-        if (isExporterErr(parsed)) return parsed;
+        if (typeof parsed === "string") return new ExporterError(parsed, ["malformed content"]);
         for (const warning of parsed.warnings)
             new ExporterError(warning, ["malformed content"]).warn(blockContext(ctx, file_block));
-        plates.push(parsed.plate);
+        const { columns, rows } = parsed.plate;
+        plates.push({ name, url, columns, rows: rows.length });
         names.push(
             jsxInlineBlock(
                 "span",
@@ -473,7 +492,7 @@ async function platemap({ items, ctx }: ComponentInput): ComponentOutput {
 
     return generateComponent<PlatemapAttrs, PlatemapSlots>({
         tag: "Platemap",
-        attrs: { title, categories, plates: JSON.stringify(plates) },
+        attrs: { title, categories, plates },
         slots: { title: [jsxInlineBlock("div", { class: "title" }, await blockPhrasing(title_block!, ctx))], names },
     });
 }
@@ -688,8 +707,11 @@ function malformedDownloadable(problem: string): ExporterError {
 // ====================
 
 export interface VegaAttrs {
-    /** The compiled Vega JSON. */
-    code: string;
+    /**
+     * The URL of the uploaded Vega JSON, which the browser fetches, as inlining a chart's data makes for a slow page
+     * (and can push the MDX past what iGEM's GitLab will store).
+     */
+    url: string;
 }
 export const VEGA_SLOTS = [] as const;
 type VegaSlots = SlotRecord<typeof VEGA_SLOTS>;
@@ -701,8 +723,13 @@ async function vega({ items }: ComponentInput): ComponentOutput {
         return malformedVega("it does not start with an uploaded .json file");
     if (rest.length > 0) return malformedVega("it has content after its JSON file");
 
-    const data = await fetchMedia(file_block);
+    // Parsed here too, so malformed JSON is reported at export rather than by the reader's browser
+    const [data, url] = await Promise.all([
+        fetchMedia(file_block),
+        uploadMedia(file_block, { keep_original_file: true }),
+    ]);
     if (isExporterErr(data)) return data;
+    if (isExporterErr(url)) return url;
 
     // Editors may save a byte-order mark, which JSON.parse rejects
     const vega_json = data
@@ -717,7 +744,7 @@ async function vega({ items }: ComponentInput): ComponentOutput {
 
     return generateComponent<VegaAttrs, VegaSlots>({
         tag: "Vega",
-        attrs: { code: vega_json },
+        attrs: { url },
         slots: {},
     });
 }

@@ -1,21 +1,15 @@
 ---
 import { type PlatemapAttrs, PLATEMAP_SLOTS, PLATEMAP_PALETTE_SIZE } from "@exporter/markdown/components";
-import { type Plate, wellId } from "@exporter/platemap";
 import HoverHint from "./HoverHint.astro";
 type Props = PlatemapAttrs;
 
-const { categories, plates: plates_json } = Astro.props;
+const { categories, plates } = Astro.props;
 PLATEMAP_SLOTS satisfies readonly ["title", "names"];
 
-const plates: Plate[] = JSON.parse(plates_json);
+// The script fetches each plate's CSV when it is first shown; until then the first plate is laid out as empty wells
 const first = plates[0]!;
-// Categories share colours across plates, but each plate's legend lists only the categories on it
-const categoriesOn = (plate: Plate) =>
-    [...new Set(plate.rows.flatMap((row) => row.flatMap((well) => (well ? [well.category] : []))))].sort(
-        (a, b) => a - b,
-    );
 
-// `<` is escaped so a well label can't close the script tag.
+// `<` is escaped so a name can't close the script tag.
 const data = JSON.stringify({ categories, plates }).replaceAll("<", "\\u003c");
 
 // Bright enough to read against the dark panel; categories take them in order of first appearance.
@@ -46,43 +40,16 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
                 }
             </figcaption>
             <div class="grid-scroll">
-                <!-- Must match `drawGrid` in the script, which redraws it for other plates -->
-                <div class="grid" style={`--columns: ${first.columns}`}>
-                    {
-                        first.rows.map((row, r) =>
-                            row.map((well, c) =>
-                                well === null ? (
-                                    <span class="well empty" />
-                                ) : (
-                                    <span
-                                        class={`well g${well.category % PALETTE_SIZE}`}
-                                        style={`--fill: ${Math.round(well.brightness * 100)}%`}
-                                        tabindex="0"
-                                        role="img"
-                                        aria-label={`${wellId(r, c)}: ${well.label}`}
-                                        data-r={r}
-                                        data-c={c}
-                                    />
-                                ),
-                            ),
-                        )
-                    }
+                <!-- Must match `drawLoading` in the script -->
+                <div class="grid" style={`--columns: ${first.columns}`} aria-busy="true">
+                    {Array.from({ length: first.rows * first.columns }, () => <span class="well loading" />)}
                 </div>
             </div>
             <HoverHint />
         </figure>
 
-        <!-- Must match `drawLegend` in the script -->
-        <ul class="legend">
-            {
-                categoriesOn(first).map((i) => (
-                    <li>
-                        <span class={`swatch g${i % PALETTE_SIZE}`} />
-                        {categories[i]}
-                    </li>
-                ))
-            }
-        </ul>
+        <!-- Filled by `drawLegend` in the script -->
+        <ul class="legend"></ul>
 
         <div class="tooltip" role="tooltip" hidden></div>
         <script type="application/json" class="platemap-data" is:inline set:html={data} />
@@ -91,26 +58,27 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
 
 <script>
     import { onPage } from "../utils/page";
-    import type { Plate } from "@exporter/platemap";
+    import type { PlateSource } from "@exporter/markdown/components";
+    import { type Plate, parsePlate, wellId } from "@exporter/platemap";
 
     const PALETTE_SIZE = 12;
 
-    /** As `wellId` in the exporter, which can't be imported here: A1, B12, AA3... */
-    function wellId(r: number, c: number): string {
-        let row = "";
-        for (let n = r + 1; n > 0; n = Math.floor((n - 1) / 26)) row = String.fromCharCode(65 + ((n - 1) % 26)) + row;
-        return `${row}${c + 1}`;
+    const span = (className: string, text = "") => {
+        const el = document.createElement("span");
+        el.className = className;
+        el.textContent = text;
+        return el;
+    };
+
+    /** Lay out `source` as wells waiting for its CSV, matching the server-rendered markup. */
+    function drawLoading(grid: HTMLElement, source: PlateSource) {
+        grid.style.setProperty("--columns", `${source.columns}`);
+        grid.setAttribute("aria-busy", "true");
+        grid.replaceChildren(...Array.from({ length: source.rows * source.columns }, () => span("well loading")));
     }
 
-    /** Redraw the grid for `plate`, matching the server-rendered markup. */
+    /** Draw the wells of `plate`. */
     function drawGrid(grid: HTMLElement, plate: Plate) {
-        const span = (className: string, text = "") => {
-            const el = document.createElement("span");
-            el.className = className;
-            el.textContent = text;
-            return el;
-        };
-
         const cells: HTMLElement[] = [];
         plate.rows.forEach((row, r) => {
             row.forEach((well, c) => {
@@ -126,20 +94,20 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
             });
         });
         grid.style.setProperty("--columns", `${plate.columns}`);
+        grid.removeAttribute("aria-busy");
         grid.replaceChildren(...cells);
     }
 
-    /** Redraw the legend with the categories on `plate`, matching the server-rendered markup. */
-    function drawLegend(legend: HTMLElement, plate: Plate, categories: string[]) {
-        const on = new Set(plate.rows.flatMap((row) => row.flatMap((well) => (well ? [well.category] : []))));
+    /** Fill the legend with the categories on `plate`, or empty it while there is no plate to show. */
+    function drawLegend(legend: HTMLElement, plate: Plate | undefined, categories: string[]) {
+        // Categories share colours across plates, but each plate's legend lists only the categories on it
+        const on = new Set(plate?.rows.flatMap((row) => row.flatMap((well) => (well ? [well.category] : []))));
         legend.replaceChildren(
             ...[...on]
                 .sort((a, b) => a - b)
                 .map((i) => {
                     const item = document.createElement("li");
-                    const swatch = document.createElement("span");
-                    swatch.className = `swatch g${i % PALETTE_SIZE}`;
-                    item.append(swatch, categories[i]!);
+                    item.append(span(`swatch g${i % PALETTE_SIZE}`), categories[i]!);
                     return item;
                 }),
         );
@@ -147,26 +115,69 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
 
     onPage((signal) => {
         for (const platemap of document.querySelectorAll<HTMLElement>(".platemap")) {
-            const { categories, plates } = JSON.parse(platemap.querySelector(".platemap-data")!.textContent!) as {
-                categories: string[];
-                plates: Plate[];
-            };
+            const { categories, plates: sources } = JSON.parse(
+                platemap.querySelector(".platemap-data")!.textContent!,
+            ) as { categories: string[]; plates: PlateSource[] };
             const grid = platemap.querySelector<HTMLElement>(".grid")!;
             const legend = platemap.querySelector<HTMLElement>(".legend")!;
             const names = platemap.querySelectorAll<HTMLElement>(".plate-name");
             const count = platemap.querySelector<HTMLElement>(".plate-count");
             const tooltip = platemap.querySelector<HTMLElement>(".tooltip")!;
-            const n = plates.length;
+            const n = sources.length;
+
+            // Each plate is fetched once, the first time it (or a plate next to it) is shown. The exporter put every
+            // category in `categories` already, so parsing a plate only looks its categories up.
+            const fetches = new Map<number, Promise<Plate>>();
+            const plates = new Map<number, Plate>();
+            const fetchPlate = (index: number): Promise<Plate> => {
+                let fetching = fetches.get(index);
+                if (fetching) return fetching;
+
+                const { name, url } = sources[index]!;
+                fetching = fetch(url, { signal }).then(async (response) => {
+                    if (!response.ok) throw new Error(`Could not fetch ${url} (${response.status})`);
+                    const parsed = parsePlate(name, await response.text(), categories);
+                    if (typeof parsed === "string") throw new Error(parsed);
+                    plates.set(index, parsed.plate);
+                    return parsed.plate;
+                });
+                // A failed fetch is tried again the next time the plate is shown
+                fetching.catch(() => fetches.delete(index));
+                fetches.set(index, fetching);
+                return fetching;
+            };
 
             let current = 0;
             const show = (index: number) => {
                 current = (index + n) % n;
-                const plate = plates[current]!;
+                const shown = current;
                 names.forEach((name) => (name.hidden = Number(name.dataset.index) !== current));
                 if (count) count.textContent = `${current + 1} / ${n}`;
-                drawGrid(grid, plate);
-                drawLegend(legend, plate, categories);
                 close();
+
+                const plate = plates.get(current);
+                if (plate) {
+                    drawGrid(grid, plate);
+                    drawLegend(legend, plate, categories);
+                } else {
+                    drawLoading(grid, sources[current]!);
+                    drawLegend(legend, undefined, categories);
+                    fetchPlate(current)
+                        .then((plate) => {
+                            if (current !== shown) return;
+                            drawGrid(grid, plate);
+                            drawLegend(legend, plate, categories);
+                        })
+                        .catch((error: unknown) => {
+                            if (signal.aborted || current !== shown) return;
+                            console.error("Plate could not be shown:", error);
+                            grid.removeAttribute("aria-busy");
+                            grid.replaceChildren(span("error", "This plate could not be displayed."));
+                        });
+                }
+
+                // The plates either side are fetched ahead, so flicking through rarely waits
+                if (n > 1) for (const next of [current + 1, current - 1]) fetchPlate((next + n) % n).catch(() => {});
             };
             platemap.querySelector(".arrow.prev")?.addEventListener("click", () => show(current - 1));
             platemap.querySelector(".arrow.next")?.addEventListener("click", () => show(current + 1));
@@ -175,7 +186,7 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
             const open = (well: HTMLElement) => {
                 const r = Number(well.dataset.r);
                 const c = Number(well.dataset.c);
-                const data = plates[current]!.rows[r]![c];
+                const data = plates.get(current)?.rows[r]?.[c];
                 if (!data) return;
 
                 const heading = document.createElement("strong");
@@ -199,7 +210,7 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
 
             // Delegated, so redrawn wells need no listeners of their own
             const wellAt = (target: EventTarget | null) =>
-                target instanceof Element ? target.closest<HTMLElement>(".well:not(.empty)") : null;
+                target instanceof Element ? target.closest<HTMLElement>(".well[data-r]") : null;
             grid.addEventListener("pointerover", (event) => {
                 const well = wellAt(event.target);
                 if (well) open(well);
@@ -213,6 +224,7 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
             grid.addEventListener("focusout", close);
             addEventListener("scroll", close, { passive: true, signal });
 
+            show(0);
             platemap.classList.add("js-ready");
         }
     });
@@ -345,7 +357,7 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
         transition: transform 100ms ease;
     }
 
-    .platemap .well:not(.empty):is(:hover, :focus-visible) {
+    .platemap .well[data-r]:is(:hover, :focus-visible) {
         outline: 2px solid var(--color-periwinkle);
         outline-offset: 2px;
         transform: scale(1.12);
@@ -354,6 +366,31 @@ PALETTE_SIZE satisfies typeof PLATEMAP_PALETTE_SIZE;
     .platemap .well.empty {
         background: none;
         border: 1px dashed color-mix(in srgb, var(--color-periwinkle) 30%, transparent);
+    }
+
+    /* Wells whose plate is still being fetched */
+    .platemap .well.loading {
+        animation: platemap-loading 1.2s ease-in-out infinite alternate;
+        background: color-mix(in srgb, var(--color-periwinkle) 8%, transparent);
+        border: 1px solid color-mix(in srgb, var(--color-periwinkle) 20%, transparent);
+    }
+
+    @keyframes platemap-loading {
+        to {
+            opacity: 0.4;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .platemap .well.loading {
+            animation: none;
+        }
+    }
+
+    .platemap .grid .error {
+        grid-column: 1 / -1;
+        padding: 2rem 0;
+        text-align: center;
     }
 
     .platemap .g0 {
