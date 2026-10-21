@@ -105,7 +105,7 @@
       {
         "name": "Claudia Chen",
         "role": "Dry Lab",
-        "image": "https://static.igem.wiki/teams/6279/wiki/assets/3ea404d449705885832d6b76bd596665.avif"
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/0e5d352a3de45f79b6f7df1cdcc064e7.avif"
       },
       {
         "name": "Connor Mora",
@@ -145,7 +145,7 @@
       {
         "name": "Rahul Kothapalli",
         "role": "Dry Lab",
-        "image": "https://static.igem.wiki/teams/6279/wiki/assets/2d232d936f0a57d4af5ebcadb66ab5db.avif"
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/480de4be74f05af5b223e8cb2307c2f7.avif"
       },
       {
         "name": "Tiffany Feng",
@@ -154,7 +154,8 @@
       },
       {
         "name": "Tom Xie",
-        "role": "Dry Lab"
+        "role": "Dry Lab",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/2d10153f237651f6a50f0296b5f4edf9.avif"
       }
     ]
   },
@@ -239,7 +240,7 @@
       {
         "name": "Paul Xu",
         "role": "Design/Wiki",
-        "image": "https://static.igem.wiki/teams/6279/wiki/assets/c1c6b910d8e656ac89cf32b11babf9de.avif"
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/b781fa119daa533a9c34234f04550b58.avif"
       },
       {
         "name": "Rachel Weng",
@@ -255,6 +256,11 @@
         "name": "Verne Go",
         "role": "Design/Wiki",
         "image": "https://static.igem.wiki/teams/6279/wiki/assets/6b80a9ecf4e7565ca9096b9c4205b393.avif"
+      },
+      {
+        "name": "Yogya Gupta",
+        "role": "Design/Wiki",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/38c71d6f01f15ea59ec34ec10bab8d11.avif"
       }
     ]
   },

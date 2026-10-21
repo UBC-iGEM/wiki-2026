@@ -22,7 +22,7 @@ title: "Engineering Success"
 
   <a id="6573bd8e27af49f4a915cf3bba2cdebc" />The promoter library screen asked which of 200+ promoter–GFP constructs respond to antibiotic exposure strongly enough to drive a reporter. Run in collaboration with Biofactorial, UBC's high-throughput automation facility, it split into an assay-development stage that fixed sub-inhibitory concentrations and a full library screen at those concentrations. Read the full deliverable at [Promoter Library](/ubc-vancouver/modelling/promoter-library).
 
-  ### <a id="c9eb2665109b4cc19323ea26c46d5300" />Part 1 - Identifying sub-inhibitory concentrations
+  ### <a id="c9eb2665109b4cc19323ea26c46d5300" />Part 1: Identifying sub-inhibitory concentrations
 
   <a id="5e9ead7ba3284357ad7fdd903a7fe5ff" />
 
@@ -46,7 +46,7 @@ title: "Engineering Success"
     </Fragment>
   </Dbtl>
 
-  ### <a id="bec3fc1c63264705ad2f37dbb03c78de" />Part 2 - High-throughput library screen
+  ### <a id="bec3fc1c63264705ad2f37dbb03c78de" />Part 2: High-throughput library screen
 
   <a id="1dde75175f41481fa6261d1c968faece" />
 
@@ -84,26 +84,18 @@ title: "Engineering Success"
 
   <Dbtl>
     <Fragment slot="design">
-      ### <a id="bb2fa400d2144388a0ec320f79c146bf" />Design
-
       <a id="ba23a0f71a884617a2a94184fafa52ff" />The project objective was to develop a reproducible method for selecting a manageable promoter-screening panel from antibiotic-responsive genes. The selection process combines expression strength, regulatory context, promoter availability, response to other antibiotic classes, and data provenance.
     </Fragment>
 
     <Fragment slot="build">
-      ### <a id="6536d0247d91486f86b571381af37fff" />Build
-
       <a id="2ae1535e70b24fca8597aa68fb867223" />The team developed a joint differential-expression workflow, integrated curated RegulonDB relationships, mapped candidates to promoters and transcription units, and stored the evidence in a searchable SQLite database and explorer.
     </Fragment>
 
     <Fragment slot="test">
-      ### <a id="32f49772f5934f059d933988bf6ec968" />Test
-
       <a id="79698cac8b7a4f0eb09b799148d9d509" />The team assessed candidate stability under alternative thresholds, inspected biological replicates, compared responses to challenge antibiotics, checked promoter sequences against MG1655, and added automated tests for regulatory semantics, database integrity, and candidate queries.
     </Fragment>
 
     <Fragment slot="learn">
-      ### <a id="39fcdaa6ddae4345a645271e49d65270" />Learn
-
       <a id="90c682ab052d4d1f969a09620de12433" />Expression strength alone identified more genes than could be tested and did not distinguish independent promoters from genes with shared regulatory context. Some interactions lacked promoter-level support, and the public dataset provided only class-level proxy evidence. The workflow was extended to include promoter mapping, explicit relationship types, assessment of responses to antibiotics from other classes, sequence review, and a 12-promoter panel selected for diversity.
     </Fragment>
   </Dbtl>
@@ -124,19 +116,19 @@ title: "Engineering Success"
 
   <Dbtl>
     <Fragment slot="design">
-      <a id="caf1069e9c4e4d9589cac8c3337dcb04" />Design:  We did preliminary research using literature review into the factors we wanted to vary in our experiments to design a list of factors and their ranges for our Design of Experiments.
+      <a id="caf1069e9c4e4d9589cac8c3337dcb04" />We did preliminary research using literature review into the factors we wanted to vary in our experiments to design a list of factors and their ranges for our Design of Experiments.
     </Fragment>
 
     <Fragment slot="build">
-      <a id="5afa535735924f0089df5ea0632d4f7c" />Build: Built a protocol to conduct experiments, plate mapping Excel files
+      <a id="5afa535735924f0089df5ea0632d4f7c" />Built a protocol to conduct experiments, plate mapping Excel files
     </Fragment>
 
     <Fragment slot="test">
-      <a id="ecb299f4681e40f48b3265b768a68b76" />Test: Tested our protocol with experts, narrowed down most important factors and determined whether they were feasible given experimental constraints.
+      <a id="ecb299f4681e40f48b3265b768a68b76" />Tested our protocol with experts, narrowed down most important factors and determined whether they were feasible given experimental constraints.
     </Fragment>
 
     <Fragment slot="learn">
-      <a id="cb5e59a06e894fe89e0e04d8efd6ab9d" />Learn: Finalized which factors to test and respective levels, allowing us to move onto experimental design and building
+      <a id="cb5e59a06e894fe89e0e04d8efd6ab9d" />Finalized which factors to test and respective levels, allowing us to move onto experimental design and building
     </Fragment>
   </Dbtl>
 </details>
@@ -148,7 +140,7 @@ title: "Engineering Success"
 
   <a id="cc821f5d4f8f411fa2ea8b03115b63cf" />The degradation model answers a question the assay design depends on: how long must an antibiotic sit with a resistance enzyme before the drop in concentration is large enough to measure? It was built in three stages, each adding a coupled biological process the previous stage had assumed away. Read the full deliverable at [Degradation Model ](/ubc-vancouver/modelling/degradation-model-).
 
-  ### <a id="3a7a2ca9c26b42559c50089d0e5038a9" />Stage 1 — Modelling antibiotic degradation
+  ### <a id="3a7a2ca9c26b42559c50089d0e5038a9" />Stage 1: Modelling antibiotic degradation
 
   <a id="3f18ebe1eb8245e48568352cc8f3bf6c" />
 
@@ -156,23 +148,23 @@ title: "Engineering Success"
 
   <Dbtl>
     <Fragment slot="design">
-      <a id="157ffc4ff3204ed4b18eb6c720d9b9ae" />Design: Determine the expected timescale of enzymatic antibiotic degradation and whether degradation could occur within a practical assay duration.
+      <a id="157ffc4ff3204ed4b18eb6c720d9b9ae" />Determine the expected timescale of enzymatic antibiotic degradation and whether degradation could occur within a practical assay duration.
     </Fragment>
 
     <Fragment slot="build">
-      <a id="0daa45751516459eadd9bc2de7bcd42d" />Build: Implement Michaelis-Menten degradation dynamics in Python
+      <a id="0daa45751516459eadd9bc2de7bcd42d" />Implement Michaelis-Menten degradation dynamics in Python
     </Fragment>
 
     <Fragment slot="test">
-      <a id="661819c4d9c34c5e8b86f0b84d103232" />Test: Simulate antibiotic concentration over time across a range of kinetic parameters, including ($k_{cat}$), ($K_m$), enzyme concentration, and starting antibiotic concentration.
+      <a id="661819c4d9c34c5e8b86f0b84d103232" />Simulate antibiotic concentration over time across a range of kinetic parameters, including ($k_{cat}$), ($K_m$), enzyme concentration, and starting antibiotic concentration.
     </Fragment>
 
     <Fragment slot="learn">
-      <a id="5b49903c97b54355ad1903ec69d0403a" />Learn: The predicted degradation trajectory provided a useful basis of selecting experimental incubation periods, but did not account for changes in enzyme concentration over time. Enzyme induction therefore needed to be incorporated into the model.
+      <a id="5b49903c97b54355ad1903ec69d0403a" />The predicted degradation trajectory provided a useful basis of selecting experimental incubation periods, but did not account for changes in enzyme concentration over time. Enzyme induction therefore needed to be incorporated into the model.
     </Fragment>
   </Dbtl>
 
-  ### <a id="7fc43eeb10724993999252259583a413" />Stage 2 — Coupling enzyme induction to degradation
+  ### <a id="7fc43eeb10724993999252259583a413" />Stage 2: Coupling enzyme induction to degradation
 
   <a id="9185f4dfc5054e43ac47f28fdd3333c6" />
 
@@ -180,23 +172,23 @@ title: "Engineering Success"
 
   <Dbtl>
     <Fragment slot="design">
-      <a id="9f3085d1795b4174b33bd28c477a08aa" />Design: Improve the model by allowing the amount of resistance enzyme to change over time after antibiotic exposure.
+      <a id="9f3085d1795b4174b33bd28c477a08aa" />Improve the model by allowing the amount of resistance enzyme to change over time after antibiotic exposure.
     </Fragment>
 
     <Fragment slot="build">
-      <a id="50535ae5d84a41c1a7596ca613d9317e" />Build: Add a Hill equation for enzyme induction and connect it to the Michaelis-Menten equation used for antibiotic degradation.
+      <a id="50535ae5d84a41c1a7596ca613d9317e" />Add a Hill equation for enzyme induction and connect it to the Michaelis-Menten equation used for antibiotic degradation.
     </Fragment>
 
     <Fragment slot="test">
-      <a id="30ed3852673a4b27a12cc511b5f8578e" />Test: Change different induction parameters and observe how they affect enzyme production and antibiotic degradation.
+      <a id="30ed3852673a4b27a12cc511b5f8578e" />Change different induction parameters and observe how they affect enzyme production and antibiotic degradation.
     </Fragment>
 
     <Fragment slot="learn">
-      <a id="02d4dfba225745cc86824fb4a675ba5d" />Learn: ($K_{ind}$) had little effect when antibiotic concentration was already high enough for enzyme induction to be close to its maximum. Furthermore, using MIC as the degradation threshold was not useful when the simulation started as ($1\times MIC$), so percentage degradation was used instead.
+      <a id="02d4dfba225745cc86824fb4a675ba5d" />($K_{ind}$) had little effect when antibiotic concentration was already high enough for enzyme induction to be close to its maximum. Furthermore, using MIC as the degradation threshold was not useful when the simulation started as ($1\times MIC$), so percentage degradation was used instead.
     </Fragment>
   </Dbtl>
 
-  ### <a id="9a99abaa93e7451b8db9a58d14ec0212" />Stage 3 — Connecting degradation to bacterial response
+  ### <a id="9a99abaa93e7451b8db9a58d14ec0212" />Stage 3: Connecting degradation to bacterial response
 
   <a id="cf4553234d50453ab56e9acef7396a59" />
 
@@ -204,19 +196,19 @@ title: "Engineering Success"
 
   <Dbtl>
     <Fragment slot="design">
-      <a id="1cde0238642a463d8d4336e2b21b07e0" />Design: Determine how antibiotic degradation can affect bacterial growth.
+      <a id="1cde0238642a463d8d4336e2b21b07e0" />Determine how antibiotic degradation can affect bacterial growth.
     </Fragment>
 
     <Fragment slot="build">
-      <a id="893472e55fbb44c68bb12af90ae81d91" />Build: Add a sigmoidal Emax model that combines bacterial growth and antibiotic-mediated killing.
+      <a id="893472e55fbb44c68bb12af90ae81d91" />Add a sigmoidal Emax model that combines bacterial growth and antibiotic-mediated killing.
     </Fragment>
 
     <Fragment slot="test">
-      <a id="eceb9c71c94d4a6a8c0bc73443be9261" />Test: Simulate enzyme concentration, antibiotic concentration, and bacterial population simultaneously.
+      <a id="eceb9c71c94d4a6a8c0bc73443be9261" />Simulate enzyme concentration, antibiotic concentration, and bacterial population simultaneously.
     </Fragment>
 
     <Fragment slot="learn">
-      <a id="028fa829a5ef454da1806578f0d67cd6" />Learn: As antibiotic concentration decreases through degradation, the antibiotic-mediated killing also decreases. If bacterial growth becomes greater than antibiotic-mediated killing, the bacterial population can begin to recover.
+      <a id="028fa829a5ef454da1806578f0d67cd6" />As antibiotic concentration decreases through degradation, the antibiotic-mediated killing also decreases. If bacterial growth becomes greater than antibiotic-mediated killing, the bacterial population can begin to recover.
     </Fragment>
   </Dbtl>
 </details>
@@ -268,7 +260,7 @@ title: "Engineering Success"
     </Fragment>
   </Dbtl>
 
-  ### <a id="da007431696e4aa38175a3a3673d9b95" />Plasmid Retention — Iteration 1
+  ### <a id="da007431696e4aa38175a3a3673d9b95" />Plasmid Retention: Iteration 1
 
   <a id="106f59b42bfb4d2e894c5fe10c04c1b3" />
 
@@ -298,7 +290,7 @@ title: "Engineering Success"
     </Fragment>
   </Dbtl>
 
-  ### <a id="565231749ac4407aaec8c9cb6ecbdbb4" />Plasmid Retention — Iteration 2
+  ### <a id="565231749ac4407aaec8c9cb6ecbdbb4" />Plasmid Retention: Iteration 2
 
   <a id="c43d845040b049028871e94e8d49145b" />
 
@@ -352,7 +344,7 @@ title: "Engineering Success"
     </Fragment>
   </Dbtl>
 
-  ### <a id="0481cce9279d4f7b9d22fa55db1d76c9" />Antibiotic-Induced Fluorescence Output — Iteration 1
+  ### <a id="0481cce9279d4f7b9d22fa55db1d76c9" />Antibiotic-Induced Fluorescence Output: Iteration 1
 
   <a id="23188e4055334cfd80cbf8d1065f582e" />
 
@@ -383,7 +375,7 @@ title: "Engineering Success"
     </Fragment>
   </Dbtl>
 
-  ### <a id="1e8164a522b14a9bb3077eb7e4885394" />Antibiotic-Induced Fluorescence Output — Iteration 2
+  ### <a id="1e8164a522b14a9bb3077eb7e4885394" />Antibiotic-Induced Fluorescence Output: Iteration 2
 
   <a id="306a488b56f5448c8a1c7ddeb5b1d0ac" />
 
@@ -409,7 +401,7 @@ title: "Engineering Success"
     </Fragment>
   </Dbtl>
 
-  ### <a id="eae9c13efedf46f794cbd23924776397" />Antibiotic-Induced Fluorescence Output — Iteration 3
+  ### <a id="eae9c13efedf46f794cbd23924776397" />Antibiotic-Induced Fluorescence Output: Iteration 3
 
   <a id="3caa64ce4fad4920a1861015cd13306c" />
 
@@ -433,7 +425,7 @@ title: "Engineering Success"
     </Fragment>
   </Dbtl>
 
-  ### <a id="89d4f2830c3d4edfb371e5813704e92e" />Antibiotic-Induced Fluorescence Output — Iteration 4
+  ### <a id="89d4f2830c3d4edfb371e5813704e92e" />Antibiotic-Induced Fluorescence Output: Iteration 4
 
   <a id="e095f04a1f3446b798b21437873976fb" />
 
@@ -1005,8 +997,6 @@ title: "Engineering Success"
     </Fragment>
 
     <Fragment slot="build">
-      <a id="7977caed3a6d4d62bd879d6c52d65a01" />Build
-
       <a id="52a04bed203d4a238b7db5a016f09549" />The flow channels remained the same for this cycle, as did the 3D modelling method, and the PDMS protocol did not change either. The chip negative mold here is, therefore, quite similar to the previous iteration.
 
       <a id="27aade52e0bd43a2a2fd24d3eff085e7" />
@@ -1221,11 +1211,11 @@ title: "Engineering Success"
 
       <a id="b0a416f9140b4d5e8021094eb8564338" />
 
-      <Video uuid="czNXwEMrfTMKwVFMBC3YMu" aspect_ratio={1.7777777777777777} />
+      <Video uuid="5dcd0218-d29e-4790-9526-e7856576215e" aspect_ratio={1.988} />
 
       <a id="ba009ae9c1ea4ebc859311b01c9af1ef" />
 
-      <Video uuid="4ALfg4YqTxyQ1N5wN7eWDt" aspect_ratio={1.7777777777777777} />
+      <Video uuid="1d25f8bd-587f-4330-bfb4-bb0ef0c1d6bd" aspect_ratio={2.1717} />
 
       <a id="aa7be68f7d2f477c823d4c0270447a90" />To test our microfluidic chips, we decided to run coloured liquid through the system so that we could visualize mixing and air bubbles within the system as can be seen in  [Flow Test](/ubc-vancouver/hardware/protocol-database/flow-test). We initially tried adding the liquid directly to the system with our 1 mL syringes, but we had significant leaking issues. Our second attempt used cut pipette tips so that the hydrostatic pressure would push the liquid through the chip, taking advantage of Bernoulli’s principle. This had significantly less leaking, but the force would build up over time and slip through the cracks between the pipette and the PDMS chip. Unfortunately, our dyes of choice were not particularly strong and were not very visible on camera.
 
@@ -2290,12 +2280,12 @@ title: "Engineering Success"
 
 <details>
   <summary>
-    ## <a id="e5aee92d95944df7bd704611b8044e87" />Barrier 1 — Companionship Support
+    ## <a id="e5aee92d95944df7bd704611b8044e87" />Barrier 1: Companionship Support
   </summary>
 
   <a id="0190974122d24b8990806618df7864e0" />The AMR patient-support website was scoped section by section against needs evidenced in stakeholder interviews, then reviewed twice by Dr. Larry Mróz and once by patient partner Sunny Loo before wider release. Read the full deliverable at [Barrier 1 - Companionship Support](/ubc-vancouver/human-practices/barrier-1---companionship-support).
 
-  ### <a id="140ec6cce7874085b1f66e1cea8bb73f" />Cycle 1 — First review with Dr. Mróz
+  ### <a id="140ec6cce7874085b1f66e1cea8bb73f" />Cycle 1: First review with Dr. Mróz
 
   <a id="6f1c6ddb9f16466ba69bbd18aab2318d" />
 
@@ -2319,7 +2309,7 @@ title: "Engineering Success"
     </Fragment>
   </Dbtl>
 
-  ### <a id="a2736a7d5f5a45cba213d165182b7ad5" />Cycle 2 — Second review with Dr. Mróz
+  ### <a id="a2736a7d5f5a45cba213d165182b7ad5" />Cycle 2: Second review with Dr. Mróz
 
   <a id="f50adb32649a44729df36a13211068d0" />
 
@@ -2345,7 +2335,7 @@ title: "Engineering Success"
     </Fragment>
   </Dbtl>
 
-  ### <a id="268505d9399a423bb131b05104a53e36" />Cycle 3 — Patient review with Sunny Loo
+  ### <a id="268505d9399a423bb131b05104a53e36" />Cycle 3: Patient review with Sunny Loo
 
   <a id="ee5b8f4658cf4739a515844a77535c8b" />
 

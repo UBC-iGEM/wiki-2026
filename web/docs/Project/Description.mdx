@@ -9,19 +9,15 @@ title: "Description"
 
 <a id="400d65dd82be8025a814c03858f89ed1" />FAST tests one thing from a patient sample: can the bacteria in it inactivate the antibiotic we are about to prescribe? We engineered *E. coli* biosensors to tell us the answer using fluorescence. This year, we’re turning the tide against antimicrobial resistance and changing how clinical staff prescribe and treat patients.
 
-<a id="400d65dd82be80cc99b1d10c92a16ffb" />
+# <a id="400d65dd82be80ed83c7d403a2ab883d" />**Introduction: Antimicrobial Resistance and the Diagnostic Gap**
 
-***
+## <a id="400d65dd82be8096ba50e533c54b21be" />**The Need for Rapid Susceptibility Testing**
 
-## <a id="400d65dd82be80ed83c7d403a2ab883d" />**Introduction: Antimicrobial Resistance and the Diagnostic Gap**
+<a id="400d65dd82be80b2b15aedc85f5c6342" />Antimicrobial resistance (AMR) is among the most pressing global health challenges of this century. Bacterial AMR was associated with 4.71 million deaths worldwide in 2021, and forecasting models project 39 million cumulative deaths attributable to resistant infections between 2025 and 2050 <Cite refs={[{"n":1,"key":"cragoUnderstandingCanadiansKnowledge"}]} />. Roughly 1 in 6 laboratory-confirmed bacterial infections in 2023 were resistant to the antibiotics used to treat them.
 
-### <a id="400d65dd82be8096ba50e533c54b21be" />**The Need for Rapid Susceptibility Testing**
+<a id="400d65dd82be80df91bdc56bb9838ae7" />These numbers are usually framed as a drug discovery problem. We came to see it as a diagnostic one. In routine practice, an antibiotic is chosen before anyone knows whether it will work. Empiric prescribing is a reasonable response to a slow laboratory protocol, but it is also an evolutionary accelerant. Every course given to an organism that was never susceptible applies selective pressure without producing a cure <Cite refs={[{"n":2,"key":"regoesPharmacodynamicFunctionsMultiparameter2004"},{"n":3,"key":"johnsonCenturyEnzymeKinetic2013"}]} />.
 
-<a id="400d65dd82be80b2b15aedc85f5c6342" />Antimicrobial resistance (AMR) is among the most pressing global health challenges of this century. Bacterial AMR was associated with 4.71 million deaths worldwide in 2021, and forecasting models project 39 million cumulative deaths attributable to resistant infections between 2025 and 2050 (1). Roughly 1 in 6 laboratory-confirmed bacterial infections in 2023 were resistant to the antibiotics used to treat them.
-
-<a id="400d65dd82be80df91bdc56bb9838ae7" />These numbers are usually framed as a drug discovery problem. We came to see it as a diagnostic one. In routine practice, an antibiotic is chosen before anyone knows whether it will work. Empiric prescribing is a reasonable response to a slow laboratory protocol, but it is also an evolutionary accelerant. Every course given to an organism that was never susceptible applies selective pressure without producing a cure (2, 3).
-
-<a id="400d65dd82be80f9ad21fa7d80d7b4fd" />Unfortunately, the clinical consequences are felt. In a study of complicated skin and soft tissue infections in Central Australia, 36.7% of patients received empiric antimicrobials that were inactive against the pathogen actually isolated from them (4). The treatment failed, a second antibiotic was chosen, and the resistance that caused the failure was frequently never recorded.
+<a id="400d65dd82be80f9ad21fa7d80d7b4fd" />Unfortunately, the clinical consequences are felt. In a study of complicated skin and soft tissue infections in Central Australia, 36.7% of patients received empiric antimicrobials that were inactive against the pathogen actually isolated from them <Cite refs={[{"n":4,"key":"harchHighBurdenComplicated2017"}]} />. The treatment failed, a second antibiotic was chosen, and the resistance that caused the failure was frequently never recorded.
 
 <a id="400d65dd82be8017abd1f1e97e303e12" />
 
@@ -47,90 +43,53 @@ title: "Description"
 
 <a id="400d65dd82be8034833bc10fd4a146a6" />That conversation changed the shape of our project. We stopped designing a test that explains a treatment failure after the fact, and started designing one that runs **before** the prescription is written.
 
-### <a id="400d65dd82be8025bd5dd9196c04a308" />**Why Antibiotic Susceptibility Testing Is Slow**
+## <a id="400d65dd82be8025bd5dd9196c04a308" />**Why Antibiotic Susceptibility Testing Is Slow**
 
-<a id="400d65dd82be807196c1db153b2ca21f" />Clinically, susceptibility is determined using the minimum inhibitory concentration (MIC), the lowest concentration of an antimicrobial capable of inhibiting bacterial growth (5). The MIC is compared against a clinical breakpoint to decide whether standard dosing can achieve inhibitory concentrations at the site of infection.
+<a id="400d65dd82be807196c1db153b2ca21f" />Clinically, susceptibility is determined using the minimum inhibitory concentration (MIC), the lowest concentration of an antimicrobial capable of inhibiting bacterial growth <Cite refs={[{"n":5,"key":"kowalska-krochmalMinimumInhibitoryConcentration2021"}]} />. The MIC is compared against a clinical breakpoint to decide whether standard dosing can achieve inhibitory concentrations at the site of infection.
 
-<a id="400d65dd82be80b396cbdc70406d4be5" />The problem is not the logic but the latency. Conventional antibiotic susceptibility testing (AST) requires isolating the organism, growing it to a standard amount for inoculation, and then measuring growth inhibition across a dilution series. Gold-standard AST effectively takes two days (6). For urine specifically, culture plus susceptibility takes 48 to 72 hours, which means most patients have already started and maybe even finished, a course of antibiotics before the result arrives (7). Because the test is slow, it is used sparingly. And because it is used sparingly, resistance accumulates unobserved.
+<a id="400d65dd82be80b396cbdc70406d4be5" />The problem is not the logic but the latency. Conventional antibiotic susceptibility testing (AST) requires isolating the organism, growing it to a standard amount for inoculation, and then measuring growth inhibition across a dilution series. Gold-standard AST effectively takes two days <Cite refs={[{"n":6,"key":"smithRapidSusceptibilityTesting2019"}]} />. For urine specifically, culture plus susceptibility takes 48 to 72 hours, which means most patients have already started and maybe even finished, a course of antibiotics before the result arrives <Cite refs={[{"n":7,"key":"narayanRapidIdentificationSusceptibility"}]} />. Because the test is slow, it is used sparingly. And because it is used sparingly, resistance accumulates unobserved.
 
-<a id="400d65dd82be802ab0fdf01299994f58" />Urinary tract infections (UTIs) make this gap concrete. They are among the most common bacterial infections in both community and hospital settings (8), and the majority are managed empirically. Since June 2023, pharmacists in British Columbia have been able to prescribe for uncomplicated UTIs under the Minor Ailments and Contraception Service, with no laboratory test indicating whether the infection is resistant (9). Pharmacist UTI assessments are now the most common minor-ailment assessment in the province with roughly 96,000 per year and many often are uninformed about susceptibility results.
-
-<a id="400d65dd82be805b8c45c0fac6ef7d13" />
-
-***
+<a id="400d65dd82be802ab0fdf01299994f58" />Urinary tract infections (UTIs) make this gap concrete. They are among the most common bacterial infections in both community and hospital settings <Cite refs={[{"n":8,"key":"foxmanEpidemiologyUrinaryTract2010"}]} />, and the majority are managed empirically. Since June 2023, pharmacists in British Columbia have been able to prescribe for uncomplicated UTIs under the Minor Ailments and Contraception Service, with no laboratory test indicating whether the infection is resistant <Cite refs={[{"n":9,"key":"harnettPharmacistsNowPrescribing2023"}]} />. Pharmacist UTI assessments are now the most common minor-ailment assessment in the province with roughly 96,000 per year and many often are uninformed about susceptibility results.
 
 ## <a id="400d65dd82be800eb175ca32199f5a5a" />**Detecting Resistance Through Antibiotic Inactivation**
 
-### <a id="400d65dd82be8074a52ce4d6142fd998" />**Enzymatic Degradation as a Resistance Mechanism**
+<a id="400d65dd82be80ecb6c5f4f80f31d78c" />Bacteria resist antibiotics through several distinct strategies: enzymatic degradation or chemical modification of the drug, alteration of the drug target, reduced membrane permeability, and active efflux <Cite refs={[{"n":10,"key":"abbasAntibioticResistanceKey2024"},{"n":11,"key":"wrightBacterialResistanceAntibiotics2005"}]} />.
 
-<a id="400d65dd82be80ecb6c5f4f80f31d78c" />Bacteria resist antibiotics through several distinct strategies: enzymatic degradation or chemical modification of the drug, alteration of the drug target, reduced membrane permeability, and active efflux (3, 10).
+<a id="400d65dd82be804a84afef5daf97e031" />One of these is unusually tractable for a diagnostic. When resistance is enzymatic, the antibiotic itself is physically destroyed or chemically altered. β-lactamases hydrolyse the four-membered β-lactam ring, abolishing the drug's ability to acylate penicillin-binding proteins <Cite refs={[{"n":11,"key":"wrightBacterialResistanceAntibiotics2005"},{"n":12,"key":"pandeyBetaLactamAntibiotics2023"}]} />. Aminoglycoside-modifying enzymes acetylate, phosphorylate, or adenylate their substrate, with the resulting loss of activity depending on the specific enzyme–antibiotic pair <Cite refs={[{"n":11,"key":"wrightBacterialResistanceAntibiotics2005"}]} />.
 
-<a id="400d65dd82be804a84afef5daf97e031" />One of these is unusually tractable for a diagnostic. When resistance is enzymatic, the antibiotic itself is physically destroyed or chemically altered. β-lactamases hydrolyse the four-membered β-lactam ring, abolishing the drug's ability to acylate penicillin-binding proteins (10, 11). Aminoglycoside-modifying enzymes acetylate, phosphorylate, or adenylate their substrate, with the resulting loss of activity depending on the specific enzyme–antibiotic pair (10).
+<a id="400d65dd82be80ed8e92edec08a4f531" />In both cases, resistance leaves a trace *in the medium*, not only in the genome. A resistant sample consumes the antibiotic. A susceptible sample does not. This is the observation FAST is built on. Rather than culturing the patient's organism to inhibition, which is what makes conventional AST slow, we ask whether the antibiotic survived contact with the patient's sample, and we use a second, engineered organism as the instrument that reports the answer.
 
-<a id="400d65dd82be80ed8e92edec08a4f531" />In both cases, resistance leaves a trace *in the medium*, not only in the genome. A resistant sample consumes the antibiotic. A susceptible sample does not.
-
-<a id="400d65dd82be800ea7dee378116b0a87" />This is the observation FAST is built on. Rather than culturing the patient's organism to inhibition, which is what makes conventional AST slow, we ask whether the antibiotic survived contact with the patient's sample, and we use a second, engineered organism as the instrument that reports the answer.
-
-### <a id="400d65dd82be80559310f8a6c63fbfd9" />**Choosing Our Antibiotic Panel**
+## <a id="400d65dd82be80f5b80fc18d96ba1df3" />Choosing our Antibiotic Panel
 
 <a id="400d65dd82be800cae10f834cafc17b2" />This mechanism also constrains what FAST can test. A platform that detects antibiotic inactivation will detect enzymatic and modification-based resistance, and will **not** detect resistance arising from target-site mutation or efflux. We selected our antibiotic panel accordingly, and we state the limitation plainly rather than designing around it.
 
 <a id="400d65dd82be803880c9f83f08b67334" />Following our consultation with Dr. Hancock, we narrowed to the two classes most relevant to UTI treatment whose dominant resistance mechanisms are compatible with our readout:
 
-<a id="400d65dd82be808498c5eb0e61ba8185" />**β-lactams** share a four-membered β-lactam ring and include the penicillins and cephalosporins (11). They act by binding penicillin-binding proteins, including the transpeptidases that cross-link peptidoglycan, preventing formation of a stable cell wall. We selected **amoxicillin** and **cephalexin** as representatives. β-lactamase-mediated hydrolysis is the resistance route most relevant to FAST.
+<a id="400d65dd82be808498c5eb0e61ba8185" />**β-lactams** share a four-membered β-lactam ring and include the penicillins and cephalosporins <Cite refs={[{"n":12,"key":"pandeyBetaLactamAntibiotics2023"}]} />. They act by binding penicillin-binding proteins, including the transpeptidases that cross-link peptidoglycan, preventing formation of a stable cell wall. We selected **amoxicillin** and **cephalexin** as representatives. β-lactamase-mediated hydrolysis is the resistance route most relevant to FAST.
 
-<a id="400d65dd82be806487b2c1f625c4ad80" />**Aminoglycosides** act on the bacterial ribosome, disrupting accurate protein synthesis (12). We selected **gentamicin** and **tobramycin**. They act on a different cellular target from β-lactams and can remain useful against some β-lactam-resistant organisms, so resistance to one class does not establish susceptibility to the other. Antibiotic-specific testing is therefore essential, and a single-drug test is not sufficient.
-
-<a id="400d65dd82be80c6b84fcf021f4bbe3f" />
-
-***
+<a id="400d65dd82be806487b2c1f625c4ad80" />**Aminoglycosides** act on the bacterial ribosome, disrupting accurate protein synthesis <Cite refs={[{"n":13,"key":"tsaiImpactAminoglycosidesDynamics2013"}]} />. We selected **gentamicin** and **tobramycin**. They act on a different cellular target from β-lactams and can remain useful against some β-lactam-resistant organisms, so resistance to one class does not establish susceptibility to the other. Antibiotic-specific testing is therefore essential, and a single-drug test is not sufficient.
 
 ## <a id="400d65dd82be802c8a00d37ae5c1cca2" />**Challenges with Current AST Technologies**
 
-### <a id="400d65dd82be805bb98de4ffb4bf614c" />**Speed, Cost, and Infrastructure Are Competing Constraints**
+<a id="400d65dd82be80a7929ad8865753e57c" />Broth microdilution, agar dilution, and disk diffusion are inexpensive, well-standardized, and interpretable against established breakpoints <Cite refs={[{"n":14,"key":"wiegandAgarBrothDilution2008"},{"n":15,"key":"hattabRapidPhenotypicGenotypic2024"}]} />. They are also slow (48–72 h including isolation) and require a microbiology laboratory, trained personnel, and specimen transport <Cite refs={[{"n":6,"key":"smithRapidSusceptibilityTesting2019"},{"n":7,"key":"narayanRapidIdentificationSusceptibility"}]} />. In British Columbia's outpatient payment schedule, a positive urine culture is reimbursed at \$38.02: \$19.57 for culture, \$6.84 for MALDI-TOF identification, and \$11.61 for susceptibility <Cite refs={[{"n":16,"key":"governmentofbcOutpatientPaymentSchedule"}]} />.
 
-<a id="400d65dd82be80e7ae4bc362684d0a6e" />Rapid AST is an active field, and several platforms are faster than FAST. We want to be clear about that. The gap we are addressing is not speed in isolation — it is the combination of speed, cost, and the infrastructure a test demands.
+<a id="400d65dd82be80fe8b7be95db93fca8f" />Automated platforms shorten the susceptibility step itself, but still begin from an isolated colony, so the upstream culture delay remains <Cite refs={[{"n":6,"key":"smithRapidSusceptibilityTesting2019"},{"n":15,"key":"hattabRapidPhenotypicGenotypic2024"}]} />. bioMérieux's VITEK 2 returns MICs in a manufacturer-reported 6–8 hours, and Gradientech reports 2–4 hours for bloodstream isolates <Cite refs={[{"n":17,"key":"AntimicrobialStewardshipSolutionsa"},{"n":18,"key":"GradientechUltrarapidAST"}]} />. Both are laboratory instruments rather than point-of-care devices.
 
-#### <a id="400d65dd82be803cbdc8e4c68988fef6" />**Culture-Based Laboratory Methods**
-
-<a id="400d65dd82be80a7929ad8865753e57c" />Broth microdilution, agar dilution, and disk diffusion are inexpensive, well-standardized, and interpretable against established breakpoints (13, 14). They are also slow (48–72 h including isolation) and require a microbiology laboratory, trained personnel, and specimen transport (6, 7). In British Columbia's outpatient payment schedule, a positive urine culture is reimbursed at \$38.02: \$19.57 for culture, \$6.84 for MALDI-TOF identification, and \$11.61 for susceptibility (15).
-
-#### <a id="400d65dd82be8099be57ee66c85c699f" />**Automated Laboratory Platforms**
-
-<a id="400d65dd82be80fe8b7be95db93fca8f" />Automated platforms shorten the susceptibility step itself, but still begin from an isolated colony, so the upstream culture delay remains (6, 14). bioMérieux's VITEK 2 returns MICs in a manufacturer-reported 6–8 hours, and Gradientech reports 2–4 hours for bloodstream isolates (16, 17). Both are laboratory instruments rather than point-of-care devices.
-
-#### <a id="400d65dd82be80c2b3aad58e726c2923" />**Rapid Point-of-Care Platforms**
-
-<a id="400d65dd82be80a8b77fe5126a9eee75" />Direct-from-specimen systems are already quite quick. The Sysmex PA-100 AST System returns UTI susceptibility results in a manufacturer-reported 30–45 minutes using a nanofluidic cartridge (18). QolorPhAST, developed at McGill, reported a 36-minute turnaround with 91.81% average categorical agreement and 86.4% average essential agreement on blinded UTI patient samples (19). Both, however, depend on a dedicated proprietary analyzer, and these instruments require substantial upfront capital investment.
+<a id="400d65dd82be80a8b77fe5126a9eee75" />Direct-from-specimen systems are already quite quick. The Sysmex PA-100 AST System returns UTI susceptibility results in a manufacturer-reported 30–45 minutes using a nanofluidic cartridge <Cite refs={[{"n":19,"key":"PA100ASTSystem"}]} />. QolorPhAST, developed at McGill, reported a 36-minute turnaround with 91.81% average categorical agreement and 86.4% average essential agreement on blinded UTI patient samples <Cite refs={[{"n":20,"key":"mUltrarapidNanoplasmonicColorimetry"}]} />. Both, however, depend on a dedicated proprietary analyzer, and these instruments require substantial upfront capital investment.
 
 <a id="400d65dd82be8005b4c3dcce7d267af1" />This is the gap we aim to fill. Conventional testing is cheap but slow. Automated systems are faster but lab-bound. Rapid point-of-care platforms are fast but instrument-expensive. A pharmacy counter in a community clinic, or a nursing station in a remote community, sits outside all three.
-
-<a id="400d65dd82be8071b206e3bd659392ff" />
-
-***
 
 ## <a id="400d65dd82be802db16cfabc3a3ba163" />**FAST: Leveraging Bacterial Stress Responses as a Susceptibility Readout**
 
 <a id="400d65dd82be80a3a3d2ee40a3dec30b" />To close that gap, we designed **FAST**: a microfluidic platform that determines whether the bacteria in a patient sample can inactivate a candidate antibiotic, using engineered *E. coli* biosensors as the readout.
 
-### <a id="400d65dd82be80538015e917662ac6ad" />**Stress-Responsive Promoters**
+<a id="400d65dd82be809e9d8df362c471ef3e" />Our biosensors do not detect the antibiotic molecule directly. They detect the cellular stress that an active antibiotic causes, by placing superfolder green fluorescent protein (sfGFP) under the control of a stress-responsive promoter. sfGFP matures in approximately 13.6 minutes, which is fast enough that fluorescence is not the rate-limiting step in our readout <Cite refs={[{"n":15,"key":"hattabRapidPhenotypicGenotypic2024"}]} />.
 
-<a id="400d65dd82be809e9d8df362c471ef3e" />Our biosensors do not detect the antibiotic molecule directly. They detect the cellular stress that an active antibiotic causes, by placing superfolder green fluorescent protein (sfGFP) under the control of a stress-responsive promoter. sfGFP matures in approximately 13.6 minutes, which is fast enough that fluorescence is not the rate-limiting step in our readout (16).
+<a id="400d65dd82be80229e74f13c5fb0fc90" />**The *cpxP* promoter.** The envelope stress response is a Gram-negative pathway activated when the integrity of the cell envelope is disrupted <Cite refs={[{"n":21,"key":"raivioCpxEnvelopeStress1999"}]} />. Under unstressed conditions, the small periplasmic protein CpxP interacts with the sensor kinase CpxA and holds the pathway inactive. Under envelope stress, CpxP is degraded, CpxA autophosphorylates and transfers phosphate to the response regulator CpxR, and phosphorylated CpxR activates downstream genes including *cpxP* itself <Cite refs={[{"n":22,"key":"surmannMolecularProteomeAnalyses2016"}]} />. Because β-lactams act by inactivating the enzymes required for cell wall synthesis, this pathway is a direct route from β-lactam activity to transcriptional output. We built a $\mathrm{P}_\textit{cpxP}$–*sfGFP* reporter to exploit it.
 
-<a id="400d65dd82be80229e74f13c5fb0fc90" />**The *cpxP* promoter.** The envelope stress response is a Gram-negative pathway activated when the integrity of the cell envelope is disrupted (17). Under unstressed conditions, the small periplasmic protein CpxP interacts with the sensor kinase CpxA and holds the pathway inactive. Under envelope stress, CpxP is degraded, CpxA autophosphorylates and transfers phosphate to the response regulator CpxR, and phosphorylated CpxR activates downstream genes including *cpxP* itself (18). Because β-lactams act by inactivating the enzymes required for cell wall synthesis, this pathway is a direct route from β-lactam activity to transcriptional output. We built a **P*cpxP*–sfGFP** reporter to exploit it.
+<a id="400d65dd82be80e28a8acbc5c89d21d4" />**The *recA* promoter.** The bacterial SOS response is a conserved global DNA-damage response <Cite refs={[{"n":20,"key":"mUltrarapidNanoplasmonicColorimetry"}]} />. When antibiotic exposure generates reactive metabolites and single-stranded DNA accumulates, RecA forms an active nucleoprotein filament that promotes self-cleavage of the LexA repressor, relieving repression of LexA-regulated genes including *recA* <Cite refs={[{"n":23,"key":"lambertSuperfolderGFPFPbasea"}]} />. We built a $\mathrm{P}_\textit{recA}$–*sfGFP* reporter as a second, mechanistically independent sensor.
 
-<a id="400d65dd82be80e28a8acbc5c89d21d4" />**The *recA* promoter.** The bacterial SOS response is a conserved global DNA-damage response (19). When antibiotic exposure generates reactive metabolites and single-stranded DNA accumulates, RecA forms an active nucleoprotein filament that promotes self-cleavage of the LexA repressor, relieving repression of LexA-regulated genes including *recA* (20). We built a **P*recA*–sfGFP** reporter as a second, mechanistically independent sensor.
-
-<a id="400d65dd82be80d3b5fcf0ec56ebb3b3" />Both constructs use the **pSB1C3** backbone in *E. coli* **EPI300**, a derivative of the non-pathogenic K-12 strain. The choice of backbone was deliberate and is worth stating for any team attempting something similar: ampicillin or kanamycin resistance markers would confer resistance to the very β-lactam and aminoglycoside classes under test, making the controls uninterpretable. Chloramphenicol selection avoids that conflict.
-
-<a id="400d65dd82be808fa395e4dc60257163" />
-
-| <a id="400d65dd82be8070b963cb90e4d5cb0b" />**Part**      | **Construct**   | **Induced by**                   |
-| -------------------------------------------------------- | --------------- | -------------------------------- |
-| <a id="400d65dd82be80c0bbfffe31cd208ffe" />BBa\_26A5JL4T | P*cpxP* + sfGFP | Cell envelope / cell wall stress |
-| <a id="400d65dd82be80d290ecff2bbbcdbefc" />BBa\_267O4B7H | P*recA* + sfGFP | DNA damage (SOS response)        |
-
-### <a id="400d65dd82be80ad9986e25be7d38df2" />**How the FAST device works**
+# <a id="400d65dd82be80ad9986e25be7d38df2" />**How the FAST device works**
 
 <a id="400d65dd82be80beb907d1890d226002" />The test separates degradation from detection into two chambers.
 
@@ -143,39 +102,15 @@ title: "Description"
 
 <a id="400d65dd82be8093acd2f33a8471ef63" />The output is a binary, visually interpretable readout: fluorescence means the drug still works against this patient's infection.
 
-### <a id="400d65dd82be809aaa27fa5ecf36ec63" />**What We Have Shown, and What We Have Not**
+# <a id="400d65dd82be80a087dfe707a3b17e0b" />**Our Models: PRISM and the Degradation Model**
 
-<a id="400d65dd82be805bae06fb5bbd1c9de7" />Characterization established the operating window for both reporters. A 24-hour MIC titration gave provisional MIC ranges of **4–8 µg/mL** for both biosensor strains across gentamicin, tobramycin, and amoxicillin, defining the subinhibitory band in which the sensors remain viable while still experiencing stress.
-
-<a id="400d65dd82be809bac66cb6f5b586f0f" />Across an 8-hour dose–response series, the **CpxP** biosensor showed a dose-dependent peak between 4 and 8 hours: 8 µg/mL amoxicillin produced a 2-fold increase at 4 hours and a 3-fold increase at 8 hours relative to untreated controls, with gentamicin and tobramycin peaking at 4 hours. The **RecA** biosensor responded to amoxicillin (1.5-fold at 4 hours, 2-fold at 8 hours) but **did not** produce a usable aminoglycoside window — the SOS response is not a reliable aminoglycoside readout in our hands.
-
-<a id="400d65dd82be803d8080f47aa11be5aa" />Two further results matter to anyone building on this work. Our growth curves show the reporter plasmids reduce maximum cell density by approximately **35%** relative to wild-type EPI300, so fluorescence must be normalized to optical density. And our plasmid retention assay showed the constructs are lost **within one hour** in chloramphenicol-free medium, so selection cannot be removed during the assay despite chloramphenicol's own confounding effect on the stress response.
-
-<a id="400d65dd82be805fbeb7c2c6597697a0" />We also document where this did not work. An initial 60-minute measurement window produced no differential expression at all. Our current time-to-signal of 4–8 hours is longer than we want for a rapid assay, and reducing it is the central open problem in the wet lab.
-
-<a id="400d65dd82be804685fae09d07c2aac5" />To validate degradation without clinical isolates, we built a **patient simulant**: EPI300 strains carrying resistance cassettes on pSB1C3 — a broad-spectrum β-lactamase (BBa\_K1927000), a gentamicin resistance cassette (BBa\_K4235003), and a kanamycin resistance cassette (BBa\_P1003) — that stand in for resistant UTI samples under controlled conditions.
-
-<a id="400d65dd82be8093b46fd7496861a2e2" />
-
-| <a id="400d65dd82be801caa3dd47ce8914e2c" />**Simulant** | **Antibiotic** | **Concentration** | **Degradation time** |
-| ------------------------------------------------------- | -------------- | ----------------- | -------------------- |
-| <a id="400d65dd82be80829c11d4620ebee3c2" />β-lactamase  | Amoxicillin    | 8–16 µg/mL        | ≤ 6 h                |
-| <a id="400d65dd82be8082b762f5a33c6159fc" />KanR         | Tobramycin     | 8 µg/mL           | ≤ 6 h                |
-| <a id="400d65dd82be8066914ff927fc4d4b61" />GmR          | Gentamicin     | 8 µg/mL           | ≥ 10 h               |
-
-### <a id="400d65dd82be80a087dfe707a3b17e0b" />**Our Models: PRISM and the Degradation Model**
-
-<a id="400d65dd82be8085825dec158c76c988" />**PRISM (**&#x50;romoter Response Index and Selection Map) is a relational database and analysis pipeline that integrates RNA-seq expression data (GSE220559), RegulonDB regulatory annotations, and a reference genome to produce a traceable shortlist of antibiotic-responsive promoters for experimental screening (21, 22). It reduced 4,176 measured genes to 925 candidates and then to a proposed panel of **12 promoters**, six per antibiotic class. Every selection traces backwards: a panel entry links to a promoter, which links to a candidate gene, which links to the differential-expression result and source locus that produced it, with reference releases and file checksums recorded at each stage. Manual curation is stored separately from measured evidence.
+<a id="400d65dd82be8085825dec158c76c988" />**PRISM (**&#x50;romoter Response Index and Selection Map) is a relational database and analysis pipeline that integrates RNA-seq expression data (GSE220559), RegulonDB regulatory annotations, and a reference genome to produce a traceable shortlist of antibiotic-responsive promoters for experimental screening <Cite refs={[{"n":21,"key":"raivioCpxEnvelopeStress1999"},{"n":22,"key":"surmannMolecularProteomeAnalyses2016"}]} />. It reduced 4,176 measured genes to 925 candidates and then to a proposed panel of **12 promoters**, six per antibiotic class. Every selection traces backwards: a panel entry links to a promoter, which links to a candidate gene, which links to the differential-expression result and source locus that produced it, with reference releases and file checksums recorded at each stage. Manual curation is stored separately from measured evidence.
 
 <a id="400d65dd82be80d29ed1e8871fef3d41" />PRISM exists because expression strength alone was not a sufficient selection criterion, it returned more genes than could be tested and failed to separate independent promoters from genes sharing regulatory context. It also has its limits as gene-level RNA is not promoter activity, 49.3% of our candidates have no promoter annotation at all, and no panel promoter has yet been shown to drive reporter output.
 
-<a id="400d65dd82be80bead64c3373cf5152a" />**The degradation model** is a non-spatial system of three coupled ODEs answering a design question: how long must an antibiotic be exposed to a resistance enzyme before enough degradation occurs to be measurable? It couples Hill-type enzyme induction, Michaelis–Menten degradation, and a sigmoidal Emax pharmacodynamic term for bacterial kill and regrowth (23, 24). It predicts that the bacterial population may fall under antibiotic exposure and then recover once degradation drops killing below growth, a behaviour that directly affects how long Chamber A should run. The model currently provides theoretical predictions rather than experimentally validated degradation times.
+<a id="400d65dd82be80bead64c3373cf5152a" />**The degradation model** is a non-spatial system of three coupled ODEs answering a design question: how long must an antibiotic be exposed to a resistance enzyme before enough degradation occurs to be measurable? It couples Hill-type enzyme induction, Michaelis–Menten degradation, and a sigmoidal $E_{max}$ pharmacodynamic term for bacterial kill and regrowth <Cite refs={[{"n":24,"key":"zgur-bertokDNADamageRepair2013"},{"n":25,"key":"shapiroAntimicrobialInducedDNADamage2015"}]} />. It predicts that the bacterial population may fall under antibiotic exposure and then recover once degradation drops killing below growth, a behaviour that directly affects how long Chamber A should run. The model currently provides theoretical predictions rather than experimentally validated degradation times.
 
-<a id="400d65dd82be80bb802fea24d5430f51" />Alongside these, a **promoter library screen** run with BioFactorial, UBC's High-throughput Biology and Automation Facility, tested over 200 promoter–GFP constructs across 30 plates against all four antibiotics at sub-inhibitory concentrations, sampling OD and GFP every 30 minutes for eight hours. Most of the library was unresponsive; hits were clear outliers at roughly 3- to 12-fold induction, with the strongest response at **11.68-fold** under amoxicillin. A **Box-Behnken design of experiments** then tested how urine-like matrix factors affect the readout: sodium had no significant effect across the tested range, suggesting the sensor should tolerate variation in sample composition.
-
-### <a id="400d65dd82be8003b9cbc5c69b7deac5" />**Our Hardware: Chip, Detector, and Bioreactor**
-
-<a id="400d65dd82be8046ada3fa98faa33c8d" />Running a susceptibility test outside a microbiology laboratory takes three devices. We built all three.
+# <a id="400d65dd82be8003b9cbc5c69b7deac5" />**Our Hardware: Chip, Detector, and Bioreactor**
 
 <a id="400d65dd82be80e9a9b3e3b6b7601cec" />**The microfluidic chip** incubates the patient sample with the candidate antibiotic and delivers the result to the biosensor wells. It is cast in PDMS from FDM-printed PLA molds and plasma-bonded to a standard glass microscope slide, costing approximately **\$1–5 per chip**, with no cleanroom and no resin printer. Seven design cycles got us there, four of which failed. Two findings generalize: mold walls are necessary, or the channel floats during curing and becomes encased in set PDMS; and surface finish determines whether the chip leaks, with the printer's ironing function producing a surface that plasma-bonds reliably against a non-ironed control that leaked significantly. A hydraulic resistance model, solved as an equivalent resistor network, predicted a 185% pressure-drop difference between the first and last well in a seven-well linear design, which fell to 32% after moving to two wells. Fluid can be driven through the chip by hydrostatic pressure from a cut pipette tip, removing the need for a syringe pump.
 
@@ -183,150 +118,88 @@ title: "Description"
 
 <a id="400d65dd82be8015a700ed8adff9f994" />**The bioreactor** produces the biosensor cultures for **\$106.68** from off-the-shelf components, monitoring temperature and pH with an Arduino. Across three validation experiments it reached **2.38 to 2.74 times** the normalized growth of a conventional flask control.
 
-### <a id="400d65dd82be80c8b42fde85984a2a5a" />**Standardization of Measurement**
+## <a id="400d65dd82be80c8b42fde85984a2a5a" />**Standardization of Measurement**
 
 <a id="400d65dd82be802db0cdd41234f482db" />Measurement is not a supporting activity for FAST, it is the readout the entire platform depends on. A susceptibility call means something only if fluorescence can be measured reproducibly and read against controls.
 
-<a id="400d65dd82be802ca72ee7074055aee5" />We have documented the full chain: baseline growth and basal expression for both strains and wild type, OD600 calibration curves, the MIC titration that established the subinhibitory window, same-plate untreated controls as the fold-change denominator, blank media subtraction, and a per-run LED-on-minus-LED-off baseline on the detector.
+<a id="400d65dd82be802ca72ee7074055aee5" />We have documented the full chain: baseline growth and basal expression for both strains and wild type, $OD_{600}$ calibration curves, the MIC titration that established the subinhibitory window, same-plate untreated controls as the fold-change denominator, blank media subtraction, and a per-run LED-on-minus-LED-off baseline on the detector.
 
-<a id="400d65dd82be800a8b93c36efb44d7af" />What remains is calibration to an external standard. Our fold-changes are internally consistent but not referenced to an absolute fluorescence scale. Adopting the iGEM Fluorescence Measurement Calibrants Kit to report in molecules of equivalent fluorescein (MEFL) is the clearest next step, and would make our characterization comparable across laboratories. We also note that all of our biosensor data were collected in plates: response inside the microfluidic chip has not yet been measured.
-
-<a id="400d65dd82be8043841bdb5c368eb182" />
-
-***
-
-## <a id="400d65dd82be80a8b77dd4f49f24107b" />**The FAST Pipeline**
+# <a id="400d65dd82be80a8b77dd4f49f24107b" />**The FAST Pipeline**
 
 <a id="400d65dd82be800489c6e411717a40f2" />Putting it all together, this is how FAST integrates with the world.
 
-### <a id="400d65dd82be806a9bb8f8d2dd00daf3" />**Sample and Panel Selection**
-
-#### <a id="400d65dd82be80149711fd921dbbc694" />**Specimen Collection**
+## <a id="400d65dd82be80149711fd921dbbc694" />**Specimen Collection**
 
 <a id="400d65dd82be80ce95cbe2f6e1362fde" />A urine sample is collected at the point of care — a community pharmacy, family practice, urgent care clinic, or remote nursing station. No transport to a microbiology laboratory and no prior isolation step is required.
 
-<a id="400d65dd82be80db930ce72c33a0ae75" />*Visit our Human Practices page to learn how clinical and patient perspectives shaped this choice.*
+<a id="400d65dd82be80db930ce72c33a0ae75" />*Visit our* [*Human Practices page*](/ubc-vancouver/human-practices/introduction) *to learn how clinical and patient perspectives shaped this choice.*
 
-#### <a id="400d65dd82be8055b691d1e02c0ee85e" />Loading Antibiotic Panel
+## <a id="400d65dd82be8055b691d1e02c0ee85e" />Loading Antibiotic Panel
 
 <a id="400d65dd82be809bb6e8cc6c791b0ce6" />The candidate antibiotics are loaded into the chip at the concentrations established by our MIC work. Because resistance to one class does not predict susceptibility to another, the chip is designed to carry multiple antibiotics in parallel rather than testing a single drug.
 
-<a id="400d65dd82be800db2ddc304a537a1b7" />*Visit our Modelling page to learn more about PRISM and the promoter library screen.*
+<a id="400d65dd82be800db2ddc304a537a1b7" />*Visit our* [*Modelling page*](/ubc-vancouver/modelling/prism) *to learn more about PRISM and the promoter library screen.*
 
-### <a id="400d65dd82be8030b033c081d7502b8c" />**On-chip Degradation**
+# <a id="400d65dd82be8030b033c081d7502b8c" />**On-chip Degradation**
 
-#### <a id="400d65dd82be8025bdb0d878dce4288c" />**CHAMBER A — Incubation**
+## <a id="400d65dd82be8025bdb0d878dce4288c" />**CHAMBER A — Incubation**
 
 <a id="400d65dd82be80a8bae4e6c4fea2f24e" />Patient sample and antibiotic are combined and held for the degradation window. If the patient's organism carries a degrading or modifying enzyme, the antibiotic is inactivated here. The incubation time is informed by our degradation model and validated against engineered patient simulants.
 
-<a id="400d65dd82be8091823ce0a3902c8774" />*Visit our Hardware page to learn more about the microfluidic chip.*
+<a id="400d65dd82be8091823ce0a3902c8774" />*Visit our* [*Hardware page*](/ubc-vancouver/hardware/microfluidic-chip) *to learn more about the microfluidic chip.*
 
-#### <a id="400d65dd82be8063900fe63412939978" />**Filtration and Transfer**
+## <a id="400d65dd82be8063900fe63412939978" />**Filtration and Transfer**
 
 <a id="400d65dd82be807db9edcb8565542017" />The mixture is filtered to remove the patient's bacteria, and the remaining antibiotic is carried to the biosensor wells by hydrostatic flow.
 
-<a id="400d65dd82be80df9569e0698161fae5" />*Visit our Results page to learn more about the antibiotic degradation assay.*
+<a id="400d65dd82be80df9569e0698161fae5" />*Visit our* [*Results page*](/ubc-vancouver/project/results) *to learn more about the antibiotic degradation assay.*
 
-### <a id="400d65dd82be8009854acefebdafff7a" />**Readout and Clinical Result**
+# <a id="400d65dd82be8009854acefebdafff7a" />**Readout and Clinical Result**
 
-#### <a id="400d65dd82be807db297f9da1d500795" />**CHAMBER B — Biosensor Response**
+## <a id="400d65dd82be807db297f9da1d500795" />**CHAMBER B — Biosensor Response**
 
 <a id="400d65dd82be8036a891cd7033e51004" />The surviving antibiotic reaches the CpxP or RecA biosensor strain. An active antibiotic induces the corresponding stress promoter and sfGFP is expressed; an inactivated one does not.
 
-<a id="400d65dd82be801eba6be483449ad22b" />*Visit our Wet Lab page to learn more about biosensor characterization.*
+<a id="400d65dd82be801eba6be483449ad22b" />*Visit our* [*Wet Lab page*](/ubc-vancouver/wet-lab/engineering/biosensor) *to learn more about biosensor characterization.*
 
-#### <a id="400d65dd82be8029beaec2080369d813" />**Fluorescence Detector**
+## <a id="400d65dd82be8029beaec2080369d813" />**Fluorescence Detector**
 
 <a id="400d65dd82be80518e51dcee80f3694f" />The chip is read on our low-cost detector. Fluorescence indicates the sample is susceptible to that antibiotic; no fluorescence indicates resistance.
 
-<a id="400d65dd82be80449834f066965bd640" />*Visit our Measurement page to learn more about how we established this readout.*
+<a id="400d65dd82be80449834f066965bd640" />*Visit our* [*Measurement page*](/ubc-vancouver/project/best-measurement) *to learn more about how we established this readout.*
 
-#### <a id="400d65dd82be8068bdfafe13c0e873d5" />**Clinical Impact**
+## <a id="400d65dd82be8068bdfafe13c0e873d5" />**Clinical Impact**
 
 <a id="400d65dd82be800aa577d239bd217126" />The clinician or pharmacist prescribes against a result rather than an assumption — within the first treatment window, not after a failure.
 
-<a id="400d65dd82be807daf60c920cc922713" />*Visit our Entrepreneurship page to learn more about deployment and scalability.*
+<a id="400d65dd82be807daf60c920cc922713" />*Visit our* [*Entrepreneurship page*](/ubc-vancouver/administration/needs-finding) *to learn more about deployment and scalability.*
 
-<a id="400d65dd82be80fe878ed82ab2c3cc0a" />
-
-***
-
-## <a id="400d65dd82be800aa688ec221a711257" />**Impact and Advocacy**
-
-### <a id="400d65dd82be803d9f5ecd92e6e1d2da" />**Designing FAST Around Patient Needs**
+# <a id="400d65dd82be800aa688ec221a711257" />**Impact and Advocacy**
 
 <a id="400d65dd82be80fe8dbff769295dd04e" />We spoke with nine clinicians, researchers, and patient partners about how resistance affects people in British Columbia specifically, because the patient-oriented evidence base for Canada is thin. Those conversations reached every level of the project.
 
-<a id="400d65dd82be80b884f4da01229bd4bd" />Dr. Hancock's input determined which antibiotics our biosensors detect and moved our validation target to UTIs. Dr. Larry Mróz, Patient and Community Engagement Lead at Health Research BC, determined how we were permitted to engage patients at all — reframing the work as patient engagement rather than research, since we hold no ethics approval, and producing the consent form that governed every subsequent conversation. Sunny Loo, a patient representative at BCCDC and a retired pharmacist, reviewed our patient-facing website and his feedback reached our front-end code, setting font sizes and animation speeds.
-
-<a id="400d65dd82be805092f3fe14f73c9bc2" />What came up in nearly every conversation was not the science. It was isolation.
-
-> <a id="400d65dd82be806b8a28e90a7bbc6613" />"\[Patients are] just asking to be understood, to be supported."
->
-> <a id="400d65dd82be80858545e3eb05accad6" />**Sunny Loo**, patient representative, BCCDC
-
-> <a id="400d65dd82be803aa214d270011da7d7" />Without her own background as a nurse, she "would be really really scared" about the procedures she underwent during her hospital stay.
->
-> <a id="400d65dd82be80d58f73fd20808c70fa" />**Norma Washburn**, AMR patient partner
+<a id="400d65dd82be80b884f4da01229bd4bd" />Dr. Hancock's input determined which antibiotics our biosensors detect and moved our validation target to UTIs. Dr. Larry Mróz, Patient and Community Engagement Lead at Health Research BC, determined how we were permitted to engage patients at all. Remodelling the work around patient engagement rather than research and producing the consent form that governed every subsequent conversation reinforced strong practices of respectful research. Sunny Loo, a patient representative at BCCDC and a retired pharmacist, reviewed our patient-facing website and his feedback reached our front-end code, setting font sizes and animation speeds. What came up in nearly every conversation was not the science. It was isolation.
 
 <a id="400d65dd82be80388dc6f1241e8b9e00" />Dr. Richard Lester, an infectious disease physician at Vancouver General Hospital, described patients who believe *they* are resistant rather than the bacteria. Dr. Anthony Lieu described patients labelled, isolated, and visited only in PPE — fewer assessments, in a more hostile environment. Dr. Edith Blondel-Hill described travel-history questions that leave patients feeling ethnically targeted. Lesley Kooner described the burden following patients home, to families bleaching bathrooms.
 
-<a id="400d65dd82be803d8decf8516654f0e7" />These accounts shaped two parallel arms of work.
+<a id="400d65dd82be803d8decf8516654f0e7" />*View our* [*Human Practices pages*](/ubc-vancouver/human-practices/investigation-2---integrated-human-practices-ihp) *for more information on these experts and stakeholders.*
 
-#### <a id="400d65dd82be8044b1fcdc490e8eb0b1" />**A Test Run Before Prescribing, Not After Failure**
+<a id="400d65dd82be80a88d44f0f8542d5f63" />Because the diagnostic alone does not address what patients told us, we built two things alongside it. **"AMR: the human side"** is a patient-facing website with a visit-preparation tool, provider-sourced educational content, attributed patient stories, and a moderated peer space. Built to a hard specification, we made sure to include no personal data, no tracking, no third-party embeds, no accounts, and no auto-published comments. We also drafted plain-language printable pamphlets, guided by Dr. Chan's recommendation, covering MRSA and VRE, transmission, cleaning, precautions, and when to seek care. A draft went to Fraser Health to explore distribution options.
 
-<a id="400d65dd82be80159f08e443faa406dd" />FAST is positioned as a first-line check alongside conventional culture, not a replacement for it. The design target is a result within 24 hours at approximately **\$35 per chip** — below the \$38.02 British Columbia pays for a culture and susceptibility test — on a reader costing around \$500 rather than tens of thousands. The value is not that FAST is the fastest test available; the Sysmex PA-100 and QolorPhAST are both faster. The value is that it needs no microbiology laboratory and no proprietary analyzer, which is what determines whether a result is available in a pharmacy or a remote clinic at all.
+## <a id="400d65dd82be80b28756f51c03b5e3e5" />Education
 
-<a id="400d65dd82be8057afa6e0fee9ab3063" />We also heard a caution we have kept. Lesley Kooner pointed out that making testing easier could lead to over-testing. FAST must be paired with guidance on when to test, not simply deployed.
+<a id="400d65dd82be80a29ca8cc87f6243bf7" />Misinformation about AMR is not evenly distributed. Canadian survey data show knowledge gaps concentrated among adults aged 18–24, people with high school education or less, and non-English-speaking households <Cite refs={[{"n":1,"key":"cragoUnderstandingCanadiansKnowledge"}]} />. We aimed our outreach accordingly: seven workshops with UBC Geering Up, the **@amrexplained** Instagram campaign, and a 40-minute documentary-style interview with Dr. Lester.
 
-#### <a id="400d65dd82be8058a77fda0e580355ad" />**Informational and Companionship Support**
+<a id="400d65dd82be80b2ad7ec4f1dce3d26d" />Our educational work also produced two resources other teams can adopt directly: a six-part wet lab training video series, and **Building BioBricks**, a workshop delivered for UBC Science 101, a free course offered to residents of Vancouver's Downtown Eastside, in which participants model a promoter, RBS, coding sequence, and terminator in Lego, assemble a fluorescent biosensor, and swap parts to model the Parts Registry. It requires no laboratory, no reagents, and no prior biology background.
 
-<a id="400d65dd82be80a88d44f0f8542d5f63" />Because the diagnostic alone does not address what patients told us, we built two things alongside it. **"AMR: the human side"** is a patient-facing website with a visit-preparation tool, provider-sourced educational content, attributed patient stories, and a moderated peer space — built to a hard specification written before any code: no personal data, no tracking, no third-party embeds, no accounts, and no auto-published comments. We also drafted plain-language printable pamphlets, guided by Dr. Chan's recommendation, covering MRSA and VRE, transmission, cleaning, precautions, and when to seek care; a draft has gone to Fraser Health to explore distribution.
+# <a id="400d65dd82be8099a91eda9fca27fb96" />**Beyond UTIs**
 
-<a id="400d65dd82be80f29c86fff83c2bcf50" />We are honest about status: the website is still being iterated with Norma Washburn and has not been released to patient networks, and we have not yet measured whether any of these materials change understanding or behaviour. This is activity undertaken, not impact demonstrated.
+<a id="400d65dd82be807db520d78350ca0fb8" />FAST was built as a platform, not a single test. Stress-responsive biosensors, low-cost microfluidics, and accessible fluorescence detection are not specific to any one infection or antibiotic class. UTIs are our initial validation target, chosen because urine is easy to simulate and because British Columbia's prescribing-pharmacist channel makes the diagnostic gap unusually visible there.
 
-### <a id="400d65dd82be8058924cef276c3ef396" />**AMR Advocacy**
+<a id="400d65dd82be801a9262d5c90a8758e1" />The same reader accepts new chip panels. Extending FAST means validating additional resistance enzymes and antibiotic classes against the existing hardware, then additional infection types and settings: urgent care, long-term care, emergency departments. Each new panel requires its own validation, and we do not claim otherwise.
 
-<a id="400d65dd82be80a29ca8cc87f6243bf7" />Misinformation about AMR is not evenly distributed. Canadian survey data show knowledge gaps concentrated among adults aged 18–24, people with high school education or less, and non-English-speaking households (25). We aimed our outreach accordingly: seven workshops with UBC Geering Up, the **@amrexplained** Instagram campaign, and a 40-minute documentary-style interview with Dr. Lester.
+<a id="400d65dd82be801ea6d3dd66dafd5a4c" />There are other future applications that we have not yet explored. Our chip is not limited to clinical applications but also for environmental and bioremediation applications like testing for antibiotic resistance in nature or wastewater.
 
-<a id="400d65dd82be80b2ad7ec4f1dce3d26d" />Our educational work also produced two resources other teams can adopt directly: a six-part wet lab training video series, and **Building BioBricks**, a workshop delivered for UBC Science 101 — a free course offered to residents of Vancouver's Downtown Eastside — in which participants model a promoter, RBS, coding sequence, and terminator in Lego, assemble a fluorescent biosensor, and swap parts to model the Parts Registry. It requires no laboratory, no reagents, and no prior biology background.
+# References
 
-### <a id="400d65dd82be8099a91eda9fca27fb96" />**Beyond UTIs**
-
-<a id="400d65dd82be807db520d78350ca0fb8" />FAST was built as a platform, not a single test. The components — stress-responsive biosensors, low-cost microfluidics, and accessible fluorescence detection — are not specific to any one infection or antibiotic class. UTIs are our initial validation target, chosen because urine is easy to collect and because British Columbia's prescribing-pharmacist channel makes the diagnostic gap unusually visible there.
-
-<a id="400d65dd82be801a9262d5c90a8758e1" />The same reader accepts new chip panels. Extending FAST means validating additional resistance enzymes and antibiotic classes against the existing hardware, then additional infection types and settings — urgent care, long-term care, emergency departments — followed by veterinary and agricultural applications under a One Health framing. Each new panel requires its own validation, and we do not claim otherwise.
-
-<a id="400d65dd82be801ea6d3dd66dafd5a4c" />What stays constant is the question. Before the prescription is written: will this drug work?
-
-<a id="400d65dd82be80599600fbc36bbc0a9e" />
-
-***
-
-## <a id="400d65dd82be8063a6d1d5bc9f886c95" />**References**
-
-1. <a id="400d65dd82be80fbad4aeb75486a4bc7" />Naghavi M, Vollset SE, Ikuta KS, Swetschinski LR, Gray AP, Wool EE, et al. Global burden of bacterial antimicrobial resistance 1990–2021: a systematic analysis with forecasts to 2050. The Lancet. 2024 Sept 28;404(10459):1199–226. Available from: [https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(24)01867-1/fulltext](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736\(24\)01867-1/fulltext)
-2. <a id="400d65dd82be80819b4ff47d1036c9a7" />Llor C, Bjerrum L. Antimicrobial resistance: risk associated with antibiotic overuse and initiatives to reduce the problem. Ther Adv Drug Saf. 2014 Dec;5(6):229–41. Available from: [https://pmc.ncbi.nlm.nih.gov/articles/PMC4232501/](https://pmc.ncbi.nlm.nih.gov/articles/PMC4232501/)
-3. <a id="400d65dd82be8013b892e4bb051f1538" />Abbas A, Barkhouse A, Hackenberger D, Wright GD. Antibiotic resistance: A key microbial survival mechanism that threatens public health. Cell Host & Microbe. 2024 June 12;32(6):837–51. Available from: [https://www.cell.com/cell-host-microbe/abstract/S1931-3128(24)00187-2](https://www.cell.com/cell-host-microbe/abstract/S1931-3128\(24\)00187-2)
-4. <a id="400d65dd82be800bace6c02cda4ebf78" />Harch SAJ, MacMorran E, Tong SYC, Holt DC, Wilson J, Athan E, et al. High burden of complicated skin and soft tissue infections in the Indigenous population of Central Australia due to dominant Panton Valentine leucocidin clones ST93-MRSA and CC121-MSSA. BMC Infect Dis. 2017 June 7;17(1):405. [https://doi.org/10.1186/s12879-017-2460-3](https://doi.org/10.1186/s12879-017-2460-3)
-5. <a id="400d65dd82be807b809dfcf1e66526c5" />Kowalska-Krochmal B, Dudek-Wicher R. The Minimum Inhibitory Concentration of Antibiotics: Methods, Interpretation, Clinical Relevance. Pathogens. 2021 Feb 4;10(2):165. Available from: [https://pmc.ncbi.nlm.nih.gov/articles/PMC7913839/](https://pmc.ncbi.nlm.nih.gov/articles/PMC7913839/)
-6. <a id="400d65dd82be8030bb85db6b502c625e" />Smith KP, Kirby JE. Rapid Susceptibility Testing Methods. Clin Lab Med. 2019 Sept;39(3):333–44. Available from: [https://pmc.ncbi.nlm.nih.gov/articles/PMC6686868/](https://pmc.ncbi.nlm.nih.gov/articles/PMC6686868/)
-7. <a id="400d65dd82be80568a8cdf8ed4212bfb" />Narayan M, Mohapatra S, Das B, Mani K, Gautam H, Sood S, et al. Rapid Identification and Susceptibility Testing Directly From Urine Specimens, Reducing Turnaround Time, a Step Towards Advancing Diagnostic Stewardship. Cureus. 17(9):e93441. Available from: [https://pmc.ncbi.nlm.nih.gov/articles/PMC12571694/](https://pmc.ncbi.nlm.nih.gov/articles/PMC12571694/)
-8. <a id="400d65dd82be80d7965efb3b38dc7b89" />Foxman B. The epidemiology of urinary tract infection. Nat Rev Urol. 2010 Dec;7(12):653–60.
-9. <a id="400d65dd82be80889058ef64610398a1" />BC Gov News. Pharmacists can prescribe contraceptives, treatments for minor ailments. 2023. Available from: [https://news.gov.bc.ca/releases/2023HLTH0074-000859](https://news.gov.bc.ca/releases/2023HLTH0074-000859)
-10. <a id="400d65dd82be80f19f55fc5e2b03dcc4" />Wright GD. Bacterial resistance to antibiotics: Enzymatic degradation and modification. Advanced Drug Delivery Reviews. 2005 July 29;57(10):1451–70. Available from: [https://www.sciencedirect.com/science/article/pii/S0169409X05000980](https://www.sciencedirect.com/science/article/pii/S0169409X05000980)
-11. <a id="400d65dd82be80e0ad7ac678e576e842" />Pandey N, Cascella M. Beta-Lactam Antibiotics. In: StatPearls. Treasure Island (FL): StatPearls Publishing; 2023. Available from: [http://www.ncbi.nlm.nih.gov/books/NBK545311/](http://www.ncbi.nlm.nih.gov/books/NBK545311/)
-12. <a id="400d65dd82be80b49392f762ed23dffe" />Tsai A, Uemura S, Johansson M, Puglisi EV, Marshall RA, Aitken CE, et al. The Impact of Aminoglycosides on the Dynamics of Translation Elongation. Cell Reports. 2013 Feb 21;3(2):497–508. Available from: [https://www.sciencedirect.com/science/article/pii/S221112471300051X](https://www.sciencedirect.com/science/article/pii/S221112471300051X)
-13. <a id="400d65dd82be80e89190d353b7867988" />Wiegand I, Hilpert K, Hancock REW. Agar and broth dilution methods to determine the minimal inhibitory concentration (MIC) of antimicrobial substances. Nat Protoc. 2008 Feb;3(2):163–75. Available from: [https://www.nature.com/articles/nprot.2007.521](https://www.nature.com/articles/nprot.2007.521)
-14. <a id="400d65dd82be8056bb27d511852c449a" />Hattab S, Ma AH, Tariq Z, Vega Prado I, Drobish I, Lee R, et al. Rapid Phenotypic and Genotypic Antimicrobial Susceptibility Testing Approaches for Use in the Clinical Laboratory. Antibiotics. 2024 Aug;13(8):786. Available from: [https://www.mdpi.com/2079-6382/13/8/786](https://www.mdpi.com/2079-6382/13/8/786)
-15. <a id="400d65dd82be809a9c0beb3b74163bb6" />Government of British Columbia, Provincial Health Services Authority. Laboratory Services Outpatient Payment Schedule. Available from: [https://www.phsa.ca/plms/Documents/Laboratory%20Services%20Outpatient%20Payment%20Schedule.pdf](https://www.phsa.ca/plms/Documents/Laboratory%20Services%20Outpatient%20Payment%20Schedule.pdf)
-16. <a id="400d65dd82be80cb8dc5ec5f7476d2bb" />Lambert T. FPbase. Superfolder GFP at FPbase. Available from: [https://www.fpbase.org/protein/superfolder-gfp/](https://www.fpbase.org/protein/superfolder-gfp/)
-17. <a id="400d65dd82be80a086afdf8ee32fa883" />Raivio TL, Popkin DL, Silhavy TJ. The Cpx Envelope Stress Response Is Controlled by Amplification and Feedback Inhibition. Journal of Bacteriology. 1999 Sept;181(17):5263–72. [https://doi.org/10.1128/jb.181.17.5263-5272.1999](https://doi.org/10.1128/jb.181.17.5263-5272.1999)
-18. <a id="400d65dd82be80cead1bc6e38a50db6b" />Surmann K, Ćudić E, Hammer E, Hunke S. Molecular and proteome analyses highlight the importance of the Cpx envelope stress system for acid stress and cell wall stability in Escherichia coli. MicrobiologyOpen. 2016;5(4):582–96. Available from: [https://onlinelibrary.wiley.com/doi/abs/10.1002/mbo3.353](https://onlinelibrary.wiley.com/doi/abs/10.1002/mbo3.353)
-19. <a id="400d65dd82be8065b033da9705519016" />Žgur-Bertok D. DNA Damage Repair and Bacterial Pathogens. PLoS Pathog. 2013 Nov 7;9(11):e1003711. Available from: [https://pmc.ncbi.nlm.nih.gov/articles/PMC3820712/](https://pmc.ncbi.nlm.nih.gov/articles/PMC3820712/)
-20. <a id="400d65dd82be805492b0cdf171f59716" />Shapiro RS. Antimicrobial-Induced DNA Damage and Genomic Instability in Microbial Pathogens. PLoS Pathog. 2015 Mar 26;11(3):e1004678. Available from: [https://pmc.ncbi.nlm.nih.gov/articles/PMC4374783/](https://pmc.ncbi.nlm.nih.gov/articles/PMC4374783/)
-21. <a id="400d65dd82be8080869ffc172ba92675" />Bie L, Zhang M, Wang J, Fang M, Li L, Xu H, et al. Comparative Analysis of Transcriptomic Response of Escherichia coli K-12 MG1655 to Nine Representative Classes of Antibiotics. Microbiology Spectrum. 2023 Feb 28;11(2):e00317-23. [https://doi.org/10.1128/spectrum.00317-23](https://doi.org/10.1128/spectrum.00317-23)
-22. <a id="400d65dd82be808795cbe534d7b3037f" />Salgado H, Gama-Castro S, Lara P, Mejia-Almonte C, Alarcón-Carranza G, López-Almazo AG, et al. RegulonDB v12.0: a comprehensive resource of transcriptional regulation in E. coli K-12. Nucleic Acids Res. 2023 Nov 16;52(D1):D255–64. Available from: [https://pmc.ncbi.nlm.nih.gov/articles/PMC10767902/](https://pmc.ncbi.nlm.nih.gov/articles/PMC10767902/)
-23. <a id="400d65dd82be80328dbfc254383897d8" />Johnson KA. A century of enzyme kinetic analysis, 1913 to 2013. FEBS Letters. 2013 Sept 2;587(17):2753–66. [https://doi.org/10.1016/j.febslet.2013.07.012](https://doi.org/10.1016/j.febslet.2013.07.012)
-24. <a id="400d65dd82be80cc9b63e131ba9df522" />Regoes RR, Wiuff C, Zappala RM, Garner KN, Baquero F, Levin BR. Pharmacodynamic Functions: a Multiparameter Approach to the Design of Antibiotic Treatment Regimens. Antimicrobial Agents and Chemotherapy. 2004;48(10):3670–6. [https://doi.org/10.1128/aac.48.10.3670-3676.2004](https://doi.org/10.1128/aac.48.10.3670-3676.2004)
-25. <a id="400d65dd82be80b19256e46088770e45" />Crago AL, Alexandre S, Abdesselam K, Tropper DG, Hartmann M, Smith G, et al. Understanding Canadians' knowledge, attitudes and practices related to antimicrobial resistance and antibiotic use: Results from public opinion research. Can Commun Dis Rep. 48(11–12):550–8. Available from: [https://pmc.ncbi.nlm.nih.gov/articles/PMC10779429/](https://pmc.ncbi.nlm.nih.gov/articles/PMC10779429/)
+<Bibliography refs={[{"n":1,"key":"cragoUnderstandingCanadiansKnowledge"},{"n":2,"key":"regoesPharmacodynamicFunctionsMultiparameter2004"},{"n":3,"key":"johnsonCenturyEnzymeKinetic2013"},{"n":4,"key":"harchHighBurdenComplicated2017"},{"n":5,"key":"kowalska-krochmalMinimumInhibitoryConcentration2021"},{"n":6,"key":"smithRapidSusceptibilityTesting2019"},{"n":7,"key":"narayanRapidIdentificationSusceptibility"},{"n":8,"key":"foxmanEpidemiologyUrinaryTract2010"},{"n":9,"key":"harnettPharmacistsNowPrescribing2023"},{"n":10,"key":"abbasAntibioticResistanceKey2024"},{"n":11,"key":"wrightBacterialResistanceAntibiotics2005"},{"n":12,"key":"pandeyBetaLactamAntibiotics2023"},{"n":13,"key":"tsaiImpactAminoglycosidesDynamics2013"},{"n":14,"key":"wiegandAgarBrothDilution2008"},{"n":15,"key":"hattabRapidPhenotypicGenotypic2024"},{"n":16,"key":"governmentofbcOutpatientPaymentSchedule"},{"n":17,"key":"AntimicrobialStewardshipSolutionsa"},{"n":18,"key":"GradientechUltrarapidAST"},{"n":19,"key":"PA100ASTSystem"},{"n":20,"key":"mUltrarapidNanoplasmonicColorimetry"},{"n":21,"key":"raivioCpxEnvelopeStress1999"},{"n":22,"key":"surmannMolecularProteomeAnalyses2016"},{"n":23,"key":"lambertSuperfolderGFPFPbasea"},{"n":24,"key":"zgur-bertokDNADamageRepair2013"},{"n":25,"key":"shapiroAntimicrobialInducedDNADamage2015"}]} />
