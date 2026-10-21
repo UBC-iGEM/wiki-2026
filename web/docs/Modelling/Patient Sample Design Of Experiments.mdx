@@ -13,7 +13,7 @@ title: "Patient Sample Design Of Experiments"
 
 <a id="3fcd65dd82be80d39a00d948d7dd42a3" />Urine consists of primarily water, some salts and metabolic byproducts , and other compounds whose concentrations vary between individual and physiological conditions . These differences can influence the growth of bacteria and the performance of bacterial biosensors intended for use in patient samples. To investigate these effects, we decided to focus determining urine-associated factors that could be experimentally controlled and incorporated into an automated screening workflow.
 
-<a id="3fdd65dd82be80b7b079cd636e58491e" />The experimental factors were selected to represent different aspects of the urinary environment. Sodium concentration was included to investigate the effect of  ionic conditions on bacterial growth and biosensor output, while glucose concentration was included to examine whether the availability  of an additional carbon source influences bacterial activity or sensor performance. pH was also included as a chemical factor as acidity and alkalinity can affect the bacterial physiology and chemical environment in which the biosensors operate. Finally, antibiotic concentration was investigated to characterize biosensor responses across different exposure levels relevant to antibiotic detection and susceptibility-related experiments.
+<a id="3fdd65dd82be80b7b079cd636e58491e" />The experimental factors were selected to represent different aspects of the urinary environment. Sodium concentration was included to investigate the effect of  ionic conditions on bacterial growth and biosensor output, while glucose concentration was included to examine whether the availability of an additional carbon source influences bacterial activity or sensor performance. pH was also included as a chemical factor as acidity and alkalinity can affect the bacterial physiology and chemical environment in which the biosensors operate. Finally, antibiotic concentration was investigated to characterize biosensor responses across different exposure levels relevant to antibiotic detection and susceptibility-related experiments.
 
 <a id="3fcd65dd82be80d8a8ffef0d62979a43" />To characterize biosensor performance under simulated infection conditions and guide future validation and optimization, a DOE using the Box Behnken method was used via the JMP software. The Box-Behnken design is especially useful as it approach supports the evaluation of individual factor effects and potential interactions between factors using fewer runs to help identify conditions that may substantially affect the measured response.
 
@@ -64,7 +64,9 @@ title: "Patient Sample Design Of Experiments"
 
   #### <a id="3fcd65dd82be804f888ff35f213e989a" />**Iteration #3: Finalized Factor Table**
 
-  <a id="3fdd65dd82be80498c2fcf6d457da905" />The finalized factor table included multiple antibiotic resistance backgrounds, and paired each factor with its automated delivery method.
+  <a id="3fdd65dd82be80498c2fcf6d457da905" />The finalized factor table included multiple antibiotic resistance backgrounds, and paired each factor with its automated delivery method. Although pH was initially considered as a chemical factor to simulate urinary conditions, it was excluded from the final design because LB broth has buffering capacity, which can resist changes in pH .
+
+  <a id="400d65dd82be80dfb43eed0680b10cf9" />The final factor levels were informed by literature research [Biosensor MIC Screening Titration v1](/ubc-vancouver/wet-lab/lab-notebook/biosensor-mic-screening-titration-v1)  and practical constraints associated with the laboratory setup
 
   <a id="3fcd65dd82be80238195cc23f6ba1511" />
 
@@ -79,21 +81,13 @@ title: "Patient Sample Design Of Experiments"
   | <a id="3fcd65dd82be800786e0d38b9aa4e72a" />Tobramycin         | Discrete Numerical             | • **Concentration** <br />    ◦ 2 µg/mL<br />    ◦ 4 µg/mL<br />    ◦ 8 µg/mL                                                | Echo                  |
   | <a id="3fcd65dd82be80cdb07cd31d24ea1b0f" />Sodium             | Discrete Numerical             | • **Concentration** <br />    ◦ 1 µg/µL / 2<br />    ◦ 4 µg/µL / 2<br />    ◦ 16 µg/µL / 2                                   | Echo                  |
   | <a id="3fcd65dd82be80c1b0aadda99a93b44d" />Glucose            | Discrete Numerical             | • **Concentration** <br />    ◦ 0 µg/µL / 2<br />    ◦ 1 µg/µL / 2<br />    ◦ 10 µg/µL / 2                                   | Echo                  |
-
-  <a id="400d65dd82be80cf8ad2c4c82592bca5" />
-
-  |                                                                 |        |                               |
-  | --------------------------------------------------------------- | ------ | ----------------------------- |
-  | <a id="400d65dd82be8073b0e2e60fe13ca685" />Factor               | Source | Rationale for selected factor |
-  | <a id="400d65dd82be807abce7d4fa3ff764d1" />Bionsensor Promoters |        |                               |
-  | <a id="400d65dd82be800083e0cb93c6e53b33" />                     |        |                               |
 </details>
 
 ### <a id="400d65dd82be80babc0dd9b5cae96e34" />2. Experimental Design
 
 <a id="400d65dd82be802d899bd9f165141537" />A reduced DOE approach using Box Behnken design was developed using JMP in collaboration with Biofactorial to investigate the effects of bacterial and environmental conditions on the promoter-GFP biosensor fluorescence output. This approach was chosen over a full factorial design to reduce the number of experimental conditions while allowing the evaluation of multiple factors.
 
-<a id="400d65dd82be80bea7a0fd64d57b2375" />The number of possible experimental conditions depends on the number of factors and their respective levels. In a full factorial design, every possible combination of factor levels is tested. As the number of factors increases, the number of required experimental conditions grows rapidly. The team therefore adopted a Box–Behnken-style design to investigate selected factor combinations while reducing the number of conditions compared with a full factorial approach.
+<a id="400d65dd82be80bea7a0fd64d57b2375" />The number of possible experimental conditions depends on the number of factors and their respective levels. In a full factorial design, every possible combination of factor levels is tested. As the number of factors increases, the number of required experimental conditions grows rapidly. The team therefore adopted a Box–Behnken-style design to investigate selected factor combinations while reducing the number of conditions compared with a full factorial approach.In a full factorial design, every possible combination of factor levels is tested. The number of possible combinations increases rapidly as the number of factors increases. For (F) factors, each with (L) levels, the total number of combinations is:
 
 <Callout icon="">
   <a id="3fcd65dd82be8060aadbce4372c8c614" />**Factorial Design**

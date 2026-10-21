@@ -764,12 +764,13 @@ title: "Fluorescence Detector"
       </Fragment>
     </Figure>
 
-    <a id="4da56ab8891f4bbcac38425f9bc76408" />Overall Electronics System
+    <a id="400d65dd82be8037af72f0c234d1a3e0" />The overall electrical system includes the user’s laptop, photodiode circuit, LED circuit, and the arduino acting as the center of the system. The laptop provides the power to the system while allowing the user to view the data. The arduino controls the output to the LED alongside with the physical switch, and reads the signal and reference from the photodiode circuit. The LED circuit shines 490nm light onto the sample to excite the GFP, and the emission light is quantified and passed through signal conditioning in the photodiode circuit. Overall this electronics system creates a functioning fluorescence detector.
 
-    - <a id="52e5f5cca1114c73b353638f596accd9" />Laptop
-    - <a id="6cb84a8c433d48a2a15f01651ce98cba" />Arduino
-    - <a id="137152485edd4044ad79a204dd215c37" />Photodiode PCB
-    - <a id="e49c68e864ea4c7298e949de089b3b88" />LED PCB
+    <a id="400d65dd82be80388bb3f2324506b117" />
+
+    <Img url="https://static.igem.wiki/teams/6279/wiki/assets/054d80cada1959859eb94db444a2c781.avif" alt="" scale={0} align="center" />
+
+    <a id="400d65dd82be805cbb53de064b8dea4d" />The digital pulse width modulation (PWM) pin is used to control the brightness of the LED, and can be connected to any digital arduino pin with PWM capabilities. The conditioned signal and reference voltage lines from the photodiode circuit are connected to analog pins on the arduino to read these signals as voltages. The arduino must be programmed to subtract the reference voltage from the signal to obtain the usable signal that is referenced throughout the testing and calibration of the system. The arduino code must also use the internal 1.1V reference to improve the resolution of our signal from around 5mV per ADC step to around 1mV per step.
 
     <a id="9f25fd30cda44515845795084738b764" />Calibration of System
 

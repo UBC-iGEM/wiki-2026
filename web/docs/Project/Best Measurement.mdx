@@ -3,4 +3,70 @@ type: "page"
 title: "Best Measurement"
 ---
 
-<br id="3fcd65dd82be8097af75fed7e8c0c7a8" />
+# <a id="3fcd65dd82be8097af75fed7e8c0c7a8" />The Role of Measurement in FAST
+
+<a id="0d4f86a7a953477496cbe1a6fe45ec33" />*FAST* reports antibiotic susceptibility as a fluorescence signal. A patient sample and a candidate antibiotic are combined on our microfluidic chip, and whatever antibiotic survives that step reaches a panel of stress-responsive *E. coli* biosensors downstream. If the sample is susceptible, the antibiotic remains active, the stress promoter fires, and sfGFP is expressed. If the sample is resistant, the antibiotic has been degraded and the signal stays near baseline.
+
+<a id="e61fbd79cd5142c985b1727d64d87a90" />The entire diagnostic therefore rests on one question: can that fluorescence be measured reproducibly and interpreted against controls? Measurement is not a supporting activity for this project. It is the readout, and every claim *FAST* makes depends on it being sound.
+
+<a id="a7fd37da255641e683741404a0eb54e7" />This page documents how we established that measurement, in the order we had to do it.
+
+# <a id="319fb4f266534272aa70bed3515a7a5f" />Establishing a Baseline
+
+<a id="00e025c075ee4ddab3b466675208fe75" />Before measuring a response, we needed to know what our strains do when nothing is happening to them. Using an automated approach documented in our  database, we generated growth curves for the CpxP and RecA biosensor strains alongside wild-type EPI300 *E. coli*, measuring optical density at 600 nm in the absence of any β-lactam or aminoglycoside. At each timepoint we simultaneously recorded fluorescence intensity at 485 nm excitation and 510 nm emission.
+
+<a id="2e41f6565a8b4a56a0273eaac3708f1a" />Two results from this baseline shape how every later number should be read. The biosensor strains reach maximum cell densities approximately 35% lower than wild type, which indicates a metabolic burden from the reporter plasmids and means fluorescence cannot be compared across strains without normalizing to cell density. Separately, the CpxP strain shows substantially higher basal sfGFP expression than either wild type or RecA, reaching roughly 18 to 20-fold higher levels after 25 hours at 37°C. That basal expression ceases at 22°C. A team adopting the CpxP reporter without knowing this would mistake baseline for signal.
+
+<a id="c5e0d5dc248f4818bd9983edde64960d" />We produced OD600 calibration curves from these runs so that fluorescence readouts can be normalized against cell density rather than reported as raw intensity.
+
+# <a id="4572440c6492449a982df7dc4f38353a" />Determining the Usable Range
+
+<a id="d52ab3cccac54439bf583bc26f669ba7" />Our first validation attempt screened a wide concentration range to locate a detectable response, using two-fold serial dilutions across 13 concentrations per antibiotic, with fluorescence sampled at 10-minute intervals over 40 to 60 minutes. Blank media controls were subtracted and values were normalized to no-antibiotic growth controls.
+
+<a id="2c317f78fad4424190db6674e48f0a24" />That experiment produced no dose-dependent response. Rather than treating this as a failure of the biosensors, we read it as a failure of the measurement window, since 60 minutes is short relative to sfGFP accumulation. We report this openly because the negative result is informative: a team designing a similar assay should not conclude from a flat one-hour curve that their reporter does not work.
+
+<a id="b8e8b72fc2d4484fb446f73586a42531" />Correcting it required knowing where the strains remain viable. We ran a minimum inhibitory concentration titration for gentamicin, tobramycin, and amoxicillin using two-fold serial dilutions, with concentration ranges seeded from published MIC values for susceptible *E. coli* and growth assessed by OD600 after 24 hours at 37°C. Both biosensor strains showed provisional MIC ranges of 4 to 8 µg/mL across all three antibiotics. This defined the subinhibitory window in which the strains stay alive while still experiencing antibiotic stress, and every subsequent measurement was placed inside it.
+
+# <a id="6764a7a97de6431dab40d5ac7508f4c0" />Measuring the Response
+
+<a id="d4c01d38e5124bb986234a0567937e21" />With the window established, we repeated the dose response over eight hours, sampling at the initial timepoint and at 30 minutes, 1, 2, 4, and 8 hours, across a two-fold series from 8 µg/mL down to 0.03125 µg/mL. Fluorescence was analyzed as fold change relative to an untreated growth control carried on the same plate.
+
+<a id="4b14bfbf00f844e49523be58ba477c58" />The CpxP strain showed a dose-dependent peak between four and eight hours. At 8 µg/mL amoxicillin, sfGFP expression reached 2-fold at four hours and 3-fold at eight hours relative to control, and both gentamicin and tobramycin peaked at four hours at the same concentration. The RecA strain showed a dose-dependent response to amoxicillin at 8 µg/mL, reaching 1.5-fold and 2-fold at the four and eight hour timepoints, and we did not identify a responsive concentration for either aminoglycoside.
+
+<a id="a9cbb64e077842aa8cf9f677fb9b282e" />Reporting the RecA aminoglycoside result as an absence rather than omitting it matters for anyone reusing these strains. The SOS response is not a reliable aminoglycoside readout under the conditions we tested.
+
+# <a id="f9c079122e2847fbb0df70a488b5c4f5" />Controls and Calibration
+
+<a id="0dcf2b33d20145a6a4a820a5b31e4e00" />Every measurement reported above was anchored to controls rather than read in isolation.
+
+<a id="49e7ba34cb59401986e9a73ee633a3c7" />Wild-type EPI300 served as the negative control throughout, establishing what the chassis does without a reporter. Untreated growth controls, cultured in LB-Cm without the antibiotic of interest, provided the denominator for every fold-change value, so that a reported response is a response relative to an identically handled culture rather than to an assumed baseline. Blank media wells were subtracted from all fluorescence readings to remove background from the medium and the plate.
+
+<a id="c751e895f5cb46b1baf5f34ee64c64c9" />Our plasmid retention assay was itself a control experiment on the measurement conditions. We wanted to remove chloramphenicol from the assay because it confounds the bacterial stress response we are trying to measure, so we tested whether the reporter plasmids are retained without selection. Cultures were grown in LB with and without chloramphenicol, then plated on LB-Cm agar, with wild-type EPI300 as a negative control and biosensors grown in LB-Cm as a positive control. Plasmids were lost within one hour in chloramphenicol-free media. We therefore retained selection throughout and documented the confound rather than quietly accepting it.
+
+# <a id="605515d9d062406ab305f8b3e988436b" />Scaling the Measurement
+
+<a id="e5872674b74a4104855d2cffec8e27fd" />To characterize more than 200 promoter-GFP constructs, we worked with Biofactorial, UBC's High-Throughput Biology and Automation Facility, and had to make the measurement work at a scale our bench could not support. The approach is documented on our [Promoter Library](/ubc-vancouver/modelling/promoter-library) page.
+
+<a id="17d8fb90b60d45528db4485615682827" />We first derived apparent MIC values for amoxicillin, cephalexin, gentamicin, and tobramycin from endpoint growth across a dilution series built around literature values cross-checked against EUCAST, then selected subinhibitory concentrations at roughly 0.25 to 0.5 times the apparent MIC. This produced the working concentrations of 2, 1, 1, and 1 µg/mL respectively, which we applied to the full library.
+
+<a id="dfe0dfc2f131444789736dc697e0dc6e" />The screen ran across 30 384-well plates with OD600 and GFP sampled every 30 minutes over eight hours, with one no-antibiotic control plate and a media-only blank. Each promoter's response was calculated as GFP normalized to OD600 and then to its own control, which is what makes the resulting values comparable across constructs with different growth characteristics. Expressed this way, most of the library clusters at a growth ratio and induction ratio near 1, and genuine hits are identifiable as outliers ranging from roughly 3-fold to 12-fold.
+
+# <a id="fb6503bc90404bd0b12a269d4b855fb9" />Measuring Without a Plate Reader
+
+<a id="f1ac08bc96d047b2803d1fa34da2ef7f" />A measurement protocol that requires a plate reader does not transfer to the point of care, so our [Fluorescence Detector](/ubc-vancouver/hardware/fluorescence-detector) was designed with its own calibration routine. Before each run, a baseline is established by subtracting a reading with the LED off from a reading with it on. During collection, the signal and the reference voltage are read together and subtracted, so that drift in the supply rail is removed rather than recorded as signal. Gain is set by starting low and increasing until a signal appears, with the brightest expected sample landing near the top of the 0.883 V usable range.
+
+<a id="03241db874154004a07c4605d278a9aa" />Using the Arduino's 1.1 V internal reference gives an ADC step of 1.074 mV per count, and with a 10 MΩ transimpedance resistor the smallest detectable current at a gain of 101 is approximately 1 pA. We have published these calculations alongside the circuit so that another team can work out the resolution their own configuration would achieve.
+
+# <a id="ff11a8098d6f4b9496d1770219fe4c15" />Protocols and Reproduction
+
+<a id="fe61f06b4beb4e9e8067384d0ef90282" />Every measurement on this page is backed by a written protocol in our  database, covering LB medium preparation, bacterial growth curves, the plasmid retention assay, MIC titration, and the biosensor dose response assay, alongside the cloning workflow and antibiotic degradation assay. Each was written to be followed by someone who was not present when we ran it.
+
+<a id="2d6be3281a2d4f8694a7ed08fa25fd3c" />The strain characterization behind these measurements, including the annotated plasmid maps, is on our [Biosensor](/ubc-vancouver/wet-lab/biosensor) page.
+
+# <a id="528bc6efdb02485186882eb02ca4c37b" />Limitations
+
+<a id="1e611e274b624a9e8f65386d5c4c33fd" />Our MIC values are provisional. They were determined by endpoint OD600 in a two-fold series rather than by a standardized broth microdilution against a reference strain, so they locate a working range rather than establish a clinical breakpoint.
+
+<a id="6e9cb257d02e4e898018da2d203d73f1" />Our fold-change values are reported against untreated growth controls and are not calibrated to an absolute fluorescence standard, which means they are comparable within our dataset and between our strains, but not directly against values measured on another instrument. Adopting the iGEM Fluorescence Measurement Calibrants Kit to express results in molecules of equivalent fluorescein is the clearest next step, and would make our characterization comparable across labs.
+
+<a id="1e09a1f46aed48f0a1e74b1b7371c1d4" />We also have not yet measured the biosensor response inside the microfluidic chip. All values here were obtained in plate format, and the transfer from well to chip remains to be characterized.

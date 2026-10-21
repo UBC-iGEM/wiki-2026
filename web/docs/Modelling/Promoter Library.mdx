@@ -8,7 +8,7 @@ title: "Promoter Library"
 <Callout icon="">
   <a id="3fdd65dd82be800fa6b1eca1360f5bcd" />As our project this year was to develop an *E. coli* promoter-GFP biosensor, we sought to identify high quality promoters—characterized by dynamic range, low basal expression, and low cross-activation—that enable quantifying presence of antibiotic in solution. Our biosensor depends on a promoter that produces a strong, rapid, and specific fluorescence when a relevant antibiotic is present, therefore promoter performance is critical to the success of FAST’s accuracy: a leaky promoter would yield false susceptibility calls, a slow promoter would reduce our advantage over culture-based testing, etc. However, rather than relying solely on literature review, we wanted to validate our findings through a library screen. We screened a promoter-GFP library against four antibiotics: Amoxicillin, Cephalexin, Gentamicin, and Tobramycin. These antibiotics were chosen as they are β-lactams and aminoglycosides, pertinent to our project for their clinical relevance to UTIs.
 
-  <a id="3fdd65dd82be80cfa295f1cb77877fc7" />To characterize over 200 promoter candidates, we developed the experimental design of a high-throughput experiment executed in collaboration with Biofactorial, an automation facility. Our experiment consisted of three components: assay development, the library screen, then sequencing. By exposing the promoter library to each antibiotic at a selected sub-inhibitory concentration, we collected GFP and OD600 measurements and ranked candidates based on sustained induction, response speed, and low baseline expression. Through our criterion we were able to identify ten top promoter, and sequenced the top candidates back to its well for further validation.
+  <a id="3fdd65dd82be80cfa295f1cb77877fc7" />To characterize over 200 promoter candidates, we developed the experimental design of a high-throughput experiment executed in collaboration with Biofactorial, an automation facility. Our experiment consisted of three components: assay development, the library screen, then sequencing. By exposing the promoter library to each antibiotic at a selected sub-inhibitory concentration, we collected GFP and OD600 measurements and ranked candidates based on sustained induction, response speed, and low baseline expression. Through our criterion we were able to identify the top ten promoters from the library, and sequenced the top candidates back to its well for further validation.
 </Callout>
 
 <a id="3fdd65dd82be8087975be726f6e6e36e" />
@@ -177,7 +177,7 @@ title: "Promoter Library"
   </Fragment>
 
   <Fragment slot="learn">
-    <a id="4537fff83ed34de1a10f0529a40d7843" />Finally, we produced and analyzed the resulting $OD_{600}$ growth curves to understand bacterial responses across antibiotic concentrations, identifying sub-inhibitory conditions to inform part 2
+    <a id="4537fff83ed34de1a10f0529a40d7843" />Finally, we produced and analyzed the resulting $OD_{600}$ growth curves to understand bacterial responses across antibiotic concentrations, identifying sub-inhibitory conditions to inform our part 2 design
   </Fragment>
 </Dbtl>
 
@@ -229,6 +229,10 @@ title: "Promoter Library"
 </Figure>
 
 <a id="400d65dd82be804abdddc8b4b5aa6435" />The above graph was produced by normalizing each promoter’s GFP response by $OD_{600}$ and its control. Using the above graph, we can derive a handful of conclusions. First, most of the promoters are clouded around growth = 1 and GFP induction = 1, meaning most of the library was unaffected by the sub-inhibitory concentrations. However, the top candidates are recognizable as they are outliers. The top candidates were hits with high GFP induction (\~ 3x to 12x), with the top hit being 11.68x induction under Amoxicillin. We can also see that majority of the top candidates were for Cephalexin, especially without inhibiting growth (candidates lie more within the right side of the cloud). On the other hand, Tobramycin lies mostly to the lower left, meaning growth is slowed and GFP is lower per cell. Amoxicillin is mostly induced without slowing growth.
+
+<br id="400d65dd82be803b9ba1e36c2603ae86" />
+
+<a id="400d65dd82be809ba680ec392f5e4609" />However, given that the library was initially on 96-well plates and had been re-mapped onto our 384-well plate, we also needed to account for this. We aimed for 4 wells from each 2x2 quadrant across the 384-well plate
 
 ### <a id="3ffd65dd82be806f8147f222d6ce182b" />Results
 

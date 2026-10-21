@@ -110,6 +110,11 @@
       {
         "name": "Connor Mora",
         "role": "Dry Lab",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/45fbc4a1dcbc5252912d17fd14df5567.avif"
+      },
+      {
+        "name": "Connor Mora",
+        "role": "Dry Lab",
         "image": "https://static.igem.wiki/teams/6279/wiki/assets/5f1efc862d485ceaba94902dc6084f93.avif"
       },
       {
@@ -133,9 +138,23 @@
         "image": "https://static.igem.wiki/teams/6279/wiki/assets/8cf84315a19e5b6e9d02251dc1ef5dd4.avif"
       },
       {
+        "name": "Owen Gill",
+        "role": "Dry Lab",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/7862ce266df65eb2a4d5ea2922989290.avif"
+      },
+      {
+        "name": "Rahul Kothapalli",
+        "role": "Dry Lab",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/2d232d936f0a57d4af5ebcadb66ab5db.avif"
+      },
+      {
         "name": "Tiffany Feng",
         "role": "Dry Lab",
         "image": "https://static.igem.wiki/teams/6279/wiki/assets/26f91e0d63985e74a7dcfac4fcbafda4.avif"
+      },
+      {
+        "name": "Tom Xie",
+        "role": "Dry Lab"
       },
       {
         "name": "Tom Xie",
@@ -217,6 +236,11 @@
         "image": "https://static.igem.wiki/teams/6279/wiki/assets/034883e74f5d5ddaba9b07e730784164.avif"
       },
       {
+        "name": "Maelys Kerherve",
+        "role": "Design/Wiki",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/930c633cd80c512f93f5cb07a23b4002.avif"
+      },
+      {
         "name": "Paul Xu",
         "role": "Design/Wiki",
         "image": "https://static.igem.wiki/teams/6279/wiki/assets/c1c6b910d8e656ac89cf32b11babf9de.avif"
@@ -225,6 +249,16 @@
         "name": "Rachel Weng",
         "role": "Design/Wiki",
         "image": "https://static.igem.wiki/teams/6279/wiki/assets/d0f1f86cd9e258e9b60a39d2a796bcbd.avif"
+      },
+      {
+        "name": "Rihem Sayadi",
+        "role": "Design/Wiki",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/c6f0e407de1f5ca8b841f8785129b5ec.avif"
+      },
+      {
+        "name": "Verne Go",
+        "role": "Design/Wiki",
+        "image": "https://static.igem.wiki/teams/6279/wiki/assets/6b80a9ecf4e7565ca9096b9c4205b393.avif"
       }
     ]
   },

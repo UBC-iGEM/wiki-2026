@@ -13,7 +13,7 @@ title: "PRISM"
 
 <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/97d635d143b9521caeb98bfe1a1a5156.svg","alt":"","scale":0}]}>
   <Fragment slot="content">
-    <a id="3fdd65dd82be80fa8fd2c2d69b2463b4" />Expression data and regulatory annotations enter the evidence database, which links them to candidate promoters for experimental screening @Andrew Li / PRISM\_figures.
+    <a id="3fdd65dd82be80fa8fd2c2d69b2463b4" />Expression data and regulatory annotations enter the evidence database, which links them to candidate promoters for experimental screening <Cite refs={[{"n":2,"key":"AndrewLiPRISM_figures2026"}]} />.
   </Fragment>
 </Figure>
 
@@ -62,7 +62,7 @@ title: "PRISM"
 
 <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/6fd25cf671f15750b43d5a890fb74b93.svg","alt":"","scale":0}]}>
   <Fragment slot="content">
-    <a id="3fdd65dd82be8056a8bace6852ba2d5e" />RNA-seq counts and references are analysed to generate linked candidate records.
+    <a id="3fdd65dd82be8056a8bace6852ba2d5e" />RNA-seq counts and references are analysed to generate linked candidate records <Cite refs={[{"n":2,"key":"AndrewLiPRISM_figures2026"}]} />.
   </Fragment>
 </Figure>
 
@@ -72,9 +72,9 @@ title: "PRISM"
 
 | <a id="3ffd65dd82be80969863daf5456f54c6" />Input                  | Source                                                                                   | Purpose                                                               |
 | ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| <a id="3ffd65dd82be802090d7ee723e0b7c68" />RNA-seq count data     | GSE220559 <Cite refs={[{"n":2,"key":"bieComparativeAnalysisTranscriptomic2023"}]} />     | Measures transcriptional responses to antibiotic exposure             |
-| <a id="3ffd65dd82be80b7ab66f36b8f5c0c2f" />Regulatory annotations | RegulonDB 14.5.0 <Cite refs={[{"n":3,"key":"salgadoRegulonDBV120Comprehensive2023"}]} /> | Links regulators, promoters, transcription units and genes            |
-| <a id="3ffd65dd82be80a39845f869c0931e4f" />Reference genome       | *E. coli* K-12 MG1655, U00096.3 <Cite refs={[{"n":4,"key":"EscherichiaColiStr2025"}]} /> | Verifies promoter coordinates and sequence matches                    |
+| <a id="3ffd65dd82be802090d7ee723e0b7c68" />RNA-seq count data     | GSE220559 <Cite refs={[{"n":3,"key":"bieComparativeAnalysisTranscriptomic2023"}]} />     | Measures transcriptional responses to antibiotic exposure             |
+| <a id="3ffd65dd82be80b7ab66f36b8f5c0c2f" />Regulatory annotations | RegulonDB 14.5.0 <Cite refs={[{"n":4,"key":"salgadoRegulonDBV120Comprehensive2023"}]} /> | Links regulators, promoters, transcription units and genes            |
+| <a id="3ffd65dd82be80a39845f869c0931e4f" />Reference genome       | *E. coli* K-12 MG1655, U00096.3 <Cite refs={[{"n":5,"key":"EscherichiaColiStr2025"}]} /> | Verifies promoter coordinates and sequence matches                    |
 | <a id="3ffd65dd82be80579280f62ab22cf134" />Analysis configuration | Versioned PRISM configuration <Cite refs={[{"n":1,"key":"AndrewLiPRISM2026"}]} />        | Records antibiotic roles, selection thresholds and reference versions |
 
 <a id="3fdd65dd82be8099bdd8dacbac38fb7c" />PRISM combines expression measurements, regulatory annotations a strain specific reference genome, and an analysis configuration. These inputs were chosen to keep the analysis consistent internally as PRISM favours traceability within one dataset and strain. Dataset GSE220559 provides antibiotic test conditions to reference. Due to the lack of available data directly applicable to our project, ceftazidime and kanamycin serve as `β-lactam` and aminoglycoside proxies respectively.  Ciprofloxacin and polymyxin E act as cross-reactivity challenges while imipenem checks for study robustness.
@@ -97,7 +97,7 @@ title: "PRISM"
 
 <a id="3fdd65dd82be80ee973fcdba95bf6afb" />Candidate genes were required to have an adjusted p-value below 0.05 and a log2 fold change greater than 2. These are screening thresholds chosen to prioritise strong, statistically supported induction; they are not universal biological boundaries.
 
-<a id="3fdd65dd82be80988308c0538df20257" />Benjamini–Hochberg adjustment is applied separately to each antibiotic-versus-control contrast. The combined set of genes selected across contrasts has not been shown to have a 5% false-discovery rate. The ten pairwise antibiotic comparisons are adjusted before use in candidate selection. Shrunk effect estimates are used for ranking. Unshrunken estimates are used to seed candidates <Cite refs={[{"n":5,"key":"benjaminiControllingFalseDiscovery1995"},{"n":6,"key":"zhuHeavytailedPriorDistributions2019"}]} />.
+<a id="3fdd65dd82be80988308c0538df20257" />Benjamini–Hochberg adjustment is applied separately to each antibiotic-versus-control contrast. The combined set of genes selected across contrasts has not been shown to have a 5% false-discovery rate. The ten pairwise antibiotic comparisons are adjusted before use in candidate selection. Shrunk effect estimates are used for ranking. Unshrunken estimates are used to seed candidates <Cite refs={[{"n":6,"key":"benjaminiControllingFalseDiscovery1995"},{"n":7,"key":"zhuHeavytailedPriorDistributions2019"}]} />.
 
 ### <a id="3fdd65dd82be80489d4cf7517e049cc1" />**Full measured background**
 
@@ -163,7 +163,7 @@ title: "PRISM"
 
 <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/0b58275b07385fbfb3cbb62153df8249.svg","alt":"","scale":0}]}>
   <Fragment slot="content">
-    <a id="3ffd65dd82be804bb36ee52c067617a7" />**RNA-seq sample structure:** principal-component analysis of variance-stabilised counts shows the relationships among water controls and antibiotic-treatment conditions. Biological replicates are displayed individually so variation remains visible.
+    <a id="3ffd65dd82be804bb36ee52c067617a7" />**RNA-seq sample structure:** principal-component analysis of variance-stabilised counts shows the relationships among water controls and antibiotic-treatment conditions. Biological replicates are displayed individually so variation remains visible <Cite refs={[{"n":2,"key":"AndrewLiPRISM_figures2026"}]} />.
   </Fragment>
 </Figure>
 
@@ -171,7 +171,7 @@ title: "PRISM"
 
 <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/fdb5ea8182b85e448a5c7f95c8bf23ea.svg","alt":"","scale":0}]}>
   <Fragment slot="content">
-    <a id="3ffd65dd82be80f59a71e0fe23a1304f" />**Example candidate response:** the estimated `pdhR` response is larger under the `β-lactam` discovery and robustness conditions than under kanamycin and the two challenge conditions. Bars show approximate 95% Wald intervals for the not shrunken gene-level log₂ effects (estimate ± 1.96 standard errors). They are not replicate standard deviations or uncertainty in promoter activity.
+    <a id="3ffd65dd82be80f59a71e0fe23a1304f" />**Example candidate response:** the estimated `pdhR` response is larger under the `β-lactam` discovery and robustness conditions than under kanamycin and the two challenge conditions. Bars show approximate 95% Wald intervals for the not shrunken gene-level log₂ effects (estimate ± 1.96 standard errors). They are not replicate standard deviations or uncertainty in promoter activity <Cite refs={[{"n":2,"key":"AndrewLiPRISM_figures2026"}]} />.
   </Fragment>
 </Figure>
 
@@ -179,7 +179,7 @@ title: "PRISM"
 
 <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/c35cd635fb0f5e90bd1e8c029a506be3.svg","alt":"","scale":0}]}>
   <Fragment slot="content">
-    <a id="3ffd65dd82be80b4be1dcb2d8e2bcacb" />**Replicate-level expression:** each point is one GSE220559 sample, with three samples per condition and 18 samples in total. Points show joint DESeq2-normalized counts for `b0113` (`pdhR`). Horizontal strokes show medians. Shared water controls are plotted once. Marker shapes and colours identify each treatment group, which is also labelled directly. These measurements describe gene-level RNA abundance, not promoter-specific transcription or reporter output.
+    <a id="3ffd65dd82be80b4be1dcb2d8e2bcacb" />**Replicate-level expression:** each point is one GSE220559 sample, with three samples per condition and 18 samples in total. Points show joint DESeq2-normalized counts for `b0113` (`pdhR`). Horizontal strokes show medians. Shared water controls are plotted once. Marker shapes and colours identify each treatment group, which is also labelled directly. These measurements describe gene-level RNA abundance, not promoter-specific transcription or reporter output <Cite refs={[{"n":2,"key":"AndrewLiPRISM_figures2026"}]} />.
   </Fragment>
 </Figure>
 
@@ -193,7 +193,7 @@ title: "PRISM"
 
 <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/f212b1d1bd9c5b81afade54c830a931c.svg","alt":"","scale":0}]}>
   <Fragment slot="content">
-    <a id="3ffd65dd82be80e481e1c89142a2ad79" />**Example regulatory context:** The `pdhRp2` promoter is associated with the `pdhR` transcriptional unit and curated regulatory effects from PdhR, CRP, and FNR. The diagram summarises reference annotations. Labels identify activation, repression, and mixed effects. These annotations do not show that the regulators cause the observed antibiotic response.
+    <a id="3ffd65dd82be80e481e1c89142a2ad79" />**Example regulatory context:** The `pdhRp2` promoter is associated with the `pdhR` transcriptional unit and curated regulatory effects from PdhR, CRP, and FNR. The diagram summarises reference annotations. Labels identify activation, repression, and mixed effects. These annotations do not show that the regulators cause the observed antibiotic response <Cite refs={[{"n":2,"key":"AndrewLiPRISM_figures2026"}]} />.
   </Fragment>
 </Figure>
 
@@ -231,7 +231,7 @@ title: "PRISM"
 
 <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/66630718f9d25dfd83a239575c5bbb6b.svg","alt":"","scale":0}]}>
   <Fragment slot="content">
-    <a id="3ffd65dd82be80c58eb3ec0b1a853fa7" />**Candidate selection.** Expression evidence and curated regulatory context identified 925 candidate genes. Promoter review and diversity criteria produced a proposed panel of 12 promoters, with six candidates per antibiotic class.
+    <a id="3ffd65dd82be80c58eb3ec0b1a853fa7" />**Candidate selection.** Expression evidence and curated regulatory context identified 925 candidate genes. Promoter review and diversity criteria produced a proposed panel of 12 promoters, with six candidates per antibiotic class <Cite refs={[{"n":2,"key":"AndrewLiPRISM_figures2026"}]} />.
   </Fragment>
 </Figure>
 
@@ -259,7 +259,7 @@ title: "PRISM"
 
 <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/5384e6043ec45749bc3afcb1117fd038.svg","alt":"","scale":0}]}>
   <Fragment slot="content">
-    <a id="3ffd65dd82be8085acade85e17aaaca6" />**Proposed panel response profiles:** the heat-map shows gene-level log₂ fold changes for the 12 proposed candidates across discovery, robustness, and challenge conditions. Class balance and promoter and transcription-unit diversity are selection criteria. They do not establish information gain or biosensor performance.
+    <a id="3ffd65dd82be8085acade85e17aaaca6" />**Proposed panel response profiles:** the heat-map shows gene-level log₂ fold changes for the 12 proposed candidates across discovery, robustness, and challenge conditions. Class balance and promoter and transcription-unit diversity are selection criteria. They do not establish information gain or biosensor performance <Cite refs={[{"n":2,"key":"AndrewLiPRISM_figures2026"}]} />.
   </Fragment>
 </Figure>
 
@@ -286,7 +286,7 @@ title: "PRISM"
 
 <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/5f575f2a275a5bd1965c4489354b7013.svg","alt":"","scale":0}]}>
   <Fragment slot="content">
-    <a id="3ffd65dd82be807fbee4cddd9b2229aa" />**Proposed `pdhRp2` fragment.** The proposed fragment spans positions 121,646–122,064 of U00096.3 (419 bp, forward strand). The initial window around the transcription start site (TSS) was extended to include linked binding-site annotations. The diagram shows the annotated promoter sequence, −35 and −10 motifs, TSS, and 11 distinct sites across five regulators. Overlapping CRP sites are shown in separate lanes. Gene bodies are clipped to the displayed interval. Coordinates are 1-based and inclusive. Repeated interactions at the same physical site are shown once. The diagram does not determine activation or repression based on these sites. Sequence agreement and site inclusion do not establish fragment function. The boundaries will require review and promoter-specific activity requires wetlab experimental testing.
+    <a id="3ffd65dd82be807fbee4cddd9b2229aa" />**Proposed `pdhRp2` fragment.** The proposed fragment spans positions 121,646–122,064 of U00096.3 (419 bp, forward strand). The initial window around the transcription start site (TSS) was extended to include linked binding-site annotations. The diagram shows the annotated promoter sequence, −35 and −10 motifs, TSS, and 11 distinct sites across five regulators. Overlapping CRP sites are shown in separate lanes. Gene bodies are clipped to the displayed interval. Coordinates are 1-based and inclusive. Repeated interactions at the same physical site are shown once. The diagram does not determine activation or repression based on these sites. Sequence agreement and site inclusion do not establish fragment function. The boundaries will require review and promoter-specific activity requires wetlab experimental testing <Cite refs={[{"n":2,"key":"AndrewLiPRISM_figures2026"}]} />.
   </Fragment>
 </Figure>
 
@@ -309,7 +309,7 @@ title: "PRISM"
 
 <Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/06ce889faedd575e9e313cf8437d9d50.svg","alt":"","scale":0}]}>
   <Fragment slot="content">
-    <a id="3ffd65dd82be80cfb221c158424546b3" />**Selection comparison.** Both methods select 12 candidates, with six per class. PRISM selects 12 distinct promoters, compared with 10 for the induction-only baseline. Median shrunken induction is 3.09 log₂ units for PRISM and 5.65 for the baseline. Median maximum absolute response to other-class compounds is 1.71 and 4.59, respectively. These are descriptive results from the selection data. They are not independent evidence of sensitivity or specificity.
+    <a id="3ffd65dd82be80cfb221c158424546b3" />**Selection comparison.** Both methods select 12 candidates, with six per class. PRISM selects 12 distinct promoters, compared with 10 for the induction-only baseline. Median shrunken induction is 3.09 log₂ units for PRISM and 5.65 for the baseline. Median maximum absolute response to other-class compounds is 1.71 and 4.59, respectively. These are descriptive results from the selection data. They are not independent evidence of sensitivity or specificity <Cite refs={[{"n":2,"key":"AndrewLiPRISM_figures2026"}]} />.
   </Fragment>
 </Figure>
 
@@ -388,11 +388,11 @@ title: "PRISM"
 
 ## <a id="3ffd65dd82be80868af9cfe2cfc02cfc" />Reporter assay design
 
-<a id="3ffd65dd82be80ebacebc9ddf4f37682" />Reporter experiments should determine whether a candidate promoter responds to the antibiotics planned for FAST. Clone selected promoter fragments upstream of a reporter and test the exact antibiotics at multiple doses and exposure times. Include untreated, promoterless, reference, general-stress, and off-target controls. Where feasible, compare susceptible and resistant backgrounds. Normalise fluorescence to growth and assess response magnitude, response time, specificity, and reproducibility. These controls follow established *in vivo* promoter-characterisation practice <Cite refs={[{"n":7,"key":"kellyMeasuringActivityBioBrick2009"}]} />.
+<a id="3ffd65dd82be80ebacebc9ddf4f37682" />Reporter experiments should determine whether a candidate promoter responds to the antibiotics planned for FAST. Clone selected promoter fragments upstream of a reporter and test the exact antibiotics at multiple doses and exposure times. Include untreated, promoterless, reference, general-stress, and off-target controls. Where feasible, compare susceptible and resistant backgrounds. Normalise fluorescence to growth and assess response magnitude, response time, specificity, and reproducibility. These controls follow established *in vivo* promoter-characterisation practice <Cite refs={[{"n":8,"key":"kellyMeasuringActivityBioBrick2009"}]} />.
 
 <a id="3ffd65dd82be80ca894fdeee8a1ae156" />Define the experimental unit and distinguish biological from technical replicates before collecting data. Record the construct sequence and version, chassis, reporter and vector context, batch, plate and well, compound, dose and units, exposure time, instrument settings, and calibration. Preserve raw fluorescence and growth measurements alongside normalised values and quality-control decisions. Set inclusion and exclusion rules and acceptance criteria before evaluating the panel.
 
-<a id="3ffd65dd82be80b4aeb1ff6b8b763b2f" />Reporter maturation can delay fluorescence after transcription, so an RNA response may differ from the measured fluorescence response. Reporter performance must be assessed under the target conditions. PRISM has not yet collected reporter measurements <Cite refs={[{"n":8,"key":"ballezaSystematicCharacterizationMaturation2018"}]} />.
+<a id="3ffd65dd82be80b4aeb1ff6b8b763b2f" />Reporter maturation can delay fluorescence after transcription, so an RNA response may differ from the measured fluorescence response. Reporter performance must be assessed under the target conditions. PRISM has not yet collected reporter measurements <Cite refs={[{"n":9,"key":"ballezaSystematicCharacterizationMaturation2018"}]} />.
 
 <a id="3ffd65dd82be806285cfd3c6bb713109" />
 
@@ -428,4 +428,4 @@ title: "PRISM"
 
 # References
 
-<Bibliography refs={[{"n":1,"key":"AndrewLiPRISM2026"},{"n":2,"key":"bieComparativeAnalysisTranscriptomic2023"},{"n":3,"key":"salgadoRegulonDBV120Comprehensive2023"},{"n":4,"key":"EscherichiaColiStr2025"},{"n":5,"key":"benjaminiControllingFalseDiscovery1995"},{"n":6,"key":"zhuHeavytailedPriorDistributions2019"},{"n":7,"key":"kellyMeasuringActivityBioBrick2009"},{"n":8,"key":"ballezaSystematicCharacterizationMaturation2018"}]} />
+<Bibliography refs={[{"n":1,"key":"AndrewLiPRISM2026"},{"n":2,"key":"AndrewLiPRISM_figures2026"},{"n":3,"key":"bieComparativeAnalysisTranscriptomic2023"},{"n":4,"key":"salgadoRegulonDBV120Comprehensive2023"},{"n":5,"key":"EscherichiaColiStr2025"},{"n":6,"key":"benjaminiControllingFalseDiscovery1995"},{"n":7,"key":"zhuHeavytailedPriorDistributions2019"},{"n":8,"key":"kellyMeasuringActivityBioBrick2009"},{"n":9,"key":"ballezaSystematicCharacterizationMaturation2018"}]} />
