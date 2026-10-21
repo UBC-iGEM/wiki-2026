@@ -70,19 +70,19 @@ const Header = kind === "none" ? "div" : "summary";
         outline-offset: 6px;
     }
 
-    /* A chevron that turns to point down once the preview is open */
+    /* A filled triangle that turns to point down once the preview is open */
+    /* Drawn rather than the ▶ character, which phones render as an emoji */
     .marker {
-        border-bottom: 2px solid var(--color-cornflower);
-        border-right: 2px solid var(--color-cornflower);
+        background: var(--color-cornflower);
+        clip-path: polygon(0 0, 100% 50%, 0 100%);
         flex-shrink: 0;
-        height: 0.5rem;
-        transform: rotate(-45deg);
+        height: 0.7rem;
         transition: transform 160ms ease;
-        width: 0.5rem;
+        width: 0.6rem;
     }
 
     .panel[open] .marker {
-        transform: rotate(45deg);
+        transform: rotate(90deg);
     }
 
     .title {

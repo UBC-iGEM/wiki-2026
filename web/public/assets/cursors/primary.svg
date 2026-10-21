@@ -1,15 +1,21 @@
-<svg width="29" height="32" viewBox="0 0 29 32" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<use xlink:href="#stroke0_1912_107" fill="#BBD1FF"/>
-<use xlink:href="#stroke0_1912_107" fill="url(#paint0_linear_1912_107)" fill-opacity="0.5"/>
-<mask id="stroke1_1912_107" fill="white">
-<path d="M0.000360624 0.000451796L28.8591 15.0432L14.5194 18.3954L9.43849 31.1458L0.000360624 0.000451796Z"/>
-</mask>
-<path d="M0.000360285 0.000452077L28.8591 15.0432L14.5194 18.3954L9.43849 31.1458L0.000360285 0.000452077Z" stroke-width="4" stroke="#BBD1FF" mask="url(#stroke1_1912_107)"/>
+<svg width="28" height="30" viewBox="0 0 28 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d_2036_150)">
+<path d="M2.48764 2.69196L23.8903 13.8482L13.2555 16.3343L9.48728 25.7905L2.48764 2.69196Z" fill="url(#paint0_linear_2036_150)" stroke-width="1.2" stroke="#BBD1FF"/>
+</g>
 <defs>
-<linearGradient id="paint0_linear_1912_107" x1="0.000361358" y1="0.000451188" x2="19.1488" y2="23.0945" gradientUnits="userSpaceOnUse">
-<stop stop-color="#28C4BC"/>
-<stop offset="1" stop-color="#6A67FF"/>
+<filter id="filter0_d_2036_150" x="0" y="0" width="27.1025" height="29.1045" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="0.75"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.733333 0 0 0 0 0.819608 0 0 0 0 1 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2036_150"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2036_150" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_2036_150" x1="-4.71387" y1="-3.2793" x2="29.7861" y2="31.7207" gradientUnits="userSpaceOnUse">
+<stop stop-color="#6A67FF"/>
+<stop offset="0.83204" stop-color="#1B1F41"/>
 </linearGradient>
-<path id="stroke0_1912_107" d="M0.000360624 0.000451796L28.8591 15.0432L14.5194 18.3954L9.43849 31.1458L0.000360624 0.000451796Z"/>
 </defs>
 </svg>

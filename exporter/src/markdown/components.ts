@@ -123,6 +123,25 @@ async function dbtl({ items, ctx }: ComponentInput): ComponentOutput {
             ["malformed content"],
         );
 
+    // Each section starts with its step's name, which catches sections that are missing or out of order
+    for (const [i, section] of sections.entries()) {
+        const step = DBTL_SLOTS[i]!;
+        const first = section[0]!;
+        const text = blockText(first) ?? "";
+        const first_word = /^\p{L}+/u.exec(text)?.[0];
+        if (first_word?.toLowerCase() === step) continue;
+
+        const name = step[0]!.toUpperCase() + step.slice(1);
+        const found = first_word ? `starts with “${first_word}”` : "does not start with text";
+        new ExporterError(
+            `DBTL component's ${step} section should start with the word “${name}”, but it ${found}.` +
+                componentDocSuggestion(
+                    "https://app.notion.com/p/ubcigem/Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#395d65dd82be805ea14ed9af6aaeff99",
+                ),
+            ["malformed content"],
+        ).warn(first.type === "component" ? ctx : blockContext(ctx, first));
+    }
+
     const [design, build, test, learn] = (await Promise.all(sections.map((section) => convertItems(section, ctx)))) as [
         FlowContent[],
         FlowContent[],

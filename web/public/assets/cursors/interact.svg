@@ -1,9 +1,14 @@
-<svg width="51" height="54" viewBox="0 0 51 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="47" height="50" viewBox="0 0 47 50" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_d_1912_124)">
-<path d="M10.0003 9.99983L40.7829 26.0455L25.4872 29.6211L20.0676 43.2216L10.0003 9.99983Z" fill="url(#paint0_linear_1912_124)"/>
+<path d="M11.9764 12.3828L33.3774 23.5382L22.7434 26.0241L18.9755 35.4796L11.9764 12.3828Z" fill="url(#paint0_linear_1912_124)"/>
+<mask id="stroke0_1912_124" maskUnits="userSpaceOnUse" x="-0.0871447" y="1.23211" width="37.7552" height="38.2813" fill="black">
+<rect fill="white" x="-0.0871447" y="1.23211" width="37.7552" height="38.2813"/>
+<path d="M11.9764 12.3828L33.3774 23.5382L22.7434 26.0241L18.9755 35.4796L11.9764 12.3828Z"/>
+</mask>
+<path d="M11.9764 12.3828L33.3774 23.5382L22.7434 26.0241L18.9755 35.4796L11.9764 12.3828Z" stroke-width="2.4" stroke="#59C16C" mask="url(#stroke0_1912_124)"/>
 </g>
 <defs>
-<filter id="filter0_d_1912_124" x="0" y="0" width="50.7832" height="53.2217" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_d_1912_124" x="0" y="0" width="46.8018" height="49.1084" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
 <feOffset/>
@@ -13,7 +18,7 @@
 <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1912_124"/>
 <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1912_124" result="shape"/>
 </filter>
-<linearGradient id="paint0_linear_1912_124" x1="10.0003" y1="9.99983" x2="61.5967" y2="47.8773" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_1912_124" x1="11.9764" y1="12.3828" x2="47.8478" y2="38.7164" gradientUnits="userSpaceOnUse">
 <stop offset="0.20761" stop-color="#C9FD09"/>
 <stop offset="0.879904" stop-color="#00FF92"/>
 </linearGradient>

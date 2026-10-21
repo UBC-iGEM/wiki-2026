@@ -217,12 +217,12 @@ pre.astro-code {
 
 /**  SCROLLBARS   */
 
-/* Cornflower thumbs on no track, for the page and everything that scrolls inside it, which inherit the colour */
+/* Periwinkle thumbs on no track, for the page and everything that scrolls inside it, which inherit the colour */
 html {
-    scrollbar-color: var(--color-cornflower) transparent;
+    scrollbar-color: var(--color-periwinkle) transparent;
 }
 
-/* Where the thumb can be styled on its own, it turns periwinkle under the pointer. Chrome ignores these while
+/* Where the thumb can be styled on its own, it turns cornflower under the pointer. Chrome ignores these while
    `scrollbar-color` is set, so it is unset here; Firefox keeps the rules above. */
 @supports selector(::-webkit-scrollbar) {
     html {
@@ -241,14 +241,14 @@ html {
 
     /* The transparent border insets the thumb from the edges, as the browser's own does */
     ::-webkit-scrollbar-thumb {
-        background: var(--color-cornflower) padding-box;
+        background: var(--color-periwinkle) padding-box;
         border: 3px solid transparent;
         border-radius: 6px;
     }
 
     ::-webkit-scrollbar-thumb:hover,
     ::-webkit-scrollbar-thumb:active {
-        background: var(--color-periwinkle) padding-box;
+        background: var(--color-cornflower) padding-box;
     }
 }
 
