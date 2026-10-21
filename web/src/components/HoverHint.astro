@@ -5,24 +5,31 @@ import hand from "../../public/assets/icons/hover-hint.svg?raw";
  * A tapping hand in the corner of an interactive element, telling the reader it can be played with.
  * Its parent is the element: it must be positioned, and is where hovering and use are watched.
  *
- * The hand rests faintly until it comes into view, taps twice, and fades away for good - or sooner, once the
- * element is hovered or used. It takes no part in the page: clicks pass through it to the element, and it
- * can't be selected. With reduced motion it doesn't tap, so only hovering or using the element sends it.
+ * The hand rests faintly until it comes into view, taps twice, and fades away for good. It takes no part
+ * in the page: clicks pass through it to the element, and it can't be selected. With reduced motion it
+ * doesn't tap, and goes instead once the element is hovered or used.
  */
 interface Props {
     /** Dark, for a hint over a light card such as SeqViz's or Vega's. */
     tone?: "light" | "dark";
+    /** Also goes as soon as the element is hovered or used, rather than only once it has tapped. */
+    retireOnUse?: boolean;
     class?: string;
 }
 
-const { tone = "light", class: className } = Astro.props;
+const { tone = "light", retireOnUse = false, class: className } = Astro.props;
 
 // The SVG is inlined once per hint, so its gradients need ids of their own.
 const id = Math.random().toString(36).slice(2, 8);
 const svg = hand.replaceAll("hover-hint-", `hover-hint-${id}-`);
 ---
 
-<span class:list={["hover-hint", `tone-${tone}`, className]} aria-hidden="true" set:html={svg} />
+<span
+    class:list={["hover-hint", `tone-${tone}`, className]}
+    data-retire-on-use={retireOnUse || undefined}
+    aria-hidden="true"
+    set:html={svg}
+/>
 
 <script>
     import { onPage } from "../utils/page";
@@ -63,17 +70,19 @@ const svg = hand.replaceAll("hover-hint-", `hover-hint-${id}-`);
                 hint.classList.remove("is-tapping");
             };
 
-            // A one-off: having tapped, it goes
+            // A one-off: having tapped, it goes, whether or not the element was hovered or used meanwhile
+            // (unless retireOnUse, below, sent it already)
             hint.querySelector(".hand")!.addEventListener("animationend", retire);
 
-            // It also goes as soon as a mouse has found the element or the element is used, tapped yet or not
-            target.addEventListener("pointerenter", (event) => {
-                if (event.pointerType === "mouse") retire();
-            });
-            for (const type of ["pointerdown", "wheel", "keydown", "focusin"])
-                target.addEventListener(type, retire, { passive: true });
-
-            // Without the tap, that is the only way it goes
+            // Without the tap to wait for (or asked to with retireOnUse), it goes once a mouse has found the
+            // element or the element is used
+            if (reducedMotion.matches || hint.dataset.retireOnUse !== undefined) {
+                target.addEventListener("pointerenter", (event) => {
+                    if (event.pointerType === "mouse") retire();
+                });
+                for (const type of ["pointerdown", "wheel", "keydown"])
+                    target.addEventListener(type, retire, { passive: true });
+            }
             if (reducedMotion.matches) continue;
 
             tapper.observe(hint);
