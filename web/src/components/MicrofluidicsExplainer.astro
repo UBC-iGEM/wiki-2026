@@ -1,5 +1,4 @@
 ---
-import { BASE_URL } from "../utils/base-url";
 import HoverHint from "./HoverHint.astro";
 ---
 
@@ -11,7 +10,7 @@ import HoverHint from "./HoverHint.astro";
         <div class="chip-visual">
             <img
                 class="chip-blank"
-                src={`${BASE_URL}assets/hero/chip-prototype-blank.svg`}
+                src="https://static.igem.wiki/teams/6279/wiki/manual/chip-prototype-blank.webp"
                 alt=""
                 width="512"
                 height="1293"
@@ -20,7 +19,7 @@ import HoverHint from "./HoverHint.astro";
             <!-- One at a time over the blank, which stays put beneath them: whichever chambers' labels are on -->
             <img
                 class="chip-highlight chip-highlight--a"
-                src={`${BASE_URL}assets/hero/chip-prototype-a.svg`}
+                src="https://static.igem.wiki/teams/6279/wiki/manual/chip-prototype-a.webp"
                 alt=""
                 width="512"
                 height="1293"
@@ -28,7 +27,7 @@ import HoverHint from "./HoverHint.astro";
             />
             <img
                 class="chip-highlight chip-highlight--b"
-                src={`${BASE_URL}assets/hero/chip-prototype-b.svg`}
+                src="https://static.igem.wiki/teams/6279/wiki/manual/chip-prototype-b.webp"
                 alt=""
                 width="512"
                 height="1293"
@@ -36,7 +35,7 @@ import HoverHint from "./HoverHint.astro";
             />
             <img
                 class="chip-highlight chip-highlight--ab"
-                src={`${BASE_URL}assets/hero/chip-prototype-ab.svg`}
+                src="https://static.igem.wiki/teams/6279/wiki/manual/chip-prototype-ab.webp"
                 alt=""
                 width="512"
                 height="1293"
@@ -254,7 +253,7 @@ import HoverHint from "./HoverHint.astro";
         transform: scaleX(-1) rotate(-15deg);
     }
 
-    /* The chip-prototype SVGs are 512x1293 (tall/narrow) - width-driven,
+    /* The chip-prototype images are 512x1293 (tall/narrow) - width-driven,
        height auto so they keep that aspect ratio. */
     /* Kept in the middle column, between chamber B's label and chamber A's */
     .chip-visual {
