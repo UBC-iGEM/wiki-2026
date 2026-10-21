@@ -5,6 +5,8 @@ const DOCS = defineCollection({
     loader: glob({
         base: "./docs",
         pattern: "**/*.mdx",
+        // Nothing reads an entry's raw MDX, which would otherwise be bundled into the build for every page
+        retainBody: false,
     }),
 });
 

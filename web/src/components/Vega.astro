@@ -24,24 +24,64 @@ const interactive = /"(tooltip|params|selection|signals)"\s*:/.test(code);
 
 <script>
     import { onPage } from "../utils/page";
-    import embed, { type Result } from "vega-embed";
+    import type embed from "vega-embed";
+    import type { Result } from "vega-embed";
+    // Vega's own prebuilt bundles, copied as assets rather than bundled, as bundling Vega's hundreds of modules is
+    // much of the build's memory. Each sets a global that the next one reads.
+    import vegaUrl from "vega-build/vega.min.js?url";
+    import vegaLiteUrl from "vega-lite-build/vega-lite.min.js?url";
+    import vegaEmbedUrl from "vega-embed-build/vega-embed.min.js?url";
+
+    declare global {
+        interface Window {
+            vegaEmbed?: typeof embed;
+        }
+    }
+
+    function loadScript(src: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement("script");
+            script.src = src;
+            script.onload = () => resolve();
+            script.onerror = () => reject(new Error(`Could not load ${src}`));
+            document.head.append(script);
+        });
+    }
+
+    /** Loads the bundles once, however many pages with charts are visited. */
+    let loading: Promise<typeof embed> | undefined;
+    function loadEmbed(): Promise<typeof embed> {
+        loading ??= loadScript(vegaUrl)
+            .then(() => loadScript(vegaLiteUrl))
+            .then(() => loadScript(vegaEmbedUrl))
+            .then(() => window.vegaEmbed!);
+        return loading;
+    }
 
     onPage(() => {
+        const vegas = document.querySelectorAll<HTMLElement>(".vega");
+        if (vegas.length === 0) return;
+
+        const embedding = loadEmbed();
         const charts: Promise<Result | void>[] = [];
 
-        for (const vega of document.querySelectorAll<HTMLElement>(".vega")) {
+        for (const vega of vegas) {
             const spec = JSON.parse(vega.querySelector(".vega-data")!.textContent!);
             const host = vega.querySelector<HTMLElement>(".vega-host")!;
-            const chart = embed(host, spec, {
-                renderer: "svg",
-                // No export menu, which links out to the online Vega editor
-                actions: false,
-                // Styled below to match the citation popups and tables
-                tooltip: { disableDefaultStyle: true },
-            }).catch((error: unknown) => {
-                console.error("Vega chart could not be rendered:", error);
-                host.textContent = "This chart could not be displayed.";
-            });
+            const chart = embedding
+                .then((embed) =>
+                    embed(host, spec, {
+                        renderer: "svg",
+                        // No export menu, which links out to the online Vega editor
+                        actions: false,
+                        // Styled below to match the citation popups and tables
+                        tooltip: { disableDefaultStyle: true },
+                    }),
+                )
+                .catch((error: unknown) => {
+                    console.error("Vega chart could not be rendered:", error);
+                    host.textContent = "This chart could not be displayed.";
+                });
             charts.push(chart);
         }
 

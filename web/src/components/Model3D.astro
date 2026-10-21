@@ -49,12 +49,22 @@ MODEL3D_SLOTS satisfies readonly [];
 }
 
 <script>
-    import "@google/model-viewer";
     import { onPage } from "../utils/page";
+    // model-viewer's own prebuilt bundle (with three.js), copied as an asset rather than bundled, as bundling
+    // three.js is much of the build's memory
+    import modelViewerUrl from "@google/model-viewer/dist/model-viewer.min.js?url";
+
+    onPage((signal) => {
+        if (!document.querySelector("model-viewer")) return;
+        void import(/* @vite-ignore */ modelViewerUrl).then(() => {
+            if (signal.aborted) return;
+            styleViewers();
+        });
+    });
 
     // model-viewer sets its grab cursors inline inside its shadow root, out of reach of the page's rule for
     // widgets, so each viewer is given that rule itself
-    onPage(() => {
+    function styleViewers(): void {
         for (const viewer of document.querySelectorAll("model-viewer")) {
             const root = viewer.shadowRoot;
             if (!root || root.querySelector("style.interact-cursor")) continue;
@@ -63,7 +73,7 @@ MODEL3D_SLOTS satisfies readonly [];
             style.textContent = "* { cursor: var(--cursor-interact) !important; }";
             root.append(style);
         }
-    });
+    }
 </script>
 
 <style>
