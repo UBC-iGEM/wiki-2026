@@ -5,7 +5,7 @@ title: "Biosensor"
 
 # <a id="3ffd65dd82be80a5a92ef05d3a5aaab0" />Overview
 
-<a id="3fdd65dd82be80359477e04d64399077" />Our overarching goal was to develop biosensor strains capable of detecting the presence of antibiotics through stress-responsive reporter systems that generate a fluorescent signal. Specifically, our experiments generated and characterized the CpxP and RecA biosensor strains, as well as produced $OD_{600}$ calibration curves to normalize fluorescent measurements from our biosensor readouts.
+<a id="3fdd65dd82be80359477e04d64399077" />Our goal was to develop biosensor strains capable of detecting the presence of antibiotics through stress-responsive reporter systems that generate a fluorescent signal. Specifically, our experiments generated and characterized the CpxP and RecA biosensors, as well as produced $OD_{600}$ calibration curves to normalize fluorescent measurements from our biosensor readouts.
 
 <a id="3fdd65dd82be80c79ecfd36364e544c1" />To achieve these objectives, we transformed EPI300 *E. coli* with the CpxP and RecA reporter constructs. To characterize the growth kinetics and baseline superfolder green fluorescent protein (sfGFP) expression of our engineered strains, we performed a growth curve experiment. Subsequently, to determine a subinhibitory range of antibiotics for our biosensors, we performed a minimal inhibitory concentrations (MIC) assay. These results narrowed down an optimal antibiotic concentration range to validate the the sfGFP expression sensitivity of our biosensor strains.
 
@@ -17,9 +17,9 @@ title: "Biosensor"
 
 # <a id="3fad65dd82be802e8b2ae06e4c514213" />**Biosensor Constructs**
 
-<a id="3fdd65dd82be80a78313caf68bfa742c" />Both reporter constructs utilized the pSB1C3 backbone, which confers chloramphenicol (Cm) resistance for selection. Alternative selectable markers, such as ampicillin or kanamycin resistance, would not be compatible with our intended applications as they confer resistance to β-lactam and aminoglycoside antibiotics, respectively.
+<a id="3fdd65dd82be80a78313caf68bfa742c" />Both reporters utilized the pSB1C3 backbone, which confers chloramphenicol (Cm) resistance for selection. Alternative selectable markers, such as ampicillin or kanamycin resistance, would not be compatible with our intended applications as they confer resistance to β-lactam and aminoglycoside antibiotics, respectively.
 
-<a id="3ffd65dd82be8016a066ebe78e209367" />To generate our biosensor constructs, we followed a standard [Cloning Workflow](/ubc-vancouver/wet-lab/protocols/cloning-workflow). To linearize this backbone for the insertion of our reporter [Parts](/ubc-vancouver/wet-lab/parts), EcoRI and PstI restriction enzymes can be used to enable downstream HiFi assembly. The reporter constructs were generated through 2-fragment gibson assembly reactions in which each fragment was flanked by 20-26 bp overhangs specific to the complementary backbone and insert components. Ultimately, these constructs express sfGFP when the cell experiences antibioitc-related stress, particularly cell wall stress with the CpxP reporter construct and DNA damage with the RecA reporter construct. The fast maturing sfGFP protein folds within 13.6 minutes, allowing for rapid fluorescence output detection in our FAST microfluidic chip application <Cite refs={[{"n":1,"key":"lambertSuperfolderGFPFPbasea"}]} />. Cloning success was confirmed through sequencing. Subsequently, the final reporter constructs were transformed into EPI300 *E. coli*, which is a derivative of the non-pathogenic K-12 strain.
+<a id="3ffd65dd82be8016a066ebe78e209367" />To generate our biosensor constructs, we followed a standard [Cloning Workflow](/ubc-vancouver/wet-lab/protocols/cloning-workflow). To linearize this backbone for the insertion of our reporter [Parts](/ubc-vancouver/wet-lab/parts), EcoRI and PstI restriction enzymes can be used to enable downstream HiFi assembly. The reporter constructs were generated through 2-fragment Gibson assemblies in which each fragment was flanked by 20-26 bp overhangs specific to the complementary backbone and insert components. Ultimately, these constructs express sfGFP when the cell experiences antibioitc-related stress, particularly cell wall stress with the CpxP reporter construct and DNA damage with the RecA reporter construct. The fast maturing sfGFP protein folds within 13.6 minutes, allowing for rapid fluorescence output detection in our FAST microfluidic chip application <Cite refs={[{"n":1,"key":"lambertSuperfolderGFPFPbasea"}]} />. Cloning success was confirmed through sequencing. Subsequently, the final reporter constructs were transformed into EPI300 *E. coli*, which is a derivative of the non-pathogenic K-12 strain.
 
 <a id="3fcd65dd82be8096ac8bde3fc11178a8" />
 
@@ -43,7 +43,7 @@ title: "Biosensor"
 
 ## <a id="3fad65dd82be8083ab32c2c0a5db3547" />**Growth Curve Experiment**
 
-<a id="3fdd65dd82be80589f80f638849e334a" />To establish baseline performance of our biosensor strains relative to wild type EPI300 *E. coli*, developed an automated approach to generate [Bacterial Growth Curves](/ubc-vancouver/wet-lab/protocols/bacterial-growth-curves). These growth curves were obtained by measuring optical density at 600 nm ($OD_{600}$) in the absence of β-lactam or aminoglycoside antibiotics. Simultaneously, to determine baseline sfGFP expression, we measured fluorescence intensity at 485 nm (excitation) and 510 nm (emission) for each growth curve time point.
+<a id="3fdd65dd82be80589f80f638849e334a" />To establish benchmarking performance of our biosensor strains relative to wild type EPI300 *E. coli*, developed an automated approach to generate [Bacterial Growth Curves](/ubc-vancouver/wet-lab/protocols/bacterial-growth-curves). These growth curves were obtained by measuring optical density at 600 nm ($OD_{600}$) in the absence of β-lactam or aminoglycoside antibiotics. Simultaneously, to determine baseline sfGFP expression, we measured fluorescence intensity at 485 nm (excitation) and 510 nm (emission) for each growth curve time point.
 
 <a id="3fdd65dd82be802a903ccaaab0ac8ad6" />Measurements of $OD_{600}$ reveal that the maximum cell densities of the biosensor strains were approximately 35% lower than that of the WT strain. This suggests that the plasmids may impose a metabolic burden on the transformed strains. However, there is minimal difference in biosensor growth maximums at 22˚C compared to 37˚C. Ultimately, this growth curve can be used to normalize fluorescence readouts, to account for the impact of cell density on sfGFP expression.
 
@@ -55,7 +55,7 @@ title: "Biosensor"
 
 ## <a id="3fad65dd82be8079befbc4c2621d5550" />**Plasmid Retention Experiment**
 
-<a id="3fad65dd82be8078986aceb67f09dcd2" />To determine whether chloramphenicol (Cm) antibioitc selection could be removed during the biosensor experiments, we tested how long the CpxP and RecA strains could retain their reporter plasmids after transfer into Cm-free LB. Removing Cm would be useful for removing the confounding effect that it has on the bacterial stress response, but requiring that the biosensor plasmids remained stable without selection.
+<a id="3fad65dd82be8078986aceb67f09dcd2" />To determine whether chloramphenicol (Cm) antibiotic selection remains stable during the biosensor experiments, we tested how long the CpxP and RecA strains could retain their reporter plasmids after transfer into Cm-free LB. Removing Cm would be useful for removing the confounding effect that it has on the bacterial stress response, but requiring that the biosensor plasmids remained stable without selection.
 
 <a id="3fdd65dd82be80dcb28ee7850aaeb746" />We designed an agar plate based [Plasmid Retention Assay](/ubc-vancouver/wet-lab/protocols/plasmid-retention-assay). To test plasmid retention over time, CpxP and RecA biosensor cultures were grown in LB media with or without Cm for up to two hours, then plated on LB-Cm agar plates. Since the reporter plasmids confer Cm resistance, the growth of colonies on LB-Cm plates would indicate that the plasmid is retented. The WT EPI300 served as a negative control and the biosensor strains cultured in LB-Cm served as a positive control for reporter plasmid retention.
 
@@ -87,12 +87,12 @@ title: "Biosensor"
 
 <a id="3ffd65dd82be80f3a2acd2de2143ef3d" />
 
-| <a id="3ffd65dd82be802c90dadaf082d19f4e" />Antibiotic  | Highest concentration  **(µg/ml)** | Lowest concentration  **(µg/ml)** |
-| ------------------------------------------------------ | ---------------------------------- | --------------------------------- |
-| <a id="3ffd65dd82be8038b95bd3ad707e1024" />Gentamicin  | 64                                 | 0.015625                          |
-| <a id="3ffd65dd82be806eb1f6fc97e328781d" />Kanamycin   | 320                                | 0.078125                          |
-| <a id="3ffd65dd82be804e9822cef167ec3a4e" />Amoxicillin | 64                                 | 0.015625                          |
-| <a id="3ffd65dd82be806dbaf1d805e57dfb65" />Cephalexin  | 128                                | 0.03125                           |
+| <a id="3ffd65dd82be802c90dadaf082d19f4e" />Antibiotic  | Highest concentration **(µg/mL)** | Lowest concentration **(µg/mL)** |
+| ------------------------------------------------------ | --------------------------------- | -------------------------------- |
+| <a id="3ffd65dd82be8038b95bd3ad707e1024" />Gentamicin  | 64                                | 0.015625                         |
+| <a id="3ffd65dd82be806eb1f6fc97e328781d" />Kanamycin   | 320                               | 0.078125                         |
+| <a id="3ffd65dd82be804e9822cef167ec3a4e" />Amoxicillin | 64                                | 0.015625                         |
+| <a id="3ffd65dd82be806dbaf1d805e57dfb65" />Cephalexin  | 128                               | 0.03125                          |
 
 <a id="3ffd65dd82be8062b0f2c5e189aace8c" />Fluorescence intensity was measure at 485 nm (excitation) and 510 nm (emission), measuring at 10-minute timepoints for a total of 40—60 minutes. Analyzed data subtracted blank media controls and were normalized relative to the no-antibiotic growth controls. While these experiments did not reveal a dose-dependent fluorescence output response, they suggested that our initial 60-minute window was not sufficient to generate differential sfGFP expression.
 
@@ -288,7 +288,7 @@ title: "Biosensor"
   </Fragment>
 </Figure>
 
-<a id="3ffd65dd82be80af9f94ee6085008784" />For the RecA biosensor (Figure 7), we observed a dose-dependent peak in sfGFP expression for the β-lactam antibiotic, **amoxicillin**, at **8 µg/ml**. This was observed as a 1.5-fold and 2-fold increase in fluorescence intensity at **4-hour and 8-hour** time points, respectively, relative to the untreated growth control. However, we did not identify an optimal concentration for responsive sfGFP expression for the aminoglycoside antibiotics, gentamicin and tobramycin.
+<a id="3ffd65dd82be80af9f94ee6085008784" />For the RecA biosensor (Figure 7), we observed a dose-dependent peak in sfGFP expression for the β-lactam antibiotic, **amoxicillin**, at **8 µg/mL**. This was observed as a 1.5-fold and 2-fold increase in fluorescence intensity at **4-hour and 8-hour** time points, respectively, relative to the untreated growth control. However, we did not identify an optimal concentration for responsive sfGFP expression for the aminoglycoside antibiotics, gentamicin and tobramycin.
 
 <br id="3ffd65dd82be8011abc7f22d44a90227" />
 
@@ -298,7 +298,7 @@ title: "Biosensor"
 
 ## <a id="3ffd65dd82be80e1a72dd8c24a46b82a" />Detecting Antibiotic Susceptibility in Patient Samples
 
-<a id="3ffd65dd82be8037a359f9632187bc07" />In the FAST microfluidic chip, a patient sample and antibiotic of interest (e.g., 8 µg/ml of amoxicillin) are loaded into Chamber A. If the patient sample is susceptible, the active antibiotic will enter Chamber B where it meets either the CpxP or RecA biosensor strain. Depending on the input antibiotic, this interaction triggers the Cpx cell wall stress response or SOS DNA damage pathway. This subsequently activates the *cpxP* promoter or *recA* promoter, respectively, to induce the expression of sfGFP. The fluorescent output indicates that the patient sample is susceptible to the antibiotic input.
+<a id="3ffd65dd82be8037a359f9632187bc07" />In the FAST microfluidic chip, a patient sample and antibiotic of interest (e.g., 8 µg/mL of amoxicillin) are loaded into Chamber A. If the patient sample is susceptible, the active antibiotic will enter Chamber B where it meets either the CpxP or RecA biosensor strain. Depending on the input antibiotic, this interaction triggers the Cpx cell wall stress response or SOS DNA damage pathway. This subsequently activates the *cpxP* promoter or *recA* promoter, respectively, to induce the expression of sfGFP. The fluorescent output indicates that the patient sample is susceptible to the antibiotic input.
 
 <a id="3ffd65dd82be809f8f99ea2b45122f01" />
 

@@ -13,8 +13,8 @@ export const MAX_ROWS = 200;
 export interface CsvTable {
     /** The first row holds the column names. */
     rows: string[][];
-    /** Whether rows past {@link MAX_ROWS} were left out. */
-    truncated: boolean;
+    /** How many rows past {@link MAX_ROWS} were left out. */
+    omitted: number;
 }
 
 /** Read a CSV into rows of equal width, with blank trailing columns dropped. */
@@ -40,6 +40,6 @@ export function parseCsvTable(file_name: string, csv: string): ExporterResult<Cs
 
     return {
         rows: rows.map((row) => Array.from({ length: width }, (_, c) => row[c] ?? "")),
-        truncated: records.length > MAX_ROWS,
+        omitted: Math.max(0, records.length - MAX_ROWS),
     };
 }

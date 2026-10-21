@@ -1,5 +1,5 @@
 import { fetchNotebook, parseColabFileId } from "../colab";
-import { MAX_ROWS, parseCsvTable } from "../csv-table";
+import { parseCsvTable } from "../csv-table";
 import { Id, type NotionBlock } from "../notion";
 import { parsePlate, type Plate } from "../platemap";
 import { parseGenbank } from "../seqmap";
@@ -549,14 +549,14 @@ type FileBlock = Extract<NotionBlock, { type: "file" }>;
 
 const CSV_FILE = /\.csv$/i;
 
-async function csv({ items, ctx }: ComponentInput): ComponentOutput {
+async function csv({ items }: ComponentInput): ComponentOutput {
     // A single uploaded CSV
     const [file_block, ...rest] = items;
     if (file_block?.type !== "file" || !CSV_FILE.test(mediaFileName(file_block)))
         return malformedCsv("it does not start with an uploaded .csv file");
     if (rest.length > 0) return malformedCsv("it has content after its CSV file");
 
-    const table = await csvTable(file_block, ctx);
+    const table = await csvTable(file_block);
     return isExporterErr(table) ? table : [table];
 }
 
@@ -564,32 +564,50 @@ async function csv({ items, ctx }: ComponentInput): ComponentOutput {
  * An uploaded CSV, as a table whose first row is the header. Its anchor goes in the first header cell, which also keeps
  * the header visible when that cell is blank (see `style.css`).
  */
-async function csvTable(file_block: FileBlock, ctx: ConvertContext): Promise<ExporterResult<Table>> {
+async function csvTable(file_block: FileBlock): Promise<ExporterResult<Table>> {
     const file_name = mediaFileName(file_block);
     const data = await fetchMedia(file_block);
     if (isExporterErr(data)) return data;
 
     const table = parseCsvTable(file_name, data.toString());
     if (isExporterErr(table)) return table;
-    if (table.truncated)
-        new ExporterError(`"${file_name}" is longer than ${MAX_ROWS} rows; the rest was left out of the page.`, [
-            "malformed content",
-        ]).warn(blockContext(ctx, file_block));
 
-    return {
-        type: "table",
-        align: Array.from({ length: table.rows[0]!.length }, () => null),
-        children: table.rows.map((row, r): TableRow => ({
-            type: "tableRow",
-            children: row.map((cell, c) => ({
-                type: "tableCell",
-                children: [
-                    ...(r === 0 && c === 0 ? [anchorText(new Id(file_block.id))] : []),
-                    ...(cell === "" ? [] : [{ type: "text" as const, value: cell }]),
-                ],
-            })),
+    const width = table.rows[0]!.length;
+    const rows = table.rows.map((row, r): TableRow => ({
+        type: "tableRow",
+        children: row.map((cell, c) => ({
+            type: "tableCell",
+            children: [
+                ...(r === 0 && c === 0 ? [anchorText(new Id(file_block.id))] : []),
+                ...(cell === "" ? [] : [{ type: "text" as const, value: cell }]),
+            ],
         })),
-    };
+    }));
+
+    // A last row tells the reader the table goes on past what is shown
+    if (table.omitted > 0)
+        rows.push({
+            type: "tableRow",
+            children: Array.from({ length: width }, (_, c) => ({
+                type: "tableCell",
+                children:
+                    c === 0
+                        ? [
+                              {
+                                  type: "emphasis",
+                                  children: [
+                                      {
+                                          type: "text",
+                                          value: `…${table.omitted} more ${table.omitted === 1 ? "entry" : "entries"}`,
+                                      },
+                                  ],
+                              },
+                          ]
+                        : [],
+            })),
+        });
+
+    return { type: "table", align: Array.from({ length: width }, () => null), children: rows };
 }
 
 function malformedCsv(problem: string): ExporterError {
@@ -626,7 +644,7 @@ function downloadableKind(file_name: string): DownloadableKind {
     return "none";
 }
 
-async function downloadable({ items, ctx }: ComponentInput): ComponentOutput {
+async function downloadable({ items }: ComponentInput): ComponentOutput {
     // An optional paragraph or heading naming the file, then a single uploaded file
     const name_block = items[0]?.type === "file" ? undefined : items[0];
     const name_override = name_block === undefined ? undefined : blockText(name_block);
@@ -645,7 +663,7 @@ async function downloadable({ items, ctx }: ComponentInput): ComponentOutput {
     const url = await uploadMedia(file_block, { keep_original_file: true });
     if (isExporterErr(url)) return url;
 
-    const table = kind === "csv" ? await csvTable(file_block, ctx) : undefined;
+    const table = kind === "csv" ? await csvTable(file_block) : undefined;
     if (table !== undefined && isExporterErr(table)) return table;
 
     return generateComponent<DownloadableAttrs, DownloadableSlots>({

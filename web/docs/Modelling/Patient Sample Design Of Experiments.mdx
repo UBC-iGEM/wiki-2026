@@ -5,13 +5,13 @@ title: "Patient Sample Design Of Experiments"
 
 # <a id="3fcd65dd82be8018b984cd9454040b94" />Abstract
 
-<a id="3fcd65dd82be80abace3f8c39492880e" />Bacterial biosensors have potential applications in detecting biological relevant signals, such as infection biomarkers or antibiotics in clinical samples. <Cite refs={[{"n":1,"key":"capinMicrobialBiosensorsDiagnostics2024"}]} /> However, their performance can be heavily influenced by the chemical and biological conditions of the sample environment in which they operate. In our project, an *E. coli* promoter-GFP biosensor is used to detect pathogen-associated signals in urine. However, urine introduces uncharacterized environmental variability that can potentially alter biosensor output.
+<a id="3fcd65dd82be80abace3f8c39492880e" />Bacterial biosensors have potential applications in detecting biological relevant signals, such as infection biomarkers or antibiotics in clinical samples <Cite refs={[{"n":1,"key":"capinMicrobialBiosensorsDiagnostics2024"}]} />. However, their performance can be heavily influenced by the chemical and biological conditions of the sample environment in which they operate. In our project, an *E. coli* promoter-GFP biosensor is used to detect pathogen-associated signals in urine. However, urine introduces uncharacterized environmental variability that can potentially alter biosensor output.
 
-<a id="3fcd65dd82be808db2dcecc17e9642c6" />Therefore, this study aims to investigate the performance of the E. coli promoter-GFP biosensor under simulated patient-infection conditions and characterize matrix factors that may influence their response including antibiotic concentration, bacterial resistance backgrounds, and environmental conditions such as sodium and glucose concentrations. Using a Design of Experiments (DOE) approach n collaboration with Biofactorial , an automation facility at the University of British Columbia, we systematically evaluate biosensor responses across selected experimental conditions. The resulting data found a significant interaction between antibiotic concentration and glucose for both CpxP and RecA biosensors (p \< 0.0001). Glucose was negatively associated with maximum GFP for CpxP, but not significantly for RecA. Sodium showed no significant effect on either sensor. In a separate growth-medium analysis, LB-Cm was associated with higher maximum GFP per OD for both biosensors, suggesting that growth medium can influence normalized sensor output.
+<a id="3fcd65dd82be808db2dcecc17e9642c6" />Therefore, this study aims to investigate the performance of the *E. coli* promoter-GFP biosensor under simulated patient-infection conditions and characterize matrix factors that may influence their response including antibiotic concentration, bacterial resistance backgrounds, and environmental conditions such as sodium and glucose concentrations. Using a Design of Experiments (DOE) approach n collaboration with Biofactorial <Cite refs={[{"n":2,"key":"BiofactorialBioLife"}]} />, an automation facility at the University of British Columbia, we systematically evaluate biosensor responses across selected experimental conditions. The resulting data found a significant interaction between antibiotic concentration and glucose for both CpxP and RecA biosensors (p \< 0.0001). Glucose was negatively associated with maximum GFP for CpxP, but not significantly for RecA. Sodium showed no significant effect on either sensor. In a separate growth-medium analysis, LB-Cm was associated with higher maximum GFP per OD for both biosensors, suggesting that growth medium can influence normalized sensor output.
 
 # <a id="3fcd65dd82be806eb174ef24ed0cff57" />Background
 
-<a id="3fcd65dd82be80d39a00d948d7dd42a3" />Urine consists of primarily water, some salts and metabolic byproducts , and other compounds whose concentrations vary between individual and physiological conditions . These differences can influence the growth of bacteria and the performance of bacterial biosensors intended for use in patient samples. To investigate these effects, we decided to focus determining urine-associated factors that could be experimentally controlled and incorporated into an automated screening workflow.
+<a id="3fcd65dd82be80d39a00d948d7dd42a3" />Urine consists of primarily water, some salts and metabolic byproducts , and other compounds whose concentrations vary between individual and physiological conditions <Cite refs={[{"n":3,"key":"ferraoQuantificationIonsHuman2024"}]} />. These differences can influence the growth of bacteria and the performance of bacterial biosensors intended for use in patient samples. To investigate these effects, we decided to focus determining urine-associated factors that could be experimentally controlled and incorporated into an automated screening workflow.
 
 <a id="3fdd65dd82be80b7b079cd636e58491e" />The experimental factors were selected to represent different aspects of the urinary environment. Sodium concentration was included to investigate the effect of  ionic conditions on bacterial growth and biosensor output, while glucose concentration was included to examine whether the availability of an additional carbon source influences bacterial activity or sensor performance. Although pH was initially considered because it can affect bacterial physiology, it was excluded from the final design due to the buffering capacity of LB broth. Finally, antibiotic concentration was investigated to characterize biosensor responses across different exposure levels relevant to antibiotic detection and susceptibility-related experiments.
 
@@ -58,7 +58,7 @@ title: "Patient Sample Design Of Experiments"
 
   ### <a id="400d65dd82be80359636d7e030cd8c9a" />Iteration #1: Initial Design
 
-  <a id="3fcd65dd82be809ca37cfda5da015c36" />In our first iteration of selecting experimental factors, we utilized literature review to categorize and develop biological ranges for them to test. Initially, we wanted to test four chemical factors to simulate urine conditions: these were pH <Cite refs={[{"n":2,"key":"worcesterMechanismHigherUrine2018"}]} />, sodium <Cite refs={[{"n":3,"key":"milionisHyponatremicPatientSystematic2002"}]} /> , glucose <Cite refs={[{"n":4,"key":"cowartGlucosuria1990"}]} /> and urea. However, we decided to eventually omit urea due to its naturally low occurring percentage, and lack of access within our particular laboratory. In addition, we initially anticipated testing with one promoter recA. The reason for this is this was the first promoter Wet Lab had transformed, hence the only one we had some basic readings on.
+  <a id="3fcd65dd82be809ca37cfda5da015c36" />In our first iteration of selecting experimental factors, we utilized literature review to categorize and develop biological ranges for them to test. Initially, we wanted to test four chemical factors to simulate urine conditions: these were pH <Cite refs={[{"n":4,"key":"worcesterMechanismHigherUrine2018"}]} />, sodium <Cite refs={[{"n":5,"key":"milionisHyponatremicPatientSystematic2002"}]} />, glucose <Cite refs={[{"n":6,"key":"cowartGlucosuria1990"}]} /> and urea. However, we decided to eventually omit urea due to its naturally low occurring percentage, and lack of access within our particular laboratory. In addition, we initially anticipated testing with one promoter *recA*. The reason for this is this was the first promoter Wet Lab had transformed, hence the only one we had some basic readings on.
 
   ### <a id="3fcd65dd82be8028b2d7e30e2f61e21d" />**Iteration #2: Updated Factor Table**
 
@@ -66,7 +66,7 @@ title: "Patient Sample Design Of Experiments"
 
   ### <a id="3fcd65dd82be804f888ff35f213e989a" />**Iteration #3: Finalized Factor Table**
 
-  <a id="3fdd65dd82be80498c2fcf6d457da905" />The finalized factor table included multiple antibiotic resistance backgrounds, and paired each factor with its automated delivery method. Although pH was initially considered as a chemical factor to simulate urinary conditions, it was excluded from the final design because LB broth has buffering capacity, which can resist changes in pH .
+  <a id="3fdd65dd82be80498c2fcf6d457da905" />The finalized factor table included multiple antibiotic resistance backgrounds, and paired each factor with its automated delivery method. Although pH was initially considered as a chemical factor to simulate urinary conditions, it was excluded from the final design because LB broth has buffering capacity, which can resist changes in pH <Cite refs={[{"n":7,"key":"prakashOptimizingExperimentalConditions"}]} />.
 
   <a id="400d65dd82be80dfb43eed0680b10cf9" />The final factor levels were informed by literature research  [Biosensor MIC Screening Titration v1](/ubc-vancouver/wet-lab/lab-notebook/biosensor-mic-screening-titration-v1)  and practical constraints associated with the laboratory setup
 
@@ -205,7 +205,7 @@ title: "Patient Sample Design Of Experiments"
   </Fragment>
 </Figure>
 
-#### <a id="400d65dd82be805abb9fd0adeff1a1e3" />recA
+#### <a id="400d65dd82be805abb9fd0adeff1a1e3" />RecA
 
 <a id="400d65dd82be80368c0af9ef6f0837ef" />
 
@@ -257,7 +257,7 @@ title: "Patient Sample Design Of Experiments"
 
 <br id="400d65dd82be80519259d70ae9eee3ac" />
 
-<a id="400d65dd82be800ba5c2fa86b9cae313" />**Table 1. Response-surface model of max GFP in the cpxP and recA sensors.**
+<a id="400d65dd82be800ba5c2fa86b9cae313" />**Table 1. Response-surface model of max GFP in the CpxP and RecA sensors.**
 
 <a id="400d65dd82be800f9db7f4cc8ba54ee5" />
 
@@ -279,13 +279,13 @@ title: "Patient Sample Design Of Experiments"
 
 # <a id="3fcd65dd82be80c5b7f1c3f33e86a52b" />Discussion
 
-#### <a id="400d65dd82be8080a0c5fc358b92d3a2" />Response Surface Analysis
+## <a id="400d65dd82be8080a0c5fc358b92d3a2" />Response Surface Analysis
 
 <a id="400d65dd82be80efb767c1e45a51cd4f" />Standard biosensor characterization often evaluates individual factors separately, whereas the response-surface analysis revealed a significant interaction between antibiotic concentration and glucose for both CpxP and RecA (p \< 0.0001). The positive interaction coefficients (+2,706 for CpxP and +232.5 for RecA) indicate that the relationship between antibiotic concentration and maximum GFP changes with glucose level. This highlights the value of evaluating combinations of experimental conditions when characterizing biosensor performance. Although mechanisms such as altered growth or cellular metabolism could contribute to this interaction, further experiments would be needed to establish its biological basis.
 
 <a id="400d65dd82be8055a539f13f4a7a89e1" />The growth-medium analysis further demonstrated the importance of interpreting fluorescence alongside bacterial growth. LB-Cm was associated with higher maximum GFP per $OD_{600}$ for both sensors, but  CpxP showed increased maximum GFP, whereas RecA showed lower maximum $OD_{600}$ without a significant change in maximum GFP. Thus, an increased GFP/$OD_{600}$ ratio does not necessarily indicate increased reporter expression; it may also reflect differences in cell density. Considering both fluorescence and growth measurements is therefore important when evaluating biosensor output.
 
-#### <a id="400d65dd82be805b84eceed03440045b" />Antibiotic Concentrations
+## <a id="400d65dd82be805b84eceed03440045b" />Antibiotic Concentrations
 
 <a id="400d65dd82be8096bc35d9723d450f30" />All three antibiotics produced similar $OD_{600}$ trends. Each antibiotic reduced growth of the CpxP and RecA sensors, particularly after the cells started to exponentially grow (around the 3 hour mark). Higher antibiotic concentrations were found to reduce $OD_{600}$ levels.
 
@@ -297,15 +297,15 @@ title: "Patient Sample Design Of Experiments"
 
 <a id="400d65dd82be8020b9a7e76dcf08a24c" />For the RecA sensor, GFP stayed low and nearly flat for all three antibiotics. The curves for each concentration overlapped throughout the run, with no clear difference between doses.
 
-#### <a id="400d65dd82be805d9a03d8d5b2632f01" />Sodium
+## <a id="400d65dd82be805d9a03d8d5b2632f01" />Sodium
 
 <a id="400d65dd82be805ebb70ef468845328d" />Across the tested sodium conditions, $OD_{600}$ levels remained relatively consistent, suggesting that sodium variation had little observable effect on bacterial growth under the conditions tested. Similarly, GFP fluorescence showed limited variation across sodium concentrations under the different antibiotic treatments. These findings suggest that sodium concentration may have a limited influence on biosensor performance within the range investigated. However, further testing would be needed to determine whether this trend holds under the more complex conditions found in actual urine samples.
 
-#### <a id="400d65dd82be80039283c4edfdb2bdce" />Glucose
+## <a id="400d65dd82be80039283c4edfdb2bdce" />Glucose
 
 <a id="400d65dd82be802f975cc503098ef592" />Glucose concentration appeared to influence GFP fluorescence at later measurement time points, with higher glucose concentrations associated with lower fluorescence levels. This trend suggests that glucose may affect biosensor output over time. However, additional analysis is needed to determine whether the observed changes are related to bacterial growth, changes in reporter expression, or other factors affecting the fluorescence signal. Understanding this relationship will help determine whether glucose should be considered an important variable when optimizing biosensor performance in simulated urine conditions.
 
-#### <a id="400d65dd82be80e793b2f3cf1da0a3bb" />LB/LB-Cm
+## <a id="400d65dd82be80e793b2f3cf1da0a3bb" />LB/LB-Cm
 
 <a id="400d65dd82be80ebb5fdef05c2de862b" />The sensor plasmids carry a chloramphenicol (Cm) resistance marker. Growing cells in LB-Cm kills any cells that don’t contain the plasmid, so only transformed cells survive. Without Cm, there’s nothing to stop cells from losing the plasmid over time, and cells that lose it also lose their sensing ability. To test this, the sensor was run in both LB and LB-Cm, with each culture mixed 1:1 with the patient strains. If the sensor’s GFP behaves the same in both media, the plasmid was retained even without Cm selection.
 
@@ -315,4 +315,4 @@ title: "Patient Sample Design Of Experiments"
 
 # References
 
-<Bibliography refs={[{"n":1,"key":"capinMicrobialBiosensorsDiagnostics2024"},{"n":2,"key":"worcesterMechanismHigherUrine2018"},{"n":3,"key":"milionisHyponatremicPatientSystematic2002"},{"n":4,"key":"cowartGlucosuria1990"}]} />
+<Bibliography refs={[{"n":1,"key":"capinMicrobialBiosensorsDiagnostics2024"},{"n":2,"key":"BiofactorialBioLife"},{"n":3,"key":"ferraoQuantificationIonsHuman2024"},{"n":4,"key":"worcesterMechanismHigherUrine2018"},{"n":5,"key":"milionisHyponatremicPatientSystematic2002"},{"n":6,"key":"cowartGlucosuria1990"},{"n":7,"key":"prakashOptimizingExperimentalConditions"}]} />

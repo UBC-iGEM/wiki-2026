@@ -126,16 +126,7 @@ function checkPhrasing({ text, cite_blocks }: Flattened, sentence: boolean, ctx:
         const before = text.slice(0, i);
         const after = text.slice(i + 1);
 
-        // Brackets on both sides are reported by `mergeAdjacent`
-        const opened = /[([]\s*$/.test(before);
-        const closed = /^\s*[)\]]/.test(after);
-        if (opened !== closed) {
-            warn(
-                "A citation is next to a bracket; since brackets are automatically added, they show as doubled",
-                i,
-                block,
-            );
-        }
+        // Brackets on both sides are reported by `mergeAdjacent`; a bracket on one side belongs to an enclosing group
 
         if (/\S[ \t]{2,}$/.test(before)) warn("Extra space before a citation", i, block);
         else if (/[^\s([{—–]$/.test(before)) warn("No space before a citation", i, block);
