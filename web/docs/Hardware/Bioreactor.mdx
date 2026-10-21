@@ -5,7 +5,7 @@ title: "Bioreactor"
 
 # <a id="3f0d65dd82be80adb95cf1fb11123097" />Introduction & Overview of the Bioreactor
 
-<a id="3f0d65dd82be8013b7c9c45b65fea97b" />A bioreactor is a vessel that contains a biological reaction; in our case, *E. coli* growt&#x68;*.* This vessel is meant to create an ideal environment where the organisms thrive. To create an ideal environment, one must control the temperature, pH, aeration, agitation, and supply of nutrients <Cite refs={[{"n":1,"key":"BioreactorOverviewScienceDirect"}]} />. Bioreactors are ideal over traditional shaking culture plates, as they allow you to create a more uniform environment during culturing and between different culturing sessions. When there is variation between sessions, you can quantify the difference, as you can compare the change in pH, temperature, etc., over time <Cite refs={[{"n":1,"key":"BioreactorOverviewScienceDirect"}]} />.
+<a id="3f0d65dd82be8013b7c9c45b65fea97b" />A bioreactor is a vessel that contains a biological reaction; in our case, *E. coli* growt&#x68;*.* This vessel is meant to create an ideal environment where the organisms thrive. To create an ideal environment, one must control the temperature, pH, aeration, agitation, and supply of nutrients <Cite refs={[{"n":1,"key":"BioreactorOverviewScienceDirect"}]} />. Bioreactors are ideal over traditional shaking culture plates, as they allow you to create a more uniform environment during culturing and between different culturing sessions, giving the user more control over parameters and more consistent data. When there is variation between sessions, you can quantify the difference, as you can compare the change in pH, temperature, etc., over time <Cite refs={[{"n":1,"key":"BioreactorOverviewScienceDirect"}]} />.
 
 <a id="3fdd65dd82be805ba202d163db0a5c1b" />
 
@@ -23,8 +23,8 @@ title: "Bioreactor"
 
 | <a id="3fdd65dd82be8011b4b6d0dee95471ab" />Need ID | Need                                                              | Justification                                                                                                                                                                         |
 | -------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <a id="3fdd65dd82be80e1bce3ce8aae2c3830" />1       | The bioreactor must be able to sense the temperature              | *E. Coli* thrive at approximately 37 C; tracking the temperature allows us to adjust if the media temperature drifts <Cite refs={[{"n":5,"key":"erjavecEscherichiaColiOld2023"}]} />. |
-| <a id="3fdd65dd82be8045a882c6681bd131c5" />2       | The bioreactor must be able to sense the pH of the media          | *E. Coli* thrive at a pH of 7; tracking the temperature allows us to adjust if the media pH drifts <Cite refs={[{"n":5,"key":"erjavecEscherichiaColiOld2023"}]} />.                   |
+| <a id="3fdd65dd82be80e1bce3ce8aae2c3830" />1       | The bioreactor must be able to sense the temperature              | *E. coli* thrive at approximately 37 C; tracking the temperature allows us to adjust if the media temperature drifts <Cite refs={[{"n":5,"key":"erjavecEscherichiaColiOld2023"}]} />. |
+| <a id="3fdd65dd82be8045a882c6681bd131c5" />2       | The bioreactor must be able to sense the pH of the media          | *E. coli* thrive at a pH of 7; tracking the temperature allows us to adjust if the media pH drifts <Cite refs={[{"n":5,"key":"erjavecEscherichiaColiOld2023"}]} />.                   |
 | <a id="3fdd65dd82be8057ba05fe88269599e1" />3       | The bioreactor must be able to aerate the contents of the vessel  | Aerating the media will help create a uniform oxygen concentration throughout the bioreactor <Cite refs={[{"n":6,"key":"AerationPrinciples"}]} />.                                    |
 | <a id="3fdd65dd82be802295dafd4fe531d8a2" />4       | The bioreactor must be able to agitate the contents of the vessel | Agitating the media will help create a uniform environment through the bioreactor <Cite refs={[{"n":7,"key":"mcdonoughAgitationFermentersBioreactors1997"}]} />.                      |
 | <a id="3fdd65dd82be807abf64fd10de56e952" />5       | The user must be able to extract a sample during a growth curve   | We will be unable to quantify the growth of our bacteria if we are unable to extract samples during growth curves.                                                                    |
@@ -32,7 +32,7 @@ title: "Bioreactor"
 | <a id="3fdd65dd82be802abc46cf3b094176d1" />7       | The user must have a way of releasing pressure build up           | If the pressure builds up within the device, it can lead to fractures within the vessel, losing our sample.                                                                           |
 | <a id="3fdd65dd82be806cae60f976de265b06" />8       | The vessel must be airtight when a sample is not being taken      | If air is able to freely exchange with the external environment unwanted bacteria and pathogens may be able to enter our internal environment                                         |
 | <a id="3fdd65dd82be80668299d837210165ea" />9       | There must be a containment for electronic components             | In our previous work having exposed electronics lead to difficulty in moving parts of the bioreactor as wires would snag                                                              |
-| <a id="3fdd65dd82be8063bfb3ffc3982d3cb6" />10      | The bioreactor should be manufactured with a good fit             | Poor fit leads to a poorer quality of the final product, and less reproducible work                                                                                                   |
+| <a id="3fdd65dd82be8063bfb3ffc3982d3cb6" />10      | The bioreactor must be manufactured with a good fit               | Poor fit leads to a poorer quality of the final product, and less reproducible work                                                                                                   |
 | <a id="3fdd65dd82be80dc825af0ecca1ee042" />11      | The bioreactor should be low-cost to assemble                     | Our project must stay within our subteam budget and be accessible to other teams to manufacture.                                                                                      |
 | <a id="3fdd65dd82be80d0959ae6ec404f9f46" />12      | The bioreactor must use a mason jar as a vessel                   | Our project should use up materials from previous years to reduce cost.                                                                                                               |
 
@@ -40,25 +40,25 @@ title: "Bioreactor"
 
 ## <a id="3f0d65dd82be804a9c2ec6ef3e456461" />Translating Needs to Requirements
 
-<a id="3fcd65dd82be800191f5f6176750b020" />To generate our requirements, we took our needs and added quantitative metrics. Certain needs, such as the requirement for a mason jar as a vessel, were binary and, as such, were not translated into needs.
+<a id="3fcd65dd82be800191f5f6176750b020" />To generate our requirements, we took our needs and added quantitative metrics. Several of our needs have pass/fail requirements (such as the presence of a mason jar as a vessel), as such we did not list them a second time in our requirements section.
 
 <a id="3fdd65dd82be80279e37dd5bd93c6d58" />
 
-| <a id="3fdd65dd82be80e58336c384089a721a" />**Corresponding Need ID** | Requirement                                                                                                                                                    | Testing Form |
-| -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
-| <a id="3fdd65dd82be802f9578fd33b8b332ad" />1                         | The bioreactor must be able to sense the temperature of the media within 2 degrees of the real temperature and report it to the user within three seconds      | Verification |
-| <a id="3fdd65dd82be80f483f9d38355a2301c" />2                         | The bioreactor must be able to sense the pH of the media within 1 pH unit and report it to the user within one minute                                          | Verification |
-| <a id="3fdd65dd82be80d78555fefd48a6853d" />3                         | The bioreactor must be able to aerate the contents of the vessel such that the *E. Coli* receive a sufficient amount of oxygen                                 | Verification |
-| <a id="3fdd65dd82be8045a25cdc6610d5cf97" />4                         | The bioreactor must be able to agitate the contents of the vessel without generating shear which will damage the *E. Coli* present in the bioreactor           | Verification |
-| <a id="3fdd65dd82be80f0ae85c506f6f8b38b" />5                         | The user must be able to open the bioreactor to extract a sample during a growth curve with minimum disruption to the data while maintaining aseptic technique | Validation   |
-| <a id="3fdd65dd82be80d28b03ddd5e80f118a" />6                         | The user should be able to assemble the bioreactor within ten minutes of starting, with limited difficulty                                                     | Validation   |
-| <a id="3fdd65dd82be801d885cf140e98a7c3b" />7                         | The user should be able to release pressure in a sterile fashion while the bioreactor is in use                                                                | Verification |
-| <a id="3fdd65dd82be808ba18dfdb88dc87107" />8                         | The vessel must be airtight when the bioreactor is not open for sampling                                                                                       | Verification |
-| <a id="3fdd65dd82be801699caeee15906396e" />9                         | The electronic components must be housed separately from the rest of the bioreactor such that wires will not interfere with sampling                           | Validation   |
-| <a id="3fdd65dd82be80a78c3df67aa8653a92" />10                        | The bioreactor will be manufactured and assembled such that no glue, tape, or parafilm is required to maintain form factor                                     | Verification |
-| <a id="3fdd65dd82be80469586cd0d008a1081" />11, 12                    | The bioreactor should cost no more than 300 CAD to assemble using equipment that is available to the average consumer and costs no more than 1200 CAD          | Verification |
+| <a id="3fdd65dd82be80e58336c384089a721a" />**Corresponding Need ID** | Requirement                                                                                                                                                      | Testing Form |
+| -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| <a id="3fdd65dd82be802f9578fd33b8b332ad" />1                         | The bioreactor should be able to sense the temperature of the media within 2 degrees of the real temperature and report it to the user within three seconds      | Verification |
+| <a id="3fdd65dd82be80f483f9d38355a2301c" />2                         | The bioreactor should be able to sense the pH of the media within 1 pH unit and report it to the user within one minute                                          | Verification |
+| <a id="3fdd65dd82be80d78555fefd48a6853d" />3                         | The bioreactor should be able to aerate the contents of the vessel such that the *E. coli* receive a sufficient amount of oxygen                                 | Verification |
+| <a id="3fdd65dd82be8045a25cdc6610d5cf97" />4                         | The bioreactor should be able to agitate the contents of the vessel without generating shear which will damage the *E. coli* present in the bioreactor           | Verification |
+| <a id="3fdd65dd82be80f0ae85c506f6f8b38b" />5                         | The user should be able to open the bioreactor to extract a sample during a growth curve with minimum disruption to the data while maintaining aseptic technique | Validation   |
+| <a id="3fdd65dd82be80d28b03ddd5e80f118a" />6                         | The user should be able to assemble the bioreactor within ten minutes of starting, with limited difficulty                                                       | Validation   |
+| <a id="3fdd65dd82be801d885cf140e98a7c3b" />7                         | The user should be able to release pressure in a sterile fashion while the bioreactor is in use                                                                  | Verification |
+| <a id="3fdd65dd82be808ba18dfdb88dc87107" />8                         | The vessel should be airtight when the bioreactor is not open for sampling                                                                                       | Verification |
+| <a id="3fdd65dd82be801699caeee15906396e" />9                         | The electronic components should be housed separately from the rest of the bioreactor such that wires will not interfere with sampling                           | Validation   |
+| <a id="3fdd65dd82be80a78c3df67aa8653a92" />10                        | The bioreactor should be manufactured and assembled such that no glue, tape, or parafilm is required to maintain form factor                                     | Verification |
+| <a id="3fdd65dd82be80469586cd0d008a1081" />11, 12                    | The bioreactor should cost no more than 300 CAD to assemble using equipment that is available to the average consumer and costs no more than 1200 CAD            | Verification |
 
-<a id="3fcd65dd82be80348ee8d2ed45465605" />With our requirements created, we were then able to objectively compare different options based on how well they line up with our requirements. For example, we can now more easily balance between cost and sensitivity in our pH probe, as we know approximately how much we are willing to pay for sensitivity and can opt for a cheaper one instead of a more expensive one.
+<a id="3fcd65dd82be80348ee8d2ed45465605" />With our requirements created, we were then able to objectively compare different options based on how well they line up with our requirements. For example, we can easily balance between cost and sensitivity in our pH probe, as we know approximately how much we are willing to pay for sensitivity and can opt for a cheaper one instead of a more expensive one.
 
 # <a id="3f0d65dd82be80f2a2ebf4267c283938" />Building the Bioreactor
 
@@ -70,7 +70,7 @@ title: "Bioreactor"
 
 <a id="3fcd65dd82be80bbafdcec17f4c82c6b" />
 
-<ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/e5515d8e108b5cefac7005c5d45389a8.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/a1a7fa4790195fd7bd677f6795e15ea1.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/cf3759e5a4785ad08f99f502750b30d2.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/7ca003791938563db55801d7bdd725a8.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/eeb87212557f5ce5a081b8859f274272.avif","alt":"","scale":0}]}>
+<ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/e5515d8e108b5cefac7005c5d45389a8.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/a1a7fa4790195fd7bd677f6795e15ea1.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/cf3759e5a4785ad08f99f502750b30d2.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/eeb87212557f5ce5a081b8859f274272.avif","alt":"","scale":0}]}>
   <Fragment slot="descriptions">
     <div class="carousel-desc" data-index="0" />
 
@@ -79,8 +79,6 @@ title: "Bioreactor"
     <div class="carousel-desc" data-index="2" />
 
     <div class="carousel-desc" data-index="3" />
-
-    <div class="carousel-desc" data-index="4" />
   </Fragment>
 </ImageCarousel>
 
@@ -110,7 +108,7 @@ title: "Bioreactor"
 
 ### <a id="3f0d65dd82be80099df1d6502485640f" />Design Decisions
 
-<a id="3fdd65dd82be80a1ab8dd7e495413b60" />When finalizing which design components should appear in the project, several factors were considered. Considering the requirements, sampling method, agitation, and component organization became the options with the widest variety of possible approaches. Most of the concern stemmed from past experiences in working with bioreactors (UBC iGEM 2025) and wanting to learn from what worked and what could be improved. This resulted in the use of weighted decision matrices (WDMs). Each option was scored out of 10 against criteria weighted by importance to the project. Weighted scores were summed, and the highest total was selected. By listing out both the pros and cons of each option, the most objective choice can be selected with engineering reasoning. Other components such as aeration, monitoring systems, and material selection are directly justified.
+<a id="3fdd65dd82be80a1ab8dd7e495413b60" />When finalizing which design components should appear in the project, several factors were considered. Considering the requirements, sampling method, agitation, and component organization became the options with the widest variety of possible approaches. Most of the concern stemmed from past experiences in working with bioreactors (UBC iGEM 2025) and wanting to learn from what worked and what could be improved <Cite refs={[{"n":8,"key":"UBCVancouverMeduCA2025"}]} />. This resulted in the use of weighted decision matrices (WDMs). Each option was scored out of 10 against criteria weighted by importance to the project. Weighted scores were summed, and the highest total was selected. By listing out both the pros and cons of each option, the most objective choice can be selected with engineering reasoning. Other components such as aeration, monitoring systems, and material selection are directly justified.
 
 <Callout icon="🧱">
   <a id="3ffd65dd82be80e2806dc267c2f0133a" />**Material Selection**
@@ -181,7 +179,7 @@ title: "Bioreactor"
 <Callout icon="🫧">
   <a id="3ffd65dd82be8037962ac1fbf72204ab" />**Aeration**
 
-  <a id="3ffd65dd82be801094eec55f02c115a3" />*E. Coli* is an aerobic bacterium, so sufficient oxygen must be delivered to all cells for optimal growth. A sparger produces fine bubbles, which give a high surface area to volume ratio for oxygen transfer. A shaker table was considered as an alternative but carries a risk of instability. As circuitry is attached to the bioreactor, continuous motion and vibration could dislodge parts and cause damage. A sparger therefore gives similar results in a controlled, stationary setting.
+  <a id="3ffd65dd82be801094eec55f02c115a3" />*E. coli* grows better with oxygen, so sufficient oxygen must be delivered to all cells for optimal growth. A sparger produces fine bubbles, which give a high surface area to volume ratio for oxygen transfer. A shaker table was considered as an alternative but carries a risk of instability. As circuitry is attached to the bioreactor, continuous motion and vibration could dislodge parts and cause damage. A sparger therefore gives similar results in a controlled, stationary setting.
 
   - <a id="3f9d65dd82be8069b9d1c8d3690c7ec4" />All off-the-shelf parts were sourced from easy-to-access manufacturers, such as McMaster-Carr. Unique components were fabricated in-house via FDM manufacturing with a Bambu Lab P1S 3D printer.
 </Callout>
@@ -194,7 +192,7 @@ title: "Bioreactor"
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3f9d65dd82be8023b7b3e7264488d2d2" />The goal behind building iteration 1 was to create a simple, operational version of the bioreactor to demonstrate that the core elements are functional. The elements incorporated include: aeration, agitation, and sampling. This iteration was intended to be a rapid prototype, aiming to expose any design flaws from the start before complex hardware is added. The prototype not only provides a baseline on the foundation of the design, but it also proves that a simple and compact bioreactor can be constructed without the need of highly technical equipment. A system that can be built without much space, specialized equipment, or technical support, is one that other teams can realistically reproduce and build on, thus contributing back to the iGEM community. The value also extends beyond the competition. If a working bioreactor can be assembled from common parts and a desktop 3D printer, rural areas and clinics that wish to implement the full FAST device can cultivate *E. Coli* on site, without depending on expensive laboratory infrastructure.
+    <a id="3f9d65dd82be8023b7b3e7264488d2d2" />The goal behind building iteration 1 was to create a simple, operational version of the bioreactor to demonstrate that the core elements are functional. The elements incorporated include: aeration, agitation, and sampling. This iteration was intended to be a rapid prototype, aiming to expose any design flaws from the start before complex hardware is added. The prototype not only provides a baseline on the foundation of the design, but it also proves that a simple and compact bioreactor can be constructed without the need of highly technical equipment. A system that can be built without much space, specialized equipment, or technical support, is one that other teams can realistically reproduce and build on, thus contributing back to the iGEM community. The value also extends beyond the competition. If a working bioreactor can be assembled from common parts and a desktop 3D printer, rural areas and clinics that wish to implement the full FAST device can cultivate *E. coli* on site, without depending on expensive laboratory infrastructure.
 
     <a id="3f9d65dd82be8066b18be5938f1b4b30" />Assessment of the design was conducted against the following questions:
 
@@ -269,7 +267,7 @@ title: "Bioreactor"
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3fdd65dd82be80d48848ef2da17f6c9c" />The goal behind iteration 2 was to build on the foundation of iteration 1 by addressing the limitations and introducing the first monitoring components of the bioreactor. A temperature probe and a pH probe were added, along with an Arduino microcontroller to read outputs from them. The core features from iteration 1 were carried over so that the effect of the new additions could be assessed on their own. Temperature and pH are two of the main conditions that determine how well *E. Coli* grows, so measuring them gives users confidence that the culture is growing as intended and that environmental conditions are kept most suitable for growth. The pH probe in particular requires correct calibration and handling to give reliable readings, so a standard operating procedure (SOP) was developed for its use. This makes the measurement repeatable for any operator, regardless of laboratory experience, which supports the goal of a bioreactor that others can build and operate independently.
+    <a id="3fdd65dd82be80d48848ef2da17f6c9c" />The goal behind iteration 2 was to build on the foundation of iteration 1 by addressing the limitations and introducing the first monitoring components of the bioreactor. A temperature probe and a pH probe were added, along with an Arduino microcontroller to read outputs from them. The core features from iteration 1 were carried over so that the effect of the new additions could be assessed on their own. Temperature and pH are two of the main conditions that determine how well *E. coli* grows, so measuring them gives users confidence that the culture is growing as intended and that environmental conditions are kept most suitable for growth. The pH probe in particular requires correct calibration and handling to give reliable readings, so a standard operating procedure (SOP) was developed for its use. This makes the measurement repeatable for any operator, regardless of laboratory experience, which supports the goal of a bioreactor that others can build and operate independently.
 
     <a id="3fdd65dd82be80648f96f1d55814b4b0" />Reassessment of the design was conducted against the following questions, while still preserving the points from iteration 1:
 
@@ -291,7 +289,7 @@ title: "Bioreactor"
 
           <a id="3fdd65dd82be8069bd84fff335f1ffd8" />Selection of the SENS0169 pH probe is according to the following:
 
-          - <a id="3fdd65dd82be80ca9f65c70165ece60e" />Measurement range: The probe measures from pH 0 to 14, which fully covers the range needed to monitor *E. Coli* growth, since cultures are generally kept near neutral pH.
+          - <a id="3fdd65dd82be80ca9f65c70165ece60e" />Measurement range: The probe measures from pH 0 to 14, which fully covers the range needed to monitor *E. coli* growth, since cultures are generally kept near neutral pH.
           - <a id="3fdd65dd82be80758e97e37aa4545d0f" />Accuracy: The manufacturer lists an accuracy of ±0.1 pH at 25°C, which is sufficient to detect the gradual pH drift that occurs as a culture grows.
           - <a id="3fdd65dd82be80a2a1caf6ec8ed14c08" />Continuous use: The probe is designed for long-term, continuous monitoring, and this was confirmed through the datasheet. It can therefore stay submerged in the vessel for the full length of an experiment, without repeated removal that would add handling steps and contamination risk.
         </div>
@@ -312,7 +310,7 @@ title: "Bioreactor"
   <Fragment slot="build">
     <a id="3fdd65dd82be80d0b5fde5dca45b1dec" />
 
-    <ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/d2add33f83795b8b917c09bda83ff9df.svg","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/fdd7d80e3ff15597a7ca820a7022ce3e.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/227e59a8253d512ab961364d921021cb.avif","alt":"","scale":0}]}>
+    <ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/d2add33f83795b8b917c09bda83ff9df.svg","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/fdd7d80e3ff15597a7ca820a7022ce3e.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/227e59a8253d512ab961364d921021cb.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/4bfa3c28be4b5876962163ca8c1ba426.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/565e378fe42153479a71aaa2489b71ba.avif","alt":"","scale":0}]}>
       <Fragment slot="descriptions">
         <div class="carousel-desc" data-index="0">
           <a id="3ffd65dd82be80658c91dca2d42bda7f" />Illustration of key components found in the second iteration of the bioreactor
@@ -330,8 +328,130 @@ title: "Bioreactor"
         <div class="carousel-desc" data-index="2">
           <a id="3ffd65dd82be80b9a31dc22ac41781a0" />Adjusted jar lid component to accommodate for the additional inputs/outputs built in iteration 2, with varying hole sizes to reflect the OD of the parts.
         </div>
+
+        <div class="carousel-desc" data-index="3">
+          <a id="400d65dd82be80bcab69c0ba4870b728" />Overview of the pH sensor and temperature sensor circuit
+        </div>
+
+        <div class="carousel-desc" data-index="4">
+          <a id="400d65dd82be805289b4ee1103bb55bf" />Close up of the pH sensor and temperature sensor circuit
+        </div>
       </Fragment>
     </ImageCarousel>
+
+    #### <a id="400d65dd82be800b863bdf595d910260" />Arduino Code for pH and Temperature Sensor Control
+
+    <Callout icon="💻">
+      <a id="400d65dd82be80129f8fecc4592b87c5" />
+
+      <a id="400d65dd82be80bd877cf5f836c8a0fe" />
+
+      ```arduino
+      //temp
+      #include <OneWire.h>
+      #include <DallasTemperature.h>
+
+      #define ONE_WIRE_BUS 2
+
+      OneWire oneWire(ONE_WIRE_BUS);
+      DallasTemperature sensors(&oneWire);
+
+      //pH
+      #define SensorPin A0            //pH meter Analog output to Arduino Analog Input 0
+      #define Offset 0.00            //deviation compensate
+      #define LED 13
+      #define samplingInterval 20
+      #define printInterval 800
+      #define ArrayLenth  40    //times of collection
+      int pHArray[ArrayLenth];   //Store the average value of the sensor feedback
+      int pHArrayIndex=0;
+
+      void setup() {
+        //temp
+        Serial.begin(9600);
+        sensors.begin();
+        //pH
+        pinMode(LED,OUTPUT);
+        Serial.begin(9600);
+      }
+
+      void loop() {
+        //temp
+        sensors.requestTemperatures();
+        float temp=sensors.getTempCByIndex(0);
+
+        Serial.print("temperature:");
+        Serial.print(temp);
+        Serial.println("°C");
+
+        delay(1000);
+
+        //pH
+        static unsigned long samplingTime = millis();
+        static unsigned long printTime = millis();
+        static float pHValue,voltage;
+        if(millis()-samplingTime > samplingInterval)
+        {
+            pHArray[pHArrayIndex++]=analogRead(SensorPin);
+            if(pHArrayIndex==ArrayLenth)pHArrayIndex=0;
+            voltage = avergearray(pHArray, ArrayLenth)*5.0/1024;
+            pHValue = 3.5*voltage+Offset;
+            samplingTime=millis();
+        }
+        if(millis() - printTime > printInterval)   //Every 800 milliseconds, print a numerical, convert the state of the LED indicator
+        {
+          Serial.print("Voltage:");
+              Serial.print(voltage,2);
+              Serial.print("    pH value: ");
+          Serial.println(pHValue,2);
+              digitalWrite(LED,digitalRead(LED)^1);
+              printTime=millis();
+        }
+      }
+
+      //pH
+      double avergearray(int* arr, int number){
+        int i;
+        int max,min;
+        double avg;
+        long amount=0;
+        if(number<=0){
+          Serial.println("Error number for the array to avraging!/n");
+          return 0;
+        }
+        if(number<5){   //less than 5, calculated directly statistics
+          for(i=0;i<number;i++){
+            amount+=arr[i];
+          }
+          avg = amount/number;
+          return avg;
+        }else{
+          if(arr[0]<arr[1]){
+            min = arr[0];max=arr[1];
+          }
+          else{
+            min=arr[1];max=arr[0];
+          }
+          for(i=2;i<number;i++){
+            if(arr[i]<min){
+              amount+=min;        //arr<min
+              min=arr[i];
+            }else {
+              if(arr[i]>max){
+                amount+=max;    //arr>max
+                max=arr[i];
+              }else{
+                amount+=arr[i]; //min<=arr<=max
+              }
+            }//if
+          }//for
+          avg = (double)amount/(number-2);
+        }//if
+        return avg;
+      }
+
+      ```
+    </Callout>
   </Fragment>
 
   <Fragment slot="test">
@@ -461,7 +581,7 @@ title: "Bioreactor"
 
 <a id="3ffd65dd82be8017a881f1d9ba46bb2c" />
 
-<Downloadable name="Bioreactor Use Protocol (1).pdf" url="https://static.igem.wiki/teams/6279/wiki/assets/311aa842087a5f4aaff275830a6aa095.pdf" kind="pdf">
+<Downloadable name="Bioreactor Use and Culturing Protocol.pdf" url="https://static.igem.wiki/teams/6279/wiki/assets/479612a6710353e499a235430e05eb55.pdf" kind="pdf">
   <Fragment slot="preview" />
 </Downloadable>
 
@@ -471,25 +591,29 @@ title: "Bioreactor"
 
 <a id="3ffd65dd82be80f98f9de3ed56681df1" />
 
-<ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/ddcd944f12ee597fa30f9b35777f18d0.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/031a0944a9c65a6f833f1086c8258498.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/2e8f409f0fe1551c86be9971b2aec5c2.avif","alt":"","scale":0}]}>
+<ImageCarousel slides={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/ddcd944f12ee597fa30f9b35777f18d0.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/3cee88de84c555dd87f4ff6fb8a49cc5.avif","alt":"","scale":0},{"url":"https://static.igem.wiki/teams/6279/wiki/assets/57223ec236bd585ebeef87acc912d4d8.avif","alt":"","scale":0}]}>
   <Fragment slot="descriptions">
     <div class="carousel-desc" data-index="0">
-      <a id="3ffd65dd82be808fb075c08ee9b93220" />Growth curve experiment 1
+      <a id="3ffd65dd82be808fb075c08ee9b93220" />Figure 5. Growth curve experiment 1
     </div>
 
     <div class="carousel-desc" data-index="1">
-      <a id="3ffd65dd82be80dc9e82e6e5cf270da1" />Growth curve experiment 2
+      <a id="3ffd65dd82be80dc9e82e6e5cf270da1" />Figure 6. Growth curve experiment 2
     </div>
 
     <div class="carousel-desc" data-index="2">
-      <a id="3ffd65dd82be8035a60fca4faff332b1" />Growth curve experiment 2
+      <a id="3ffd65dd82be8035a60fca4faff332b1" />Figure 7. Growth curve experiment 3
     </div>
   </Fragment>
 </ImageCarousel>
 
-<a id="3ffd65dd82be8054b26acfa3d7cc971b" />Overall, the bioreactor showed promising increased in bacterial yield compared to control.
+<a id="3ffd65dd82be8054b26acfa3d7cc971b" />Overall, the bioreactor showed promising increased in bacterial yield compared to control. To further quantify the percent of yield improvement, we converted the optical density measurements to biomass, assuming the conversion factor to be 5\*10^7 cells/mL
 
-<br id="3ffd65dd82be806799f6f30bde8acb32" />
+<a id="400d65dd82be80348ab2f95d4d7ea2b0" />
+
+$$
+μ = \frac{ln(X_2) - ln(X_1)}{t_2 - t_1}
+$$
 
 # <a id="3fed65dd82be80cfabc8d49c615bfc53" />Impact of the Bioreactor
 
@@ -511,11 +635,11 @@ title: "Bioreactor"
 
 <a id="3ffd65dd82be809e83f0ea154c398589" />[Bioreactor Assembly Process](/ubc-vancouver/hardware/protocol-database/bioreactor-assembly-process)
 
-<a id="3f9d65dd82be808489cac13115f1f222" />*E. Coli* Culturing Instructions:
+<a id="3f9d65dd82be808489cac13115f1f222" />*E. coli* Culturing Instructions:
 
 <a id="3ffd65dd82be804c8b90c7d0b8a76d6f" />
 
-<Downloadable name="Bioreactor Use Protocol (1).pdf" url="https://static.igem.wiki/teams/6279/wiki/assets/ea27d87f19dc58b9a6563e6f46e00c5d.pdf" kind="pdf">
+<Downloadable name="Bioreactor Use and Culturing Protocol.pdf" url="https://static.igem.wiki/teams/6279/wiki/assets/479612a6710353e499a235430e05eb55.pdf" kind="pdf">
   <Fragment slot="preview" />
 </Downloadable>
 
@@ -526,8 +650,6 @@ title: "Bioreactor"
 <a id="3ffd65dd82be8078994dfcd16d7ddb86" />SOP for TSL2591 OD Sensor:
 
 <a id="3ffd65dd82be80b3af10d7b0d17b241f" />[SOP for Calibration and Setup of TSL2591 OD Sensor](/ubc-vancouver/hardware/protocol-database/sop-for-calibration-and-setup-of-tsl2591-od-sensor)
-
-<br id="3ffd65dd82be80e38544ecc3befd006c" />
 
 <a id="3ffd65dd82be80d19d99d9190ff12876" />
 
@@ -541,9 +663,52 @@ title: "Bioreactor"
   <Fragment slot="preview" />
 </Downloadable>
 
+<br id="3ffd65dd82be809c9a27e84e006aa9da" />
+
+<a id="3ffd65dd82be808f8763f834588bcb7b" />
+
+<IHP>
+  <Fragment slot="people">
+    <div class="ihp-card glow-panel" data-index="0">
+      <div class="ihp-card-body glow-panel-body">
+        <div class="ihp-name">Dr. Celestine Hong</div>
+
+        <div class="ihp-profile">
+          <img class="ihp-photo" src="https://static.igem.wiki/teams/6279/wiki/assets/f7c46c20c9ff525181ec6caca9e5e174.avif" alt="Dr. Celestine Hong" />
+
+          <div class="ihp-desc">
+            Dr. Celestine Hong, an assistant professor of teaching at the Chemical and Biological Engineering (CHBE) department at UBC. Dr. Hong’s research focuses on biomaterials and drug deliveries, and she works closely with laboratory and industrial-grade bioreactor systems in the lab at CHBE.
+          </div>
+        </div>
+
+        <div class="ihp-content">
+          <a id="400d65dd82be80afad73d43c5877e88e" />To further validate our design and address our questions for future references, we reached out to Dr. Celestine Hong, as her areas of expertise highly align with our project goals. After reflecting on the overall design and culture process, we asked for Dr. Hong’s advices on the following potential areas of improvement:
+
+          1. <a id="3ffd65dd82be8057b4b1cc30e01cf9dd" />Achieving a fully automated bioreactor system
+          2. <a id="3ffd65dd82be808899d6ceddd16c76a5" />Enhancing system sterility and aseptic sampling techniques
+          3. <a id="3ffd65dd82be80ee94fdf73a4feeb0a5" />A bioreactor component that is useful but rarely implemented due to cost or complexity
+          4. <a id="3ffd65dd82be8065a5d9e7a4654e4510" />Methods to quantify the amount of cells present in the culture, as optical density measurements may not accurately reflect the actual cell count
+
+          <a id="400d65dd82be80ec9265fcd4daeaf6bf" />Dr. Hong shared valuable insights drawn from her experience with industry-scale bioreactors and kindly offered us a lab tour and bioreactor demonstration. Her feedback helped us identify potential areas for future improvement and explore ways to bring our design closer to industry standards.
+
+          1. <a id="3ffd65dd82be8018b572d7e6784ab229" />For achieving full system automation, Dr. Hong suggested on implementing feedback control loops. It is a common strategy used in laboratory and industry bioreactors, often involving a sensor, a comparator that compares the current output measurement with the reference state to calculate the error (set point, e.g. the reference temperature of *E. coli* culture is 37 °C), and an actuator that realizes the control. For working with a limited budget and resources, Dr. Hong suggested simplifying the system to a microcontroller, a sensor, and a control (e.g. a pump for pH control, or a heating blanket for temperature control).
+             1. <a id="3ffd65dd82be8026af8aed37750f8175" />**PID (proportional, integral, derivative) controller:** This closed-loop feedback control continuously calculate the error value. This mechanism takes into account the reaction delay in a bioreactor, and stops before the target value is reached to avoid overshooting.
+          2. <a id="3ffd65dd82be8013a2dfdabbebd78d8d" />We inspected the CHBE benchtop bioreactor to learn how sterility is maintained for industry-level designs. A few highlights we found to be helpful with improving our bioreactor are: component integration using screws and O-rings, maintaining positive pressure inside the bioreactor, sterilizing the air in and out, and using clamps and syringes for aseptic sampling.
+             1. <a id="3ffd65dd82be80c99f9aceb69b414a1c" />**Screws and O-rings:** The lid of the bioreactor and other feedback loop components are screwed down. This not only allows easy assembling and disassembling, but also ensures air-tightness and sterility. Currently, our bioreactor system depends on using Parafilm for minimizing contamination, which may not be sufficient once the design is scaled up.
+             2. <a id="3ffd65dd82be806c9ae5e0018432df3b" />**Positive pressure:** As air is pumped into the vessel, the inside of the bioreactor maintains a positive pressure. This inherently hinders outside contaminants from entering the liquid culture.
+             3. <a id="3ffd65dd82be80988ad8c0f11b090b86" />**Sterilization of inlet and outlet air:** The air inlet should be connected to a sterile air filter to make sure the incoming air is void of contaminants. Additionally, the air-outlet should be connect to a bottle containing 10% bleach.
+             4. <a id="400d65dd82be8013abf1e5b7559473c8" />**Clamp + syringe:** We learned an alternative sampling method using a clamp, a Luer-lock connector, and a syringe. The sampling tube remains clamped when not in use. To collect a sample, a syringe is attached via the Luer-lock connector, and the plunger is pulled to create sufficient vacuum. The tube is then unclamped to draw out residual culture clinging to its inner walls from the previous sampling. After reclamping the tube, the process is repeated to collect a fresh sample.
+          3. <a id="3ffd65dd82be805ba722f85d4c0b2b5a" />A component Dr. Hong recognized to be useful to have was an automated in-culture optical density sensor. This not only simplifies the tedious process of manual OD sampling, but also can be incorporated into the feedback loop control for more optimal results. One thing to note is that this mechanism becomes inaccurate for ODs > 1.
+          4. <a id="3ffd65dd82be805fa464e1e8f88e553b" />Although a cell density conversion factor of approximately 8 \*10^8 cells/mL per OD unit is commonly assumed for E. coli cultures at OD values above 1, limited data are available for cultures with OD values below 1. After consulting with Dr. Hong, she suggested that the common practice in laboratory is to generate a dry cell calibration curve. The dry cell weight can be obtained through filtering, washing, and drying the liquid culture. The data will then be plotted against the OD measurements.
+        </div>
+      </div>
+    </div>
+  </Fragment>
+</IHP>
+
 # <a id="3f0d65dd82be80a99bf0ea06cce646d7" />Next Steps for the Bioreactor
 
-<a id="3f0d65dd82be8066aba5e6bfe6424685" />While the current bioreactor design is functional and capable of supporting reliable bacterial growth, there are a few features that could be improved for future iterations. The next stage of development is to move from a collection of individual components toward a more integrated and automated system.
+<a id="3f0d65dd82be8066aba5e6bfe6424685" />While the current bioreactor design is functional and capable of supporting reliable bacterial growth, there are a few features that could be improved for future iterations. With Dr. Celestine Hong’s advice, we decided that the next stage of development is to move from a collection of individual components toward a more integrated and automated system.
 
 ## <a id="3f0d65dd82be80958451d5cd5f753ef7" />Design Improvements
 
@@ -585,4 +750,4 @@ title: "Bioreactor"
 
 # References
 
-<Bibliography refs={[{"n":1,"key":"BioreactorOverviewScienceDirect"},{"n":2,"key":"CharacterizationFeasibilityMiniaturized"},{"n":3,"key":"hsuAdvancedMicroscaleBioreactor2012"},{"n":4,"key":"obomOperationBenchtopBioreactor2013"},{"n":5,"key":"erjavecEscherichiaColiOld2023"},{"n":6,"key":"AerationPrinciples"},{"n":7,"key":"mcdonoughAgitationFermentersBioreactors1997"}]} />
+<Bibliography refs={[{"n":1,"key":"BioreactorOverviewScienceDirect"},{"n":2,"key":"CharacterizationFeasibilityMiniaturized"},{"n":3,"key":"hsuAdvancedMicroscaleBioreactor2012"},{"n":4,"key":"obomOperationBenchtopBioreactor2013"},{"n":5,"key":"erjavecEscherichiaColiOld2023"},{"n":6,"key":"AerationPrinciples"},{"n":7,"key":"mcdonoughAgitationFermentersBioreactors1997"},{"n":8,"key":"UBCVancouverMeduCA2025"}]} />

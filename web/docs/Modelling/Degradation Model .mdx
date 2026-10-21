@@ -99,11 +99,9 @@ $$
 \frac{dN}{dt} = \mu \cdot N - E_{max} \cdot \frac{A^{n_{pd}}}{EC_{50}^{n_{pd}} + A^{n_{pd}}} \cdot N
 $$
 
-<a id="3d6d65dd82be80b7b0d6f439a3207a73" />The downstream bacterial response was modelled using a growth term combined with a sigmoidal $E_{max}$ pharmacodynamic relationship. The first term describes unconstrained exponential bacterial growth at per capita rate ($\mu$) ($time(^{-1})$), and the second term is a sigmoidal $E_{max}$ model describing concentration-dependent bacterial killing.
+<a id="3d6d65dd82be80b7b0d6f439a3207a73" />The downstream bacterial response was modelled using a growth term combined with a sigmoidal $E_{max}$ pharmacodynamic relationship ( ). The first term describes unconstrained exponential bacterial growth at per capita rate ($\mu$) ($time^{-1}$), and the second term is a sigmoidal $E_{max}$ model describing concentration-dependent bacterial killing.
 
-<a id="3e9d65dd82be800b9c17dd06fb04cb91" />As enzymatic degradation reduces (A), the magnitude of the killing term decreases, allowing the model to connect enzymatic antibiotic degradation with the expected downstream bacterial response.
-
-<a id="3e9d65dd82be8002ac1eeed338ea54b3" />If the bacterial growth term subsequently becomes greater than the antibiotic-mediated killing term, the normalized bacterial population can begin to recover.
+<a id="3e9d65dd82be800b9c17dd06fb04cb91" />Here, $E_{max}$ represents the maximum antibiotic-mediated killing rate, \$EC-\{50}\$  represents the antibiotic concentration producing half of the maximum killing effect, and \$n\_\{pd}\$ controls the steepness of the pharmacodynamic response. These parameters are conceptually distinct from the MIC, which describes inhibition of visible bacterial growth under specified testing conditions.
 
 ## <a id="3d6d65dd82be8005b4b0da13e05efcca" />**Computational Implementation**
 

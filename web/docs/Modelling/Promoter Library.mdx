@@ -3,37 +3,48 @@ type: "page"
 title: "Promoter Library"
 ---
 
-## <a id="3e5d65dd82be80f0ae2bc5554786b6b0" />Abstract
+# <a id="3e5d65dd82be80f0ae2bc5554786b6b0" />Abstract
 
 <Callout icon="">
-  <a id="3fdd65dd82be800fa6b1eca1360f5bcd" />As our project this year was to develop an E. coli promoter-GFP biosensor, we sought to identify high quality promoters—characterized by dynamic range, low basal expression, and low cross-activation—that enable quantifying presence of antibiotic in solution. We wanted to capture the response to four anitibiotics: Amoxicillin, Cephalexin, Gentamicin, and Tobramycin.
+  <a id="3fdd65dd82be800fa6b1eca1360f5bcd" />As our project this year was to develop an *E. coli* promoter-GFP biosensor, we sought to identify high quality promoters—characterized by dynamic range, low basal expression, and low cross-activation—that enable quantifying presence of antibiotic in solution. We wanted to capture the response to four anitibiotics: Amoxicillin, Cephalexin, Gentamicin, and Tobramycin.
 
-  <a id="3fdd65dd82be80cfa295f1cb77877fc7" />To characterize over 200 promoter candidates, we developed the experimental design of a high-throughput experiment executed in collaboration with Biofactorial, an automation facility. Our experiment consisted of three components: assay development, the library screen, then Sanger sequencing. Our findings were able to identify top promoter candidates…
+  <a id="3fdd65dd82be80cfa295f1cb77877fc7" />To characterize over 200 promoter candidates, we developed the experimental design of a high-throughput experiment executed in collaboration with Biofactorial, an automation facility. Our experiment consisted of three components: assay development, the library screen, then Sanger sequencing. Our findings were able to identify \_\_ promoters that fit our desired profile:
 </Callout>
 
 <a id="3fdd65dd82be8087975be726f6e6e36e" />
 
 <Img url="https://static.igem.wiki/teams/6279/wiki/assets/aead363a6bb350fcb6149faf8cb21efe.avif" alt="" scale={0} align="center" />
 
-## <a id="3e5d65dd82be806ea714f7a90e71d3c3" />**Background**
+# <a id="3e5d65dd82be806ea714f7a90e71d3c3" />**Background**
 
-<a id="3fad65dd82be80eaa5fcdacf471b1be4" />Before beginning any experimental planning, we conducted thorough literature review on various aspects to guide our planning. We began by researching top promoter candidates with our desired characteristics, to form an idea of expected candidates:
+<a id="3fad65dd82be80eaa5fcdacf471b1be4" />Before beginning any experimental planning, we conducted thorough literature review on various aspects to guide our planning. We began by researching top promoter candidates with our desired characteristics, to form an idea of expected candidates. The criteria we were looking for is as follows:
+
+<a id="3ffd65dd82be801088eaf82f8edab14a" />
+
+|                                                             |                                       |
+| ----------------------------------------------------------- | ------------------------------------- |
+| <a id="3ffd65dd82be80afb34dd7e130bf391f" />Criterion        | Requirement                           |
+| <a id="3ffd65dd82be805b8ca3cd27f32b2445" />Basal Expression | Low and stable in untreated cultures  |
+| <a id="3ffd65dd82be80b1a7d0f5cbd7928677" />Fold Induction   | At least two-fold during screening    |
+| <a id="3ffd65dd82be80ff8129c4bb7cdfe158" />Absolute Output  | Clearly above promoterless background |
+
+<a id="3ffd65dd82be80428233d8ad23ac1c62" />Guided by the above criterion, we identified potential promoter candidates with our desired profile through literature review:
 
 <a id="3fcd65dd82be80cfa0ced4518f6c3677" />
 
-|                                                     |                          |                |                  |                                                                                      |
-| --------------------------------------------------- | ------------------------ | -------------- | ---------------- | ------------------------------------------------------------------------------------ |
-| <a id="3fcd65dd82be807d81f9d3bd8c3c4c3b" />Promoter | Antibiotic               | Basal Activity | Induced Activity | Source                                                                               |
-| <a id="3fcd65dd82be80dfa061e9f47a0565a7" />hsIJ     | Ampicillin (beta-lactam) | n/a            | High             | <Cite refs={[{"n":1,"key":"mohiuddinHighThroughputScreeningPromoter2022"}]} />       |
-| <a id="3fcd65dd82be8036a10bf731bd4c77e2" />spy      | Ampicillin (beta-lactam) | n/a            | High             | <Cite refs={[{"n":1,"key":"mohiuddinHighThroughputScreeningPromoter2022"}]} />       |
-| <a id="3fcd65dd82be804aa598d8884ef2f196" />ycfJ     | Ampicillin (beta-lactam) | n/a            | High             | <Cite refs={[{"n":1,"key":"mohiuddinHighThroughputScreeningPromoter2022"}]} />       |
-| <a id="3fcd65dd82be8091b2b2d2ec7000831c" />ibpA     | Aminoglycoside           | Low            | High             | <Cite refs={[{"n":2,"key":"shapiroStressBasedIdentificationClassification2002"}]} /> |
-| <a id="3fcd65dd82be80a0baa6ccfd639735fb" />ibpB     | Aminoglycoside           | Low            | High             | <Cite refs={[{"n":2,"key":"shapiroStressBasedIdentificationClassification2002"}]} /> |
-| <a id="3fcd65dd82be8057ae16eb7e430d5d1c" />pspA     | Beta-lactam              | Low            | High             | <Cite refs={[{"n":3,"key":"zaslaverComprehensiveLibraryFluorescent2006"}]} />        |
-| <a id="3fcd65dd82be80bfa818e7297c133f45" />cpxP     | Beta-lactam              | Low            | High             | <Cite refs={[{"n":3,"key":"zaslaverComprehensiveLibraryFluorescent2006"}]} />        |
-| <a id="3fcd65dd82be809a9f41f755a2bb9b76" />spy      | Beta-lactam              | Low            | High             | <Cite refs={[{"n":3,"key":"zaslaverComprehensiveLibraryFluorescent2006"}]} />        |
+|                                                     |                       |                |                  |                                                                                      |
+| --------------------------------------------------- | --------------------- | -------------- | ---------------- | ------------------------------------------------------------------------------------ |
+| <a id="3fcd65dd82be807d81f9d3bd8c3c4c3b" />Promoter | Antibiotic            | Basal Activity | Induced Activity | Source                                                                               |
+| <a id="3fcd65dd82be80dfa061e9f47a0565a7" />hsIJ     | Ampicillin (β-lactam) | n/a            | High             | <Cite refs={[{"n":1,"key":"mohiuddinHighThroughputScreeningPromoter2022"}]} />       |
+| <a id="3fcd65dd82be8036a10bf731bd4c77e2" />spy      | Ampicillin (β-lactam) | n/a            | High             | <Cite refs={[{"n":1,"key":"mohiuddinHighThroughputScreeningPromoter2022"}]} />       |
+| <a id="3fcd65dd82be804aa598d8884ef2f196" />ycfJ     | Ampicillin (β-lactam) | n/a            | High             | <Cite refs={[{"n":1,"key":"mohiuddinHighThroughputScreeningPromoter2022"}]} />       |
+| <a id="3fcd65dd82be8091b2b2d2ec7000831c" />ibpA     | Aminoglycoside        | Low            | High             | <Cite refs={[{"n":2,"key":"shapiroStressBasedIdentificationClassification2002"}]} /> |
+| <a id="3fcd65dd82be80a0baa6ccfd639735fb" />ibpB     | Aminoglycoside        | Low            | High             | <Cite refs={[{"n":2,"key":"shapiroStressBasedIdentificationClassification2002"}]} /> |
+| <a id="3fcd65dd82be8057ae16eb7e430d5d1c" />pspA     | β-lactam              | Low            | High             | <Cite refs={[{"n":3,"key":"zaslaverComprehensiveLibraryFluorescent2006"}]} />        |
+| <a id="3fcd65dd82be80bfa818e7297c133f45" />*cpxP*   | β-lactam              | Low            | High             | <Cite refs={[{"n":3,"key":"zaslaverComprehensiveLibraryFluorescent2006"}]} />        |
+| <a id="3fcd65dd82be809a9f41f755a2bb9b76" />spy      | β-lactam              | Low            | High             | <Cite refs={[{"n":3,"key":"zaslaverComprehensiveLibraryFluorescent2006"}]} />        |
 
-<a id="3fcd65dd82be805e8fc8e38cc399e61b" />We also researched literature MIC values, which we used to base our antibiotic concentration dilution series upon for part 1:
+<a id="3fcd65dd82be805e8fc8e38cc399e61b" />We also researched literature MIC values and compared against EUCAST, which we used to base our antibiotic concentration dilution series upon for part 1:
 
 <a id="3fcd65dd82be809dbe26e2b341bce49c" />
 
@@ -45,32 +56,30 @@ title: "Promoter Library"
 | <a id="3fcd65dd82be80d78508eac446f5c11a" />Gentamicin  | 0.5         | Broth microdilution method, 96-well plates                           | <Cite refs={[{"n":5,"key":"chenCompleteNucleotideSequence2006"}]} />    |
 | <a id="3fcd65dd82be80ab8964d3ce377e4075" />Tobramycin  | 1-2         | Heart infusion broth, two fold serial dilutions                      | <Cite refs={[{"n":6,"key":"shadomyVitroSusceptibilityTesting1972"}]} /> |
 
-<br id="3fcd65dd82be807899abea38e18dba08" />
-
-## <a id="3e5d65dd82be8079af05c75febc5617c" />Method
+# <a id="3e5d65dd82be8079af05c75febc5617c" />Method
 
 <a id="3e8d65dd82be80878d35e3da3a754df1" />The objective of the Promoter Library was to identify top promoter candidates out of a library of over 200 promoter candidates. The library consisted of promoter-GFP constructs on well plates. The antibiotic response of these constructs were unknown, as well as the promoter barcodes. Our experiment consisted of three parts: an assay development to select sub-inhibitory concentrations for each antibiotic, the high-throughput library screen exposing the promoter-GFP plates to the antibiotics at the selected concentrations, and then finally Sanger sequencing the top candidates. As we had over 200 promoter candidates, doing this experiment on our own bench top would not be effective. Thus, we collaborated with Biofactorial, a High-Throughput Biology and Automation Facility here at UBC’s Life Sciences Institute. Biofactorial was able to execute the assay testing and library screen for us, so we worked in collaboration to develop the proposal and experimental design.
 
-<a id="3fcd65dd82be80bdb51cf62054830b9f" />Note: complete protocols can be found under Wet Lab - Lab Notebook
+<a id="3fcd65dd82be80bdb51cf62054830b9f" />**Note: complete protocols can be found under** [**Wet Lab - Lab Notebook**](/ubc-vancouver/wet-lab/lab-notebook/biofactorial-part-1-mic-assay)
 
-<a id="3f9d65dd82be8014888ace9e8aff5203" />**Part 1: Identifying Sub-inhibitory Concentrations**
+## <a id="3f9d65dd82be8014888ace9e8aff5203" />**Part 1: Identifying Sub-inhibitory Concentrations**
 
 <a id="3f9d65dd82be80958a9eeb4fa987baf4" />Before beginning the library screen, it was critical to first develop an assay to select sub-inhibitory concentrations for each antibiotic that we would expose the library to during the subsequent screening. We used literature minimum inhibitory concentration (MIC) values as a reference point for our experimental design, creating a dilution series around the literature MIC values to capture a curve.  Literature review was also conducted on all of the antibiotics to ensure solubility at low concentrations.
 
 <br id="3fad65dd82be8064ba45fdc5e504e0a4" />
 
-<a id="3fad65dd82be80aeb1f2d04b61d579d5" /><u>Two-fold Dilution Series for Each Antibiotic</u>
+<a id="3fad65dd82be80aeb1f2d04b61d579d5" /><u>Two-fold Dilution Series (µg/mL) for Each Antibiotic</u>
 
 <a id="3fad65dd82be805b99e5e186a9928d3d" />
 
-| <a id="3fad65dd82be808699c0fe152547a05b" />Antibiotic  | Dilution Series (µg/mL) |        |       |      |     |    |    |    |
-| ------------------------------------------------------ | ----------------------- | ------ | ----- | ---- | --- | -- | -- | -- |
-| <a id="3fad65dd82be80c69fb0ffb19b4a6772" />Amoxicillin | 0.25                    | 0.5    | 1     | 2    | 4   | 8  | 16 | 32 |
-| <a id="3fad65dd82be80e49bf3cb6a5cb892a2" />Cephalexin  | 0.5                     | 1      | 2     | 4    | 8   | 16 | 32 | 64 |
-| <a id="3fad65dd82be80c98281cede73399c2c" />Gentamicin  | 0.03125                 | 0.0625 | 0.125 | 0.25 | 0.5 | 1  | 2  | 4  |
-| <a id="3fad65dd82be80b8b0a9d1ef6b012146" />Tobramycin  | 0.0625                  | 0.125  | 0.25  | 0.5  | 1   | 2  | 4  | 8  |
+| <a id="3fad65dd82be808699c0fe152547a05b" />Antibiotic  |         |        |       |      |     |    |    |    |
+| ------------------------------------------------------ | ------- | ------ | ----- | ---- | --- | -- | -- | -- |
+| <a id="3fad65dd82be80c69fb0ffb19b4a6772" />Amoxicillin | 0.25    | 0.5    | 1     | 2    | 4   | 8  | 16 | 32 |
+| <a id="3fad65dd82be80e49bf3cb6a5cb892a2" />Cephalexin  | 0.5     | 1      | 2     | 4    | 8   | 16 | 32 | 64 |
+| <a id="3fad65dd82be80c98281cede73399c2c" />Gentamicin  | 0.03125 | 0.0625 | 0.125 | 0.25 | 0.5 | 1  | 2  | 4  |
+| <a id="3fad65dd82be80b8b0a9d1ef6b012146" />Tobramycin  | 0.0625  | 0.125  | 0.25  | 0.5  | 1   | 2  | 4  | 8  |
 
-<a id="3f9d65dd82be806ba234eade70507f26" />Each E. coli strain from the plates were scraped and grown in LB media tubes overnight. The four antibiotics were also prepared at their subsequent stock volumes. In order to align compatibility with Biofactorial’s operations and equipment, we required setting up our experiment through an antibiotic source place which would then dispense the antibiotic from lowest to highest concentration into a destination plate with the E. coli using a piece of equipment called the Echo Acoustic Liquid Handler. 50 µl of antibiotic was dispensed into each well, and for all experiments we used 384-well plates for consistency. The plate layouts are as follows:
+<a id="3f9d65dd82be806ba234eade70507f26" />Each *E. coli* strain from the plates were scraped and grown in LB media tubes overnight. The four antibiotics were also prepared at their subsequent stock volumes. In order to align compatibility with Biofactorial’s operations and equipment, we required setting up our experiment through an antibiotic source place which would then dispense the antibiotic from lowest to highest concentration into a destination plate with the *E. coli*, using a piece of equipment called the Echo Acoustic Liquid Handler. 50 µL of antibiotic was dispensed into each well, and for all experiments we used 384-well plates for consistency. The plate layouts are as follows:
 
 <a id="3f9d65dd82be807a9267d368151a4052" /><u>Antibiotic Source Plate Layout</u>
 
@@ -96,8 +105,6 @@ title: "Promoter Library"
 | <a id="3f9d65dd82be80fc9270d33fca7cf91c" />AZ                | *E. coli* growth control without antibiotic (one per strain) |
 | <a id="3f9d65dd82be801fa359ec13fb0044f2" />P24               | Media-only blank without *E. coli* or antibiotic (one only)  |
 
-<br id="3fdd65dd82be800499bcf7bece6bfa57" />
-
 <a id="3fdd65dd82be80869074e0e1e95040d0" />
 
 <Platemap title="Growth Curve Plate Layout" categories={["Amoxicillin","Gentamicin","Growth control","Cephalexin","Tobramycin","Media blank"]} plates="[{&#x22;name&#x22;:&#x22;Plate setup&#x22;,&#x22;columns&#x22;:24,&#x22;rows&#x22;:[[{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.25 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.0312 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:2,&#x22;label&#x22;:&#x22;Growth control, no antibiotic · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.25 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.0312 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:2,&#x22;label&#x22;:&#x22;Growth control, no antibiotic · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.25 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.0312 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:2,&#x22;label&#x22;:&#x22;Growth control, no antibiotic · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.25 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.0312 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:2,&#x22;label&#x22;:&#x22;Growth control, no antibiotic · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.25 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.0312 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:2,&#x22;label&#x22;:&#x22;Growth control, no antibiotic · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.25 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.0312 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:2,&#x22;label&#x22;:&#x22;Growth control, no antibiotic · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.25 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.0312 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:2,&#x22;label&#x22;:&#x22;Growth control, no antibiotic · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.25 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.0312 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:2,&#x22;label&#x22;:&#x22;Growth control, no antibiotic · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1}],[{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.498 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.0623 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.498 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.0623 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.498 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.0623 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.498 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.0623 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.498 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.0623 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.498 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.0623 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.498 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.0623 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.498 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.0623 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null],[{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.992 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.124 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.992 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.124 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.992 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.124 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.992 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.124 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.992 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.124 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.992 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.124 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.992 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.124 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 0.992 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.124 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null],[{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 1.97 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.246 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 1.97 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.246 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 1.97 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.246 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 1.97 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.246 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 1.97 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.246 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 1.97 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.246 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 1.97 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.246 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 1.97 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.246 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null],[{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 3.88 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.484 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 3.88 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.484 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 3.88 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.484 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 3.88 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.484 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 3.88 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.484 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 3.88 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.484 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 3.88 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.484 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 3.88 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.484 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null],[{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 7.52 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.94 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 7.52 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.94 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 7.52 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.94 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 7.52 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.94 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 7.52 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.94 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 7.52 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.94 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 7.52 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.94 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 7.52 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 0.94 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null],[{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 14.2 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 1.77 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 14.2 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 1.77 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 14.2 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 1.77 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 14.2 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 1.77 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 14.2 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 1.77 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 14.2 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 1.77 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 14.2 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 1.77 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 14.2 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 1.77 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null],[{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 25.5 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 3.18 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 25.5 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 3.18 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 25.5 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 3.18 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 25.5 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 3.18 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 25.5 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 3.18 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 25.5 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 3.18 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 25.5 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 3.18 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:0,&#x22;label&#x22;:&#x22;Amoxicillin 25.5 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:1,&#x22;label&#x22;:&#x22;Gentamicin 3.18 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null],[{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 0.499 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.0624 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 0.499 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.0624 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 0.499 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.0624 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 0.499 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.0624 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 0.499 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.0624 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 0.499 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.0624 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 0.499 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.0624 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 0.499 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.0624 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null],[{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 0.996 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.125 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 0.996 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.125 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 0.996 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.125 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 0.996 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.125 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 0.996 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.125 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 0.996 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.125 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 0.996 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.125 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 0.996 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.125 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null],[{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 1.98 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.248 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 1.98 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.248 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 1.98 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.248 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 1.98 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.248 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 1.98 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.248 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 1.98 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.248 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 1.98 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.248 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 1.98 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.248 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null],[{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 3.94 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.492 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 3.94 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.492 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 3.94 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.492 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 3.94 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.492 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 3.94 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.492 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 3.94 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.492 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 3.94 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.492 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 3.94 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.492 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null],[{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 7.75 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.969 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 7.75 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.969 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 7.75 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.969 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 7.75 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.969 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 7.75 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.969 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 7.75 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.969 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 7.75 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.969 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 7.75 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 0.969 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null],[{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 15 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 1.88 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 15 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 1.88 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 15 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 1.88 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 15 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 1.88 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 15 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 1.88 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 15 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 1.88 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 15 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 1.88 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 15 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 1.88 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null],[{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 28.4 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 3.55 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 28.4 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 3.55 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 28.4 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 3.55 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 28.4 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 3.55 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 28.4 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 3.55 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 28.4 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 3.55 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 28.4 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 3.55 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 28.4 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 3.55 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null],[{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 51 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 6.37 µg/mL · Strain 1B · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 51 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 6.37 µg/mL · Strain 1T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 51 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 6.37 µg/mL · Strain 2T · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 51 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 6.37 µg/mL · Strain 5 · Rep 1&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 51 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 6.37 µg/mL · Strain 1B · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 51 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 6.37 µg/mL · Strain 1T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 51 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 6.37 µg/mL · Strain 2T · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},null,{&#x22;category&#x22;:3,&#x22;label&#x22;:&#x22;Cephalexin 51 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:4,&#x22;label&#x22;:&#x22;Tobramycin 6.37 µg/mL · Strain 5 · Rep 2&#x22;,&#x22;brightness&#x22;:0.1},{&#x22;category&#x22;:5,&#x22;label&#x22;:&#x22;Media only, no E. coli or antibiotic&#x22;,&#x22;brightness&#x22;:0.1}]]}]">
@@ -112,11 +119,35 @@ title: "Promoter Library"
 
 <br id="3fdd65dd82be80f4be58c59657eb5cd6" />
 
-<a id="3e8d65dd82be80cd8754f106221b3177" />Over the duration of 8 hours, OD600 was measured every 30 minutes along with GFP fluorescence with 488 nm excitation and detected at 510 nm emission.
+<a id="3e8d65dd82be80cd8754f106221b3177" />Over the duration of 8 hours, $OD_{600} $ was measured every 30 minutes along with GFP fluorescence with 488 nm excitation and detected at 510 nm emission.
 
-<br id="3e8d65dd82be806297fbebd5b72e00e5" />
+### <a id="3ffd65dd82be8020bbb3de8981577d55" />Discussion
 
-<a id="3f9d65dd82be8087b5afda9facaf7734" />\*\*OD600 graphs here
+<a id="3ffd65dd82be802a8c3ee9a2df42351b" />From the resulting measurements we were able to create $OD_{600}$ graphs to visualize the growth inhibition and derive an apparent MIC value, combined with our preliminary knowledge from the literature review.
+
+<a id="3ffd65dd82be8053a5adff9a2967a2b9" />
+
+<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/6c72feca22e45a7ca0844c625a14b053.svg","alt":"","scale":0}]}>
+  <Fragment slot="content">
+    <a id="3ffd65dd82be8022a79dd760f6ac60eb" />Graph for each antibiotic comparing concentration level against amount of endpoint growth
+  </Fragment>
+</Figure>
+
+<a id="3ffd65dd82be802ca6e6eaff95460b18" />From here, we chose our sub-inhibitory concentrations by using roughly 0.25-0.5x the MIC value. We reasoned that this range would be high enough to observe measurable stress on the cells while remaining low enough that growth is not substantially inhibited. Additionally, the selected sub-inhibitory concentrations were consistent with literature. Using this logic we selected one concentration for each antibiotic that we would expose the entire library to in part 2 of our experiment.
+
+### <a id="3ffd65dd82be806593fce1467bba80f2" />Results
+
+<a id="3ffd65dd82be805e9540db1c96c5467a" />The result of our part 1 experiment is the following selected sub-inhibitory concentrations:
+
+<a id="3ffd65dd82be80dea336e9177963805b" />
+
+|                                                       |                                      |
+| ----------------------------------------------------- | ------------------------------------ |
+| <a id="3ffd65dd82be80189989d72ab305795f" />Antibiotic | Sub-inhibitory Concentration (μg/mL) |
+| <a id="3ffd65dd82be80169301ed945051cd47" />Amoxicilin | 2                                    |
+| <a id="3ffd65dd82be807d91bcca506e407fb8" />Cephalexin | 1                                    |
+| <a id="3ffd65dd82be80dd8879d8b64037e37a" />Gentamycin | 1                                    |
+| <a id="3ffd65dd82be80348a3bed6f3df0ec10" />Tobramycin | 1                                    |
 
 <br id="3e8d65dd82be80fe97feee7bf9fba231" />
 
@@ -124,19 +155,19 @@ title: "Promoter Library"
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3e5d65dd82be8085b770e2f7aef37eff" />Design: We established our antibiotic concentration levels using literature-reported MICs to guide our assay development
+    <a id="3e5d65dd82be8085b770e2f7aef37eff" />We established our antibiotic concentration levels using literature-reported MICs to guide our assay development
   </Fragment>
 
   <Fragment slot="build">
-    <a id="3e5d65dd82be8008ae0dd6bbdd2bcc9b" />Build: Next, we designed and organized well plate layouts to systematically test the antibiotic concentration dilution series
+    <a id="3e5d65dd82be8008ae0dd6bbdd2bcc9b" />Next, we designed and organized well plate layouts to systematically test the antibiotic concentration dilution series
   </Fragment>
 
   <Fragment slot="test">
-    <a id="3e5d65dd82be800ab9b5c1ca546c20b0" />Test: Then, bacterial growth (OD600) and GFP fluorescence was measured over an 8 hour period to evaluate promoter activity
+    <a id="3e5d65dd82be800ab9b5c1ca546c20b0" />Then, bacterial growth ($OD_{600}$) and GFP fluorescence was measured over an 8 hour period to evaluate promoter activity
   </Fragment>
 
   <Fragment slot="learn">
-    <a id="3e5d65dd82be80f6bad5f07ea4d3460d" />Learn: Finally, we produced and analyzed the resulting OD600 growth curves to understand bacterial responses across antibiotic concentrations, identifying sub-inhibitory conditions to inform part 2
+    <a id="3e5d65dd82be80f6bad5f07ea4d3460d" />Finally, we produced and analyzed the resulting $OD_{600}$ growth curves to understand bacterial responses across antibiotic concentrations, identifying sub-inhibitory conditions to inform part 2
   </Fragment>
 </Dbtl>
 
@@ -162,9 +193,32 @@ title: "Promoter Library"
 
 <br id="3fbd65dd82be8040ac3eeeed2d6b00ac" />
 
-<a id="3e5d65dd82be807eabedf015927c482f" />**Part 2: High-throughput Library Screen**
+## <a id="3e5d65dd82be807eabedf015927c482f" />**Part 2: High-throughput Library Screen**
 
-<a id="3e5d65dd82be8082b49fd23996e892d8" />The objective of part 2 was to now conduct the entire library screen by exposing all promoter-GFP constructs to the antibiotics at the appropriate concentration levels determined from part 1. This required creating 5 replicates of the library plates, so we could expose the library to each of the four antibiotics while having one control plate with no antibiotic exposure. In total, we had 30 plates. Biofactorial was able to carry out the plate replication for us, however, this time instead of using the Echo Acoustic Liquid Handler to dispense from the antibiotic source plates, an alternative pinning machine was used dispensing 70μl rather than the original 50μl. This simply meant that our starting OD600 was slightly higher, but this did not impact our results. From here, the E. coli plates were incubated with LB media and the antibiotic for 8 hours, following the same data collection guidelines as part 1: measure OD600 every 30 minutes along with GFP fluorescence with 488 nm excitation and detected at 510 nm emission.
+<a id="3e5d65dd82be8082b49fd23996e892d8" />The objective of part 2 was to now conduct the entire library screen by exposing all promoter-GFP constructs to the antibiotics at the selected concentration levels determined from part 1. This required creating 5 replicates of the library plates, so we could expose the library to each of the four antibiotics while having one control plate with no antibiotic exposure. In total, we had 30 plates. Biofactorial was able to carry out the plate replication for us, however, the library plates were not compatible with the Echo Acoustic Liquid Handler. Instead, an alternative pinning machine was used, but this could only dispense 70 nL rather than the original 50 nL of our *E. coli* cells. This simply meant that our starting $OD_{600}$ was slightly higher, but this did not impact our results. From here, the *E. coli* plates were incubated with LB media and the antibiotic for 8 hours, following the same data collection guidelines as part 1: measure $OD_{600}$ every 30 minutes along with GFP fluorescence with 488 nm excitation and detected at 510 nm emission.
+
+### <a id="3ffd65dd82be8032821ef51a515ccfc5" />Discussion
+
+<a id="3ffd65dd82be800791e1c61ba62fa9ff" />From the results collected, the following weighted decision matrix (WDM) was used to screen for the top candidates:
+
+<a id="3ffd65dd82be8008bf1ec8fb34893384" />
+
+|                                                                   |            |
+| ----------------------------------------------------------------- | ---------- |
+| <a id="3ffd65dd82be80fd9a62ce833fec7822" />Criterion              | Weight (%) |
+| <a id="3ffd65dd82be803ea6a4f472125926b3" />Sustained GFP Increase | 45         |
+| <a id="3ffd65dd82be80a08bf3dfff3b8c6e79" />Response Speed         | 25         |
+| <a id="3ffd65dd82be808385dae86847af47be" />Low Untreated GFP      | 30         |
+
+<a id="400d65dd82be80e7940dcd3188067b64" />
+
+<Figure imgs={[{"url":"https://static.igem.wiki/teams/6279/wiki/assets/ed2a6a573ee65f7bbe271cb664399237.svg","alt":"","scale":0}]}>
+  <Fragment slot="content">
+    <a id="400d65dd82be800e9288f70d969b06b1" />Top promoter candidates plotted…
+  </Fragment>
+</Figure>
+
+### <a id="3ffd65dd82be806f8147f222d6ce182b" />Results
 
 <br id="3fad65dd82be80699423deb7d5bf5719" />
 
@@ -172,40 +226,41 @@ title: "Promoter Library"
 
 <Dbtl>
   <Fragment slot="design">
-    <a id="3fcd65dd82be8001b64fe9ee6273ea3b" />Design: Now that we’ve identified the concentration we want to test each antibiotic at, we can begin designing the well plate layouts.
+    <a id="3fcd65dd82be8001b64fe9ee6273ea3b" />Now that we’ve identified the concentration we want to test each antibiotic at, we can begin designing the well plate layouts.
   </Fragment>
 
   <Fragment slot="build">
-    <a id="3fcd65dd82be807d81ffcfa056612da3" />Build:
+    <a id="3fcd65dd82be807d81ffcfa056612da3" />Biofactorial assists us in setting up the experiment by replicating the library plate 5x, and preparing the plates with LB media and each corresponding antibiotic
   </Fragment>
 
   <Fragment slot="test">
-    <a id="3fcd65dd82be8088b0a4e136e573b7a2" />Test:
+    <a id="3fcd65dd82be8088b0a4e136e573b7a2" />Now, the plates are ran for 8 hours, collecting $OD_{600}$ and GFP fluorescence measurements at 30 minute time points
   </Fragment>
 
   <Fragment slot="learn">
-    <a id="3fcd65dd82be8000ad8be0c82b8b986d" />Learn:
+    <a id="3fcd65dd82be8000ad8be0c82b8b986d" />Using our readouts, we compare each antibiotic’s GFP readout to its own control well, as well as normalize GFP to $OD_{600}$ to derive each promoter’s response to each antibiotic
   </Fragment>
 </Dbtl>
 
 <br id="3fad65dd82be80a7b998c0c7eef81de9" />
 
-<a id="3f9d65dd82be80ce99cef1e9a1f08f4c" />**Part 3: Sanger Sequencing**
+## <a id="3f9d65dd82be80ce99cef1e9a1f08f4c" />**Part 3: Sanger Sequencing**
 
-<a id="3e8d65dd82be80e5b0ebcdf97baa4169" />To carry out Sanger sequencing, we collaborated with a facility at UBC Pharmaceutical Sciences.
+<a id="3ffd65dd82be806c9fa5cf1a15218c6f" />The last step of our experiment was now to map the selected top ten promoter candidates to their original 96-well plate. Our sequencing was carried out by Plasmidsaurus, a sequencing company.
 
-<br id="3fcd65dd82be805fb6b4d085a7ed5259" />
+<br id="3ffd65dd82be80ae88abc7c3ce31b4a4" />
 
-<a id="3fcd65dd82be8094b5f0e732bc6498de" />The criteria we evaluated promoter candidates was as follows:
+### <a id="3ffd65dd82be8038bd0ed0cd49ff3b47" />Discussion
 
-<a id="3f9d65dd82be801b9043f78865877242" />
+<br id="3ffd65dd82be80aa8f25c33ccbf2fbb7" />
 
-|                                                             |                                       |
-| ----------------------------------------------------------- | ------------------------------------- |
-| <a id="3f9d65dd82be80ba87e6c5b131425d5b" />Criterion        | Requirement                           |
-| <a id="3f9d65dd82be80139192ccead6489b34" />Basal Expression | Low and stable in untreated cultures  |
-| <a id="3f9d65dd82be804fb185f129522b8eb5" />Fold Induction   | At least two-fold during screening    |
-| <a id="3f9d65dd82be80bd8ce7ddf080661b35" />Absolute Output  | Clearly above promoterless background |
+<br id="3ffd65dd82be80969b46cc77486f516f" />
+
+### <a id="3ffd65dd82be807e8695e35e49e48264" />Results
+
+<br id="3ffd65dd82be80559517e54e44386523" />
+
+<br id="3ffd65dd82be80b5b27cc0e3414f704c" />
 
 <br id="3e5d65dd82be80abb6f8edee810f78af" />
 
@@ -233,15 +288,29 @@ title: "Promoter Library"
 
 <br id="3e5d65dd82be80f0b1abd2d4c159f5ce" />
 
-<a id="3e8d65dd82be80e4970cf11676387a74" />**Iterations:**
+# <a id="3e8d65dd82be80e4970cf11676387a74" />**Iterations**
 
-<a id="3fcd65dd82be801e83f5dba024111211" />Throughout all three parts of our experiment, we consulted thoroughly with the Biofactorial lab manager for feedback on our experimental design to ensure it was both feasible in terms of execution, but also would produce the most reliable results.
+<a id="3fcd65dd82be801e83f5dba024111211" />Throughout all parts of our experiment conducted with Biofactorial, we consulted thoroughly with the Biofactorial lab manager for feedback on our experimental design to ensure it was both feasible in terms of execution, but also would produce the most reliable results. Whether it was during the development of our protocol or last minute adaptations during testing, all decisions reflected our pursuit for reliability and accuracy.
+
+<br id="400d65dd82be8061be79d100411d5e74" />
+
+<a id="400d65dd82be80ea9ef7dd64d97c75b6" />When designing our protocol, we sought feedback on design considerations like how many source wells to use as our subset in part 1 to ensure we were gathering a comprehensive conclusion of the overall library, or how many concentration levels to test to capture a complete antibiotic concentration curve. On the other hand, we also received valuable feedback on the feasibility of our design, like learning how to design a CSV for the antibiotic source plate, or what equipment at Biofactorial’s facility would be most compatible for our experiment. We held meetings with the lab manager as needed, and iterated our experimental design to ensure we would be confident in its results.
+
+<br id="400d65dd82be80158baae1f01c82e9c5" />
+
+<a id="400d65dd82be80849c5ac2212b4220ca" />When sequencing, we ran into challenges…
+
+<br id="400d65dd82be80a09d0cef15c09f64ba" />
+
+<a id="400d65dd82be8060b09dc1be5fbb7225" />We also made sure to document any changes and decisions made throughout our design process; our [experimental protocols](/ubc-vancouver/wet-lab/lab-notebook/biofactorial-part-1-mic-assay) reflect the final version of our protocol that was executed by Biofactorial.
 
 <br id="3fcd65dd82be800b894bc9d1a172c60d" />
 
-<br id="3fcd65dd82be806c8729e1abcaac83d4" />
+<a id="3fcd65dd82be806c8729e1abcaac83d4" />Limitations, Errors, and Ways to Build on this (tbd)
 
-## <a id="3e5d65dd82be8035a318d64d6d4d3826" />Conclusion
+<a id="400d65dd82be80b6b63fc8a73e77be91" />writing here
+
+# <a id="3e5d65dd82be8035a318d64d6d4d3826" />Conclusion
 
 <a id="3e5d65dd82be8079a833c4b14dd85bad" />From our library screen and sanger sequencing results, we were able to identify the top promoter candidates:
 
@@ -249,9 +318,7 @@ title: "Promoter Library"
 
 <br id="3e8d65dd82be80bd9608e9da7e045123" />
 
-<a id="3e8d65dd82be80f6b624c85d8fbacb9f" />Limitations, Errors, and Ways to Build on this (tbd)
-
-<a id="3e8d65dd82be80389111d7c7a58985ff" />writing here
+<br id="3e8d65dd82be80f6b624c85d8fbacb9f" />
 
 <br id="3e5d65dd82be804b9995c175844c5d8f" />
 

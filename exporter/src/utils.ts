@@ -14,6 +14,7 @@ type ErrorTag =
     | "igem tools server"
     | "wiki server"
     | "zotero server"
+    | "igem video server"
     | "bug?"
     | "exporter configuration";
 

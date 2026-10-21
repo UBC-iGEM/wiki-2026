@@ -4,6 +4,7 @@ import { Id, type NotionBlock } from "../notion";
 import { parsePlate, type Plate } from "../platemap";
 import { parseGenbank } from "../seqmap";
 import { ExporterError, isExporterErr, type ExporterResult } from "../utils";
+import { fetchVideo, parseVideoId } from "../video-universe";
 import { blockContext, convertBlocks, convertItems, type ConvertContext, type Item } from "./blocks";
 import { anchorText, jsxFlow, jsxInlineBlock, type FlowContent, type JsxAttrs } from "./mdx";
 import { fetchMedia, mediaFileName, parseImageCaption, uploadMedia } from "./media";
@@ -48,6 +49,7 @@ export const COMPONENT_MAP: Record<string, (input: ComponentInput) => ComponentO
     vega,
     csv,
     downloadable,
+    video,
     skip,
 };
 
@@ -707,6 +709,61 @@ function malformedVega(problem: string): ExporterError {
         `Vega component could not be understood: ${problem}.` +
             componentDocSuggestion(
                 "https://app.notion.com/p/ubcigem/Wiki-Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#3fcd65dd82be80dfb0ecf8c6a65123e7",
+            ),
+        ["malformed content"],
+    );
+}
+
+// ====================
+// VIDEO COMPONENT
+// ====================
+
+export interface VideoAttrs {
+    /** The video's UUID on Video Universe, for its embed link. */
+    uuid: string;
+    /** The video's name on Video Universe, as the poster's label. */
+    title: string;
+    /** The video's preview image on Video Universe. */
+    poster: string;
+    /** Width over height. */
+    aspect_ratio: number;
+    /** In seconds. */
+    duration: number;
+}
+export const VIDEO_SLOTS = [] as const;
+type VideoSlots = SlotRecord<typeof VIDEO_SLOTS>;
+
+async function video({ items }: ComponentInput): ComponentOutput {
+    // A single link to a Video Universe video
+    const [link_block, ...rest] = items;
+
+    const link = link_block ? blockLink(link_block) : undefined;
+    if (!link) return malformedVideo("it does not start with a link");
+    const video_id = parseVideoId(link);
+    if (!video_id) return malformedVideo(`"${link}" is not a link to a Video Universe video`);
+    if (rest.length > 0) return malformedVideo("it has content after its video link");
+
+    const info = await fetchVideo(video_id);
+    if (isExporterErr(info)) return info;
+
+    return generateComponent<VideoAttrs, VideoSlots>({
+        tag: "Video",
+        attrs: {
+            uuid: info.uuid,
+            title: info.name,
+            poster: info.poster_url,
+            aspect_ratio: info.aspect_ratio,
+            duration: info.duration,
+        },
+        slots: {},
+    });
+}
+
+function malformedVideo(problem: string): ExporterError {
+    return new ExporterError(
+        `Video component could not be understood: ${problem}.` +
+            componentDocSuggestion(
+                "https://app.notion.com/p/ubcigem/Wiki-Components-395d65dd82be8024b1dbe3fb07e95219?source=copy_link#400d65dd82be8062930ede110d39c00a",
             ),
         ["malformed content"],
     );

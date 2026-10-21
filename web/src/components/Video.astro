@@ -1,0 +1,151 @@
+---
+import { type VideoAttrs, VIDEO_SLOTS } from "@exporter/markdown/components";
+type Props = VideoAttrs;
+
+const { uuid, title, poster, aspect_ratio, duration } = Astro.props;
+VIDEO_SLOTS satisfies readonly [];
+
+// Without Video Universe's title bar and link out, as the wiki gives its own frame (the lightbox adds autoplay)
+const embed = `https://video.igem.org/videos/embed/${uuid}?title=0&warningTitle=0&peertubeLink=0`;
+
+/** `m:ss`, or `h:mm:ss` for an hour or more. */
+function formatDuration(seconds: number): string {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = String(Math.floor(seconds % 60)).padStart(2, "0");
+    return h > 0 ? `${h}:${String(m).padStart(2, "0")}:${s}` : `${m}:${s}`;
+}
+---
+
+<figure class="video glow-panel">
+    <div class="video-body glow-panel-body">
+        <!-- Opened in the page's Lightbox, which plays the embed -->
+        <button
+            class="video-poster"
+            data-lightbox-video={embed}
+            data-ratio={aspect_ratio}
+            aria-label={title ? `Play video: ${title}` : "Play video"}
+            style={`--ratio: ${aspect_ratio}`}
+        >
+            <img src={poster} alt="" loading="lazy" />
+            <span class="video-play" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"></path></svg>
+            </span>
+            {duration > 0 && <span class="video-duration">{formatDuration(duration)}</span>}
+        </button>
+    </div>
+</figure>
+
+<style>
+    /* The border and glow come from .glow-panel in style.css; the bottom margin clears the outline hanging below */
+    .video {
+        margin: 2rem auto 3rem;
+        max-width: 48rem;
+    }
+
+    .video-body {
+        padding: 0.75rem;
+    }
+
+    .video-poster {
+        aspect-ratio: var(--ratio);
+        background: var(--color-ebony-clay);
+        border: none;
+        border-radius: 22px;
+        cursor: var(--cursor-interact);
+        --cursor-over-text: var(--cursor-interact);
+        display: block;
+        overflow: hidden;
+        padding: 0;
+        position: relative;
+        width: 100%;
+    }
+
+    .video-poster img {
+        display: block;
+        height: 100%;
+        object-fit: cover;
+        transition: filter 0.2s ease;
+        width: 100%;
+    }
+
+    .video-play {
+        align-items: center;
+        background: color-mix(in srgb, var(--color-ebony-clay) 70%, transparent);
+        border: 2px solid var(--color-cornflower);
+        border-radius: 50%;
+        box-shadow: 0 0 1.5rem color-mix(in srgb, var(--color-cornflower) 45%, transparent);
+        color: var(--color-periwinkle);
+        display: flex;
+        height: 4.5rem;
+        justify-content: center;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        transition:
+            color 0.2s ease,
+            border-color 0.2s ease,
+            transform 0.2s ease;
+        width: 4.5rem;
+    }
+
+    .video-play svg {
+        fill: currentColor;
+        height: 2rem;
+        /* The triangle's weight sits left of its box, so it is nudged to look centred */
+        margin-left: 0.2rem;
+        width: 2rem;
+    }
+
+    .video-duration {
+        background: color-mix(in srgb, var(--color-ebony-clay) 80%, transparent);
+        border-radius: 6px;
+        bottom: 0.75rem;
+        color: var(--color-periwinkle);
+        font-family: var(--font-geist);
+        font-size: 0.8125rem;
+        font-variant-numeric: tabular-nums;
+        padding: 0.15rem 0.45rem;
+        position: absolute;
+        right: 0.75rem;
+    }
+
+    .video-poster:hover img,
+    .video-poster:focus-visible img {
+        filter: brightness(0.85);
+    }
+
+    .video-poster:hover .video-play,
+    .video-poster:focus-visible .video-play {
+        border-color: var(--color-lime-yellow);
+        color: var(--color-lime-yellow);
+        transform: translate(-50%, -50%) scale(1.08);
+    }
+
+    .video-poster:focus-visible {
+        outline: 2px solid var(--color-lime-yellow);
+        outline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .video-play {
+            transition: none;
+        }
+    }
+
+    @media (max-width: 700px) {
+        .video-body {
+            padding: 0.5rem;
+        }
+
+        .video-poster {
+            border-radius: 14px;
+        }
+
+        .video-play {
+            height: 3.5rem;
+            width: 3.5rem;
+        }
+    }
+</style>
